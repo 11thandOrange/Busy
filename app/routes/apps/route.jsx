@@ -9,7 +9,7 @@ import {
     BlockStack,
   } from "@shopify/polaris";
   import { TitleBar } from "@shopify/app-bridge-react";
-  
+  import { Link as RouteLink } from "@remix-run/react";
   export default function AdditionalPage() {
     return (
       <Page>
@@ -38,6 +38,7 @@ import {
                   in <Code>app/routes/app.jsx</Code>.
                 </Text>
               </BlockStack>
+              <RouteLink to="/app/testing">Bundle test</RouteLink>
             </Card>
           </Layout.Section>
           <Layout.Section variant="oneThird">
