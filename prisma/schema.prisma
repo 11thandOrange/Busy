@@ -30,3 +30,86 @@ model Session {
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
 }
+
+
+model App {
+  id          Int      @id @default(autoincrement())
+  name        String   
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserApp {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  appId     Int
+  enabled   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  app       App      @relation(fields: [appId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Widget {
+  id              Int      @id @default(autoincrement())
+  name      String?
+  description       String?
+  image            String?
+  createdAt       DateTime @default(now())
+}
+
+model AnnouncementType{
+  id          Int @id @default(autoincrement)
+  type        String
+}
+
+model AnnouncementBar {
+  id                      Int      @id @default(autoincrement())
+  announcement_type       AnnouncementType     @relation(fields: [announcement_type_id], references: [id])?
+  name                    String?
+  status                  Boolean  @default(false)
+  general_setting         Json?
+  theme_style             Json?
+  theme_setting           Json?
+  createdAt               DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CountdownTimerTheme {
+  id              Int      @id @default(autoincrement())
+  name            String?
+  createdAt       DateTime @default(now())
+}
+
+model CountdownTimer {
+  id              Int      @id @default(autoincrement())
+  customerId      String?
+  productId       String?
+  shop            String?
+  createdAt       DateTime @default(now())
+}
+
+model CartNotice {
+  id                    Int      @id @default(autoincrement())
+  general_setting       Json?
+  shop                  String?
+  createdAt             DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InactiveTabMessage {
+  id              Int      @id @default(autoincrement())
+  message      String?
+  shop            String?
+  createdAt       DateTime @default(now())
+}
+
+model Wishlist {
+  id              Int      @id @default(autoincrement())
+  customerId      String?
+  productId       String?
+  shop            String?
+  createdAt       DateTime @default(now())
+}

@@ -1,24 +1,29 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "78eebfb56de054de667f6f250d9b632f"
+client_id = "6cf76c58a42f886d362a133415098c59"
 name = "BusyBuddy"
 handle = "busybuddy"
-application_url = "https://example.com/"
+application_url = "https://lions-indicators-mhz-checked.trycloudflare.com"
 embedded = true
+
+[build]
+include_config_on_deploy = true
+dev_store_url = "quickstart-f05d22ad.myshopify.com"
+automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = ""
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [
+  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/callback",
+  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/shopify/callback",
+  "https://lions-indicators-mhz-checked.trycloudflare.com/api/auth/callback"
+]
 
 [webhooks]
 api_version = "2024-10"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
-  uri = "/webhooks/app/uninstalled"
 
 [pos]
 embedded = false
