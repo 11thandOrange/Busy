@@ -2,7 +2,7 @@ import {Button, Popover, ActionList} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 import PopoverData from '../../atoms/popoverData';
 
-function PopoverContent({options}) {
+function PopoverContent({options,heading}) {
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
@@ -12,12 +12,12 @@ function PopoverContent({options}) {
 
   const activator = (
     <Button variant='primary' onClick={togglePopoverActive} disclosure>
-      Create Announcement Bar
+      {heading}
     </Button>
   );
 
   return (
-    <div style={{height: '250px'}}>
+    <div style={{height: '50px'}}>
       <Popover
         active={popoverActive}
         activator={activator}

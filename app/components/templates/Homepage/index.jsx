@@ -6,6 +6,7 @@ import React from "react";
 
 import { useState, useCallback } from "react";
 import "./homepage.css"
+import ActiveButton from "../../atoms/ActiveButton";
 
 function Homepage({tabs,header}) {
   const [selected, setSelected] = useState(0);
@@ -23,7 +24,7 @@ function Homepage({tabs,header}) {
       <Page
         backAction={{ content: "Settings", url: "#" }}
         title={header}
-        primaryAction={<Button >Activate</Button>}
+        primaryAction={<ActiveButton></ActiveButton>}
       >
      
         <LegacyTabs tabs={tabs} selected={selected} onSelect={handleTabChange}>

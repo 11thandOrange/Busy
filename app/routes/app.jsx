@@ -29,6 +29,7 @@ console.log("EN",en)
         <Link to="/widgets">Widgets</Link>
         <Link to="/app/additional">Additional page</Link>
         <Link to="/homepage">homepage</Link>
+        <Link to="/plan">plan</Link>
         
       </NavMenu>
      

@@ -1,19 +1,13 @@
 import React from 'react';
 import './homepageDetails.css'; // Assuming you will style using this file
 import PopoverContent from '../../templates/PopoverContent';
-
+import popoverData from "../../../data/popoverData";
 
 
 
 const HomepageDetails = () => {
 
-  const popoverData =   [
-    { header: 'Header 1', description: 'Content 1' },
-    { header: 'Header 2', description: 'Content 2' },
-    { header: 'Header 3', description: 'Content 3' },
-    { header: 'Header 4', description: 'Content 4' },
-    { header: 'Header 5', description: 'Content 5' }
-  ];
+
   return (
     <>
     <div className="homepage-details">
@@ -52,7 +46,7 @@ const HomepageDetails = () => {
       </div>
     </div>
     <div>
-        <PopoverContent options={popoverData}></PopoverContent>
+        <PopoverContent options={popoverData} heading="Create Announcement Bar"></PopoverContent>
     </div>
     </>
     
