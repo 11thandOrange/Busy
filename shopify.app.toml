@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "6cf76c58a42f886d362a133415098c59"
+client_id = "958abe7d38c5db83dc82e0ac551d1409"
 name = "BusyBuddy"
-handle = "busybuddy"
-application_url = "https://lions-indicators-mhz-checked.trycloudflare.com"
+handle = "busybuddy-4"
+application_url = "https://interact-brief-graduation-toronto.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/shopify/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/api/auth/callback"
+  "https://interact-brief-graduation-toronto.trycloudflare.com/auth/callback",
+  "https://interact-brief-graduation-toronto.trycloudflare.com/auth/shopify/callback",
+  "https://interact-brief-graduation-toronto.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -1,84 +1,115 @@
-import {
-    Box,
-    Card,
-    Layout,
-    Link,
-    List,
-    Page,
-    Text,
-    BlockStack,
-  } from "@shopify/polaris";
-  import { TitleBar } from "@shopify/app-bridge-react";
+import { authenticate } from "../../shopify.server";
+import { AppProvider, Card, Text, Button, Layout, Page, BlockStack, Image } from '@shopify/polaris';
+import { TitleBar } from "@shopify/app-bridge-react";
+import db from "../../db.server";
+import { cors } from 'remix-utils/cors';
+import { useLoaderData } from "@remix-run/react";
+import { useState } from "react";
+import { useFetcher } from "@remix-run/react"; 
   
-  export default function AdditionalPage() {
+export const loader = async ({ request }) => {
+  const response = await db.app.findMany({
+    include: {
+      Merchant: true,
+    },
+  });
+  return cors(request, response);
+};
+export const action = async ({ request }) => {
+  console.log('he')
+  const { admin, session } = await authenticate.admin(request);
+  const formData = new URLSearchParams(await request.text());
+  const appId = parseInt(formData.get("appId"));
+  const enable = formData.get("enable") === "true";
+  try {
+    const existingMerchant = await db.merchant.findFirst({
+      where: {
+        appId: appId,
+        shop: session.shop,
+      },
+    });
+
+    if (existingMerchant) {
+      const updatedApp = await db.merchant.update({
+        where: {
+          id: existingMerchant.id,
+        },
+        data: {
+          enabled: enable,
+        },
+      });
+      return updatedApp;
+    } else {
+      const newMerchant = await db.merchant.create({
+        data: {
+          appId: appId,
+          shop: session.shop,
+          enabled: enable,
+        },
+      });
+      return newMerchant;
+    }
+  } catch (error) {
+    throw new Error("Failed to update or create merchant");
+  }
+};
+  export default function BundleApps() {
+    const apps_data = useLoaderData();
+    const fetcher = useFetcher();
+    const [apps, setApps] = useState(apps_data)
+    const handleToggle = (appId, currentStatus) => {
+      
+       const updatedApps = apps.map((app) => {
+      if (app.id === appId) {
+        return { ...app, enabled: !currentStatus }; // Toggle the enabled status
+      }
+      return app;
+    });
+
+    setApps(updatedApps); 
+      fetcher.submit(
+        {
+          appId: appId,
+          enable: !currentStatus,
+        },
+        { method: "POST", action: "/bundle/apps" }
+      );
+    };
+
     return (
-      <Page>
-        <TitleBar title="BuddyBoss page" />
-        <Layout>
-          <Layout.Section>
-            <Card>
-              <BlockStack gap="300">
-                <Text as="p" variant="bodyMd">
-                  The app template comes with an additional page which
-                  demonstrates how to create multiple pages within app navigation
-                  using{" "}
-                  <Link
-                    url="https://shopify.dev/docs/apps/tools/app-bridge"
-                    target="_blank"
-                    removeUnderline
+      <AppProvider>
+        <Page>
+          <TitleBar title="BuddyBoss page" />
+          <Layout>
+            <Layout.Section>
+              <Card>
+                <BlockStack gap="300">
+                {apps && apps.length > 0 ? (
+                    apps.map((app) => (
+                      <div>
+                        
+                          <Text as="p" variant="bodyMd">
+                            {app.name}
+                          </Text>
+                          <Text as="p" variant="bodyMd">
+                            {app.description}
+                          </Text>
+                         
+                          <Button
+                    onClick={() => handleToggle(app.id, app.Merchant.length > 0 ? app.Merchant[0].enabled : false)}
                   >
-                    App Bridge
-                  </Link>
-                  .
-                </Text>
-                <Text as="p" variant="bodyMd">
-                  To create your own page and have it show up in the app
-                  navigation, add a page inside <Code>app/routes</Code>, and a
-                  link to it in the <Code>&lt;NavMenu&gt;</Code> component found
-                  in <Code>app/routes/app.jsx</Code>.
-                </Text>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneThird">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Resources
-                </Text>
-                <List>
-                  <List.Item>
-                    <Link
-                      url="https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      App nav best practices
-                    </Link>
-                  </List.Item>
-                </List>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-        </Layout>
-      </Page>
+                    {app.Merchant.length > 0 && app.Merchant[0]?.enabled ? "Deactivate" : "Activate"}
+                  </Button>
+                      </div>
+                    ))
+                  ) : (
+                    <Text>No Apps available</Text>
+                  )}
+                </BlockStack>
+              </Card>
+            </Layout.Section>
+          </Layout>
+        </Page>
+      </AppProvider>
     );
   }
-  
-  function Code({ children }) {
-    return (
-      <Box
-        as="span"
-        padding="025"
-        paddingInlineStart="100"
-        paddingInlineEnd="100"
-        background="bg-surface-active"
-        borderWidth="025"
-        borderColor="border"
-        borderRadius="100"
-      >
-        <code>{children}</code>
-      </Box>
-    );
-  }
-  
