@@ -1,4 +1,3 @@
-import { authenticate } from "../../shopify.server";
 import { AppProvider, Card, Text, Button, Layout, Page, BlockStack, Image } from '@shopify/polaris';
 import { TitleBar } from "@shopify/app-bridge-react";
 import db from "../../db.server";
@@ -6,26 +5,41 @@ import { cors } from 'remix-utils/cors';
 import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { useFetcher } from "@remix-run/react"; 
+import { getCategories, getShopName } from "../../utils/function";
   
 export const loader = async ({ request }) => {
-  const response = await db.app.findMany({
+  let apps = await db.app.findMany({
     include: {
       Merchant: true,
     },
   });
+  apps = apps.map((app) => {
+    const isInstalled = app.Merchant.some((merchant) => merchant.enabled);
+  
+    return {
+      id: app.id,
+      name: app.name,
+      description: app.description,
+      categoryId: app.categoryId,
+      createdAt: app.createdAt,
+      updatedAt: app.updatedAt,
+      isInstalled,
+    };
+  });
+  
+  const response = {apps, categories : await getCategories()};
   return cors(request, response);
 };
 export const action = async ({ request }) => {
-  console.log('he')
-  const { admin, session } = await authenticate.admin(request);
+  const shop = getShopName(request);
   const formData = new URLSearchParams(await request.text());
   const appId = parseInt(formData.get("appId"));
-  const enable = formData.get("enable") === "true";
+  const enable = formData.get("enable") === true;
   try {
     const existingMerchant = await db.merchant.findFirst({
       where: {
         appId: appId,
-        shop: session.shop,
+        shop: shop,
       },
     });
 
@@ -43,7 +57,7 @@ export const action = async ({ request }) => {
       const newMerchant = await db.merchant.create({
         data: {
           appId: appId,
-          shop: session.shop,
+          shop: shop,
           enabled: enable,
         },
       });
@@ -56,12 +70,13 @@ export const action = async ({ request }) => {
   export default function BundleApps() {
     const apps_data = useLoaderData();
     const fetcher = useFetcher();
-    const [apps, setApps] = useState(apps_data)
+    const [apps, setApps] = useState(apps_data.apps)
+    const [categories, setCategories] = useState(apps_data.categories)
     const handleToggle = (appId, currentStatus) => {
       
        const updatedApps = apps.map((app) => {
-      if (app.id === appId) {
-        return { ...app, enabled: !currentStatus }; // Toggle the enabled status
+      if (app.id == appId) {
+        return { ...app, isInstalled: !currentStatus };
       }
       return app;
     });
@@ -84,6 +99,7 @@ export const action = async ({ request }) => {
             <Layout.Section>
               <Card>
                 <BlockStack gap="300">
+                {JSON.stringify(categories)}
                 {apps && apps.length > 0 ? (
                     apps.map((app) => (
                       <div>
@@ -96,9 +112,9 @@ export const action = async ({ request }) => {
                           </Text>
                          
                           <Button
-                    onClick={() => handleToggle(app.id, app.Merchant.length > 0 ? app.Merchant[0].enabled : false)}
+                    onClick={() => handleToggle(app.id, app.isInstalled)}
                   >
-                    {app.Merchant.length > 0 && app.Merchant[0]?.enabled ? "Deactivate" : "Activate"}
+                    { app.isInstalled ? "Deactivate" : "Activate"}
                   </Button>
                       </div>
                     ))

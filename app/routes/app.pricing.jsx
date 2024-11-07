@@ -16,15 +16,22 @@ import {
   
 
   export async function loader({ request }) {
+    const url = new URL(request.url);
+    const queryParams = new URLSearchParams(url.search);
+  
+  // Example: Get the value of a query parameter called "ref"
+  const plan = queryParams.get('plan');
     const { billing } = await authenticate.admin(request);
+    
   
     try {
-      const billingCheck = await billing.require({
-        plans: [MONTHLY_PLAN, ANNUAL_PLAN],
-        isTest: true,
-        onFailure: () => {
-          throw new Error('No active plan');
-        },
+      await billing.require({
+        plans: [plan],
+        onFailure: async () => billing.request({
+          plan: plan,
+          isTest: true,
+          returnUrl: `https://admin.shopify.com/store/${myShop}/apps/${process.env.APP_NAME}/app/pricing`,
+        }),
       });
   
       const subscription = billingCheck.appSubscriptions[0];

@@ -3,7 +3,7 @@
 client_id = "958abe7d38c5db83dc82e0ac551d1409"
 name = "BusyBuddy"
 handle = "busybuddy-4"
-application_url = "https://interact-brief-graduation-toronto.trycloudflare.com"
+application_url = "https://ash-supervisors-traditional-speaker.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://interact-brief-graduation-toronto.trycloudflare.com/auth/callback",
-  "https://interact-brief-graduation-toronto.trycloudflare.com/auth/shopify/callback",
-  "https://interact-brief-graduation-toronto.trycloudflare.com/api/auth/callback"
+  "https://ash-supervisors-traditional-speaker.trycloudflare.com/auth/callback",
+  "https://ash-supervisors-traditional-speaker.trycloudflare.com/auth/shopify/callback",
+  "https://ash-supervisors-traditional-speaker.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

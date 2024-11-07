@@ -3,13 +3,16 @@ import {
   ApiVersion,
   AppDistribution,
   shopifyApp,
+  BillingInterval
 } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-07";
 import prisma from "./db.server";
 
-export const MONTHLY_PLAN = 'Monthly subscription';
-export const ANNUAL_PLAN = 'Annual subscription';
+export const STARTER_MONTHLY_PLAN = 'Starter Subscription';
+export const PRO_MONTHLY_PLAN = 'Pro Subscription';
+export const ENTERPRISE_MONTHLY_PLAN = 'Enterprise Subscription';
+export const PLANS = [ STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN];
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
@@ -27,6 +30,23 @@ const shopify = shopifyApp({
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),
+    billing: {
+      [STARTER_MONTHLY_PLAN]: {
+        amount: 30,
+        currencyCode: 'USD',
+        interval: BillingInterval.Every30Days,
+      },
+      [PRO_MONTHLY_PLAN]: {
+        amount: 60,
+        currencyCode: 'USD',
+        interval: BillingInterval.Every30Days,
+      },
+      [ENTERPRISE_MONTHLY_PLAN]: {
+        amount: 90,
+        currencyCode: 'USD',
+        interval: BillingInterval.Every30Days,
+      },
+    }
 });
 
 export default shopify;
