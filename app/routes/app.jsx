@@ -30,6 +30,7 @@ console.log("EN",en)
         <Link to="/app/additional">Additional page</Link>
         <Link to="/homepage">homepage</Link>
         <Link to="/plan">plan</Link>
+        <Link to="/settings">Settings</Link>
         
       </NavMenu>
      

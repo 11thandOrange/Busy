@@ -4,6 +4,7 @@ import {
     useIndexResourceState,
     Text,
     Badge,
+    hsbToHex,
   } from "@shopify/polaris";
   import React from "react";
 import PopoverContent from "../PopoverContent";
@@ -13,6 +14,7 @@ const barState = {
     ACTIVE:"success",
     INACTIVE:"critical"
 }
+hsbToHex
    function CheckBars() {
    
    

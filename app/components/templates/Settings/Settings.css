@@ -1,0 +1,20 @@
+.settings{
+    display: flex;
+    width:80%;
+    margin:auto
+    
+}
+
+.settings-right-section, .settings-left-section{
+    flex: 1;
+    padding:20px
+
+}
+.settings-left-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.general-settings-header{
+    margin-bottom: 10px;
+}
