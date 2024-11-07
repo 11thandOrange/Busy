@@ -1,34 +1,21 @@
 import React from 'react'
-import Homepage from './Homepage'
-import HomepageSlider from './components/homepageSlider/HomepageSlider';
+
+import HomepageSlider from '../../components/templates/HomepageSlider';
+import Homepage from '../../components/templates/homepage';
 
 const route = () => {
   const tabs = [
     {
-      id: "all-customers-1",
-      content: "All",
-      accessibilityLabel: "All customers",
-      panelID: "all-customers-content-1",
+      id: "Overview-1",
+      content: "Overview",
       component: <HomepageSlider></HomepageSlider>,
     },
     {
-      id: "accepts-marketing-1",
-      content: "Accepts marketing",
-      panelID: "accepts-marketing-content-1",
+      id: "Settings-1",
+      content: "Settings",
       component: <h1>Hello</h1>,
     },
-    {
-      id: "repeat-customers-1",
-      content: "Repeat customers",
-      panelID: "repeat-customers-content-1",
-      component: <h1>Hello</h1>,
-    },
-    {
-      id: "prospects-1",
-      content: "Prospects",
-      panelID: "prospects-content-1",
-      component: <h1>Hello</h1>,
-    },
+   
   ];
   return (
     <>

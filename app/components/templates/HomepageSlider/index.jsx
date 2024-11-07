@@ -12,7 +12,8 @@ import './homepageSlider.css';
 
 // import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import HomepageDetails from '../homepageDetails/HomepageDetails';
+import HomepageDetails from '../../atoms/HomepageDetails';
+
 
 const sliderType= {
     IMAGE:0,

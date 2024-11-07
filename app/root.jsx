@@ -5,7 +5,17 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
+import { AppProvider } from "@shopify/polaris";
+import { Link } from "@remix-run/react";
+import "@shopify/polaris/build/esm/styles.css";
+function LinkWrapper(props) {
+  return (
+    // TODO: fix type conflix with LegacyRef and Ref between Remix and Polaris
+    <Link to={props.url ?? props.to} ref={props.ref} {...props}>
+      {props.children}
+    </Link>
+  );
+}
 export default function App() {
   return (
     <html>
@@ -21,7 +31,20 @@ export default function App() {
         <Links />
       </head>
       <body>
+      <AppProvider
+      linkComponent={LinkWrapper}
+      i18n={{
+        Polaris: {
+          Page: {
+            Header: {
+              rollupButton: 'Actions',
+            },
+          },
+        },
+      }}
+    >
         <Outlet />
+        </AppProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './homepageDetails.css'; // Assuming you will style using this file
-import PopoverContent from '../../../../components/templates/PopoverContent';
+import PopoverContent from '../../templates/PopoverContent';
 
 
 

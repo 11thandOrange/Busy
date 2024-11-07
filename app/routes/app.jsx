@@ -18,7 +18,7 @@ export default function App() {
   const { apiKey } = useLoaderData();
 console.log("EN",en)
   return (
-    <AppProvider i18n={en}>
+   
     <RemixAppProvider isEmbeddedApp apiKey={apiKey} >
      
       <NavMenu>
@@ -34,7 +34,7 @@ console.log("EN",en)
      
       <Outlet />
      </RemixAppProvider>
-    </AppProvider>
+  
   );
 }
 
