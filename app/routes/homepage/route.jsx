@@ -17,7 +17,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <h1>Hello</h1>,
+      component: <h1>Settings</h1>,
     },
     {
       id: "Announcement-bars-1",

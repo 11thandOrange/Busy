@@ -36,8 +36,9 @@ function PopoverContent({options,heading}) {
           <ActionList
             actionRole="menuitem"
             items={options.map(element => {
-              return {content:  <PopoverData header={element.header} description={element.description}></PopoverData>}
-            })
+              return {content:  <PopoverData callback={(id)=>{console.log("On Click",id);
+              }} header={element.header} description={element.description} id={element.id}></PopoverData>}
+            })  
             }
           />
         </Popover.Pane>

@@ -13,13 +13,12 @@ import './homepageSlider.css';
 // import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import HomepageDetails from '../../atoms/HomepageDetails';
-
+import sliderData from '../../../data/sliderData.json'
 
 const sliderType= {
-    IMAGE:0,
-    VIDEO:1,
+    IMAGE:"image",
+    VIDEO:"video",
 }
-
 
 const sliderTypeSelector = (type,content)=>{
     switch(type){
@@ -32,27 +31,7 @@ const sliderTypeSelector = (type,content)=>{
 export default function HomepageSlider() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   
-  const sliderData = [
-    {
-      type: sliderType.IMAGE,
-      preview: 'https://swiperjs.com/demos/images/nature-1.jpg', // Thumbnail for the image
-      content: 'https://swiperjs.com/demos/images/nature-1.jpg', // Full-size image for the previewer
-      title: 'Nature 10' // Title for the thumbnail
-    },
-    {
-      type: sliderType.VIDEO,
-      preview: 'https://i.ibb.co/V9tW1vt/Screenshot-2024-11-06-at-4-50-52-PM.png', // Thumbnail for the video
-      content: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4', // Video URL for the previewer
-      title: 'Watch Tutorial' // Title for the thumbnail
-    },
-    {
-      type: sliderType.IMAGE,
-      preview: 'https://swiperjs.com/demos/images/nature-2.jpg', // Thumbnail for another image
-      content: 'https://swiperjs.com/demos/images/nature-2.jpg', // Full-size image for the previewer
-    title: 'Nature 3'
-    },
-  
-  ];
+
   return (
     <>
    <HomepageDetails></HomepageDetails>

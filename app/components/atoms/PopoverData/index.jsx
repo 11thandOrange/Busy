@@ -1,8 +1,12 @@
 import React from 'react'
 
-const PopoverData = ({header, description}) => {
+const PopoverData = ({header, description,callback, id}) => {
+  const handleClick = () => {
+    callback(id); 
+  };
+  
   return (
-    <div><div style={{fontWeight: 'bold'}}>{header}</div><div>{description}</div></div>
+    <div onClick={handleClick} ><div style={{fontWeight: 'bold'}}>{header}</div><div>{description}</div></div>
   )
 }
 

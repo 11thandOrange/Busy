@@ -1,0 +1,21 @@
+[
+    {
+      "type": "image",
+      "preview": "https://swiperjs.com/demos/images/nature-1.jpg",
+      "content": "https://swiperjs.com/demos/images/nature-1.jpg",
+      "title": "Nature 10"
+    },
+    {
+      "type": "video",
+      "preview": "https://i.ibb.co/V9tW1vt/Screenshot-2024-11-06-at-4-50-52-PM.png",
+      "content": "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4",
+      "title": "Watch Tutorial"
+    },
+    {
+      "type": "image",
+      "preview": "https://swiperjs.com/demos/images/nature-2.jpg",
+      "content": "https://swiperjs.com/demos/images/nature-2.jpg",
+      "title": "Nature 3"
+    }
+  ]
+  
