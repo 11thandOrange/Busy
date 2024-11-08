@@ -19,7 +19,7 @@ function CustomColorPallete({colorHeading}) {
     []
   );
   const [color, setColor] = useState({
-    "hue": 0,
+    "hue": Math.random() * 360,
     "saturation": 0.637646484375,
     "brightness": 0.6029296875,
     "alpha": 1
@@ -54,7 +54,7 @@ console.log(color);
         autofocusTarget="first-node"
         onClose={togglePopoverActive}
         >
-        <ColorPicker onChange={setColor} color={color} />;
+        <ColorPicker onChange={setColor} color={color}  />;
       </Popover>
      
     </div>

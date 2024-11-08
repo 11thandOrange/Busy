@@ -1,11 +1,11 @@
 import {Select} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 
-function Selector({label,options,helpText}) {
+function Selector({label,options,helpText,onSelect=()=>{}}) {
   const [selected, setSelected] = useState('today');
 
   const handleSelectChange = useCallback(
-    (value) => setSelected(value),
+    (value) => {setSelected(value); onSelect(value)},
     [],
   );
 
@@ -18,7 +18,7 @@ function Selector({label,options,helpText}) {
       options={options}
       onChange={handleSelectChange}
       value={selected}
-       helpText={helpText}
+      helpText={helpText}
     />
     
     </>

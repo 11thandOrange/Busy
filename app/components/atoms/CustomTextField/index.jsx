@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 
 import {TextField} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 
-function CustomTextField({type,label,helpText,readOnly=false}) {
+function CustomTextField({type,label,helpText,readOnly=false,value,onValueChange=()=>{},disabled=false}) {
   const [textFieldValue, setTextFieldValue] = useState(
-    '',
+    value,
   );
-
+useEffect(() => {
+  setTextFieldValue(value)
+}, []);
   const handleTextFieldChange = useCallback(
-    (value) => setTextFieldValue(value),
+    (value) => {
+      setTextFieldValue(value);
+      onValueChange(value);
+    },
     [],
   );
 
@@ -22,7 +27,8 @@ function CustomTextField({type,label,helpText,readOnly=false}) {
       value={textFieldValue}
       onChange={handleTextFieldChange}
       helpText={helpText}
-     
+      placeholder={value}
+      disabled={disabled}
     />
   );
 }

@@ -1,55 +1,95 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import Selector from '../../atoms/Selector';
 import "./Settings.css"
 import { Card, Text } from '@shopify/polaris';
 import CustomTextField from '../../atoms/CustomTextField';
-import CustomColorPallete from '../../atoms/CustomColorPallete';
+
 import ThemeStyleGrid from '../ThemeStyleGrid';
 import ProductPreviewCard from '../ProductPreviewCard';
+
+import ThemeSettings from '../ThemeSettings';
+import GeneralSettings from '../../atoms/GeneralSettings/announcementBars/Text';
+import { ANNOUNCEMENT_BAR_INITIAL_STATE, ANNOUNCEMENT_BAR_TYPES, SETTINGS_INITIAL_STATE, STATUS } from '../../../constants/announcementBarConfig';
+import FreeShippingSettings from '../../atoms/generalSettings/announcementBars/FreeShipping';
+import OrderCounterSettings from '../../atoms/generalSettings/announcementBars/OrderCounter';
+import CountdownTimerSettings from '../../atoms/generalSettings/announcementBars/CountdownTimer';
+import EmailCaptureSettings from '../../atoms/generalSettings/announcementBars/EmailCapture';
+
 const options = [
-    {label: 'Active', value: 'active'},
-    {label: 'Inactive', value: 'inactive'},
+    {label: 'Active', value: STATUS.ACTIVE},
+    {label: 'Inactive', value: STATUS.INACTIVE},
 
   ];
-const themeOptions = [
-    {label: 'Top relative', value: 'Top relative'},
-    {label: 'Top fixed', value: 'Top fixed'},
-    {label: 'Bottom', value: 'Bottom'},
 
-  ];
-const Settings = () => {
+const Settings = ({announcementBarType}) => {
+  
+  const generalSettings= ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType].generalSettings
+  const [settingsState,setSettingsState] = useState({
+    ...SETTINGS_INITIAL_STATE,generalSettings
+  })
+
+  console.log("Settings state",settingsState);
+  
+  const selectGeneralSettings= useCallback(
+    () => {
+      switch (announcementBarType) {
+        case ANNOUNCEMENT_BAR_TYPES.TEXT:
+          return <GeneralSettings></GeneralSettings>
+        case ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING:
+          return <FreeShippingSettings></FreeShippingSettings>
+        case ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER:
+          return <OrderCounterSettings></OrderCounterSettings>
+        case ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER:
+          return <CountdownTimerSettings></CountdownTimerSettings>
+        case ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE:
+          return <EmailCaptureSettings></EmailCaptureSettings>
+          
+      
+        default:
+          break;
+      }
+    },
+    [],
+  )
+  
+  
+  
   return (
     <div className="settings">
         <div className="settings-left-section">
+            {/* <Card>
+            <SettingsDisplay></SettingsDisplay>
+            </Card> */}
             <Card>
-            <Selector options={options} label="Status" helpText="Only one announcement bar will be displayed at the time"></Selector>
+              <Selector options={options} label="Status" helpText="Only one announcement bar will be displayed at the time" onSelect={(value)=>{console.log("On select",value);}}></Selector>
             </Card>
             <Card>
-            <CustomTextField type='text' label='Name'  helpText='The private name of this smart bar. Only you will see this.'></CustomTextField>
+              <CustomTextField type='text' label='Name'  helpText='The private name of this smart bar. Only you will see this.' onValueChange={(value)=>{
+                console.log("Text Field",value);
+              }}>
+              </CustomTextField>
             </Card>
             <Card>
             <div className='general-settings-header'>
-                <Text variant="bodyMd" fontWeight="bold" as="span">General Settings</Text>
+            <Text variant="bodyMd" fontWeight="bold" as="span">General Settings</Text>
             </div>
-            <CustomTextField type='text' label='Name'  ></CustomTextField>
+            {
+            selectGeneralSettings()
+            }
             </Card>
             <Card>
-            <div className='general-settings-header'>
-                <Text variant="bodyMd" fontWeight="bold" as="span">Theme Settings</Text>
-            </div>
-            <Selector options={themeOptions} label="Status" helpText="The announcement bar is displayed before/above the page content. When scrolling down, the announcement bar will not be visible anymore."></Selector>
-           
-            <CustomColorPallete colorHeading={'Background Color'}></CustomColorPallete>
-            <CustomColorPallete colorHeading={'Text Color'}></CustomColorPallete>
-            
+                <ThemeStyleGrid onThemeSelected={(value)=>{
+                  console.log("Theme selected id",value);
+                }}></ThemeStyleGrid>
             </Card>
             <Card>
-                <ThemeStyleGrid></ThemeStyleGrid>
+              <ThemeSettings>
+              </ThemeSettings>           
             </Card>
-          
         </div>
         <div className="settings-right-section">
             <ProductPreviewCard></ProductPreviewCard>
+            
         </div>
     </div>
   

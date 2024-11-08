@@ -1,0 +1,13 @@
+.display-child{
+    margin-top: 10px;
+}
+
+.color-pallete-container{
+    display: flex;
+}
+.color-pallete-child-1{
+    display: flex;
+    gap: 10px;
+    /* flex-direction: column; */
+    align-items: center;
+}
