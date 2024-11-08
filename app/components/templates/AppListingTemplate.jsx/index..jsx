@@ -8,6 +8,7 @@ import {
   import { useState, useCallback } from "react";
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
+  import './style.css'
 
 const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [], emptyDataString="No Data to Show", emptyDataImage="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"}) => {
     const [selected, setSelected] = useState(0);
@@ -80,13 +81,16 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
             </LegacyCard.Section>
             ) : (
             <LegacyCard.Section>            
+                <div className="page-hdr">
                 <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}/>
                 <Button
-                plain
-                icon={SearchIcon}
-                onClick={handleSearchToggle}
-                accessibilityLabel="Search"
-                />            
+                  plain
+                  icon={SearchIcon}
+                  onClick={handleSearchToggle}
+                  accessibilityLabel="Search"
+                  clasName="searchbtn"
+                />  
+                </div>          
             </LegacyCard.Section>
             )}
 

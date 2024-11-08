@@ -1,5 +1,6 @@
 import { Avatar, Badge, ResourceItem, ResourceList } from '@shopify/polaris';
 import React from 'react'
+import './style.css'
 
 const AppsRenderList = ({ selectedApps }) => {
     return (

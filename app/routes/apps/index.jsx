@@ -19,6 +19,7 @@ import {
   import AppListingTemplate from "../../components/templates/AppListingTemplate.jsx/index.";
   import { APP_TABS } from "../../utils/constants";
   import AppsRenderList from "../../components/atoms/AppsRenderList";
+  import GoBack from "../../components/atoms/GoBack";
   
   const tabs = [
     { id: "all", content: "All" },
@@ -64,7 +65,10 @@ import {
   function TabsInsideOfACardExample() {
   
     return (
+      <>
+      <GoBack/>
       <AppListingTemplate tabs={APP_TABS} list={items} componentToRender={(props) => <AppsRenderList {...props}/>}/>
+      </>
     );
   }
   

@@ -1,0 +1,13 @@
+.app-main{
+    margin: 50px auto;
+    max-width: 950px;
+    
+}
+.app-main .Polaris-LegacyCard__FirstSectionPadding{
+    padding: 0px;
+}
+.app-main .Polaris-Tabs__Tab{
+    font-size: 13px;
+    color: #303030;
+    padding: 15px 15px;
+}

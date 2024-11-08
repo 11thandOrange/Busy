@@ -9,6 +9,7 @@ import {
   import { useState, useCallback, useEffect } from "react";
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
+  import './style.css'
 
   const items = [
     {
