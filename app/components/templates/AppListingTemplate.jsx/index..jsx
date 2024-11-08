@@ -98,10 +98,12 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
             {selectedApps.length ? (
                 componentToRender({selectedApps, setSelectedApps})
             ) : (
+              <div>
                 <DynamicEmptyState
                 heading={emptyDataString}
                 image={emptyDataImage}
                 />
+                </div>
             )}
             </LegacyCard.Section>
         </LegacyCard>
