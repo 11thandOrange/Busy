@@ -11,3 +11,13 @@ export const WIDGETS_TABS = [
   ...APP_TABS,
   { id: "favorite", content: "Favorites"},
 ];
+
+export const CATEGORIES_ENUM = {
+  all: 1,
+  myApps: 2,
+  ux: 3,
+  social: 4,
+  engageUsers: 5,
+  boostSales: 6,
+  favorites: 7,
+}

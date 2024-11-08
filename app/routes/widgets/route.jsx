@@ -133,8 +133,7 @@ export const action = async ({ request }) => {
 
 function TabsInsideOfACardExample() {
   const widgets_data = useLoaderData()
-  const categories = widgets_data.categories;
-  const [widgets, setWidgets] = useState(widgets_data.widgets);
+  const [widgets, setWidgets] = useState([]);
   const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
@@ -144,7 +143,7 @@ function TabsInsideOfACardExample() {
 
   return (
     <div>
-    <AppListingTemplateWithPagination tabs={tabs} list={items} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
+      <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
     </div>
   );
 }
