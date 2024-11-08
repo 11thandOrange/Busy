@@ -20,6 +20,7 @@ import {
   import { APP_TABS } from "../../utils/constants";
   import AppsRenderList from "../../components/atoms/AppsRenderList";
   import { cors } from 'remix-utils/cors';
+  import db from "../../db.server";
   import { useLoaderData } from "@remix-run/react";
   import { useFetcher } from "@remix-run/react"; 
   import { getCategories, getShopName } from "../../utils/function";

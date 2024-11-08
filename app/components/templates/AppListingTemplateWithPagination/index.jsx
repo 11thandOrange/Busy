@@ -9,6 +9,7 @@ import {
   import { useState, useCallback, useEffect } from "react";
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
+import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
 
   const items = [
     {
@@ -134,31 +135,14 @@ import {
         setCurrentPage((prevPage) => prevPage - 1);
       }
     };
+
+    const clearSearch = () => {
+      setSearchValue('')
+    }
   
     return (
       <LegacyCard>
-        {isSearchActive ? (
-          <LegacyCard.Section>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ width: "95%" }}>
-                <TextField
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  placeholder="Search by customer name"
-                  autoFocus
-                  clearButton
-                  onClearButtonClick={() => setSearchValue("")}
-                />
-              </div>
-              <Button onClick={handleSearchToggle}>Cancel</Button>
-            </div>
-          </LegacyCard.Section>
-        ) : (
-          <LegacyCard.Section>
-            <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-            <Button plain icon={SearchIcon} onClick={handleSearchToggle} accessibilityLabel="Search" />
-          </LegacyCard.Section>
-        )}
+        <TabsWithSearchBar tabs={tabs} selected={selected} handleSearchChange={handleSearchChange} handleTabChange={handleTabChange} searchValue={searchValue} clearSearch={clearSearch}/>
   
         <LegacyCard.Section>
           {selectedApps.length ? (

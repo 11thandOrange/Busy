@@ -8,6 +8,7 @@ import {
   import { useState, useCallback } from "react";
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
+import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
 
 const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [], emptyDataString="No Data to Show", emptyDataImage="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"}) => {
     const [selected, setSelected] = useState(0);
@@ -50,47 +51,13 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
       },
       [selected]
     );
+    const clearSearch = () => {
+      setSearchValue('')
+    }
     return (
         <LegacyCard>
-            {isSearchActive ? (
-            <LegacyCard.Section>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                <div
-                    style={{
-                    width: "95%",
-                    }}
-                >
-                    <TextField
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                    placeholder="Search by customer name"
-                    autoFocus
-                    clearButton
-                    onClearButtonClick={() => setSearchValue("")}
-                    />
-                </div>
-                <Button onClick={handleSearchToggle}>Cancel</Button>
-                </div>
-            </LegacyCard.Section>
-            ) : (
-            <LegacyCard.Section>            
-                <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}/>
-                <Button
-                plain
-                icon={SearchIcon}
-                onClick={handleSearchToggle}
-                accessibilityLabel="Search"
-                />            
-            </LegacyCard.Section>
-            )}
-
-            <LegacyCard.Section>
+          <TabsWithSearchBar tabs={tabs} selected={selected} handleSearchChange={handleSearchChange} handleTabChange={handleTabChange} searchValue={searchValue} clearSearch={clearSearch}/>
+          <LegacyCard.Section>
             {selectedApps.length ? (
                 componentToRender({selectedApps, setSelectedApps})
             ) : (
@@ -99,7 +66,7 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
                 image={emptyDataImage}
                 />
             )}
-            </LegacyCard.Section>
+          </LegacyCard.Section>
         </LegacyCard>
     )
 }
