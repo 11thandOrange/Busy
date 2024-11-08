@@ -156,8 +156,11 @@ import {
           </LegacyCard.Section>
         ) : (
           <LegacyCard.Section>
-            <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-            <Button plain icon={SearchIcon} onClick={handleSearchToggle} accessibilityLabel="Search" />
+              <div className="page-hdr">
+                <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
+                <Button plain icon={SearchIcon} onClick={handleSearchToggle} accessibilityLabel="Search" />
+              </div>
+              
           </LegacyCard.Section>
         )}
   

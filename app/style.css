@@ -1,6 +1,7 @@
 .app-main{
     margin: 50px auto;
     max-width: 990px;
+    padding-bottom: 50px;
     
 }
 .app-main .Polaris-LegacyCard__FirstSectionPadding{
@@ -10,4 +11,17 @@
     font-size: 13px;
     color: #303030;
     padding: 15px 15px;
+}
+.app-main .Polaris-LegacyCard{
+    padding-bottom: 30px;
+}
+.app-main .Polaris-LegacyCard div:has(.Polaris-Pagination){
+    border: unset !important;
+    margin-top: 30px !important;
+}
+.app-main .Polaris-LegacyCard div:has(.Polaris-Pagination) .Polaris-ButtonGroup{
+    border: 1px solid #ddd;
+    width: fit-content;
+    margin-inline: auto;
+    border-radius: 10px;
 }
