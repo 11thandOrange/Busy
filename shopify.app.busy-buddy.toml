@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "5bf173e80edc15dc5b1620e0d0936bfd"
+name = "Busy Buddy"
+handle = "busy-buddy-3"
+application_url = "https://bluetooth-detroit-bb-suspension.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://bluetooth-detroit-bb-suspension.trycloudflare.com/auth/callback",
+  "https://bluetooth-detroit-bb-suspension.trycloudflare.com/auth/shopify/callback",
+  "https://bluetooth-detroit-bb-suspension.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[pos]
+embedded = false
+
+[build]
+dev_store_url = "busy-buddy-design.myshopify.com"
+automatically_update_urls_on_dev = true

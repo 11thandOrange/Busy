@@ -3,18 +3,28 @@ import "../../templates/Plan/style.css";
 
 const PlanCard = ({ plan }) => {
   return (
-    <div>
+    <div className="planboxes">
       <div className="plan-card" style={{ border: `10px solid ${plan.color}` }}>
         <div className="plan-content">
-          <h2>{plan.title}</h2>
-          <div>
-            <p className="price">
-              {plan.price} <span className="price-per-month">/month</span>
-            </p>
-            <p className="description">{plan.description}</p>
+          <div className="upper-wrapper">
+            <h2>{plan.title}</h2>
+            <div>
+              <p className="description">{plan.description}</p>
+              <p className="price">
+                ${plan.price} <span className="price-per-month">/Month</span>
+              </p>
+            </div>
+            <button className="cta-button">{plan.buttonText}</button>
+          </div>  
+          <div className="card-footer">
+            <div className="feature-content">
+              <p className="title">Feature</p>
+              <div className="list-wrap">
+                <label># of Apps Enabled</label>
+                <span className="value">{plan.featureValue}</span>
+              </div>
+            </div>
           </div>
-
-      <button className="cta-button">{plan.buttonText}</button>
     </div>
   </div>
 </div>
