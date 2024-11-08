@@ -46,6 +46,11 @@ export default defineConfig({
   plugins: [
     remix({
       ignoredRouteFiles: ["**/.*"],
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route("apps/", "routes/apps/index.jsx", { index: true });
+        })
+      }
     }),
     tsconfigPaths(),
   ],

@@ -1,14 +1,14 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "6cf76c58a42f886d362a133415098c59"
-name = "BusyBuddy"
-handle = "busybuddy"
-application_url = "https://lions-indicators-mhz-checked.trycloudflare.com"
+client_id = "e839382a6178a1ba6e9b7ae24487c173"
+name = "Busy Buddy"
+handle = "busy-buddy-1"
+application_url = "https://equipped-distributed-spend-evolution.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-f05d22ad.myshopify.com"
+dev_store_url = "busybuddyreact.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/shopify/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/api/auth/callback"
+  "https://equipped-distributed-spend-evolution.trycloudflare.com/auth/callback",
+  "https://equipped-distributed-spend-evolution.trycloudflare.com/auth/shopify/callback",
+  "https://equipped-distributed-spend-evolution.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
