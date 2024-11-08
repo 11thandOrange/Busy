@@ -1,0 +1,174 @@
+/* Overall Container */
+.product-preview-card {
+  background-color: #222222;
+  color: white;
+  padding: 20px;
+  border-radius: 60px;
+  max-width: 440px;
+  margin: auto;
+  min-height: 800px;
+  font-family: Arial, sans-serif;
+  border: 10px solid #AEAEAE;
+  position: relative;
+  overflow: hidden; /* Ensures ribbon doesn’t overflow */
+}
+
+/* Ribbon Banner */
+.ribbon-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Top Fixed Position */
+.ribbon-banner.top-fixed {
+  top: 7%;
+}
+
+/* Top Relative Position */
+.ribbon-banner.top-relative {
+  top: 7%;
+}
+
+/* Bottom Position */
+.ribbon-banner.bottom {
+  bottom: 15%;
+}
+
+/* Dummy URL Bar */
+.url-bar {
+  background-color: #333;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: medium;
+  font-weight: 300;
+}
+
+/* Product Image */
+.product-image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+/* Product Info */
+.product-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  font-weight: 1000;
+  color: #AEAEAE;
+}
+
+.product-price {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #777;
+  margin-right: 10px;
+}
+
+.current-price {
+  font-weight: bold;
+  color: #AEAEAE;
+}
+
+/* Quantity Selector */
+.quantity-container {
+  margin-bottom: 20px;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #AEAEAE;
+  background-color: #222222;
+  color: white;
+}
+
+/* Add to Cart Button */
+.add-to-cart-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+  padding: 10px 20px;
+  background-color: #222222;
+  border: 1px solid #AEAEAE;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  display: inline-block;
+}
+
+/* Product Description */
+.product-description {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.product-description h3 {
+  margin-bottom: 10px;
+}
+
+.product-description p {
+  margin-bottom: 10px;
+}
+
+.product-description ul {
+  padding-left: 20px;
+}
+
+.product-description ul li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.product-description ul li::before {
+  content: "•";
+  color: #e0a800;
+  padding-right: 5px;
+}
+
+/* Banner Controls (to customize the banner) */
+.banner-controls {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.banner-controls input, .banner-controls select {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  font-size: 1rem;
+  border: 1px solid #AEAEAE;
+  border-radius: 5px;
+  background-color: #333;
+  color: white;
+}

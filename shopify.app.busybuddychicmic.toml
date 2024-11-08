@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://gba-christina-slots-domains.trycloudflare.com"
+application_url = "https://implied-solid-need-metadata.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://gba-christina-slots-domains.trycloudflare.com/auth/callback",
-  "https://gba-christina-slots-domains.trycloudflare.com/auth/shopify/callback",
-  "https://gba-christina-slots-domains.trycloudflare.com/api/auth/callback"
+  "https://implied-solid-need-metadata.trycloudflare.com/auth/callback",
+  "https://implied-solid-need-metadata.trycloudflare.com/auth/shopify/callback",
+  "https://implied-solid-need-metadata.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

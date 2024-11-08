@@ -1,5 +1,5 @@
 import React from "react";
-import "./plan.css"; // Updated CSS will go here
+import "./style.css"; // Updated CSS will go here
 import planData from "../../../data/planPricingData.json"; // Adjust the path as needed
 import PlanCard from "../../atoms/PlanCard";
 

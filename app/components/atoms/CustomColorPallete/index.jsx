@@ -19,9 +19,10 @@ function CustomColorPallete({colorHeading}) {
     []
   );
   const [color, setColor] = useState({
-    hue: 0,
-    brightness: 100,
-    saturation: 100,
+    "hue": 0,
+    "saturation": 0.637646484375,
+    "brightness": 0.6029296875,
+    "alpha": 1
   });
   
   
@@ -38,6 +39,7 @@ function CustomColorPallete({colorHeading}) {
       }}
     ></div>
   );
+console.log(color);
 
   return (
     <div className="color-pallete-container">

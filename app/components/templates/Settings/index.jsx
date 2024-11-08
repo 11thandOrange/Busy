@@ -5,6 +5,7 @@ import { Card, Text } from '@shopify/polaris';
 import CustomTextField from '../../atoms/CustomTextField';
 import CustomColorPallete from '../../atoms/CustomColorPallete';
 import ThemeStyleGrid from '../ThemeStyleGrid';
+import ProductPreviewCard from '../ProductPreviewCard';
 const options = [
     {label: 'Active', value: 'active'},
     {label: 'Inactive', value: 'inactive'},
@@ -48,7 +49,7 @@ const Settings = () => {
           
         </div>
         <div className="settings-right-section">
-            Testing
+            <ProductPreviewCard></ProductPreviewCard>
         </div>
     </div>
   

@@ -1,5 +1,5 @@
 import React from "react";
-import "../../templates/Plan/plan.css"; // If you are using the same CSS, you may keep this as is
+import "../../templates/Plan/style.css"; // If you are using the same CSS, you may keep this as is
 
 const PlanCard = ({ plan }) => {
   return (

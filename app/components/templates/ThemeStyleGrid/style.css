@@ -15,7 +15,7 @@
     justify-content: space-between; /* Space between name and image */
     padding: 16px;
     border: 1px solid #ddd; /* Border around each item */
-    border-radius: 8px;
+   
     transition: border-color 0.3s ease;
     cursor: pointer;
     min-height: 80px; /* Minimum height to create space for content */
