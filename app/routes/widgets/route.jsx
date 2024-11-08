@@ -13,7 +13,7 @@ import {
   // Badge,
 } from "@shopify/polaris";
 import { SearchIcon } from "@shopify/polaris-icons";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import DynamicEmptyState from "../../components/atoms/DynamicEmptyState";
 import "@shopify/polaris/build/esm/styles.css";
 import { APP_TABS } from "../../utils/constants";
@@ -117,12 +117,14 @@ export const loader = async ({ request }) => {
       isFavorite,
     };
   });
+
   const response = {categories: await getCategories(), widgets}
   return cors(request, response);
 };
 export const action = async ({ request }) => {
  
   const shop = await getShopName(request);
+
  
   const formData = new URLSearchParams(await request.text());
   const widgetId = parseInt(formData.get("widgetId"));
@@ -130,9 +132,20 @@ export const action = async ({ request }) => {
 };
 
 function TabsInsideOfACardExample() {
+  const widgets_data = useLoaderData()
+  const categories = widgets_data.categories;
+  const [widgets, setWidgets] = useState(widgets_data.widgets);
+  const [tabs, setTabs] = useState([]);
+
+  useEffect(() => {
+    setTabs(widgets_data.categories)
+    setWidgets(widgets_data.widgets)
+  }, [widgets_data])
 
   return (
-    <AppListingTemplateWithPagination tabs={APP_TABS} list={items} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
+    <div>
+    <AppListingTemplateWithPagination tabs={tabs} list={items} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
+    </div>
   );
 }
 

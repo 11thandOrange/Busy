@@ -33,7 +33,7 @@ model Session {
 
 model Category {
   id          Int           @id @default(autoincrement())
-  name        String
+  content        String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   App         App[]

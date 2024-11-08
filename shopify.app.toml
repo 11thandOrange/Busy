@@ -3,7 +3,7 @@
 client_id = "e839382a6178a1ba6e9b7ae24487c173"
 name = "Busy Buddy"
 handle = "busy-buddy-1"
-application_url = "https://equipped-distributed-spend-evolution.trycloudflare.com"
+application_url = "https://guns-generates-emerald-calculator.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://equipped-distributed-spend-evolution.trycloudflare.com/auth/callback",
-  "https://equipped-distributed-spend-evolution.trycloudflare.com/auth/shopify/callback",
-  "https://equipped-distributed-spend-evolution.trycloudflare.com/api/auth/callback"
+  "https://guns-generates-emerald-calculator.trycloudflare.com/auth/callback",
+  "https://guns-generates-emerald-calculator.trycloudflare.com/auth/shopify/callback",
+  "https://guns-generates-emerald-calculator.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
