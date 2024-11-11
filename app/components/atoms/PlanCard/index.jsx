@@ -1,8 +1,6 @@
 import React from "react";
 import "../../templates/Plan/style.css";
 import { Link } from "@shopify/polaris";
-import { useLoaderData } from "@remix-run/react";
-import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN } from '../../../shopify.server';
 
 
 const PlanCard = ({ plan }) => {
