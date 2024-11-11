@@ -7,15 +7,15 @@ const PlanCard = ({ plan }) => {
 
   return (
     <div className="planboxes">
-      <div className="plan-card" style={{ border: `10px solid ${plan.color}` }}>
+      <div className="plan-card" style={{ backgroundColor: `${plan.color}` }}>
         <div className="plan-content">
           <div className="upper-wrapper">
             <h2>{plan.title}</h2>
             <div>
-              <p className="description">{plan.description}</p>
               <p className="price">
-                ${plan.price} <span className="price-per-month">/Month</span>
+                <sup>$</sup>{plan.price} <span className="price-per-month">/Month</span>
               </p>
+              <p className="description">{plan.description}</p>
             </div>
             <Link url={plan.url}>
               {plan.buttonText}
@@ -24,10 +24,13 @@ const PlanCard = ({ plan }) => {
           </div>  
           <div className="card-footer">
             <div className="feature-content">
-              <p className="title">Feature</p>
+              <p className="title">Features</p>
               <div className="list-wrap">
-                <label># of Apps Enabled</label>
-                <span className="value">{plan.featureValue}</span>
+                <label>No of Apps Enabled</label>
+                <span className="value">{plan.features.appsEnabled}</span>
+              </div>
+              <div className="features">
+                {plan.features.otherFeatures.map(item => <p>{item}</p>)}
               </div>
             </div>
           </div>
