@@ -1,28 +1,25 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "8568ff3809c7d25c65a43451869b7437"
+client_id = "49ec0d3907fd1c87c4dc29953cc24fc0"
 name = "BusyBuddy"
-handle = "busybuddy-10"
-application_url = "https://cameras-gba-stevens-open.trycloudflare.com"
+handle = "busybuddy-12"
+application_url = "https://gt-public-lists-jan.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "budybuddystore.myshopify.com"
+dev_store_url = "quickstart-f05d22ad.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
-
-[access.admin]
-direct_api_mode = "online"
+scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://cameras-gba-stevens-open.trycloudflare.com/auth/callback",
-  "https://cameras-gba-stevens-open.trycloudflare.com/auth/shopify/callback",
-  "https://cameras-gba-stevens-open.trycloudflare.com/api/auth/callback"
+  "https://gt-public-lists-jan.trycloudflare.com/auth/callback",
+  "https://gt-public-lists-jan.trycloudflare.com/auth/shopify/callback",
+  "https://gt-public-lists-jan.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
