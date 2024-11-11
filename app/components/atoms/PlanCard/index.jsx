@@ -15,7 +15,9 @@ const PlanCard = ({ plan }) => {
                 ${plan.price} <span className="price-per-month">/Month</span>
               </p>
             </div>
-            <Button url={plan.url} className="cta-button">{plan.buttonText}</Button>
+            <div className="cta-button">
+              <Button url={plan.url}>{plan.buttonText}</Button>
+            </div>
           </div>  
           <div className="card-footer">
             <div className="feature-content">

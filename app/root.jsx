@@ -46,10 +46,8 @@ export default function App() {
             },
           }}
         >
-          {/* <div className="app-main" style={{margin: "50px 20%"}}> */}
           <div className="app-main">
-
-          <Outlet />
+            <Outlet />
           </div>
         </AppProvider>
         <ScrollRestoration />
