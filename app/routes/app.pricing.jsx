@@ -16,13 +16,9 @@ import {
   
 
   export async function loader({ request }) {
-    const url = new URL(request.url);
-    const queryParams = new URLSearchParams(url.search);
-  
-  // Example: Get the value of a query parameter called "ref"
-  const plan = queryParams.get('plan');
+
     const { billing } = await authenticate.admin(request);
-    
+    console.log(billing)
   
     try {
       await billing.require({

@@ -3,7 +3,7 @@
 client_id = "e839382a6178a1ba6e9b7ae24487c173"
 name = "Busy Buddy"
 handle = "busy-buddy-1"
-application_url = "https://handy-attempted-simon-fri.trycloudflare.com"
+application_url = "https://zum-worcester-throat-filme.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -12,9 +12,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://handy-attempted-simon-fri.trycloudflare.com/auth/callback",
-  "https://handy-attempted-simon-fri.trycloudflare.com/auth/shopify/callback",
-  "https://handy-attempted-simon-fri.trycloudflare.com/api/auth/callback"
+  "https://zum-worcester-throat-filme.trycloudflare.com/auth/callback",
+  "https://zum-worcester-throat-filme.trycloudflare.com/auth/shopify/callback",
+  "https://zum-worcester-throat-filme.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

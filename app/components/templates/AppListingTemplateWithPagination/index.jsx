@@ -84,7 +84,7 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
     // Derived pagination controls
     const hasNext = (currentPage * itemsPerPage) < items.length;
     const hasPrevious = currentPage > 1;
-  
+    
     // Debounce search value change
     useEffect(() => {
       const handler = setTimeout(() => {
