@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "e839382a6178a1ba6e9b7ae24487c173"
+name = "Busy Buddy"
+handle = "busy-buddy-1"
+application_url = "https://zum-worcester-throat-filme.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://zum-worcester-throat-filme.trycloudflare.com/auth/callback",
+  "https://zum-worcester-throat-filme.trycloudflare.com/auth/shopify/callback",
+  "https://zum-worcester-throat-filme.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[pos]
+embedded = false
+
+[build]
+dev_store_url = "busybuddyreact.myshopify.com"
+automatically_update_urls_on_dev = true
