@@ -28,18 +28,6 @@ export const loader = async ({ request }) => {
 const Plan = () => {
   const subscription = useLoaderData();
   const [planData, setPlanData] = useState([...planPricingData.plans]);
-  console.log("testing plan page hello")
-  useEffect(() => {
-    console.log("testing plan page")
-    const updatePlan = planData.map((plan)=>{
-      if(plan.title==subscription.appSubscriptions.name)
-      {
-        return { ...plan, buttonText: 'Cancel Subscription', url:'/app/cancel' }
-      }
-    })
-    setPlanData([updatePlan])
-    
-  }, [subscription]);
   return (
     <div className="plan-container">
       <GoBack/>
