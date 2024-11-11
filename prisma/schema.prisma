@@ -36,7 +36,7 @@ model Category {
   content        String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  App         App[]
+  apps         App[]        @relation("AppCategories")
   widgets     Widget[]    @relation("WidgetCategories")
 }
 model App {
@@ -44,8 +44,7 @@ model App {
   name        String
   description String
   image       String?
-  categoryId     Int?
-  category       Category?      @relation(fields: [categoryId], references: [id])
+  categories  Category[]  @relation("AppCategories")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   Merchant Merchant[]

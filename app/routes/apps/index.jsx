@@ -14,6 +14,11 @@ export const loader = async ({ request }) => {
   let apps = await db.app.findMany({
     include: {
       Merchant: true,
+      categories: {
+        select: {
+          id:true
+        }
+      },
     },
   });
   apps = apps.map((app) => {
@@ -23,7 +28,7 @@ export const loader = async ({ request }) => {
       id: app.id,
       name: app.name,
       description: app.description,
-      categoryId: app.categoryId ? [app.categoryId] : [],
+      categoryId: app.categories.map(item => item.id),
       createdAt: app.createdAt,
       updatedAt: app.updatedAt,
       isInstalled,

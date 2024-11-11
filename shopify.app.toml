@@ -3,7 +3,7 @@
 client_id = "8568ff3809c7d25c65a43451869b7437"
 name = "BusyBuddy"
 handle = "busybuddy-10"
-application_url = "https://implement-reputation-debut-seconds.trycloudflare.com"
+application_url = "https://cameras-gba-stevens-open.trycloudflare.com"
 embedded = true
 
 [build]
@@ -20,9 +20,9 @@ direct_api_mode = "online"
 
 [auth]
 redirect_urls = [
-  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/callback",
-  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/shopify/callback",
-  "https://implement-reputation-debut-seconds.trycloudflare.com/api/auth/callback"
+  "https://cameras-gba-stevens-open.trycloudflare.com/auth/callback",
+  "https://cameras-gba-stevens-open.trycloudflare.com/auth/shopify/callback",
+  "https://cameras-gba-stevens-open.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
