@@ -1,18 +1,18 @@
-import {  redirect } from "@remix-run/node";
-import { authenticate, MONTHLY_PLAN } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 
 
 export const loader = async ({ request }) => {
-  const { billing, session } = await authenticate.admin(request);
-  let { shop } = session;
+  const { billing,  } = await authenticate.admin(request);
+  console.log(billing)
+  let plan = 'Starter Subscription';
+  let  shop  = 'quickstart.myshopify.com';
   let myShop = shop.replace(".myshopify.com", "");
 
   await billing.require({
-    plans: [MONTHLY_PLAN],
+    plans: [plan],
+    isTest: true,
     onFailure: async () => billing.request({
-      plan: MONTHLY_PLAN,
-      isTest: true,
-      returnUrl: `https://admin.shopify.com/store/${myShop}/apps/${process.env.APP_NAME}/app/pricing`,
+      plan: plan
     }),
   });
   // App logic

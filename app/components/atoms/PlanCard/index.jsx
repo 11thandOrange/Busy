@@ -1,5 +1,7 @@
 import React from "react";
 import "../../templates/Plan/style.css";
+import { Link } from  "@remix-run/react";
+import { Button } from "@shopify/polaris";
 
 const PlanCard = ({ plan }) => {
   return (
@@ -13,8 +15,8 @@ const PlanCard = ({ plan }) => {
             </p>
             <p className="description">{plan.description}</p>
           </div>
-
-      <button className="cta-button">{plan.buttonText}</button>
+        
+      <Button url={plan.url}>{plan.buttonText}</Button>
     </div>
   </div>
 </div>

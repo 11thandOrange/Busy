@@ -1,25 +1,28 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "e839382a6178a1ba6e9b7ae24487c173"
-name = "Busy Buddy"
-handle = "busy-buddy-1"
-application_url = "https://guns-generates-emerald-calculator.trycloudflare.com"
+client_id = "ba1add47fd37e7cb4c454489bafb93c2"
+name = "BusyBuddy"
+handle = "busybuddy-6"
+application_url = "https://feel-many-ranked-cube.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "busybuddyreact.myshopify.com"
+dev_store_url = "budybuddystore.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "write_products"
+
+[access.admin]
+direct_api_mode = "online"
 
 [auth]
 redirect_urls = [
-  "https://guns-generates-emerald-calculator.trycloudflare.com/auth/callback",
-  "https://guns-generates-emerald-calculator.trycloudflare.com/auth/shopify/callback",
-  "https://guns-generates-emerald-calculator.trycloudflare.com/api/auth/callback"
+  "https://feel-many-ranked-cube.trycloudflare.com/auth/callback",
+  "https://feel-many-ranked-cube.trycloudflare.com/auth/shopify/callback",
+  "https://feel-many-ranked-cube.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

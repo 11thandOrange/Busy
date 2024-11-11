@@ -67,7 +67,8 @@ import {
     componentToRender = () => {},
     tabs = [],
     totalItems = 50,
-    fetchData = () => {},
+    fetchData = () => {
+      },
     emptyDataString = "No Data to Show",
     emptyDataImage = "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
   }) => {
@@ -82,7 +83,7 @@ import {
     // Derived pagination controls
     const hasNext = currentPage * itemsPerPage < totalItems;
     const hasPrevious = currentPage > 1;
-  
+    
     // Debounce search value change
     useEffect(() => {
       const handler = setTimeout(() => {

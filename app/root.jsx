@@ -7,6 +7,7 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
+import { Link } from "@shopify/polaris";
 
 function LinkWrapper(props) {
   return (
