@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "ba1add47fd37e7cb4c454489bafb93c2"
+client_id = "8568ff3809c7d25c65a43451869b7437"
 name = "BusyBuddy"
-handle = "busybuddy-6"
-application_url = "https://feel-many-ranked-cube.trycloudflare.com"
+handle = "busybuddy-10"
+application_url = "https://implement-reputation-debut-seconds.trycloudflare.com"
 embedded = true
 
 [build]
@@ -20,9 +20,9 @@ direct_api_mode = "online"
 
 [auth]
 redirect_urls = [
-  "https://feel-many-ranked-cube.trycloudflare.com/auth/callback",
-  "https://feel-many-ranked-cube.trycloudflare.com/auth/shopify/callback",
-  "https://feel-many-ranked-cube.trycloudflare.com/api/auth/callback"
+  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/callback",
+  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/shopify/callback",
+  "https://implement-reputation-debut-seconds.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

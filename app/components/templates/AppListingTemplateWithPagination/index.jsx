@@ -9,6 +9,9 @@ import {
   import { useState, useCallback, useEffect } from "react";
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
+import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
+import { CATEGORIES_ENUM } from "../../../utils/constants";
+  import './style.css'
 
   const items = [
     {
@@ -66,9 +69,7 @@ import {
   const AppListingTemplateWithPagination = ({
     componentToRender = () => {},
     tabs = [],
-    totalItems = 50,
-    fetchData = () => {
-      },
+    items = [],
     emptyDataString = "No Data to Show",
     emptyDataImage = "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
   }) => {
@@ -79,9 +80,9 @@ import {
     const [selectedApps, setSelectedApps] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15; // Default number of items per page
-  
+  console.log(items, "items")
     // Derived pagination controls
-    const hasNext = currentPage * itemsPerPage < totalItems;
+    const hasNext = (currentPage * itemsPerPage) < items.length;
     const hasPrevious = currentPage > 1;
     
     // Debounce search value change
@@ -97,23 +98,27 @@ import {
   
     // Fetch data on mount, tab change, page change, or debounced search value change
     useEffect(() => {
-      const selectedTabId = tabs[selected]?.id || "all";
-      console.log('api hit', fetchData, debouncedSearchValue, selected, currentPage, tabs)
-      fetchData({ 
-        page: currentPage,
-        limit: itemsPerPage,
-        tab: selectedTabId,
-        search: debouncedSearchValue
-      })
-      setSelectedApps(items)
-    }, [selected, currentPage, debouncedSearchValue, tabs]);
+      const selectedTabId = tabs[selected]?.id || CATEGORIES_ENUM.all;
+      let itemsAccordingToTab = [];
+      if(tabs[selected]?.id === CATEGORIES_ENUM.favorites){
+        itemsAccordingToTab = items.filter(item => item.isFavorite);
+      }else if(tabs[selected]?.id === CATEGORIES_ENUM.all){
+        itemsAccordingToTab = items;
+      }else{
+        itemsAccordingToTab = items.filter(item => item.categoryId.includes(tabs[selected]?.id))
+      };
+      
+      if(searchValue) {
+        itemsAccordingToTab = itemsAccordingToTab.filter(item => item.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+      }
+      itemsAccordingToTab.slice((currentPage - 1) * itemsPerPage, ((currentPage - 1) * itemsPerPage) + itemsPerPage)
+      setSelectedApps(itemsAccordingToTab)
+    }, [selected, currentPage, searchValue, tabs]);
   
     const handleTabChange = useCallback((selectedTabIndex) => {
       setSelected(selectedTabIndex);
       setCurrentPage(1); // Reset to first page on tab change
     }, []);
-  
-    const handleSearchToggle = () => setIsSearchActive(!isSearchActive);
   
     const handleSearchChange = useCallback(
       (value) => {
@@ -135,31 +140,14 @@ import {
         setCurrentPage((prevPage) => prevPage - 1);
       }
     };
+
+    const clearSearch = () => {
+      setSearchValue('')
+    }
   
     return (
       <LegacyCard>
-        {isSearchActive ? (
-          <LegacyCard.Section>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ width: "95%" }}>
-                <TextField
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  placeholder="Search by customer name"
-                  autoFocus
-                  clearButton
-                  onClearButtonClick={() => setSearchValue("")}
-                />
-              </div>
-              <Button onClick={handleSearchToggle}>Cancel</Button>
-            </div>
-          </LegacyCard.Section>
-        ) : (
-          <LegacyCard.Section>
-            <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-            <Button plain icon={SearchIcon} onClick={handleSearchToggle} accessibilityLabel="Search" />
-          </LegacyCard.Section>
-        )}
+        <TabsWithSearchBar tabs={tabs} selected={selected} handleSearchChange={handleSearchChange} handleTabChange={handleTabChange} searchValue={searchValue} clearSearch={clearSearch}/>
   
         <LegacyCard.Section>
           {selectedApps.length ? (
@@ -175,10 +163,10 @@ import {
             onPrevious={handlePreviousPage}
             hasNext={hasNext}
             onNext={handleNextPage}
-            label={`${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+            label={selectedApps.length ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
               currentPage * itemsPerPage,
-              totalItems
-            )} of ${totalItems} items`}
+              selectedApps.length
+            )} of ${selectedApps.length} items` : '0-0 of 0 items'}
           />
         </div>
       </LegacyCard>

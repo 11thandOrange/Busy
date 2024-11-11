@@ -7,11 +7,10 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
-import { Link } from "@shopify/polaris";
+import './style.css'
 
 function LinkWrapper(props) {
   return (
-    // TODO: fix type conflix with LegacyRef and Ref between Remix and Polaris
     <Link to={props.url ?? props.to} ref={props.ref} {...props}>
       {props.children}
     </Link>
@@ -45,7 +44,9 @@ export default function App() {
             },
           }}
         >
-          <Outlet />
+          <div className="app-main">
+            <Outlet />
+          </div>
         </AppProvider>
         <ScrollRestoration />
         <Scripts />

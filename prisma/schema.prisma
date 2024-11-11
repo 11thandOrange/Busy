@@ -43,6 +43,7 @@ model App {
   id          Int           @id @default(autoincrement())
   name        String
   description String
+  image       String?
   categoryId     Int?
   category       Category?      @relation(fields: [categoryId], references: [id])
   createdAt   DateTime      @default(now())

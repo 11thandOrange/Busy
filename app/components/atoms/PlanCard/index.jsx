@@ -1,22 +1,38 @@
 import React from "react";
 import "../../templates/Plan/style.css";
-import { Link } from  "@remix-run/react";
-import { Button } from "@shopify/polaris";
+import { Link } from "@shopify/polaris";
+import { useLoaderData } from "@remix-run/react";
+import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN } from '../../../shopify.server';
+
 
 const PlanCard = ({ plan }) => {
+
   return (
-    <div>
+    <div className="planboxes">
       <div className="plan-card" style={{ border: `10px solid ${plan.color}` }}>
         <div className="plan-content">
-          <h2>{plan.title}</h2>
-          <div>
-            <p className="price">
-              {plan.price} <span className="price-per-month">/month</span>
-            </p>
-            <p className="description">{plan.description}</p>
+          <div className="upper-wrapper">
+            <h2>{plan.title}</h2>
+            <div>
+              <p className="description">{plan.description}</p>
+              <p className="price">
+                ${plan.price} <span className="price-per-month">/Month</span>
+              </p>
+            </div>
+            <Link url={plan.url + '?plan=' + encodeURIComponent(plan.title)}>
+              {plan.buttonText}
+            </Link>
+
+          </div>  
+          <div className="card-footer">
+            <div className="feature-content">
+              <p className="title">Feature</p>
+              <div className="list-wrap">
+                <label># of Apps Enabled</label>
+                <span className="value">{plan.featureValue}</span>
+              </div>
+            </div>
           </div>
-        
-      <Button url={plan.url}>{plan.buttonText}</Button>
     </div>
   </div>
 </div>

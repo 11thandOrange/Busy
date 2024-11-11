@@ -9,9 +9,9 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-07";
 import prisma from "./db.server";
 
-export const STARTER_MONTHLY_PLAN = 'Starter Subscription';
-export const PRO_MONTHLY_PLAN = 'Pro Subscription';
-export const ENTERPRISE_MONTHLY_PLAN = 'Enterprise Subscription';
+export const STARTER_MONTHLY_PLAN = 'Starter';
+export const PRO_MONTHLY_PLAN = 'Pro';
+export const ENTERPRISE_MONTHLY_PLAN = 'Enterprise';
 export const PLANS = [ STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN];
 
 const shopify = shopifyApp({

@@ -3,15 +3,17 @@
       {
         "id": 1,
         "title": "Free",
-        "price": "$0",
+        "price": 0,
         "description": "Access basic features with limited functionality. Ideal for personal use and exploring the core capabilities of our service.",
         "buttonText": "Get Started",
-        "color": "#E0E0E0"
+        "color": "#0c95d0",
+        "featureValue": "1",
+        "url" : "/" 
       },
       {
         "id": 2,
         "title": "Starter",
-        "price": "$30",
+        "price": 30,
         "description": "Ideal for small projects or individual use. Includes access to essential features, priority support, and 5GB of storage for your projects.",
         "buttonText": "Start Free Trial",
         "url": "/app/upgrade?plan=Starter",
@@ -20,7 +22,7 @@
       {
         "id": 3,
         "title": "Pro",
-        "price": "$60",
+        "price": 60,
         "description": "Perfect for growing teams with more advanced needs. Offers additional features such as collaboration tools, 20GB of storage, and advanced analytics to track your progress.",
         "buttonText": "Start Free Trial",
         "url": "/app/upgrade?plan=Pro",
@@ -29,7 +31,7 @@
       {
         "id": 4,
         "title": "Enterprise",
-        "price": "$90",
+        "price": 90,
         "description": "Advanced solutions for large-scale projects. Tailored for organizations requiring custom features, dedicated support, and unlimited storage capacity. Ideal for businesses looking to scale.",
         "buttonText": "Contact Us",
         "url": "/app/upgrade?plan=Enterprise",
