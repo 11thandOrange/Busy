@@ -1,0 +1,51 @@
+.app-main .Polaris-LegacyCard:has(.card-listing1){
+    padding-bottom: 0;
+}
+.Polaris-LegacyCard__Section:has(.card-listing1){
+    padding: 0;
+}
+.Polaris-LegacyCard__Section:has(.card-listing1) .bb-card-list-item{
+    padding:12px 15px;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.Polaris-LegacyCard__Section:has(.card-listing1) .bb-card-list-item:hover {
+    background-color: rgba(241,241,241,1)
+} 
+.bb-card-list-item .Polaris-Box{
+    padding: 0 !important;
+}
+.bb-list-content{
+    justify-content: space-between;
+    align-items: center;
+}
+.bb-list-content .bb-img-wrapper{
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+.bb-list-content .Polaris-Avatar span{
+    width: 25px;
+    height: 25px;
+    position: relative;
+}
+.bb-list-content h4{
+    font-size: 16px;
+    font-weight:600 ;
+    color: #303030;
+}
+.bb-list-content span{
+    font-size: 13px;
+    font-weight: 300;
+    color: #303030b3;
+}
+.bb-list-content span span{
+    padding: 2px;
+    font-weight: 600;
+    color: #303030;
+}

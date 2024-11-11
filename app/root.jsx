@@ -1,10 +1,22 @@
 import {
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { AppProvider } from "@shopify/polaris";
+import "@shopify/polaris/build/esm/styles.css";
+import './style.css'
+
+function LinkWrapper(props) {
+  return (
+    <Link to={props.url ?? props.to} ref={props.ref} {...props}>
+      {props.children}
+    </Link>
+  );
+}
 
 export default function App() {
   return (
@@ -21,7 +33,24 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <AppProvider
+          linkComponent={LinkWrapper}
+          i18n={{
+            Polaris: {
+              Page: {
+                Header: {
+                  
+                },
+              },
+            },
+          }}
+        >
+          {/* <div className="app-main" style={{margin: "50px 20%"}}> */}
+          <div className="app-main">
+
+          <Outlet />
+          </div>
+        </AppProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

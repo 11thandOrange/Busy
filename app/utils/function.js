@@ -21,7 +21,7 @@ export const getCategories = async() =>{
     const categories = await db.Category.findMany({
       select: {
         id: true,
-        name: true,
+        content: true,
       },
     });
     return categories;
