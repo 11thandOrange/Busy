@@ -39,7 +39,7 @@ function CustomColorPallete({colorHeading}) {
       }}
     ></div>
   );
-console.log(color);
+
 
   return (
     <div className="color-pallete-container">

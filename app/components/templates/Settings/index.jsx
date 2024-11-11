@@ -23,9 +23,9 @@ const options = [
 
 const Settings = ({announcementBarType}) => {
   
-  const generalSettings= ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType].generalSettings
+  const generalSettings= ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType]
   const [settingsState,setSettingsState] = useState({
-    ...SETTINGS_INITIAL_STATE,generalSettings
+    ...SETTINGS_INITIAL_STATE,...generalSettings
   })
 
   console.log("Settings state",settingsState);
@@ -34,7 +34,9 @@ const Settings = ({announcementBarType}) => {
     () => {
       switch (announcementBarType) {
         case ANNOUNCEMENT_BAR_TYPES.TEXT:
-          return <GeneralSettings></GeneralSettings>
+          return <GeneralSettings onTextChange={()=>{
+            
+          }}></GeneralSettings>
         case ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING:
           return <FreeShippingSettings></FreeShippingSettings>
         case ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER:
@@ -83,12 +85,12 @@ const Settings = ({announcementBarType}) => {
                 }}></ThemeStyleGrid>
             </Card>
             <Card>
-              <ThemeSettings>
+              < ThemeSettings setSettingsState={setSettingsState} >
               </ThemeSettings>           
             </Card>
         </div>
         <div className="settings-right-section">
-            <ProductPreviewCard></ProductPreviewCard>
+            <ProductPreviewCard settingsState={settingsState}></ProductPreviewCard>
             
         </div>
     </div>

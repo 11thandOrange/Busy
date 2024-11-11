@@ -27,17 +27,17 @@
 }
 
 /* Top Fixed Position */
-.ribbon-banner.top-fixed {
+.ribbon-banner.TOP_FIXED {
   top: 7%;
 }
 
 /* Top Relative Position */
-.ribbon-banner.top-relative {
+.ribbon-banner.TOP_RELATIVE {
   top: 7%;
 }
 
 /* Bottom Position */
-.ribbon-banner.bottom {
+.ribbon-banner.BOTTOM {
   bottom: 15%;
 }
 
@@ -171,4 +171,10 @@
   border-radius: 5px;
   background-color: #333;
   color: white;
+}
+
+
+
+.title-text{
+  text-align: center;
 }

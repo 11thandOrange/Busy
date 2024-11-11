@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Style.css'; // Import CSS for styling
 
 // Banner configuration constant
@@ -9,8 +9,14 @@ const bannerConfig = {
   position: 'bottom', // Can be 'top-fixed', 'top-relative', or 'bottom'
 };
 
-const ProductPreviewCard = () => {
+const ProductPreviewCard = ({settingsState}) => {
   const [quantity, setQuantity] = useState(1);
+useEffect(() => {
+  
+  console.log("status",settingsState.themeSettings.status);
+  
+  
+}, [settingsState.themeSettings.status])
 
   const handleQuantityChange = (e) => {
     const value = Math.max(0, parseInt(e.target.value)); // Prevent going below 0
@@ -21,7 +27,7 @@ const ProductPreviewCard = () => {
     <div className="product-preview-card">
       {/* Banner */}
       <div 
-        className={`ribbon-banner ${bannerConfig.position}`} 
+        className={`ribbon-banner ${settingsState.themeSettings.status}`} 
         style={{ backgroundColor: bannerConfig.bgColor, backgroundImage: `url(${bannerConfig.bgImage})` }}
       >
         {bannerConfig.text}
@@ -29,7 +35,8 @@ const ProductPreviewCard = () => {
 
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
-
+ {/* Title Text */}
+ <div className="title-text"> {settingsState.generalSettings.message } </div>
       {/* Product Image */}
       <div className="product-image-container">
         <img 
@@ -39,6 +46,7 @@ const ProductPreviewCard = () => {
         />
       </div>
 
+    
       {/* Product Title, Price, and Quantity */}
       <div className="product-info">
         <h2 className="product-title">Product title</h2>

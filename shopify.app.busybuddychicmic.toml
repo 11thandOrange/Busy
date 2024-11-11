@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://kinda-attacks-ensure-literally.trycloudflare.com"
+application_url = "https://facilities-noon-findarticles-phil.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://kinda-attacks-ensure-literally.trycloudflare.com/auth/callback",
-  "https://kinda-attacks-ensure-literally.trycloudflare.com/auth/shopify/callback",
-  "https://kinda-attacks-ensure-literally.trycloudflare.com/api/auth/callback"
+  "https://facilities-noon-findarticles-phil.trycloudflare.com/auth/callback",
+  "https://facilities-noon-findarticles-phil.trycloudflare.com/auth/shopify/callback",
+  "https://facilities-noon-findarticles-phil.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

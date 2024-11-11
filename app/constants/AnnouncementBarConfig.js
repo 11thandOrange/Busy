@@ -60,7 +60,7 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
   },
   [ANNOUNCEMENT_BAR_TYPES.TEXT]: {
     generalSettings: {
-      messsage: "",
+      messsage: "Type Text Here",
     },
   },
 };

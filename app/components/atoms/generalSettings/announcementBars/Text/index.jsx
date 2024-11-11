@@ -3,11 +3,11 @@ import CustomTextField from '../../../CustomTextField'
 import { Text } from '@shopify/polaris'
 import "./style.css"
 import DatePicker from '../../../DatePicker'
-const GeneralSettings = () => {
+const GeneralSettings = ({onTextChange}) => {
   return (
     <div>
         
-        <CustomTextField  type='text' label='Message'  ></CustomTextField>
+        <CustomTextField  type='text' label='Message' onValueChange={onTextChange} ></CustomTextField>
     </div>
   )
 }
