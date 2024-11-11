@@ -46,3 +46,16 @@
 .Polaris-LegacyCard__Section > div:has(.Polaris-Button) input.Polaris-TextField__Input:focus ~ .Polaris-TextField__Backdrop {
     outline: unset !important;
 }
+.apps_list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 10px;
+}
+.apps_list .list-item {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-block: 13px;
+}

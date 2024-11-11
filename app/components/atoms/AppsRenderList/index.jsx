@@ -10,7 +10,7 @@ const AppsRenderList = ({ selectedApps }) => {
             resourceName={{ singular: "item", plural: "items" }}
             items={selectedApps}
             renderItem={(item) => {
-                const { id, name, description, isInstalled } = item;
+                const { id, name, description, isInstalled, image } = item;
                 return (
                     <div className='bb-card-list-item'>
                         <ResourceItem
@@ -20,7 +20,7 @@ const AppsRenderList = ({ selectedApps }) => {
                             <div className='bb-list-content' style={{ display: "flex" }}>
                                 <div style={{ display: "flex" }}>
                                     <div className="bb-img-wrapper">
-                                        <img src={IMAGES.BadgeIcon} />
+                                        <img src={image} />
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
                                         <h4>{name}</h4>
