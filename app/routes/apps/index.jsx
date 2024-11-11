@@ -28,6 +28,7 @@ export const loader = async ({ request }) => {
       id: app.id,
       name: app.name,
       description: app.description,
+      image:app.image,
       categoryId: app.categories.map(item => item.id),
       createdAt: app.createdAt,
       updatedAt: app.updatedAt,
