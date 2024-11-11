@@ -109,7 +109,7 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
       };
       
       if(searchValue) {
-        itemsAccordingToTab = itemsAccordingToTab.filter(item => item.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+        itemsAccordingToTab = itemsAccordingToTab.filter(item => item.name.toLowerCase().includes(searchValue.toLocaleLowerCase()) || item.description.toLowerCase().includes(searchValue.toLocaleLowerCase()))
       }
       itemsAccordingToTab.slice((currentPage - 1) * itemsPerPage, ((currentPage - 1) * itemsPerPage) + itemsPerPage)
       setSelectedApps(itemsAccordingToTab)
