@@ -1,5 +1,4 @@
 import {
-  Link,
   Links,
   Meta,
   Outlet,
@@ -39,7 +38,7 @@ export default function App() {
             Polaris: {
               Page: {
                 Header: {
-                  
+                  rollupButton: 'Actions',
                 },
               },
             },

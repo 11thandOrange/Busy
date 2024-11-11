@@ -1,4 +1,6 @@
 import db from '../db.server'
+import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN } from "../shopify.server";
+
 
 export const getShopName = async(request) => {
   let parsedUrl;
@@ -47,14 +49,23 @@ export const check_app_active = async (appId, shop) => {
     }
   };
 
-export const check_subscription = async (billing, plans) =>
+export const check_subscription = async () =>
 {
-  const { hasActivePayment, appSubscriptions } = await billing.check({
-    plans: plans,
-    isTest: false,
-  });
- console.log(hasActivePayment)
- console.log(appSubscriptions)
+  const { billing, session } = await authenticate.admin(request);
+  const billingCheck = await billing.check({ plans: [STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN] });
+  if (!billingCheck.appSubscriptions || billingCheck.appSubscriptions.length === 0) {
+    console.log('No subscription found');
+    return {
+      hasSubscription: false,
+    };
+  }
+  const subscription = billingCheck.appSubscriptions[0];
+  console.log('Subscription found:', subscription);
+
+  return {
+    hasSubscription: true,
+    subscription,
+  };
 }
 
 export const markWidgetAsFavorite = async(shop, widgetId) => {

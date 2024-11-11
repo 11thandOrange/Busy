@@ -3,7 +3,7 @@
 client_id = "8568ff3809c7d25c65a43451869b7437"
 name = "BusyBuddy"
 handle = "busybuddy-10"
-application_url = "https://recommends-landing-revolutionary-life.trycloudflare.com"
+application_url = "https://poultry-gordon-loading-thanksgiving.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://recommends-landing-revolutionary-life.trycloudflare.com/auth/callback",
-  "https://recommends-landing-revolutionary-life.trycloudflare.com/auth/shopify/callback",
-  "https://recommends-landing-revolutionary-life.trycloudflare.com/api/auth/callback"
+  "https://poultry-gordon-loading-thanksgiving.trycloudflare.com/auth/callback",
+  "https://poultry-gordon-loading-thanksgiving.trycloudflare.com/auth/shopify/callback",
+  "https://poultry-gordon-loading-thanksgiving.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

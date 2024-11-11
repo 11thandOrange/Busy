@@ -4,6 +4,7 @@ import planData from "../../../data/planPricingData.json";
 import PlanCard from "../../atoms/PlanCard";
 import GoBack from "../../atoms/GoBack";
 
+
 const Plan = () => {
   return (
     <div className="plan-container">
