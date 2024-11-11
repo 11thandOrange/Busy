@@ -1,14 +1,14 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "958abe7d38c5db83dc82e0ac551d1409"
+client_id = "8568ff3809c7d25c65a43451869b7437"
 name = "BusyBuddy"
-handle = "busybuddy-4"
-application_url = "https://ash-supervisors-traditional-speaker.trycloudflare.com"
+handle = "busybuddy-10"
+application_url = "https://recommends-landing-revolutionary-life.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-f05d22ad.myshopify.com"
+dev_store_url = "budybuddystore.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://ash-supervisors-traditional-speaker.trycloudflare.com/auth/callback",
-  "https://ash-supervisors-traditional-speaker.trycloudflare.com/auth/shopify/callback",
-  "https://ash-supervisors-traditional-speaker.trycloudflare.com/api/auth/callback"
+  "https://recommends-landing-revolutionary-life.trycloudflare.com/auth/callback",
+  "https://recommends-landing-revolutionary-life.trycloudflare.com/auth/shopify/callback",
+  "https://recommends-landing-revolutionary-life.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
