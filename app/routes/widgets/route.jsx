@@ -134,6 +134,7 @@ export const action = async ({ request }) => {
 };
 
 function TabsInsideOfACardExample() {
+  const fetcher = useFetcher();
   const widgets_data = useLoaderData()
   const [widgets, setWidgets] = useState([]);
   const [tabs, setTabs] = useState([]);
@@ -151,12 +152,28 @@ function TabsInsideOfACardExample() {
     console.log(updatedTabData, "updatedTabData")
     setTabs(updatedTabData)
     setWidgets(widgets_data.widgets)
-  }, [widgets_data])
+  }, [widgets_data]);
+
+  const handleAddToFavorite = (widgetId) => {
+    const updatedWidgets = widgets.map((widget) => {
+      if (widget.id == widgetId) {
+        return { ...widget, isFavorite: !widget.isFavorite };
+      }
+      return widget;
+    });
+    setWidgets(updatedWidgets)
+    fetcher.submit(
+      {
+        widgetId: widgetId,
+      },
+      { method: "POST", action: "/widgets" }
+    );
+  }
 
   return (
     <div>
       <GoBack/>
-      <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
+      <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props} handleAddToFavorite={handleAddToFavorite}/>}/>
     </div>
   );
 }

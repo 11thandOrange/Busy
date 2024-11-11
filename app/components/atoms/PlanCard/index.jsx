@@ -1,5 +1,6 @@
 import React from "react";
 import "../../templates/Plan/style.css";
+import { Button } from "@shopify/polaris";
 
 const PlanCard = ({ plan }) => {
   return (
@@ -14,7 +15,7 @@ const PlanCard = ({ plan }) => {
                 ${plan.price} <span className="price-per-month">/Month</span>
               </p>
             </div>
-            <button className="cta-button">{plan.buttonText}</button>
+            <Button url={plan.url} className="cta-button">{plan.buttonText}</Button>
           </div>  
           <div className="card-footer">
             <div className="feature-content">

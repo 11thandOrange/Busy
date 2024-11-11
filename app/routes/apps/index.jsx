@@ -129,9 +129,11 @@ export const action = async ({ request }) => {
   ];
   
   function TabsInsideOfACardExample() {
+  const apps = useLoaderData();
   
     return (
       <>
+      {JSON.stringify(apps)}
       <GoBack/>
       <AppListingTemplate tabs={APP_TABS} list={items} componentToRender={(props) => <AppsRenderList {...props}/>}/>
       </>
