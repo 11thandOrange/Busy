@@ -1,25 +1,28 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "4456f7074859b6f6ab901d539c7341e5"
-name = "Busy Buddy"
-handle = "busy-buddy-1"
-application_url = "https://diy-keeping-strand-perl.trycloudflare.com"
+client_id = "8568ff3809c7d25c65a43451869b7437"
+name = "BusyBuddy"
+handle = "busybuddy-10"
+application_url = "https://implement-reputation-debut-seconds.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-5ffb74f8.myshopify.com"
+dev_store_url = "budybuddystore.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "write_products"
+
+[access.admin]
+direct_api_mode = "online"
 
 [auth]
 redirect_urls = [
-  "https://diy-keeping-strand-perl.trycloudflare.com/auth/callback",
-  "https://diy-keeping-strand-perl.trycloudflare.com/auth/shopify/callback",
-  "https://diy-keeping-strand-perl.trycloudflare.com/api/auth/callback"
+  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/callback",
+  "https://implement-reputation-debut-seconds.trycloudflare.com/auth/shopify/callback",
+  "https://implement-reputation-debut-seconds.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

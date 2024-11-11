@@ -47,10 +47,9 @@ export const loader = async ({ request }) => {
 };
 
 export const action = async ({ request }) => {
+  return cors(request, {'name':'Deepak'})
  
   const shop = await getShopName(request);
-
- 
   const formData = new URLSearchParams(await request.text());
   const widgetId = parseInt(formData.get("widgetId"));
   return markWidgetAsFavorite(shop, widgetId);

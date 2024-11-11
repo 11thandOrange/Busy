@@ -1,5 +1,4 @@
 import {
-  Link,
   Links,
   Meta,
   Outlet,
@@ -12,7 +11,6 @@ import './style.css'
 
 function LinkWrapper(props) {
   return (
-    // TODO: fix type conflix with LegacyRef and Ref between Remix and Polaris
     <Link to={props.url ?? props.to} ref={props.ref} {...props}>
       {props.children}
     </Link>
