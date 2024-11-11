@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Selector from '../../atoms/Selector';
 import "./Settings.css"
 import { Card, Text } from '@shopify/polaris';
@@ -14,6 +14,7 @@ import FreeShippingSettings from '../../atoms/generalSettings/announcementBars/F
 import OrderCounterSettings from '../../atoms/generalSettings/announcementBars/OrderCounter';
 import CountdownTimerSettings from '../../atoms/generalSettings/announcementBars/CountdownTimer';
 import EmailCaptureSettings from '../../atoms/generalSettings/announcementBars/EmailCapture';
+import { updateSettingsState } from '../../../utils/clientFunctions';
 
 const options = [
     {label: 'Active', value: STATUS.ACTIVE},
@@ -28,23 +29,22 @@ const Settings = ({announcementBarType}) => {
     ...SETTINGS_INITIAL_STATE,...generalSettings
   })
 
-  console.log("Settings state",settingsState);
+  // console.log("settingsState",settingsState);
   
+ 
   const selectGeneralSettings= useCallback(
     () => {
       switch (announcementBarType) {
         case ANNOUNCEMENT_BAR_TYPES.TEXT:
-          return <GeneralSettings onTextChange={()=>{
-            
-          }}></GeneralSettings>
+          return <GeneralSettings setSettingsState={setSettingsState} settingsState={settingsState} ></GeneralSettings>
         case ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING:
-          return <FreeShippingSettings></FreeShippingSettings>
+          return <FreeShippingSettings setSettingsState={setSettingsState} settingsState={settingsState} ></FreeShippingSettings>
         case ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER:
-          return <OrderCounterSettings></OrderCounterSettings>
+          return <OrderCounterSettings setSettingsState={setSettingsState} settingsState={settingsState} ></OrderCounterSettings>
         case ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER:
-          return <CountdownTimerSettings></CountdownTimerSettings>
+          return <CountdownTimerSettings setSettingsState={setSettingsState} settingsState={settingsState} ></CountdownTimerSettings>
         case ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE:
-          return <EmailCaptureSettings></EmailCaptureSettings>
+          return <EmailCaptureSettings setSettingsState={setSettingsState} settingsState={settingsState}></EmailCaptureSettings>
           
       
         default:
@@ -80,17 +80,19 @@ const Settings = ({announcementBarType}) => {
             }
             </Card>
             <Card>
-                <ThemeStyleGrid onThemeSelected={(value)=>{
-                  console.log("Theme selected id",value);
+                <ThemeStyleGrid onThemeSelected={(value,type,image)=>{
+                  setSettingsState((prevState) => (
+                    updateSettingsState("themeStyle",{id:value,type:type,image:image},prevState)
+                  ))
                 }}></ThemeStyleGrid>
             </Card>
             <Card>
-              < ThemeSettings setSettingsState={setSettingsState} >
+              < ThemeSettings setSettingsState={setSettingsState} settingsState={settingsState} >
               </ThemeSettings>           
             </Card>
         </div>
         <div className="settings-right-section">
-            <ProductPreviewCard settingsState={settingsState}></ProductPreviewCard>
+            <ProductPreviewCard setSettingsState={setSettingsState} settingsState={settingsState} announcementBarType={announcementBarType}></ProductPreviewCard>
             
         </div>
     </div>

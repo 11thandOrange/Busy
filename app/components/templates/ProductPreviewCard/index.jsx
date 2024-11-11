@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Style.css'; // Import CSS for styling
+import PreviewCardBanner from '../../atoms/PreviewCardBanner';
 
 // Banner configuration constant
 const bannerConfig = {
@@ -9,14 +10,10 @@ const bannerConfig = {
   position: 'bottom', // Can be 'top-fixed', 'top-relative', or 'bottom'
 };
 
-const ProductPreviewCard = ({settingsState}) => {
+const ProductPreviewCard = ({settingsState,announcementBarType,setSettingsState}) => {
   const [quantity, setQuantity] = useState(1);
-useEffect(() => {
-  
-  console.log("status",settingsState.themeSettings.status);
-  
-  
-}, [settingsState.themeSettings.status])
+console.log("settings state is here",settingsState);
+
 
   const handleQuantityChange = (e) => {
     const value = Math.max(0, parseInt(e.target.value)); // Prevent going below 0
@@ -25,18 +22,12 @@ useEffect(() => {
 
   return (
     <div className="product-preview-card">
-      {/* Banner */}
-      <div 
-        className={`ribbon-banner ${settingsState.themeSettings.status}`} 
-        style={{ backgroundColor: bannerConfig.bgColor, backgroundImage: `url(${bannerConfig.bgImage})` }}
-      >
-        {bannerConfig.text}
-      </div>
+     <PreviewCardBanner settingsState={settingsState} announcementBarType={announcementBarType} setSettingsState={setSettingsState}></PreviewCardBanner>
 
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
  {/* Title Text */}
- <div className="title-text"> {settingsState.generalSettings.message } </div>
+ {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
       {/* Product Image */}
       <div className="product-image-container">
         <img 

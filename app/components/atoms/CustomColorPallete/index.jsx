@@ -6,26 +6,23 @@ import {
   hsbToHex,
   Text,
   TextField,
+  hexToRgb,
+  rgbToHsb,
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 
-
-import "./CustomColorPallete.css"
-function CustomColorPallete({colorHeading}) {
+import "./CustomColorPallete.css";
+function CustomColorPallete({ colorHeading, onColorChange, initialColor }) {
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
     () => setPopoverActive((popoverActive) => !popoverActive),
-    []
+    [],
   );
-  const [color, setColor] = useState({
-    "hue": Math.random() * 360,
-    "saturation": 0.637646484375,
-    "brightness": 0.6029296875,
-    "alpha": 1
-  });
-  
-  
+  const [color, setColor] = useState(
+    rgbToHsb(hexToRgb(initialColor || "#fffff")),
+  );
+
   const activator = (
     <div
       onClick={togglePopoverActive}
@@ -40,28 +37,44 @@ function CustomColorPallete({colorHeading}) {
     ></div>
   );
 
-
   return (
     <div className="color-pallete-container">
-    <div className='color-header'>
-        <Text variant="bodyMd"  as="span">{colorHeading}</Text>
+      <div className="color-header">
+        <Text variant="bodyMd" as="span">
+          {colorHeading}
+        </Text>
+      </div>
+      <div
+        className="custom-color-pallete"
+        onMouseUp={() => {
+          onColorChange(hsbToHex(color));
+        }}
+      >
+        <div style={{ height: "36px" }}>
+          <Popover
+            active={popoverActive}
+            activator={activator}
+            autofocusTarget="first-node"
+            onClose={togglePopoverActive}
+          >
+            <ColorPicker
+              onChange={(color) => {
+                setColor(color);
+              }}
+              color={color}
+            />
+            ;
+          </Popover>
+        </div>
+
+        <input
+          className="color-input"
+          type="text"
+          value={hsbToHex(color)}
+          readOnly
+        />
+      </div>
     </div>
-    <div className="custom-color-pallete">
-    <div style={{ height: "36px" }}>
-      <Popover
-        active={popoverActive}
-        activator={activator}
-        autofocusTarget="first-node"
-        onClose={togglePopoverActive}
-        >
-        <ColorPicker onChange={setColor} color={color}  />;
-      </Popover>
-     
-    </div>
-   
-    <input className="color-input" type="text" value={hsbToHex(color)} readOnly />
-    </div>
-          </div>
   );
 }
 
