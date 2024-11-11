@@ -51,7 +51,7 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
         console.log(apps, value,"value test")
         setSelectedApps(
           apps.filter((item) =>
-            item.name.toLowerCase().includes(value.toLowerCase())
+            item.name.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())
           )
         );
       },
