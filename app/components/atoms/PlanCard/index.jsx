@@ -6,7 +6,7 @@ import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHL
 
 
 const PlanCard = ({ plan }) => {
-  const subscription = useLoaderData();
+
   return (
     <div className="planboxes">
       {subscription}
