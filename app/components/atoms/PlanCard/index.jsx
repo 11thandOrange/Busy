@@ -17,7 +17,7 @@ const PlanCard = ({ plan }) => {
                 ${plan.price} <span className="price-per-month">/Month</span>
               </p>
             </div>
-            <Link url={plan.url + '?plan=' + encodeURIComponent(plan.title)}>
+            <Link url={plan.url}>
               {plan.buttonText}
             </Link>
 
