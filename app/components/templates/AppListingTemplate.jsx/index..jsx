@@ -9,6 +9,7 @@ import {
   import DynamicEmptyState from "../../atoms/DynamicEmptyState";
   import "@shopify/polaris/build/esm/styles.css";
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
+  import './style.css'
 
 const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [], emptyDataString="No Data to Show", emptyDataImage="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"}) => {
     const [selected, setSelected] = useState(0);
@@ -61,10 +62,12 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
             {selectedApps.length ? (
                 componentToRender({selectedApps, setSelectedApps})
             ) : (
+              <div>
                 <DynamicEmptyState
                 heading={emptyDataString}
                 image={emptyDataImage}
                 />
+                </div>
             )}
           </LegacyCard.Section>
         </LegacyCard>

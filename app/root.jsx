@@ -7,6 +7,7 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
+import './style.css'
 
 function LinkWrapper(props) {
   return (
@@ -44,7 +45,11 @@ export default function App() {
             },
           }}
         >
+          {/* <div className="app-main" style={{margin: "50px 20%"}}> */}
+          <div className="app-main">
+
           <Outlet />
+          </div>
         </AppProvider>
         <ScrollRestoration />
         <Scripts />

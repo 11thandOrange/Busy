@@ -11,6 +11,7 @@ import {
   import "@shopify/polaris/build/esm/styles.css";
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
 import { CATEGORIES_ENUM } from "../../../utils/constants";
+  import './style.css'
 
   const items = [
     {
@@ -162,10 +163,10 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
             onPrevious={handlePreviousPage}
             hasNext={hasNext}
             onNext={handleNextPage}
-            label={`${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+            label={selectedApps.length ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
               currentPage * itemsPerPage,
-              items.length
-            )} of ${items.length} items`}
+              selectedApps.length
+            )} of ${selectedApps.length} items` : '0-0 of 0 items'}
           />
         </div>
       </LegacyCard>

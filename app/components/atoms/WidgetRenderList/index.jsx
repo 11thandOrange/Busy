@@ -9,14 +9,18 @@ const WidgetRenderList = ({selectedApps}) => {
     <div class="cards-container">
         {selectedApps.map(widget => {
             return (<div class="card">
-                <img src={widget.image} alt="Product Review"/>
+              <img src={widget.image} alt="Product Review"/>
+              <div className='card-btn'>
                 <ActiveButton afterActivateString='Activate Widget' deactivateString='Deactivate Widget'/>
-                <h3>{widget.name}</h3>
-                <p>{widget.description}</p>
-                <div class="buttons">
-                    <button class="customize-btn">Customize</button>
-                    <img src={widget.isFavorite ? IMAGES.FilledHeartIcon : IMAGES.HeartIcon}/>
+              </div>
+              <div className="content-wrapper">
+              <h3>{widget.name}</h3>
+              <p>{widget.description}</p>
+                  <div class="buttons">
+                      <button class="customize-btn">Customize</button>
+                      <img src={widget.isFavorite ? IMAGES.FilledHeartIcon : IMAGES.HeartIcon}/>
                 </div>
+              </div>
             </div>)
         })}
     </div>

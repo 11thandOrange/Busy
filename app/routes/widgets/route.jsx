@@ -16,7 +16,7 @@ import { SearchIcon } from "@shopify/polaris-icons";
 import { useState, useCallback, useEffect } from "react";
 import DynamicEmptyState from "../../components/atoms/DynamicEmptyState";
 import "@shopify/polaris/build/esm/styles.css";
-import { APP_TABS } from "../../utils/constants";
+import { APP_TABS, CATEGORIES_ENUM } from "../../utils/constants";
 import AppsRenderList from "../../components/atoms/AppsRenderList";
 import AppListingTemplateWithPagination from "../../components/templates/AppListingTemplateWithPagination";
 import WidgetRenderList from "../../components/atoms/WidgetRenderList";
@@ -25,6 +25,8 @@ import { cors } from 'remix-utils/cors';
 import { useLoaderData } from "@remix-run/react";
 import { useFetcher } from "@remix-run/react"; 
 import { getCategories, getShopName, markWidgetAsFavorite } from "../../utils/function";
+import './style.css'
+import GoBack from "../../components/atoms/GoBack";
 
 const tabs = [
   { id: "all", content: "All" },
@@ -137,12 +139,23 @@ function TabsInsideOfACardExample() {
   const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
-    setTabs(widgets_data.categories)
+    let updatedTabData = widgets_data?.categories?.map(item => {
+      if(item.id === CATEGORIES_ENUM.favorites){
+        return {
+          ...item,
+          content: (<div>{item.content} <span className="favourite-count">{widgets_data.widgets.find(item => item.isFavorite)?.length || 0}</span></div>)
+        }
+      };
+      return item;
+    })
+    console.log(updatedTabData, "updatedTabData")
+    setTabs(updatedTabData)
     setWidgets(widgets_data.widgets)
   }, [widgets_data])
 
   return (
     <div>
+      <GoBack/>
       <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props}/>}/>
     </div>
   );

@@ -24,6 +24,7 @@ import {
   import { useLoaderData } from "@remix-run/react";
   import { useFetcher } from "@remix-run/react"; 
   import { getCategories, getShopName } from "../../utils/function";
+  import GoBack from "../../components/atoms/GoBack";
   
 export const loader = async ({ request }) => {
   let apps = await db.app.findMany({
@@ -130,7 +131,10 @@ export const action = async ({ request }) => {
   function TabsInsideOfACardExample() {
   
     return (
+      <>
+      <GoBack/>
       <AppListingTemplate tabs={APP_TABS} list={items} componentToRender={(props) => <AppsRenderList {...props}/>}/>
+      </>
     );
   }
   
