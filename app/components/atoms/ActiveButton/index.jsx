@@ -1,7 +1,7 @@
 import {Button, Popover, ActionList} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 import './activeButton.css';
-export default function ActiveButton() {
+export default function ActiveButton({beforeActiveString = 'Active', afterActivateString= 'Activate App', deactivateString = 'Deactivate App'}) {
   const [popoverActive, setPopoverActive] = useState(false);
   const [isActive,setIsActive] = useState(false);
  
@@ -23,8 +23,8 @@ export default function ActiveButton() {
     }}
   
   const activator = (
-    <Button onClick={onActiveClick} className="active" disclosure ={isActive?true:false}>
-     {isActive?"Active":"Active App"}
+    <Button onClick={onActiveClick} className="active" disclosure={isActive}>
+     {isActive ? beforeActiveString : afterActivateString}
     </Button>
   );
 
@@ -38,7 +38,7 @@ export default function ActiveButton() {
       >
         <ActionList
           actionRole="menuitem"
-          items={[{content: "Deactivate App"}]}
+          items={[{content: deactivateString }]}
           onActionAnyItem={()=>{
             //When we click on deactivate, we set isActive to false and close the popover
             toggleIsActive()

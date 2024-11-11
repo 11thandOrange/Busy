@@ -31,11 +31,87 @@ model Session {
   emailVerified Boolean?  @default(false)
 }
 
-
+model Category {
+  id          Int           @id @default(autoincrement())
+  content        String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  App         App[]
+  widgets     Widget[]    @relation("WidgetCategories")
+}
 model App {
-  id          Int      @id @default(autoincrement())
-  name        String   
+  id          Int           @id @default(autoincrement())
+  name        String
   description String
+  categoryId     Int?
+  category       Category?      @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Merchant Merchant[]
+}
+
+model Merchant {
+  id        Int      @id @default(autoincrement())
+  enabled   Boolean  @default(false)
+  appId     Int
+  app       App      @relation(fields: [appId], references: [id])
+  shop      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([appId, shop])
+}
+
+model Widget {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  description String?
+  image       String?
+  categories  Category[]  @relation("WidgetCategories")
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  Fav_widget   Fav_widget[]
+}
+
+model Fav_widget {
+  id          Int      @id @default(autoincrement())
+  shop        String?
+  widgetId     Int
+  widget       Widget      @relation(fields: [widgetId], references: [id])
+  createdAt   DateTime @default(now())
+  @@unique([widgetId, shop])
+}
+
+model Announcement_bar {
+  id          Int      @id @default(autoincrement())
+  shop String?
+  name        String?
+  status Boolean @default(false)
+  general_setting String?
+  theme_style String?
+  theme_setting String?
+  createdAt   DateTime @default(now())
+}
+
+model countdown_timer {
+  id          Int      @id @default(autoincrement())
+  general_setting        String?
+  shop String?
+  display_setting String?
+  position String?
+  createdAt   DateTime @default(now())
+}
+
+model Inactive_tab_message {
+  id          Int      @id @default(autoincrement())
+  message        String?
+  shop String?
+  createdAt   DateTime @default(now())
+}
+
+model Cart_notice {
+  id          Int      @id @default(autoincrement())
+  primary_message        String?
+  secondary_message        String?
+  general_setting String
+  shop String?
+  createdAt   DateTime @default(now())
 }

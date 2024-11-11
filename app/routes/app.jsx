@@ -1,13 +1,15 @@
 import { json } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
-import { AppProvider as RemixAppProvider } from "@shopify/shopify-app-remix/react";
+import { AppProvider  } from "@shopify/shopify-app-remix/react";
 import { NavMenu } from "@shopify/app-bridge-react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import { authenticate } from "../shopify.server";
+import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
 import en from "@shopify/polaris/locales/en.json";
+
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
-import {AppProvider } from '@shopify/polaris';
+
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
 
@@ -16,27 +18,23 @@ export const loader = async ({ request }) => {
 
 export default function App() {
   const { apiKey } = useLoaderData();
-console.log("EN",en)
   return (
-   
-    <RemixAppProvider isEmbeddedApp apiKey={apiKey} >
-     
-      <NavMenu>
-        <Link to="/app" rel="home">
-          Home
-        </Link>
-        <Link to="/apps">Apps</Link>
-        <Link to="/widgets">Widgets</Link>
-        <Link to="/app/additional">Additional page</Link>
-        <Link to="/homepage">homepage</Link>
-        <Link to="/plan">plan</Link>
-        <Link to="/announcementBar">Settings</Link>
-        
-      </NavMenu>
-     
-      <Outlet />
-     </RemixAppProvider>
-  
+    <AppProvider isEmbeddedApp apiKey={apiKey}>
+      <PolarisAppProvider i18n={en}>
+        <NavMenu>
+          <Link to="/app" rel="home">
+            Home
+          </Link>
+          <Link to="/apps">Apps</Link>
+          <Link to="/widgets">Widgets</Link>
+          <Link to="/plans">Plans</Link>
+          <Link to="/app/additional">Additional page</Link>
+          <Link to="/homepage">homepage</Link>
+          <Link to="/announcementBar">Settings</Link>
+        </NavMenu>
+        <Outlet />
+      </PolarisAppProvider>
+    </AppProvider>
   );
 }
 

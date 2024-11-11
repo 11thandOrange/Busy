@@ -1,14 +1,14 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "6cf76c58a42f886d362a133415098c59"
-name = "BusyBuddy"
-handle = "busybuddy"
-application_url = "https://lions-indicators-mhz-checked.trycloudflare.com"
+client_id = "4456f7074859b6f6ab901d539c7341e5"
+name = "Busy Buddy"
+handle = "busy-buddy-1"
+application_url = "https://diy-keeping-strand-perl.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-f05d22ad.myshopify.com"
+dev_store_url = "quickstart-5ffb74f8.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/auth/shopify/callback",
-  "https://lions-indicators-mhz-checked.trycloudflare.com/api/auth/callback"
+  "https://diy-keeping-strand-perl.trycloudflare.com/auth/callback",
+  "https://diy-keeping-strand-perl.trycloudflare.com/auth/shopify/callback",
+  "https://diy-keeping-strand-perl.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

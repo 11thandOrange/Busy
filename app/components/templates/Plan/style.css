@@ -3,87 +3,122 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    min-height: 600px;
-    gap: 20px;
-    padding: 20px;
+    padding-block: 20px;
+    /* font-family: 'manrope'; */
+    gap: 19px;
   }
   
   .plan-card {
-    /* border: 4px solid; */
     border-radius: 10px;
-    padding: 20px;
-    width: 266px;
-    height: 401px; /* Fixed height for the card */
-    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 2px;
+    width: 223px;
     background-color: #fff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    display: flex; /* Flexbox layout */
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: space-between; /* Space elements evenly */
-    position: relative; /* Positioning for absolute children */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    border-width: 2px !important;
   }
   
   .plan-content {
-    height: 100%; /* Full height of the card */
-    display: flex; /* Flexbox layout */
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: flex-start; /* Align items at the start */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  
+  .plan-content .upper-wrapper{
+    padding-inline: 15px;
+  }
+  .plan-content .card-footer{
+    padding-inline: 15px;
+    border-top: 1px solid rgba(222, 222, 222, 1);
+  }
   .plan-card h2 {
     font-size: 24px;
-    margin: 10px 0; /* Adjusted margin for heading */
+    margin: 10px 0;
+    font-weight: 600;
   }
   
   .price {
     font-weight: bold;
-    margin: 5px 0; /* Adjusted margin for price */
-    font-size: 3em; /* Adjust size as needed */
+    margin: 5px 0;
+    font-size: 40px;
+    font-weight: 600;
   }
   
   .price-per-month {
-    font-size: 0.25em; /* Smaller size for /month */
-    color: gray; /* Gray color */
+    font-size: 13px;
+    color: gray;
+    font-weight: 600;
+    line-height: 17.76px;
   }
   
   .description {
-    font-size: 16px;
-    margin: 30px 0; /* Adjusted margin for description */
-    flex-grow: 1; /* Allow description to grow and take available space */
+    font-size: 13px;
+    margin: 0 0 15px;
+    flex-grow: 1;
     text-align: left;
     color: #878787;
-    font-weight: 200;
+    font-weight: 400;
+    line-height:17.76px ;
+    min-height: 124px;
   }
   
   .cta-button {
-    background-color: #333; /* Dark background */
-    color: #fff; /* White text */
-    padding: 10px 20px; /* Increased padding for better appearance */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-    font-size: 16px; /* Font size for better readability */
-    margin-top: auto; /* Push button to the bottom of the card */
+    background-color: transparent;
+    color: rgba(48, 48, 48, 1);
+    padding: 10px 20px;
+    border: 1px solid #0c95d0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 13px;
+    margin-block: 15px;
+    font-weight: 600;
+    width: 100%;
   }
   
-  .cta-button:hover {
-    background-color: #555; /* Lighter background on hover */
-    transform: translateY(-2px); /* Slight lift on hover */
+  .cta-button:hover, .cta-button:focus {
+    background-color: #0c95d0;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .cta-button.active{
+    background-color: #0c95d0;
+    color: #ffffff;
   }
   
   .plan-card:hover {
-    box-shadow: 2px 2px 10px rgba(51, 51, 51, 0.5); /* Shadow on hover */
+    box-shadow: 2px 2px 10px rgba(51, 51, 51, 0.5);
   }
-  
-  /* Media Queries for Responsiveness */
-  
-  /* For tablets or smaller screens */
+  .feature-content{
+    padding-top: 9px;
+  }
+  .feature-content .title{
+    font-size: 16px;
+    color: rgba(48, 48, 48, 1);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .feature-content .list-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    line-height: 17.76px;
+    font-weight: 400;
+    color: rgba(48, 48, 48, 0.7);
+  }
+  .feature-content .list-wrap span{
+    font-weight: 600;
+  }
   @media (max-width: 768px) {
     .plan-card {
       width: 100%;
-      max-width: 400px; /* Restrict max width */
+      max-width: 400px;
     }
   
     .plan-section {
@@ -91,7 +126,6 @@
     }
   }
   
-  /* For mobile screens */
   @media (max-width: 480px) {
     .plan-card {
       width: 100%;
@@ -99,47 +133,47 @@
     }
   
     .plan-card h2 {
-      font-size: 22px; /* Smaller heading for mobile */
+      font-size: 22px;
     }
   
     .price {
-      font-size: 28px; /* Larger price for mobile */
+      font-size: 28px;
     }
   
     .description {
-      font-size: 14px; /* Smaller description for mobile */
+      font-size: 14px;
     }
   
     .cta-button {
-      padding: 8px 16px; /* Adjusted padding for mobile */
+      padding: 8px 16px;
     }
   }
   
   .plan-container {
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Center horizontally */
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
   }
   
   .back-button {
-    background-color: transparent; /* Transparent background */
-    color: #4e4f4e; /* Green text */
-    border: none; /* Remove border */
-    font-size: 16px; /* Font size for the button */
-    cursor: pointer; /* Pointer on hover */
-    margin-bottom: 20px; /* Space below the button */
-    align-self: flex-start; /* Align button to the left */
-    display: flex; /* Flex to align items */
-    align-items: center; /* Center vertically */
+    background-color: transparent;
+    color: #4e4f4e;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
   }
   
   .back-button:hover {
-    text-decoration: underline; /* Underline on hover for better visibility */
+    text-decoration: underline;
   }
   
   .plan-heading {
-    font-size: 28px; /* Adjust size as needed */
-    margin-bottom: 20px; /* Space below the heading */
+    font-size: 28px;
+    margin-bottom: 20px;
   }
   

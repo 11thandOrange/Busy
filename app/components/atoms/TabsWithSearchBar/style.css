@@ -1,0 +1,16 @@
+.head-searchbar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+.full-width {
+    width: 100%;
+}
+.head-searchbar button.Polaris-Button {
+    box-shadow: unset;
+}
+.head-searchbar input:focus ~ .Polaris-TextField__Backdrop {
+    outline: unset !important;
+}
