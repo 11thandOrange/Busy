@@ -66,8 +66,12 @@
     line-height:17.76px ;
     min-height: 124px;
   }
-  
+
   .cta-button {
+    text-align: center
+  }
+  
+  .cta-button span {
     background-color: transparent;
     color: rgba(48, 48, 48, 1);
     padding: 10px 20px;
@@ -80,8 +84,17 @@
     font-weight: 600;
     width: 100%;
   }
+
+  .cta-button a {
+    padding: 0;
+    box-shadow: unset;
+  }
+
+  .cta-button a:hover {
+    box-shadow: unset;
+  }
   
-  .cta-button:hover, .cta-button:focus {
+  .cta-button span:hover, .cta-button span:focus {
     background-color: #0c95d0;
     color: #ffffff;
     transform: translateY(-2px);
@@ -144,7 +157,7 @@
       font-size: 14px;
     }
   
-    .cta-button {
+    .cta-button span {
       padding: 8px 16px;
     }
   }

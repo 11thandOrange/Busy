@@ -15,6 +15,12 @@
 .app-main .Polaris-LegacyCard{
     padding-bottom: 30px;
 }
+.app-main .Polaris-LegacyCard__Section .Polaris-LegacyCard{
+    padding-bottom: 0;
+}
+.app-main .Polaris-LegacyCard__Section .Polaris-LegacyCard .Polaris-LegacyCard__FirstSectionPadding > .Polaris-Box{
+    padding-block: 42px;
+}
 .app-main .Polaris-LegacyCard div:has(.Polaris-Pagination){
     border: unset !important;
     margin-top: 30px !important;
