@@ -35,7 +35,8 @@ export const loader = async ({ request }) => {
     return {
       id: widget.id,
       name: widget.name,
-      description: widget.description,
+      description_title: widget.description_title,
+      description_content: widget.description_content,
       image: widget.image,
       categoryId: widget.categories.map(item => item.id),
       isFavorite,
@@ -69,12 +70,10 @@ function TabsInsideOfACardExample() {
       };
       return item;
     })
-    console.log(updatedTabData, "updatedTabData", JSON.stringify(widgets_data))
     setTabs(updatedTabData)
     setWidgets(widgets_data.widgets);
 
   }, [widgets_data]);
-  console.log(widgets_data, "widgets_data")
 
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(

@@ -26,7 +26,7 @@ const PlanCard = ({ plan }) => {
             <div className="feature-content">
               <p className="title">Features</p>
               <div className="list-wrap">
-                <label>No of Apps Enabled</label>
+                <label># of Apps Enabled</label>
                 <span className="value">{plan.features.appsEnabled}</span>
               </div>
               <div className="features">

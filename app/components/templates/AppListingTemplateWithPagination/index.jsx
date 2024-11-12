@@ -110,7 +110,7 @@ import SpinnerExample from "../../atoms/Spinner";
       };
       
       if(searchValue) {
-        itemsAccordingToTab = itemsAccordingToTab.filter(item => item.name.toLowerCase().includes(searchValue.toLocaleLowerCase()) || item.description.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+        itemsAccordingToTab = itemsAccordingToTab.filter(item => item?.name?.toLowerCase()?.includes(searchValue.toLocaleLowerCase()) || item?.description_title?.toLowerCase().includes(searchValue.toLocaleLowerCase()) || item?.description_content?.toLowerCase()?.includes(searchValue.toLocaleLowerCase()))
       }
       itemsAccordingToTab?.slice((currentPage - 1) * itemsPerPage, ((currentPage - 1) * itemsPerPage) + itemsPerPage)
       setSelectedApps(itemsAccordingToTab)

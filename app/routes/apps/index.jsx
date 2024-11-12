@@ -27,7 +27,8 @@ export const loader = async ({ request }) => {
     return {
       id: app.id,
       name: app.name,
-      description: app.description,
+      description_title: app.description_title,
+      description_content: app.description_content,
       image:app.image,
       categoryId: app.categories.map(item => item.id),
       createdAt: app.createdAt,

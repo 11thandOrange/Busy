@@ -18,6 +18,5 @@ export const CATEGORIES_ENUM = {
   boostSales: 3,
   engageUsers: 4,
   ux: 5,
-  social: 6,
-  favorites: 7,
+  favorites: 6,
 }
