@@ -14,12 +14,13 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   SETTINGS_INITIAL_STATE,
   STATUS,
-} from "../../../constants/announcementBarConfig";
+} from "../../../constants/announcementCustomizationConfig";
 import FreeShippingSettings from "../../atoms/generalSettings/announcementBars/FreeShipping";
 import OrderCounterSettings from "../../atoms/generalSettings/announcementBars/OrderCounter";
 import CountdownTimerSettings from "../../atoms/generalSettings/announcementBars/CountdownTimer";
 import EmailCaptureSettings from "../../atoms/generalSettings/announcementBars/EmailCapture";
 import { updateSettingsState } from "../../../utils/clientFunctions";
+import { APP_TYPE } from "../../../utils/constants";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -137,6 +138,7 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
           setSettingsState={setSettingsState}
           settingsState={settingsState}
           announcementBarType={announcementBarType}
+          appType={APP_TYPE.ANNOUNCEMENT_BARS}
         ></ProductPreviewCard>
       </div>
     </div>

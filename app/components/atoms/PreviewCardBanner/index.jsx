@@ -3,9 +3,8 @@ import "./style.css";
 import {
   ANNOUNCEMENT_BAR_TYPES,
   ThemeStyleGridType,
-} from "../../../constants/announcementBarConfig";
+} from "../../../constants/announcementCustomizationConfig";
 import {
-  calculateTimeDifference,
   replaceString,
   startCountdown,
   updateCountdownMessage,
@@ -21,43 +20,50 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     countDownStartAt,
     countDownEndsAt,
   } = generalSettings;
-  const [timeLeft, setTimeLeft] = useState("");
-  const [isFinished, setIsFinished] = useState(false);
-  const bannerStyle = useMemo(() => {
-    return themeStyle.type === ThemeStyleGridType.COLOR
-      ? { backgroundColor: themeSettings.backgroundColor }
-      : { backgroundImage: `url(${themeStyle.image})` };
-  }, [themeStyle, themeSettings]);
 
+  const [timeLeft, setTimeLeft] = useState("0");
+  const [isFinished, setIsFinished] = useState(false);
+  const [emailValue, setEmailValue] = useState("");
+
+  const bannerStyle = useMemo(
+    () => ({
+      backgroundColor:
+        themeStyle.type === ThemeStyleGridType.COLOR
+          ? themeSettings.backgroundColor
+          : null,
+      backgroundImage:
+        themeStyle.type !== ThemeStyleGridType.COLOR
+          ? `url(${themeStyle.image})`
+          : null,
+      display: isFinished ? "none" : "block",
+    }),
+    [themeStyle, themeSettings, isFinished],
+  );
+
+  // Generate the countdown message dynamically
   const countdownMessage = useMemo(() => {
-    if (countDownStartAt && countDownEndsAt) {
-      return updateCountdownMessage(countDownStartAt, countDownEndsAt, message);
-    }
-    return message;
+    return countDownStartAt && countDownEndsAt
+      ? updateCountdownMessage(countDownStartAt, countDownEndsAt, message)
+      : message;
   }, [countDownStartAt, countDownEndsAt, message]);
 
   const buttonStyles = {
     backgroundColor: buttonColor,
     color: buttonTextColor,
   };
-  useEffect(() => {
-    if (!countdownMessage) {
-      return;
-    }
-    // Callback to update the remaining time
-    const updateCallback = (timeString) => {
-      setTimeLeft(timeString);
-    };
 
-    // Callback when the timer finishes
+  useEffect(() => {
+    const updateCallback = (timeString) => setTimeLeft(timeString);
+
     const finishCallback = () => {
       setIsFinished(true);
       setTimeLeft("0d 0h 0m 0s");
+      console.log("Countdown finished");
     };
-    let interval = null;
 
+    let interval = null;
     if (countDownStartAt && countDownEndsAt) {
-      // Start the countdown with both callbacks
+      setIsFinished(false);
       interval = startCountdown(
         countdownMessage,
         updateCallback,
@@ -65,9 +71,8 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
       );
     }
 
-    // Cleanup on component unmount
     return () => clearInterval(interval);
-  }, [countDownStartAt, countDownEndsAt]);
+  }, [countDownStartAt, countDownEndsAt, countdownMessage]);
 
   return (
     <div
@@ -75,7 +80,7 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
       style={bannerStyle}
     >
       <p style={{ color: themeSettings.textColor }}>
-        {replaceString(generalSettings.message, timeLeft, "#countdown_timer#")}
+        {replaceString(generalSettings.message, timeLeft)}
       </p>
 
       {announcementBarType === ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE && (
@@ -84,8 +89,14 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
             type="email"
             placeholder="Enter your email"
             className="email-input"
+            onChange={(e) => setEmailValue(e.target.value)}
+            value={emailValue}
           />
-          <button className="banner-button" style={buttonStyles}>
+          <button
+            className="banner-button"
+            onClick={() => console.log(emailValue)}
+            style={buttonStyles}
+          >
             {buttonText}
           </button>
         </div>

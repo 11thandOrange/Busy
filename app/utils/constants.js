@@ -9,7 +9,7 @@ export const APP_TABS = [
 
 export const WIDGETS_TABS = [
   ...APP_TABS,
-  { id: "favorite", content: "Favorites"},
+  { id: "favorite", content: "Favorites" },
 ];
 
 export const CATEGORIES_ENUM = {
@@ -20,4 +20,9 @@ export const CATEGORIES_ENUM = {
   engageUsers: 5,
   boostSales: 6,
   favorites: 7,
-}
+};
+
+export const APP_TYPE = {
+  ANNOUNCEMENT_BARS: 1,
+  COUNTDOWN_TIMER: 2,
+};

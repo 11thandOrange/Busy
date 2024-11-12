@@ -16,7 +16,7 @@ export const updateSettingsState = (path, value, state) => {
   }
 
   current[keys[keys.length - 1]] = value;
-
+  
   return updatedState;
 };
 
@@ -34,6 +34,9 @@ export function calculateTimeDifference(startDate, endDate) {
   }
 
   const timeDifference = end - start;
+  if (timeDifference < 0 || timeDifference == 0) {
+    return "0d 0h 0m 0s";
+  }
 
   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
@@ -47,7 +50,6 @@ export function calculateTimeDifference(startDate, endDate) {
 
 export function updateCountdownMessage(startDate, endDate, message) {
   const countdown = calculateTimeDifference(startDate, endDate);
-  console.log("countdown message", countdown);
 
   return countdown;
 }
@@ -62,7 +64,6 @@ export function startCountdown(timeString, updateCallback, finishCallback) {
 
   let totalSeconds =
     days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
-  console.log("total secons is here", totalSeconds);
 
   function updateTimer() {
     if (totalSeconds <= 0) {
@@ -89,6 +90,26 @@ export function startCountdown(timeString, updateCallback, finishCallback) {
   return timerInterval; // Return the interval ID for cleanup if needed
 }
 
-export function replaceString(inputString, countdownValue, replaceableString) {
-  return inputString.replace(replaceableString, countdownValue);
+export function replaceString(inputString, value) {
+  // Regular expression to match any string inside two # symbols
+  const regex = /#([^#]+)#/g;
+
+  // Replace the matched string with the value
+  return inputString.replace(regex, value);
+}
+
+export const isEndDateValid = (endDate) => {
+  const endData = new Date(endDate);
+  const now = new Date();
+
+  if (endData < now) {
+    return false;
+  }
+
+  return true;
+};
+
+export const fetchDateTimeFromString =(timeString)=>{
+  return timeString.match(/\d+/g).map(Number)
+
 }

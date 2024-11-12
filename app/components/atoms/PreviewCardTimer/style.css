@@ -1,0 +1,15 @@
+.preview-card-container{
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    
+}
+.CENTER{
+    justify-content: center;
+}
+ .LEFT{
+    justify-content: start;
+}
+ .RIGHT{
+    justify-content: end;
+}

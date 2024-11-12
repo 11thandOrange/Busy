@@ -22,7 +22,7 @@ function CustomTextField({
     setTextFieldValue(value);
     onValueChange(value);
   }, []);
-  console.log("error message is here", errorMessage);
+  
 
   return (
     <>

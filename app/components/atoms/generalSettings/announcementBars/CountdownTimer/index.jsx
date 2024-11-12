@@ -1,22 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 import DatePicker from "../../../DatePicker";
 import CustomTextField from "../../../CustomTextField";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
+import {
+  isEndDateValid,
+  updateSettingsState,
+} from "../../../../../utils/clientFunctions";
 
 const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
   // debugger;
-
-  const isEndDateValid = (endDate) => {
-    const endData = new Date(endDate);
-    const now = new Date();
-
-    if (endData < now) {
-      return false;
-    }
-    console.log("valid");
-
-    return true;
-  };
 
   return (
     <div>
@@ -46,7 +37,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
             );
           }}
           label={"Countdown ends At"}
-          settingsState={settingsState}
+          minValue={settingsState?.generalSettings?.countDownStartAt}
           errorMessage={
             isEndDateValid(settingsState.generalSettings.countDownEndsAt)
               ? false

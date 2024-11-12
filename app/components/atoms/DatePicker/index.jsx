@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 import { TextField } from "@shopify/polaris";
 import CustomTextField from "../CustomTextField";
-const DatePicker = ({ label, helpText, onDatePicked, settingsState, errorMessage }) => {
+const DatePicker = ({ label, helpText, onDatePicked, minValue, errorMessage }) => {
   // console.log("settings inside date", settingsState);
 
   return (
@@ -12,7 +12,7 @@ const DatePicker = ({ label, helpText, onDatePicked, settingsState, errorMessage
         label={label}
         helpText={helpText}
         onValueChange={onDatePicked}
-        min={settingsState?.generalSettings?.countDownStartAt}
+        min={minValue}
         errorMessage={errorMessage}
       ></CustomTextField>
     </div>
