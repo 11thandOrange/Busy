@@ -23,7 +23,7 @@
         "url": "/app/upgrade?plan=Starter",
         "color": "#4CAF50",
         "features" : {
-          "appsEnabled" : "2-10",
+          "appsEnabled" : "2-4",
           "otherFeatures" : ["Customer Support", "User analytics", "Enable/disable any app at any time",  "Flexible pricing", "Powerful apps" , "Quality performance"]
         }
       }
