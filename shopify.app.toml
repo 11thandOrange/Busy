@@ -3,7 +3,7 @@
 client_id = "49ec0d3907fd1c87c4dc29953cc24fc0"
 name = "BusyBuddy"
 handle = "busybuddy-12"
-application_url = "https://existing-grammar-discount-williams.trycloudflare.com"
+application_url = "https://midwest-accessibility-leonard-counted.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_script_tags,write_script_tags"
 
 [auth]
 redirect_urls = [
-  "https://existing-grammar-discount-williams.trycloudflare.com/auth/callback",
-  "https://existing-grammar-discount-williams.trycloudflare.com/auth/shopify/callback",
-  "https://existing-grammar-discount-williams.trycloudflare.com/api/auth/callback"
+  "https://midwest-accessibility-leonard-counted.trycloudflare.com/auth/callback",
+  "https://midwest-accessibility-leonard-counted.trycloudflare.com/auth/shopify/callback",
+  "https://midwest-accessibility-leonard-counted.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
