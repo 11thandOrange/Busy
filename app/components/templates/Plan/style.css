@@ -18,6 +18,8 @@
     position: relative;
     border-width: 2px !important;
     height: 100%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px 5px #676f675e;
   }
   .plan-card::before {
     content: "";
@@ -48,12 +50,13 @@
     position: absolute;
     height: 40%;
     width: 10px;
-    background-color: #303030;
+    background-color: #676f67;
     right: 0;
     bottom: 40px;
     transform: skew(0deg, -35deg);
   }
   .plan-content {
+    border-radius: 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -109,13 +112,21 @@
   }
 
   .plan-content .upper-wrapper .Polaris-Link {
-    background-color: #303030;
+    background-color: #676f67;
     width: 100%;
     display: block;
     color: #ffffff;
     text-decoration: none;
     padding: 12px 10px;
     font-weight: 500;
+    border-radius: 10px;
+  }
+  .plan-content .upper-wrapper .Polaris-Link:hover{
+    background-color: #3a423a;
+  }
+  .plan-content .upper-wrapper .Polaris-Link:focus{
+    background-color: #222922;
+    outline: none;
   }
 
   .cta-button {

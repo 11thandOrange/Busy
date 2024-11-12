@@ -59,3 +59,23 @@
     gap: 10px;
     padding-block: 13px;
 }
+
+.Polaris-Tabs__Wrapper::before{
+    content: "";
+    position: absolute;
+    top: 45px;
+    left: 0px;
+    width: 100%;
+    height: 1px;
+    box-sizing: border-box;
+    background: #fdac69;
+    /* background: #ee7009; */
+    /* border: 1px solid rgb(255, 102, 0); */
+    /* z-index: 9; */
+}
+
+.Polaris-Badge.Polaris-Badge--toneSuccess{
+    border: 1px solid rgb(165, 215, 175);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+    margin-right: 10px;
+}
