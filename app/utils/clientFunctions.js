@@ -16,7 +16,7 @@ export const updateSettingsState = (path, value, state) => {
   }
 
   current[keys[keys.length - 1]] = value;
-  
+
   return updatedState;
 };
 
@@ -108,8 +108,22 @@ export const isEndDateValid = (endDate) => {
 
   return true;
 };
+export const fetchDateTimeFromString = (timeString) => {
+  if (timeString === "0" || timeString === "0d 0h 0m 0s") {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
 
-export const fetchDateTimeFromString =(timeString)=>{
-  return timeString.match(/\d+/g).map(Number)
+  const [days, hours, minutes, seconds] = timeString.match(/\d+/g).map(Number);
 
-}
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+  };
+};

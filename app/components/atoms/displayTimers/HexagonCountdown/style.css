@@ -1,0 +1,33 @@
+.HexagonCountdown {
+    display: flex;
+    /* align-items: center; */
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #ff4e4e;
+    gap: 20px;
+  }
+  
+  .HexagonCountdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin: 0 10px; */
+  }
+  
+  .HexagonCountdown-number {
+    font-size: 30px;
+    font-weight: bold;
+    /* color: #ff4e4e; */
+    /* background-color: #b0d6ff; */
+    /* padding: 10px 20px; */
+    border-radius: 5px;
+  }
+  
+  .HexagonCountdown-label {
+    margin-top: 0px;
+    font-size: 14px;
+    color: #7f7f7f;
+  }
+  
+  
+  

@@ -13,3 +13,10 @@
  .RIGHT{
     justify-content: end;
 }
+
+.align-column{
+    flex-direction: column;
+}
+.align-row{
+    flex-direction: row;
+}
