@@ -1,16 +1,16 @@
-.settings{
+.customization-container{
     display: flex;
-    width:70%;
+    width:100%;
     margin:auto
     
 }
 
-.settings-right-section, .settings-left-section{
+.customization-right-section, .customization-left-section{
     flex: 1;
     /* padding:20px */
 
 }
-.settings-left-section{
+.customization-left-section{
     display: flex;
     flex-direction: column;
     gap: 10px;

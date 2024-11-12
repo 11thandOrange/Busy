@@ -26,7 +26,7 @@ const options = [
   { label: "Inactive", value: STATUS.INACTIVE },
 ];
 
-const Settings = ({ announcementBarType }) => {
+const AnnouncementCustomization = ({ announcementBarType }) => {
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
     ...SETTINGS_INITIAL_STATE,
@@ -79,8 +79,8 @@ const Settings = ({ announcementBarType }) => {
   }, []);
 
   return (
-    <div className="settings">
-      <div className="settings-left-section">
+    <div className="customization-container">
+      <div className="customization-left-section">
         {/* <Card>
             <SettingsDisplay></SettingsDisplay>
             </Card> */}
@@ -132,7 +132,7 @@ const Settings = ({ announcementBarType }) => {
           ></ThemeSettings>
         </Card>
       </div>
-      <div className="settings-right-section">
+      <div className="customization-right-section">
         <ProductPreviewCard
           setSettingsState={setSettingsState}
           settingsState={settingsState}
@@ -143,4 +143,4 @@ const Settings = ({ announcementBarType }) => {
   );
 };
 
-export default Settings;
+export default AnnouncementCustomization;

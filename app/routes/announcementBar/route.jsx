@@ -1,5 +1,5 @@
 import React from "react";
-import Settings from "../../components/templates/Settings";
+import Settings from "../../components/templates/AnnouncementCustomization";
 import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementBarConfig";
 
 const route = () => {
