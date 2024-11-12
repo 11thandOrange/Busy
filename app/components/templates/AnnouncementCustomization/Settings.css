@@ -1,0 +1,17 @@
+.customization-container{
+    display: flex;
+    width:100%;
+    margin:auto
+    
+}
+
+.customization-right-section, .customization-left-section{
+    flex: 1;
+    /* padding:20px */
+
+}
+.customization-left-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -1,0 +1,58 @@
+/* Ribbon Banner Styles */
+.ribbon-banner {
+    position: absolute;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+   
+    z-index: 9999;
+  }
+  
+  /* Top Fixed Position */
+  .ribbon-banner.TOP_FIXED {
+    top: 7%;
+  }
+  
+  /* Top Relative Position */
+  .ribbon-banner.TOP_RELATIVE {
+    top: 7%;
+  }
+  
+  /* Bottom Position */
+  .ribbon-banner.BOTTOM {
+    bottom: 15%;
+  }
+  
+  /* Email Input Field Styles */
+  .email-input {
+    /* padding: 10px; */
+    margin-right: 10px;
+    /* border-radius: 5px; */
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  /* Button Styles */
+  .banner-button {
+    padding: 2px 2px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #38619a;
+  }
+  
+  /* Dynamic Background Color */
+  .banner-button {
+    background-color: #38619a; /* default value */
+    color: white; /* default value */
+  }
+  
+  /* Customize the button with state values */
+  .ribbon-banner .banner-button {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+  }
+  

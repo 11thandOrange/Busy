@@ -1,0 +1,113 @@
+/* Swiper container */
+.swiper {
+    width: 50%;
+    height: 100%;
+  }
+  
+  /* General slide styling */
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Main Swiper slide images */
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Main Swiper */
+  .mySwiper2 {
+    height: 80%; /* Takes up 80% of the height for the main slider */
+    width: 50%; /* Full width */
+  }
+  
+  /* Thumbnail Swiper */
+  .mySwiper {
+    height: 20%; /* Takes up the remaining 20% of the height for thumbnails */
+    box-sizing: border-box;
+    padding: 10px 0; /* Adds some padding around the thumbnails */
+  }
+  
+  /* Thumbnail slides with rectangular proportions */
+  .mySwiper .swiper-slide {
+    width: 100px; /* Controls how many thumbnails fit in a row (smaller width = more thumbnails) */
+    height: 100px; /* Height of the thumbnails (you can adjust this for taller or shorter thumbnails) */
+    opacity: 0.4; /* Dim non-active thumbnails */
+    border-radius: 4px; /* Optional: Rounded corners for the thumbnail slides */
+    transition: opacity 0.3s ease; /* Smooth transition effect when thumbnail opacity changes */
+  }
+  
+  /* Active thumbnail */
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1; /* Full opacity for the active thumbnail */
+  }
+  
+  /* Thumbnail images with rectangular proportions */
+  .mySwiper .swiper-slide img {
+    display: block;
+    width: 100%; /* Full width of the thumbnail slide */
+    height: 100%; /* Full height of the thumbnail slide */
+    object-fit: cover; /* Ensures the images are cropped appropriately to fit the rectangular shape */
+  }
+  
+  /* Main slider specific dimensions */
+  .mySwiper2 .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Optional: Add some hover effects to the thumbnails for better UX */
+  .mySwiper .swiper-slide:hover {
+    opacity: 0.7; /* Slightly increase opacity when hovering over a thumbnail */
+    cursor: pointer;
+  }
+  
+  /* Swiper navigation buttons (for Main Swiper) */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #17171700; /* White navigation buttons */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    color: #393838; /* Lighten the buttons on hover */
+  }
+  
+  /* Thumbnail wrapper */
+.thumbnail {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Thumbnail title styling */
+  .thumbnail-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.6); /* Black transparent background */
+    color: #fff; /* White text */
+    text-align: center;
+    font-size: 14px; /* Adjust font size */
+    font-weight: bold;
+  }
+  
