@@ -43,10 +43,11 @@
     padding-bottom: 6px;
   }
   .features p:before {
-    content: "🗸";
+    content: "\2714";
     font-weight: 900;
     color: #47a34a;
     position: absolute;
+
     left: 0;
   }
   .plan-card::after {

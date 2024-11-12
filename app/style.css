@@ -23,7 +23,7 @@
 }
 .app-main .Polaris-LegacyCard div:has(.Polaris-Pagination){
     border: unset !important;
-    margin-top: 30px !important;
+    margin-top: 10px !important;
 }
 .app-main .Polaris-LegacyCard div:has(.Polaris-Pagination) .Polaris-ButtonGroup{
     border: 1px solid #ddd;
@@ -38,7 +38,7 @@
     right: 15px;
 }
 .Polaris-LegacyCard__Section > div:has(.Polaris-Button) {
-    padding: 10px;
+    padding: 0px;
 }
 .Polaris-LegacyCard__Section > div:has(.Polaris-Button) button.Polaris-Button {
     box-shadow: unset;
@@ -79,7 +79,27 @@
 
 .Polaris-LegacyCard .Polaris-Tabs__Outer{
     border-bottom: 1px solid #fdac69;
-  }
-  .Polaris-LegacyCard:has(.Polaris-Spinner) .Polaris-Tabs__Outer{
+}
+
+.Polaris-LegacyCard:has(.Polaris-Spinner) .Polaris-Tabs__Outer{
     border-bottom: none;
-  }
+}
+
+.Polaris-Box, .head-searchbar{
+    padding: 10px;
+}
+
+/* .Polaris-Connected .Polaris-TextField {
+    max-width: 160px;
+    right: 10px;
+    position: absolute;
+    top: -14px;
+} */
+
+.Polaris-ButtonGroup__Item .Polaris-Box{
+    padding: 7px;
+}
+
+.Polaris-LegacyCard__Section {
+    padding: 20px;
+}
