@@ -7,13 +7,14 @@ import {
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
   import './style.css'
 import { CATEGORIES_ENUM } from "../../../utils/constants";
+import SpinnerExample from "../../atoms/Spinner";
 
 const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [], emptyDataString="No Data to Show", emptyDataImage="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"}) => {
     const [selected, setSelected] = useState(0);
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     //apps page
-    const [selectedApps, setSelectedApps] = useState([...list]);
+    const [selectedApps, setSelectedApps] = useState(null);
     console.log(list, selectedApps, "selectedApps")
 
     const manageSelectedApps = (selectedTabIndex) => {
@@ -22,7 +23,7 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
       if (selectedId === CATEGORIES_ENUM.all) {
         newSelectedApps = [...list];
       } else {
-        newSelectedApps = list.filter((item) =>
+        newSelectedApps = list?.filter((item) =>
           item.categoryId.includes(selectedId)
         );
       }
@@ -46,11 +47,11 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
         if (selectedId === CATEGORIES_ENUM.all) {
           apps = [...list];
         } else {
-          apps = list.filter((item) => item.categoryId.includes(selectedId));
+          apps = list?.filter((item) => item.categoryId.includes(selectedId));
         }
         console.log(apps, value,"value test")
         setSelectedApps(
-          apps.filter((item) =>
+          apps?.filter((item) =>
             item.name.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())
           )
         );
@@ -67,15 +68,12 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
         <LegacyCard>
           <TabsWithSearchBar tabs={tabs} selected={selected} handleSearchChange={handleSearchChange} handleTabChange={handleTabChange} searchValue={searchValue} clearSearch={clearSearch}/>
           <LegacyCard.Section>
-            {selectedApps.length ? (
+            {selectedApps?.length ? (
                 componentToRender({selectedApps, setSelectedApps})
             ) : (
-              <div>
-                <DynamicEmptyState
-                heading={emptyDataString}
-                image={emptyDataImage}
-                />
-                </div>
+              list ? 
+            <DynamicEmptyState heading={emptyDataString} image={emptyDataImage} /> :
+            <SpinnerExample/>
             )}
           </LegacyCard.Section>
         </LegacyCard>

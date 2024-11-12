@@ -12,6 +12,7 @@ import {
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
 import { CATEGORIES_ENUM } from "../../../utils/constants";
   import './style.css'
+import SpinnerExample from "../../atoms/Spinner";
 
   const items = [
     {
@@ -77,12 +78,12 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
-    const [selectedApps, setSelectedApps] = useState([]);
+    const [selectedApps, setSelectedApps] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15; // Default number of items per page
   console.log(items, "items")
     // Derived pagination controls
-    const hasNext = (currentPage * itemsPerPage) < items.length;
+    const hasNext = (currentPage * itemsPerPage) < items?.length;
     const hasPrevious = currentPage > 1;
     
     // Debounce search value change
@@ -101,17 +102,17 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
       const selectedTabId = tabs[selected]?.id || CATEGORIES_ENUM.all;
       let itemsAccordingToTab = [];
       if(tabs[selected]?.id === CATEGORIES_ENUM.favorites){
-        itemsAccordingToTab = items.filter(item => item.isFavorite);
+        itemsAccordingToTab = items?.filter(item => item.isFavorite);
       }else if(tabs[selected]?.id === CATEGORIES_ENUM.all){
         itemsAccordingToTab = items;
       }else{
-        itemsAccordingToTab = items.filter(item => item.categoryId.includes(tabs[selected]?.id))
+        itemsAccordingToTab = items?.filter(item => item.categoryId.includes(tabs[selected]?.id))
       };
       
       if(searchValue) {
         itemsAccordingToTab = itemsAccordingToTab.filter(item => item.name.toLowerCase().includes(searchValue.toLocaleLowerCase()) || item.description.toLowerCase().includes(searchValue.toLocaleLowerCase()))
       }
-      itemsAccordingToTab.slice((currentPage - 1) * itemsPerPage, ((currentPage - 1) * itemsPerPage) + itemsPerPage)
+      itemsAccordingToTab?.slice((currentPage - 1) * itemsPerPage, ((currentPage - 1) * itemsPerPage) + itemsPerPage)
       setSelectedApps(itemsAccordingToTab)
     }, [selected, currentPage, searchValue, tabs]);
   
@@ -150,10 +151,12 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
         <TabsWithSearchBar tabs={tabs} selected={selected} handleSearchChange={handleSearchChange} handleTabChange={handleTabChange} searchValue={searchValue} clearSearch={clearSearch}/>
   
         <LegacyCard.Section>
-          {selectedApps.length ? (
+          {selectedApps?.length ? (
             componentToRender({ selectedApps, setSelectedApps })
           ) : (
-            <DynamicEmptyState heading={emptyDataString} image={emptyDataImage} />
+            items ? 
+            <DynamicEmptyState heading={emptyDataString} image={emptyDataImage} /> :
+            <SpinnerExample/>
           )}
         </LegacyCard.Section>
         
@@ -163,10 +166,10 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
             onPrevious={handlePreviousPage}
             hasNext={hasNext}
             onNext={handleNextPage}
-            label={selectedApps.length ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+            label={selectedApps?.length ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
               currentPage * itemsPerPage,
-              selectedApps.length
-            )} of ${selectedApps.length} items` : '0-0 of 0 items'}
+              selectedApps?.length
+            )} of ${selectedApps?.length} items` : '0-0 of 0 items'}
           />
         </div>
       </LegacyCard>

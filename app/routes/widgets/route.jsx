@@ -46,9 +46,7 @@ export const loader = async ({ request }) => {
   return cors(request, response);
 };
 
-export const action = async ({ request }) => {
-  return cors(request, {'name':'Deepak'})
- 
+export const action = async ({ request }) => { 
   const shop = await getShopName(request);
   const formData = new URLSearchParams(await request.text());
   const widgetId = parseInt(formData.get("widgetId"));
@@ -57,8 +55,8 @@ export const action = async ({ request }) => {
 
 function TabsInsideOfACardExample() {
   const fetcher = useFetcher();
-  const widgets_data = useLoaderData()
-  const [widgets, setWidgets] = useState([]);
+  const widgets_data = useLoaderData();
+  const [widgets, setWidgets] = useState(null);
   const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
@@ -71,10 +69,12 @@ function TabsInsideOfACardExample() {
       };
       return item;
     })
-    console.log(updatedTabData, "updatedTabData")
+    console.log(updatedTabData, "updatedTabData", JSON.stringify(widgets_data))
     setTabs(updatedTabData)
-    setWidgets(widgets_data.widgets)
+    setWidgets(widgets_data.widgets);
+
   }, [widgets_data]);
+  console.log(widgets_data, "widgets_data")
 
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(

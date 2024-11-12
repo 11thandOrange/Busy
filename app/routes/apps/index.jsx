@@ -80,7 +80,7 @@ export const action = async ({ request }) => {
   function TabsInsideOfACardExample() {
     const apps = useLoaderData();
     const [tabs, setTabs] = useState([]);
-    const [appsList, setAppsList] = useState([])
+    const [appsList, setAppsList] = useState(null)
 
     useEffect(() => {
       console.log(apps, "apps");
