@@ -82,7 +82,6 @@ export const action = async ({ request }) => {
 
 export default function Index() {
   const apps = useLoaderData();
-  console.log(apps, "apps")
 
   return (
     <Page>

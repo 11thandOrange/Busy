@@ -44,6 +44,7 @@ model App {
   name        String
   description String
   image       String?
+  slug        String?
   categories  Category[]  @relation("AppCategories")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -103,7 +104,7 @@ model countdown_timer {
 model Inactive_tab_message {
   id          Int      @id @default(autoincrement())
   message        String?
-  shop String?
+  shop String  @unique
   createdAt   DateTime @default(now())
 }
 

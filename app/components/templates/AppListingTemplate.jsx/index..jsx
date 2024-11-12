@@ -15,7 +15,6 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
     const [searchValue, setSearchValue] = useState("");
     //apps page
     const [selectedApps, setSelectedApps] = useState(null);
-    console.log(list, selectedApps, "selectedApps")
 
     const manageSelectedApps = (selectedTabIndex) => {
       const selectedId = tabs[selectedTabIndex]?.id;
@@ -49,7 +48,6 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
         } else {
           apps = list?.filter((item) => item.categoryId.includes(selectedId));
         }
-        console.log(apps, value,"value test")
         setSelectedApps(
           apps?.filter((item) =>
             item.name.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())
