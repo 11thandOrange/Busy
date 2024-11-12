@@ -9,10 +9,15 @@ import {
   hexToRgb,
   rgbToHsb,
 } from "@shopify/polaris";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 import "./CustomColorPallete.css";
-function CustomColorPallete({ colorHeading, onColorChange, initialColor }) {
+import useDebounce from "../../../hooks/useDebounce";
+function CustomColorPallete({
+  colorHeading,
+  onColorChange = () => {},
+  initialColor,
+}) {
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
@@ -22,7 +27,7 @@ function CustomColorPallete({ colorHeading, onColorChange, initialColor }) {
   const [color, setColor] = useState(
     rgbToHsb(hexToRgb(initialColor || "#fffff")),
   );
-
+  const debouncedColor = useDebounce(color, 500);
   const activator = (
     <div
       onClick={togglePopoverActive}
@@ -36,7 +41,11 @@ function CustomColorPallete({ colorHeading, onColorChange, initialColor }) {
       }}
     ></div>
   );
-
+  useEffect(() => {
+    if (debouncedColor) {
+      onColorChange(hsbToHex(debouncedColor));
+    }
+  }, [debouncedColor]);
   return (
     <div className="color-pallete-container">
       <div className="color-header">
@@ -44,12 +53,7 @@ function CustomColorPallete({ colorHeading, onColorChange, initialColor }) {
           {colorHeading}
         </Text>
       </div>
-      <div
-        className="custom-color-pallete"
-        onMouseUp={() => {
-          onColorChange(hsbToHex(color));
-        }}
-      >
+      <div className="custom-color-pallete">
         <div style={{ height: "36px" }}>
           <Popover
             active={popoverActive}

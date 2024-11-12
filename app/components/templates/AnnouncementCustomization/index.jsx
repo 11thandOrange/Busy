@@ -76,7 +76,7 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
       default:
         break;
     }
-  }, []);
+  }, [settingsState]);
 
   return (
     <div className="customization-container">

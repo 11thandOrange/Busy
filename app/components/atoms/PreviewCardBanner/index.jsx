@@ -46,8 +46,6 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     }
     // Callback to update the remaining time
     const updateCallback = (timeString) => {
-      console.log("timer", timeString);
-
       setTimeLeft(timeString);
     };
 
