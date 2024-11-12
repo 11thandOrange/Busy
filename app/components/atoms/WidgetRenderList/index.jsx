@@ -5,7 +5,6 @@ import ActiveButton from '../ActiveButton'
 import TooltipHOC from '../TooltipHOC'
 
 const WidgetRenderList = ({selectedApps, handleAddToFavorite}) => {
-  console.log(selectedApps, "test")
   return (
     <div class="cards-container">
         {selectedApps.map(widget => {

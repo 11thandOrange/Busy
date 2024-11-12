@@ -69,12 +69,10 @@ function TabsInsideOfACardExample() {
       };
       return item;
     })
-    console.log(updatedTabData, "updatedTabData", JSON.stringify(widgets_data))
     setTabs(updatedTabData)
     setWidgets(widgets_data.widgets);
 
   }, [widgets_data]);
-  console.log(widgets_data, "widgets_data")
 
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(
