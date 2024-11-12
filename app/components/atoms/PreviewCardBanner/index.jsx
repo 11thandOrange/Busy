@@ -6,6 +6,7 @@ import {
 } from "../../../constants/announcementBarConfig";
 import {
   calculateTimeDifference,
+  replaceString,
   startCountdown,
   updateCountdownMessage,
 } from "../../../utils/clientFunctions";
@@ -69,12 +70,15 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     // Cleanup on component unmount
     return () => clearInterval(interval);
   }, [countDownStartAt, countDownEndsAt]);
+
   return (
     <div
       className={`ribbon-banner ${themeSettings.status}`}
       style={bannerStyle}
     >
-      <p style={{ color: themeSettings.textColor }}>{timeLeft}</p>
+      <p style={{ color: themeSettings.textColor }}>
+        {replaceString(generalSettings.message, timeLeft, "#countdown_timer#")}
+      </p>
 
       {announcementBarType === ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE && (
         <div>

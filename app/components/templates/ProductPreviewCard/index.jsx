@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import './Style.css'; // Import CSS for styling
-import PreviewCardBanner from '../../atoms/PreviewCardBanner';
+import React, { useEffect, useState } from "react";
+import "./Style.css"; // Import CSS for styling
+import PreviewCardBanner from "../../atoms/PreviewCardBanner";
 
 // Banner configuration constant
 const bannerConfig = {
-  text: 'Limited Offer!',
-  bgColor: '#f5a623',
-  bgImage: '', // You can add a URL to a background image here
-  position: 'bottom', // Can be 'top-fixed', 'top-relative', or 'bottom'
+  text: "Limited Offer!",
+  bgColor: "#f5a623",
+  bgImage: "", // You can add a URL to a background image here
+  position: "bottom", // Can be 'top-fixed', 'top-relative', or 'bottom'
 };
 
-const ProductPreviewCard = ({settingsState,announcementBarType,setSettingsState}) => {
+const ProductPreviewCard = ({
+  settingsState,
+  announcementBarType,
+  setSettingsState,
+}) => {
   const [quantity, setQuantity] = useState(1);
-console.log("settings state is here",settingsState);
-
+  // console.log("settings state is here",settingsState);
 
   const handleQuantityChange = (e) => {
     const value = Math.max(0, parseInt(e.target.value)); // Prevent going below 0
@@ -22,22 +25,25 @@ console.log("settings state is here",settingsState);
 
   return (
     <div className="product-preview-card">
-     <PreviewCardBanner settingsState={settingsState} announcementBarType={announcementBarType} setSettingsState={setSettingsState}></PreviewCardBanner>
+      <PreviewCardBanner
+        settingsState={settingsState}
+        announcementBarType={announcementBarType}
+        setSettingsState={setSettingsState}
+      ></PreviewCardBanner>
 
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
- {/* Title Text */}
- {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
+      {/* Title Text */}
+      {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
       {/* Product Image */}
       <div className="product-image-container">
-        <img 
-          src="https://via.placeholder.com/150" 
-          alt="Product" 
-          className="product-image" 
+        <img
+          src="https://via.placeholder.com/150"
+          alt="Product"
+          className="product-image"
         />
       </div>
 
-    
       {/* Product Title, Price, and Quantity */}
       <div className="product-info">
         <h2 className="product-title">Product title</h2>
@@ -47,11 +53,11 @@ console.log("settings state is here",settingsState);
         </p>
         {/* Quantity Selector */}
         <div className="quantity-container">
-          <input 
-            type="number" 
-            value={quantity} 
-            onChange={handleQuantityChange} 
-            className="quantity-input" 
+          <input
+            type="number"
+            value={quantity}
+            onChange={handleQuantityChange}
+            className="quantity-input"
             min="0"
           />
         </div>
@@ -66,7 +72,10 @@ console.log("settings state is here",settingsState);
       <div className="product-description">
         <h3>Product description</h3>
         <p>
-          Here you’ll go into more depth about your product. Outline its key features, what sets it apart from other products in the market, its size and weight if applicable, and any other important details customers need to know.
+          Here you’ll go into more depth about your product. Outline its key
+          features, what sets it apart from other products in the market, its
+          size and weight if applicable, and any other important details
+          customers need to know.
         </p>
         <ul>
           <li>

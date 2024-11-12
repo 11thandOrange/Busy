@@ -53,7 +53,6 @@ export function updateCountdownMessage(startDate, endDate, message) {
 }
 
 export function startCountdown(timeString, updateCallback, finishCallback) {
-    
   const timeParts = timeString.match(/\d+/g).map(Number);
 
   let days = timeParts[0] ? parseInt(timeParts[0]) : 0;
@@ -88,4 +87,8 @@ export function startCountdown(timeString, updateCallback, finishCallback) {
 
   const timerInterval = setInterval(updateTimer, 1000);
   return timerInterval; // Return the interval ID for cleanup if needed
+}
+
+export function replaceString(inputString, countdownValue, replaceableString) {
+  return inputString.replace(replaceableString, countdownValue);
 }
