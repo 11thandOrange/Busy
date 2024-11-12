@@ -35,7 +35,8 @@ export const loader = async ({ request }) => {
     return {
       id: widget.id,
       name: widget.name,
-      description: widget.description,
+      description_title: widget.description_title,
+      description_content: widget.description_content,
       image: widget.image,
       categoryId: widget.categories.map(item => item.id),
       isFavorite,
