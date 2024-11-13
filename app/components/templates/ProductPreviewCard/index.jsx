@@ -39,7 +39,10 @@ const ProductPreviewCard = ({
     }
   };
   return (
-    <div className="product-preview-card">
+    <div
+      className="product-preview-card"
+      style={{ backgroundColor: "white", borderColor: "white" }}
+    >
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
       {/* Title Text */}

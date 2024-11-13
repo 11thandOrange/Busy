@@ -1,6 +1,6 @@
 /* Overall Container */
 .product-preview-card {
-  background-color: #222222;
+ 
   color: white;
   padding: 20px;
   border-radius: 60px;
@@ -8,7 +8,7 @@
   margin: auto;
   min-height: 800px;
   font-family: Arial, sans-serif;
-  border: 10px solid #AEAEAE;
+  border: 10px solid ;
   position: relative;
   overflow: hidden; /* Ensures ribbon doesn’t overflow */
 }
@@ -30,10 +30,10 @@
 
 /* Dummy URL Bar */
 .url-bar {
-  background-color: #333;
+  background-color: #ebeaea;
   padding: 10px;
   text-align: center;
-  color: #ffffff;
+  color: #595858;
   border-radius: 10px;
   margin-bottom: 20px;
   font-size: medium;
@@ -62,7 +62,7 @@
   font-size: 1.5rem;
   margin: 10px 0;
   font-weight: 1000;
-  color: #AEAEAE;
+  color: #595858;
 }
 
 .product-price {
@@ -78,7 +78,7 @@
 
 .current-price {
   font-weight: bold;
-  color: #AEAEAE;
+  color: #595858;
 }
 
 /* Quantity Selector */
@@ -92,9 +92,9 @@
   text-align: center;
   font-size: 1rem;
   border-radius: 5px;
-  border: 1px solid #AEAEAE;
-  background-color: #222222;
-  color: white;
+  border: 1px solid #595858;
+  background-color: transparent;
+  color: #595858;
 }
 
 /* Add to Cart Button */
@@ -105,9 +105,9 @@
 
 .add-to-cart-button {
   padding: 10px 20px;
-  background-color: #222222;
-  border: 1px solid #AEAEAE;
-  color: white;
+  background-color: transparent;
+  border: 1px solid #595858;
+  color: #595858;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
@@ -116,6 +116,7 @@
 
 /* Product Description */
 .product-description {
+  color: #595858;
   text-align: left;
   margin-top: 20px;
 }
@@ -154,7 +155,7 @@
   padding: 5px;
   width: 100%;
   font-size: 1rem;
-  border: 1px solid #AEAEAE;
+  border: 1px solid #595858;
   border-radius: 5px;
   background-color: #333;
   color: white;
