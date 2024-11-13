@@ -35,7 +35,7 @@ export const loader = async ({ request }) => {
       categoryId: app.categories.map(item => item.id),
       createdAt: app.createdAt,
       updatedAt: app.updatedAt,
-      isInstalled,
+      isInstalled, 
     };
   });
   
