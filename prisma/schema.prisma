@@ -39,6 +39,12 @@ model Category {
   apps         App[]        @relation("AppCategories")
   widgets     Widget[]    @relation("WidgetCategories")
 }
+model Event {
+  id          Int           @id @default(autoincrement())
+  content        String?
+  createdAt   DateTime      @default(now())
+  Analytics   Analytics[]
+}
 model App {
   id          Int           @id @default(autoincrement())
   name        String
@@ -49,9 +55,21 @@ model App {
   categories  Category[]  @relation("AppCategories")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  Merchant Merchant[]
+  alalytics    Analytics[] 
+  Merchant          Merchant[] 
 }
-
+model Analytics {
+  id              Int        @id @default(autoincrement())
+  eventId         Int
+  event           Event      @relation(fields: [eventId], references: [id])
+  pageUrl         String
+  timestamp       DateTime @default(now())
+  shop            String?
+  appId           Int
+  app             App      @relation(fields: [appId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
 model Merchant {
   id        Int      @id @default(autoincrement())
   enabled   Boolean  @default(false)

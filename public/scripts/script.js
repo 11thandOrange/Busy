@@ -32,3 +32,39 @@ function fetch_request(url, requestData)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
+var apps = ['announcement-bar','cart-notice'];
+
+const trackImpression = (elementId) => {
+  const element = document.getElementById(elementId);
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        console.log(`${elementId} was viewed`);
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(element);
+  sendAnalyticsData('impression', { element: elementId, time: new Date().toISOString() });
+
+};
+const trackClicks = (elementId) => {
+  document.getElementById(elementId).addEventListener('click', function() {
+    sendAnalyticsData('impression', { element: elementId, time: new Date().toISOString() });
+  });
+};
+apps.forEach((app)=> {
+  trackImpression(app)
+  trackClicks(app)
+});
+
+function sendAnalyticsData(type, data) {
+  fetch('/your-analytics-endpoint', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ type, data })
+  });
+}

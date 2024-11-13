@@ -91,7 +91,6 @@ export const markWidgetAsFavorite = async(shop, widgetId) => {
       return false;
     }
 
-    // Create a new favorite record
     const favorite = await db.fav_widget.create({
       data: {
         shop: shop,
@@ -104,4 +103,23 @@ export const markWidgetAsFavorite = async(shop, widgetId) => {
     console.error(error);
     return false;
   }
+}
+export const createEvent = async(data) => {
+  await db.analytics.create({
+    data:{
+      eventId: data.eventId,
+    }
+  });
+}
+export const getEventTypes = async(appId) =>{
+  const eventTypes = await db.app.findFirst({
+    where: {
+      appId: appId,
+      shop: shop,
+    },
+    include:{
+      event:true
+    }
+  });
+  return eventTypes;
 }
