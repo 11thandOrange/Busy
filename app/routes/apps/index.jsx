@@ -34,6 +34,7 @@
         createdAt: app.createdAt,
         updatedAt: app.updatedAt,
         isInstalled,
+        slug: app.slug,
       };
     });
     
