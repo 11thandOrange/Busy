@@ -6,6 +6,7 @@ import {
   calculateTimeDifferenceInSeconds,
   calculateTotalSeconds,
 } from "../../../../utils/clientFunctions";
+import useCountdownProgress from "../../../../hooks/useCountdownProgress";
 
 const ProgressBarCountdown = ({
   days,
@@ -18,18 +19,12 @@ const ProgressBarCountdown = ({
   const { display, settings } = settingsState;
   const { countDownStartAt, countDownEndsAt } = settings;
   const { digitsColor, backgroundColor } = display;
-  const totalTime = useMemo(() => {
-    return calculateTimeDifferenceInSeconds(countDownStartAt, countDownEndsAt);
-  }, [countDownStartAt, countDownEndsAt]);
-  const currentTime = useMemo(() => {
-    return calculateTotalSeconds({ days, hours, minutes, seconds });
-  }, [days, hours, minutes, seconds]);
-
-  const progress = useMemo(() => {
-    console.log("Total time", totalTime, currentTime);
-
-    return calculateProgressPercentage(totalTime, currentTime);
-  }, [days, hours, minutes, seconds]);
+  const { progress } = useCountdownProgress(countDownStartAt, countDownEndsAt, {
+    days,
+    hours,
+    minutes,
+    seconds,
+  });
   return (
     <div>
       <ProgressBar

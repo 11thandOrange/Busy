@@ -128,7 +128,7 @@ export const fetchDateTimeFromString = (timeString) => {
   };
 };
 
-export function calculateTotalSeconds({ days, hours, minutes, seconds }) {
+export function calculateTotalSeconds({ days=0, hours=0, minutes=0, seconds=0 }) {
   const secondsInDay = days * 24 * 60 * 60;
   const secondsInHour = hours * 60 * 60;
   const secondsInMinute = minutes * 60;
