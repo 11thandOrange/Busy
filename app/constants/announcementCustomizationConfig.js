@@ -47,8 +47,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
 
   [ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER]: {
     generalSettings: {
-      countDownStartAt: "",
-      countDownEndsAt: "",
+      countDownStartAt: "2024-11-13T12:30",
+      countDownEndsAt: "2024-11-13T12:30",
       message: "Offer ends in #countdown_timer#.",
     },
   },

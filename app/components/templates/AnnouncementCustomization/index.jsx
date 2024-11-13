@@ -34,7 +34,7 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
     ...generalSettings,
   });
 
-  console.log("settingsState", settingsState);
+  
 
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {

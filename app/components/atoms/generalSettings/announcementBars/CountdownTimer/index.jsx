@@ -22,6 +22,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
               ),
             );
           }}
+          initialValue={settingsState.generalSettings.countDownStartAt}
           label={"Countdown starts At"}
         ></DatePicker>
       </div>
@@ -36,6 +37,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
               ),
             );
           }}
+          initialValue={settingsState.generalSettings.countDownEndsAt}
           label={"Countdown ends At"}
           minValue={settingsState?.generalSettings?.countDownStartAt}
           errorMessage={

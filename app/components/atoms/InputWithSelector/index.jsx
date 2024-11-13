@@ -31,11 +31,12 @@ const InputWithSelector = ({
           handleChange();
         }}
         value={inputValue}
+
       ></CustomTextField>
       <Selector
         options={selectorOptions}
         onSelect={(value) => {
-          console.log("selected value", value);
+       
           unit.current = value;
           handleChange();
         }}

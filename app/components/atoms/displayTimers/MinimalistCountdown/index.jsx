@@ -12,7 +12,7 @@ const MinimalistCountdown = ({
   const { digitsColor, borderColor } = display;
 
   const divider = useCallback(() => {
-    console.log("bordercn ", settingsState);
+    
 
     return (
       <span className="divider" style={{ color: borderColor }}>

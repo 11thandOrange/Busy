@@ -66,7 +66,7 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
         remainingMinutes: 0,
         remainingSeconds: 0,
       });
-      console.log("Countdown finished");
+   
     };
 
     let interval = null;
