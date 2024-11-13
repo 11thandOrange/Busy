@@ -38,6 +38,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-utils": "^7.5.0",
+    "swiper": "^11.1.14",
     "vite-tsconfig-paths": "^5.0.1"
   },
   "devDependencies": {

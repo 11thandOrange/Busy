@@ -1,0 +1,31 @@
+.setting-section {
+    display: flex;
+}
+
+.setting-section .setting-left-section {
+    width: 30%;
+    margin-right: 25px;
+}
+
+.setting-section .heading {
+    font-weight: 700;
+}
+
+.setting-section .sub-heading {
+    padding-top: 10px;
+    color: #656565;
+}
+   
+.setting-section .content {
+    width: 80%;
+}
+
+.setting-section .content .Polaris-Box {
+    padding: 18px;
+}
+
+.setting-section .setting-customization {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
