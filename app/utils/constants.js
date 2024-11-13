@@ -15,14 +15,8 @@ export const WIDGETS_TABS = [
 export const CATEGORIES_ENUM = {
   all: 1,
   myApps: 2,
-  ux: 3,
-  social: 4,
-  engageUsers: 5,
-  boostSales: 6,
-  favorites: 7,
-};
-
-export const APP_TYPE = {
-  ANNOUNCEMENT_BARS: 1,
-  COUNTDOWN_TIMER: 2,
-};
+  boostSales: 3,
+  engageUsers: 4,
+  ux: 5,
+  favorites: 6,
+}

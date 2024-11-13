@@ -36,15 +36,17 @@ model Category {
   content        String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  App         App[]
+  apps         App[]        @relation("AppCategories")
   widgets     Widget[]    @relation("WidgetCategories")
 }
 model App {
   id          Int           @id @default(autoincrement())
   name        String
-  description String
-  categoryId     Int?
-  category       Category?      @relation(fields: [categoryId], references: [id])
+  description_title String?
+  description_content String?
+  image       String?
+  slug        String?
+  categories  Category[]  @relation("AppCategories")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   Merchant Merchant[]
@@ -64,7 +66,8 @@ model Merchant {
 model Widget {
   id          Int      @id @default(autoincrement())
   name        String?
-  description String?
+  description_title String?
+  description_content String?
   image       String?
   categories  Category[]  @relation("WidgetCategories")
   createdAt   DateTime @default(now())
@@ -103,7 +106,7 @@ model countdown_timer {
 model Inactive_tab_message {
   id          Int      @id @default(autoincrement())
   message        String?
-  shop String?
+  shop String  @unique
   createdAt   DateTime @default(now())
 }
 

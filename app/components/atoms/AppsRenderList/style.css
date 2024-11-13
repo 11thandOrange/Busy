@@ -49,3 +49,7 @@
     font-weight: 600;
     color: #303030;
 }
+
+.Polaris-Box, .head-searchbar{
+    padding: 10px;
+}

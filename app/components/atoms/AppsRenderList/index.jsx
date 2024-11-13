@@ -10,33 +10,28 @@ const AppsRenderList = ({ selectedApps }) => {
             resourceName={{ singular: "item", plural: "items" }}
             items={selectedApps}
             renderItem={(item) => {
-                const { id, title, description, status } = item;
+                const { id, name, description_content, description_title, isInstalled, image } = item;
                 return (
                     <div className='bb-card-list-item'>
-<ResourceItem
-                        id={id}
-                        accessibilityLabel={`View details for ${title}`}
-                    >
-                        <div className='bb-list-content' style={{ display: "flex" }}>
+                        <ResourceItem
+                            id={id}
+                            accessibilityLabel={`View details for ${name}`}
+                        >
+                            <div className='bb-list-content' style={{ display: "flex" }}>
                                 <div style={{ display: "flex" }}>
                                     <div className="bb-img-wrapper">
-                                        <img src={IMAGES.BadgeIcon} />
+                                        <img src={image} />
                                     </div>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <h4>{title}</h4>
-                                    <span>{description}</span>
+                                    <div style={{ display: "flex", flexDirection: "column" }}>
+                                        <h4>{name}</h4>
+                                        <h5>{description_title}</h5>
+                                        <span>{description_content}</span>
+                                    </div>
                                 </div>
+                                {isInstalled && <Badge tone="success">Active</Badge>}
                             </div>
-                            {status && <Badge tone="success">Active</Badge>}
-                        </div>
-                        {/* <h3>
-                        <TextStyle variation="strong">{title}</TextStyle>
-                    </h3>
-                    <div>{description}</div>
-
-                    {status && <Badge status="success">{status}</Badge>} */}
-                    </ResourceItem>
-                        </div>
+                        </ResourceItem>
+                    </div>
                     
                 );
             }}

@@ -18,20 +18,17 @@ export const loader = async ({ request }) => {
 
 export default function App() {
   const { apiKey } = useLoaderData();
+
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <PolarisAppProvider i18n={en}>
         <NavMenu>
-          <Link to="/app" rel="home">
+          <a href="/app" rel="home">
             Home
-          </Link>
-          <Link to="/apps">Apps</Link>
-          <Link to="/widgets">Widgets</Link>
-          <Link to="/plans">Plans</Link>
-          <Link to="/app/additional">Additional page</Link>
-          <Link to="/homepage">homepage</Link>
-          <Link to="/announcementBar">Announcement Customization</Link>
-          <Link to="/countdownTimer">Countdown Timer Customization</Link>
+          </a>
+          <a href="/apps">Apps</a>
+          <a href="/widgets">Widgets</a>
+          <a href="/app/plan">Plan</a>
         </NavMenu>
         <Outlet />
       </PolarisAppProvider>

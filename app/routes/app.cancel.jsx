@@ -1,19 +1,18 @@
 import {  redirect } from "@remix-run/node";
-import { authenticate, MONTHLY_PLAN } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 
 
 export const loader = async ({ request }) => {
   const { billing } = await authenticate.admin(request);
-  const billingCheck = await billing.require({
-    plans: [MONTHLY_PLAN],
-    onFailure: async () => billing.request({ plan: MONTHLY_PLAN }),
-  });
-
-  const subscription = billingCheck.appSubscriptions[0];
-  const cancelledSubscription = await billing.cancel({
-    subscriptionId: subscription.id,
-    isTest: true,
-    prorate: true,
-   });
-   return redirect("/app/pricing");
+  const billingCheck = await billing.check();
+  const activeSubscription = billingCheck.appSubscriptions.find(sub => sub.status === 'ACTIVE');
+    if (activeSubscription) {
+      await billing.cancel({
+        subscriptionId: activeSubscription.id,
+        isTest: true,
+        prorate: true,
+       });
+       return redirect("/app");
+      };
+   return redirect("/app");
 };
