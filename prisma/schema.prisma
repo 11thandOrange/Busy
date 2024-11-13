@@ -33,31 +33,41 @@ model Session {
 
 model Category {
   id          Int           @id @default(autoincrement())
-  content        String?
+  content     String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  apps         App[]        @relation("AppCategories")
+  apps        App[]        @relation("AppCategories")
   widgets     Widget[]    @relation("WidgetCategories")
 }
+
 model Event {
   id          Int           @id @default(autoincrement())
   content        String?
   createdAt   DateTime      @default(now())
   Analytics   Analytics[]
 }
+
 model App {
   id          Int           @id @default(autoincrement())
   name        String
   description_title String?
   description_content String?
+  sliderImages    String?
   image       String?
   slug        String?
   categories  Category[]  @relation("AppCategories")
+  specifications  Specification[]  @relation("AppSpecifications")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  alalytics    Analytics[] 
+  analytics    Analytics[] 
   Merchant          Merchant[] 
 }
+model Specification {
+  id        Int     @id @default(autoincrement())
+  content   String
+  apps      App[]   @relation("AppSpecifications")
+}
+
 model Analytics {
   id              Int        @id @default(autoincrement())
   eventId         Int
@@ -70,6 +80,7 @@ model Analytics {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
 model Merchant {
   id        Int      @id @default(autoincrement())
   enabled   Boolean  @default(false)

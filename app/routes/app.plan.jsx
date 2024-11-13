@@ -9,9 +9,9 @@ import { cors } from 'remix-utils/cors';
 
 export const loader = async ({ request }) => {
   try {
-    const { billing } = await authenticate.admin(request);  // Authenticate and get the billing object.
+    const { billing } = await authenticate.admin(request);
     
-    const billingInfo = await billing.check();  // Get billing details.
+    const billingInfo = await billing.check();
     
     if (billingInfo && billingInfo.appSubscriptions && billingInfo.appSubscriptions.length > 0) {
       const planName = billingInfo.appSubscriptions[0].name;

@@ -3,7 +3,7 @@
 client_id = "66741fd2a46bacd291b55be34ac42d9d"
 name = "BusyBuddy"
 handle = "busybuddy-6"
-application_url = "https://kuwait-aa-baghdad-symphony.trycloudflare.com"
+application_url = "https://beneath-pan-exam-nn.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://kuwait-aa-baghdad-symphony.trycloudflare.com/auth/callback",
-  "https://kuwait-aa-baghdad-symphony.trycloudflare.com/auth/shopify/callback",
-  "https://kuwait-aa-baghdad-symphony.trycloudflare.com/api/auth/callback"
+  "https://beneath-pan-exam-nn.trycloudflare.com/auth/callback",
+  "https://beneath-pan-exam-nn.trycloudflare.com/auth/shopify/callback",
+  "https://beneath-pan-exam-nn.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
