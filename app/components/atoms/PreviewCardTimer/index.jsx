@@ -25,6 +25,7 @@ const PreviewCardTimer = ({ settingsState }) => {
     remainingSeconds: 0,
   });
   const [isFinished, setIsFinished] = useState(false);
+  console.log("set", settingsState);
 
   const timeObject = useMemo(() => {
     return fetchTimeObject(countDownStartAt, countDownEndsAt);

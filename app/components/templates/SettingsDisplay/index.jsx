@@ -22,7 +22,7 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
   const handleSelectChange = (key, value) => {
     setSettingsState((prevState) => updateSettingsState(key, value, prevState));
   };
-  console.log("settings", settingsState);
+  
 
   const options = [
     { label: "Classic", value: COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC },
@@ -185,12 +185,23 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
         </div>
         {renderColorPallete()}
         <InputWithSelector
-          inputType="text"
+          inputType="number"
           title="Bottom"
           inputValue={settingsState.display.margin.bottom.value}
           unitValue={settingsState.display.margin.bottom.unit}
           onValueChange={(value, unit) => {
-            console.log("Value unit here", value, unit);
+            handleSelectChange("display.margin.bottom.value", value);
+            handleSelectChange("display.margin.bottom.unit", unit);
+          }}
+        ></InputWithSelector>
+        <InputWithSelector
+          inputType="number"
+          title="Top"
+          inputValue={settingsState.display.margin.top.value}
+          unitValue={settingsState.display.margin.top.unit}
+          onValueChange={(value, unit) => {
+            handleSelectChange("display.margin.top.value", value);
+            handleSelectChange("display.margin.top.unit", unit);
           }}
         ></InputWithSelector>
       </div>
