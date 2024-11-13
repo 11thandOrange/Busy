@@ -49,6 +49,7 @@ export default defineConfig({
       routes(defineRoutes) {
         return defineRoutes((route) => {
           route("apps/", "routes/apps/index.jsx", { index: true });
+          route("apps/announcement-bar", "routes/apps/announcement-bar/index.jsx", { index: true });
         })
       }
     }),

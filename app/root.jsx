@@ -1,5 +1,4 @@
 import {
-  Link,
   Links,
   Meta,
   Outlet,
@@ -8,7 +7,8 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
-import './style.css'
+import "./style.css";
+import { Link } from "react-router-dom";
 
 function LinkWrapper(props) {
   return (
@@ -39,7 +39,7 @@ export default function App() {
             Polaris: {
               Page: {
                 Header: {
-                  rollupButton: 'Actions',
+                  rollupButton: "Actions",
                 },
               },
             },
