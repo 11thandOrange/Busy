@@ -19,4 +19,9 @@ export const CATEGORIES_ENUM = {
   engageUsers: 4,
   ux: 5,
   favorites: 6,
-}
+};
+
+export const APP_TYPE = {
+  ANNOUNCEMENT_BARS: 1,
+  COUNTDOWN_TIMER: 2,
+};

@@ -5,9 +5,9 @@ import {
   ThemeStyleGridType,
 } from "../../../constants/announcementCustomizationConfig";
 import {
+  fetchTimeObject,
   replaceString,
   startCountdown,
-  updateCountdownMessage,
 } from "../../../utils/clientFunctions";
 
 const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
@@ -21,7 +21,12 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     countDownEndsAt,
   } = generalSettings;
 
-  const [timeLeft, setTimeLeft] = useState("0");
+  const [timeLeft, setTimeLeft] = useState({
+    remainingDays: 0,
+    remainingHours: 0,
+    remainingMinutes: 0,
+    remainingSeconds: 0,
+  });
   const [isFinished, setIsFinished] = useState(false);
   const [emailValue, setEmailValue] = useState("");
 
@@ -41,11 +46,9 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
   );
 
   // Generate the countdown message dynamically
-  const countdownMessage = useMemo(() => {
-    return countDownStartAt && countDownEndsAt
-      ? updateCountdownMessage(countDownStartAt, countDownEndsAt, message)
-      : message;
-  }, [countDownStartAt, countDownEndsAt, message]);
+  const timeObject = useMemo(() => {
+    return fetchTimeObject(countDownStartAt, countDownEndsAt);
+  }, [countDownStartAt, countDownEndsAt]);
 
   const buttonStyles = {
     backgroundColor: buttonColor,
@@ -53,34 +56,37 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
   };
 
   useEffect(() => {
-    const updateCallback = (timeString) => setTimeLeft(timeString);
+    const updateCallback = (timeObject) => setTimeLeft(timeObject);
 
     const finishCallback = () => {
       setIsFinished(true);
-      setTimeLeft("0d 0h 0m 0s");
+      setTimeLeft({
+        remainingDays: 0,
+        remainingHours: 0,
+        remainingMinutes: 0,
+        remainingSeconds: 0,
+      });
       console.log("Countdown finished");
     };
 
     let interval = null;
     if (countDownStartAt && countDownEndsAt) {
       setIsFinished(false);
-      interval = startCountdown(
-        countdownMessage,
-        updateCallback,
-        finishCallback,
-      );
+      interval = startCountdown(timeObject, updateCallback, finishCallback);
     }
 
     return () => clearInterval(interval);
-  }, [countDownStartAt, countDownEndsAt, countdownMessage]);
-
+  }, [countDownStartAt, countDownEndsAt]);
+  const timeObjectString = (timeLeft) => {
+    return `${timeLeft.remainingDays} days, ${timeLeft.remainingHours} hours, ${timeLeft.remainingMinutes} minutes, ${timeLeft.remainingSeconds} seconds`;
+  };
   return (
     <div
       className={`ribbon-banner ${themeSettings.status}`}
       style={bannerStyle}
     >
       <p style={{ color: themeSettings.textColor }}>
-        {replaceString(generalSettings.message, timeLeft)}
+        {replaceString(generalSettings.message, timeObjectString(timeLeft))}
       </p>
 
       {announcementBarType === ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE && (

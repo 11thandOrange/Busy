@@ -29,6 +29,9 @@ export default function App() {
           <a href="/apps">Apps</a>
           <a href="/widgets">Widgets</a>
           <a href="/app/plan">Plan</a>
+          <a href="/homepage">homepage</a>
+          <a href="/announcementBar">Announcement Customization</a>
+          <a href="/countdownTimer">Countdown Timer Customization</a>
         </NavMenu>
         <Outlet />
       </PolarisAppProvider>

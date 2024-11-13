@@ -1,7 +1,9 @@
 import React from "react";
 import "./style.css";
 
-const ProgressCircleCountdown = ({ days, hours, minutes, seconds, digitsColor }) => {
+const ProgressCircleCountdown = ({ days, hours, minutes, seconds, settingsState }) => {
+    const { display } = settingsState;
+    const { digitsColor } = display;
   return (
     <div className="ProgressCircleCountdown" style={{ color: digitsColor }}>
       <div className="ProgressCircleCountdown-item">

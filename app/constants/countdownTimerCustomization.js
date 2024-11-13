@@ -18,7 +18,10 @@ export const TIMER_ALIGNMENT_OPTIONS = {
   CENTER: "CENTER",
   RIGHT: "RIGHT",
 };
-
+export const TIMER_MARGIN_UNITS = {
+  PX: "px",
+  REM :"rem"
+}
 export const CUSTOMIZATON_INITIAL_STATE = {
   settings: {
     status: COUNTDOWN_TIMER_STATE.FIX_END_DATE,
@@ -32,6 +35,13 @@ export const CUSTOMIZATON_INITIAL_STATE = {
     title: "Sale Ending in",
     titleColor: "#ffffff",
     digitsColor: "#ffffff",
-    backgroundColor: "#ff00ff",
+    backgroundColor: "#ff0000",
+    borderColor: "#000000",
+    gradientStartColor: "#ff0000",
+    gradientEndColor: "#0000ff",
+    margin:{
+      top:{value:0,unit:TIMER_MARGIN_UNITS.PX},
+      bottom:{value:0,unit:TIMER_MARGIN_UNITS.REM}
+    }
   },
 };

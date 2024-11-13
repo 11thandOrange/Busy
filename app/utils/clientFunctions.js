@@ -16,13 +16,14 @@ export const updateSettingsState = (path, value, state) => {
   }
 
   current[keys[keys.length - 1]] = value;
+  
 
   return updatedState;
 };
 
-export function calculateTimeDifference(startDate, endDate) {
+export function calculateTimeDifferenceInSeconds(startDate, endDate) {
   if (!startDate || !endDate) {
-    return "";
+    return 0;
   }
 
   const start = new Date(startDate);
@@ -30,37 +31,30 @@ export function calculateTimeDifference(startDate, endDate) {
   const now = new Date();
 
   if (end < now) {
-    return "";
+    return 0;
   }
 
-  const timeDifference = end - start;
-  if (timeDifference < 0 || timeDifference == 0) {
-    return "0d 0h 0m 0s";
-  }
-
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-  );
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  const timeDifference = Math.floor((end - start) / 1000);
+  return timeDifference >= 0 ? timeDifference : 0;
 }
 
-export function updateCountdownMessage(startDate, endDate, message) {
-  const countdown = calculateTimeDifference(startDate, endDate);
+export function convertSecondsToTimeObject(totalSeconds) {
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = Math.floor(totalSeconds % 60);
 
-  return countdown;
+  return { days, hours, minutes, seconds };
 }
 
-export function startCountdown(timeString, updateCallback, finishCallback) {
-  const timeParts = timeString.match(/\d+/g).map(Number);
+export function fetchTimeObject(startDate, endDate) {
+  const countdown = calculateTimeDifferenceInSeconds(startDate, endDate);
+  const timeObject = convertSecondsToTimeObject(countdown);
+  return timeObject;
+}
 
-  let days = timeParts[0] ? parseInt(timeParts[0]) : 0;
-  let hours = timeParts[1] ? parseInt(timeParts[1]) : 0;
-  let minutes = timeParts[2] ? parseInt(timeParts[2]) : 0;
-  let seconds = timeParts[3] ? parseInt(timeParts[3]) : 0;
+export function startCountdown(timeObject, updateCallback, finishCallback) {
+  const { days, hours, minutes, seconds } = timeObject;
 
   let totalSeconds =
     days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
@@ -81,9 +75,14 @@ export function startCountdown(timeString, updateCallback, finishCallback) {
     const remainingMinutes = Math.floor((totalSeconds % (60 * 60)) / 60);
     const remainingSeconds = totalSeconds % 60;
 
-    const timeString = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m ${remainingSeconds}s`;
+    const remainingTimeObject = {
+      remainingDays,
+      remainingHours,
+      remainingMinutes,
+      remainingSeconds,
+    };
 
-    updateCallback(timeString); // Update the time display via the update callback
+    updateCallback(remainingTimeObject); // Update the time display via the update callback
   }
 
   const timerInterval = setInterval(updateTimer, 1000);
@@ -127,3 +126,25 @@ export const fetchDateTimeFromString = (timeString) => {
     seconds,
   };
 };
+
+export function calculateTotalSeconds({ days, hours, minutes, seconds }) {
+  const secondsInDay = days * 24 * 60 * 60;
+  const secondsInHour = hours * 60 * 60;
+  const secondsInMinute = minutes * 60;
+
+  return secondsInDay + secondsInHour + secondsInMinute + seconds;
+}
+
+export function calculateRemainingPercentage(totalSeconds, currentSeconds) {
+  // Calculate the percentage of remaining time
+  const percentage = (currentSeconds / totalSeconds) * 100;
+  return percentage.toFixed(2); // return percentage with 2 decimal places
+}
+
+export function calculateProgressPercentage(totalSeconds, currentSeconds) {
+  if (totalSeconds == 0) {
+    return 0;
+  }
+  const percentage = (currentSeconds / totalSeconds) * 100;
+  return percentage;
+}

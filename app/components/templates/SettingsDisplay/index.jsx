@@ -9,6 +9,7 @@ import {
 } from "../../../constants/countdownTimerCustomization";
 import { updateSettingsState } from "../../../utils/clientFunctions";
 import "./style.css";
+import InputWithSelector from "../../atoms/InputWithSelector";
 
 const SettingsDisplay = ({ setSettingsState, settingsState }) => {
   const [checked, setChecked] = useState(false);
@@ -21,6 +22,7 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
   const handleSelectChange = (key, value) => {
     setSettingsState((prevState) => updateSettingsState(key, value, prevState));
   };
+  console.log("settings", settingsState);
 
   const options = [
     { label: "Classic", value: COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC },
@@ -46,7 +48,81 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
     { label: "Center", value: TIMER_ALIGNMENT_OPTIONS.CENTER },
     { label: "Right", value: TIMER_ALIGNMENT_OPTIONS.RIGHT },
   ];
-
+  const renderColorPallete = () => {
+    switch (settingsState.display.theme) {
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.CARDS:
+        return (
+          <CustomColorPallete
+            colorHeading="Background Color"
+            onColorChange={(color) =>
+              handleSelectChange("display.backgroundColor", color)
+            }
+            initialColor={settingsState.display.backgroundColor}
+          />
+        );
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC:
+        return <></>;
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.HEXAGON_TIMER:
+        return (
+          <CustomColorPallete
+            colorHeading="Border Color"
+            onColorChange={(color) =>
+              handleSelectChange("display.borderColor", color)
+            }
+            initialColor={settingsState.display.borderColor}
+          />
+        );
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.MINIMALIST:
+        return (
+          <CustomColorPallete
+            colorHeading="Border Color"
+            onColorChange={(color) =>
+              handleSelectChange("display.borderColor", color)
+            }
+            initialColor={settingsState.display.borderColor}
+          />
+        );
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.MODERNS:
+        return (
+          <>
+            <CustomColorPallete
+              colorHeading="Gradient Start Color"
+              onColorChange={(color) =>
+                handleSelectChange("display.gradientStartColor", color)
+              }
+              initialColor={settingsState.display.gradientStartColor}
+            />
+            <CustomColorPallete
+              colorHeading="Gradient End Color"
+              onColorChange={(color) =>
+                handleSelectChange("display.gradientEndColor", color)
+              }
+              initialColor={settingsState.display.gradientEndColor}
+            />
+          </>
+        );
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.PROGRESS_BAR:
+        return (
+          <CustomColorPallete
+            colorHeading="Background Color"
+            onColorChange={(color) =>
+              handleSelectChange("display.backgroundColor", color)
+            }
+            initialColor={settingsState.display.backgroundColor}
+          />
+        );
+      case COUNTDOWN_TIMER_DISPLAY_FORMAT.PROGRESS_CIRCLES:
+        return (
+          <CustomColorPallete
+            colorHeading="Border Color"
+            onColorChange={(color) =>
+              handleSelectChange("display.borderColor", color)
+            }
+            initialColor={settingsState.display.borderColor}
+          />
+        );
+    }
+  };
   return (
     <div>
       <Text variant="bodyMd" fontWeight="bold" as="span">
@@ -107,14 +183,27 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
             initialColor={settingsState.display.digitsColor}
           />
         </div>
-        <CustomColorPallete
-          colorHeading="Background Color"
-          onColorChange={(color) =>
-            handleSelectChange("display.backgroundColor", color)
-          }
-          initialColor={settingsState.display.backgroundColor}
-        />
+        {renderColorPallete()}
+        <InputWithSelector
+          inputType="text"
+          title="Bottom"
+          inputValue={settingsState.display.margin.bottom.value}
+          unitValue={settingsState.display.margin.bottom.unit}
+          onValueChange={(value, unit) => {
+            console.log("Value unit here", value, unit);
+          }}
+        ></InputWithSelector>
       </div>
+
+      {/* <InputWithSelector
+        inputType={"text"}
+        title={"Top"}
+        inputValue={settingsState.display.margin.top.value}
+        unitValue={settingsState.display.margin.top.unit}
+        onValueChange={(value, unit) => {
+          console.log("Value unit here", value, unit);
+        }}
+      ></InputWithSelector> */}
     </div>
   );
 };

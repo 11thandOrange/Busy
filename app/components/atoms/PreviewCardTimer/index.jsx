@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   fetchDateTimeFromString,
+  fetchTimeObject,
   startCountdown,
-  updateCountdownMessage,
 } from "../../../utils/clientFunctions";
 import "./style.css";
 import { COUNTDOWN_TIMER_DISPLAY_FORMAT } from "../../../constants/countdownTimerCustomization";
@@ -18,121 +18,81 @@ const PreviewCardTimer = ({ settingsState }) => {
   const { countDownStartAt, countDownEndsAt } = settings;
   const { title, timerAlignment, titleColor, digitsColor, theme } = display;
 
-  const [timeLeft, setTimeLeft] = useState("0");
+  const [timeLeft, setTimeLeft] = useState({
+    remainingDays: 0,
+    remainingHours: 0,
+    remainingMinutes: 0,
+    remainingSeconds: 0,
+  });
   const [isFinished, setIsFinished] = useState(false);
 
-  const countdownMessage = useMemo(() => {
-    return countDownStartAt && countDownEndsAt
-      ? updateCountdownMessage(countDownStartAt, countDownEndsAt, title)
-      : title;
-  }, [countDownStartAt, countDownEndsAt, title]);
-
-  const dateTimeObj = useMemo(
-    () => fetchDateTimeFromString(timeLeft),
-    [timeLeft],
-  );
+  const timeObject = useMemo(() => {
+    return fetchTimeObject(countDownStartAt, countDownEndsAt);
+  }, [countDownStartAt, countDownEndsAt]);
 
   useEffect(() => {
-    const updateCallback = (timeString) => setTimeLeft(timeString);
+    const updateCallback = (timeObject) => setTimeLeft(timeObject);
     const finishCallback = () => {
       setIsFinished(true);
-      setTimeLeft("0d 0h 0m 0s");
+      setTimeLeft({
+        remainingDays: 0,
+        remainingHours: 0,
+        remainingMinutes: 0,
+        remainingSeconds: 0,
+      });
     };
 
     let interval = null;
     if (countDownStartAt && countDownEndsAt) {
       setIsFinished(false);
-      interval = startCountdown(
-        countdownMessage,
-        updateCallback,
-        finishCallback,
-      );
+      interval = startCountdown(timeObject, updateCallback, finishCallback);
     }
 
     return () => clearInterval(interval);
-  }, [countDownStartAt, countDownEndsAt, countdownMessage]);
+  }, [countDownStartAt, countDownEndsAt]);
 
   const renderCountdown = useCallback(() => {
+    const commonProps = {
+      days: timeLeft.remainingDays,
+      hours: timeLeft.remainingHours,
+      minutes: timeLeft.remainingMinutes,
+      seconds: timeLeft.remainingSeconds,
+      settingsState: settingsState,
+    };
     switch (theme) {
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC:
         return (
           <div>
             <span style={{ color: digitsColor }}>
-              {`${dateTimeObj.days} days ${dateTimeObj.hours}:${dateTimeObj.minutes}:${dateTimeObj.seconds}`}
+              {`${timeLeft.remainingDays} days ${timeLeft.remainingHours}:${timeLeft.remainingMinutes}:${timeLeft.remainingSeconds}`}
             </span>
           </div>
         );
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.HEXAGON_TIMER:
-        return (
-          <HexagonCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          ></HexagonCountdown>
-        );
+        return <HexagonCountdown {...commonProps}></HexagonCountdown>;
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.PROGRESS_CIRCLES:
         return (
-          <ProgressCircleCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          ></ProgressCircleCountdown>
+          <ProgressCircleCountdown {...commonProps}></ProgressCircleCountdown>
         );
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.CARDS:
-        return (
-          <CardCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          ></CardCountdown>
-        );
+        return <CardCountdown {...commonProps}></CardCountdown>;
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.MODERNS:
-        return (
-          <ModernsCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          ></ModernsCountdown>
-        );
+        return <ModernsCountdown {...commonProps}></ModernsCountdown>;
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.PROGRESS_BAR:
-        return (
-          <ProgressBarCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          ></ProgressBarCountdown>
-        );
+        return <ProgressBarCountdown {...commonProps}></ProgressBarCountdown>;
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.MINIMALIST:
-        return (
-          <MinimalistCountdown
-            days={dateTimeObj.days}
-            hours={dateTimeObj.hours}
-            minutes={dateTimeObj.minutes}
-            seconds={dateTimeObj.seconds}
-            digitsColor={digitsColor}
-          />
-        );
+        return <MinimalistCountdown {...commonProps} />;
 
       default:
         return null;
     }
-  }, [theme, dateTimeObj, digitsColor]);
+  }, [theme, settingsState, timeLeft]);
 
   return (
     <div

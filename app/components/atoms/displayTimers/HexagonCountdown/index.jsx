@@ -1,7 +1,9 @@
 import React from "react";
 import "./style.css";
 
-const HexagonCountdown = ({ days, hours, minutes, seconds, digitsColor }) => {
+const HexagonCountdown = ({ days, hours, minutes, seconds, settingsState }) => {
+  const { display } = settingsState;
+  const { digitsColor } = display;
   return (
     <div className="HexagonCountdown" style={{ color: digitsColor }}>
       <div className="HexagonCountdown-item">

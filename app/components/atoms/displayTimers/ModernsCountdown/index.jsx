@@ -1,7 +1,9 @@
 import React from "react";
 import "./style.css";
 
-const ModernsCountdown = ({ days, hours, minutes, seconds, digitsColor }) => {
+const ModernsCountdown = ({ days, hours, minutes, seconds, settingsState }) => {
+  const { display } = settingsState;
+  const { digitsColor } = display;
   return (
     <div className="ModernsCountdown" style={{ color: digitsColor }}>
       <div className="ModernsCountdown-item">

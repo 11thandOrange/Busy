@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://tires-conversation-behind-designer.trycloudflare.com"
+application_url = "https://cl-apparent-flashing-declined.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://tires-conversation-behind-designer.trycloudflare.com/auth/callback",
-  "https://tires-conversation-behind-designer.trycloudflare.com/auth/shopify/callback",
-  "https://tires-conversation-behind-designer.trycloudflare.com/api/auth/callback"
+  "https://cl-apparent-flashing-declined.trycloudflare.com/auth/callback",
+  "https://cl-apparent-flashing-declined.trycloudflare.com/auth/shopify/callback",
+  "https://cl-apparent-flashing-declined.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
