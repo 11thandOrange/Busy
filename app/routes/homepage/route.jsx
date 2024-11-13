@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
 
-import HomepageSlider from '../../components/templates/HomepageSlider';
+import HomepageSlider from "../../components/templates/HomepageSlider";
 
-
-
-import Homepage from '../../components/templates/homepage';
-import CheckBars from '../../components/templates/CheckBars';
+import Homepage from "../../components/templates/homepage";
+import CheckBars from "../../components/templates/CheckBars";
+import CountDownTimerCustomization from "../../components/templates/CountdownTimerCustomization";
 
 const route = () => {
   const tabs = [
@@ -22,15 +21,19 @@ const route = () => {
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
-      component: <CheckBars></CheckBars>
+      component: <CheckBars></CheckBars>,
     },
-   
+    {
+      id: "Countdown-timer-1",
+      content: "Countdown Timer",
+      component: <CountDownTimerCustomization></CountDownTimerCustomization>,
+    },
   ];
   return (
     <>
-    <Homepage header="Countdown Timer" tabs={tabs}></Homepage>
+      <Homepage header="Countdown Timer" tabs={tabs}></Homepage>
     </>
-  )
-}
+  );
+};
 
-export default route
+export default route;

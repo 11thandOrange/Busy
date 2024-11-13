@@ -1,27 +1,27 @@
 [
     {
       "id": 1,
-      "header": "Header 1",
-      "description": "Content 1"
+      "header": "Text",
+      "description": "Boost sales by announcing your best offers."
     },
     {
       "id": 2,
-      "header": "Header 2",
-      "description": "Content 2"
+      "header": "Free Shipping",
+      "description": "Increase order size by setting free shipping goals."
     },
     {
       "id": 3,
-      "header": "Header 3",
-      "description": "Content 3"
+      "header": "Orders Counter",
+      "description": "Build trust by letting your customers know how many orders your store has shipped."
     },
     {
       "id": 4,
-      "header": "Header 4",
-      "description": "Content 4"
+      "header": "Countdown Timer",
+      "description": "Create urgency/expectations for ongoing/future events."
     },
     {
       "id": 5,
-      "header": "Header 5",
-      "description": "Content 5"
+      "header": "Email Capture",
+      "description": "Capture leads to grow your business."
     }
 ]

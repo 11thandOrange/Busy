@@ -21,6 +21,8 @@ import CountdownTimerSettings from "../../atoms/generalSettings/announcementBars
 import EmailCaptureSettings from "../../atoms/generalSettings/announcementBars/EmailCapture";
 import { updateSettingsState } from "../../../utils/clientFunctions";
 import { APP_TYPE } from "../../../utils/constants";
+import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
+import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -33,8 +35,6 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
     ...SETTINGS_INITIAL_STATE,
     ...generalSettings,
   });
-
-  
 
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {
@@ -81,6 +81,14 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
 
   return (
     <div className="customization-container">
+      <UnsavedChangesBar
+        saveActionButtonClick={() => {
+          console.log("Updated state", settingsState);
+        }}
+        discardActionButtonClick={() => {
+          <DiscardChangesConfirmationPopup></DiscardChangesConfirmationPopup>;
+        }}
+      ></UnsavedChangesBar>
       <div className="customization-left-section">
         {/* <Card>
             <SettingsDisplay></SettingsDisplay>
@@ -91,8 +99,11 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
             label="Status"
             helpText="Only one announcement bar will be displayed at the time"
             onSelect={(value) => {
-              console.log("On select", value);
+              setSettingsState((prevState) =>
+                updateSettingsState("status", value, prevState),
+              );
             }}
+            initialValue={settingsState.status}
           ></Selector>
         </Card>
         <Card>
@@ -101,8 +112,11 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
             label="Name"
             helpText="The private name of this smart bar. Only you will see this."
             onValueChange={(value) => {
-              console.log("Text Field", value);
+              setSettingsState((prevState) =>
+                updateSettingsState("name", value, prevState),
+              );
             }}
+            value={settingsState.name}
           ></CustomTextField>
         </Card>
         <Card>

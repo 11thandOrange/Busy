@@ -5,6 +5,39 @@ export const ANNOUNCEMENT_BAR_TYPES = {
   COUNTDOWN_TIMER: "COUNTDOWN_TIMER",
   EMAIL_CAPTURE: "EMAIL_CAPTURE",
 };
+export const announcementPopoverData = [
+  {
+    id: 1,
+    header: "Text",
+    description: "Boost sales by announcing your best offers.",
+    type: ANNOUNCEMENT_BAR_TYPES.TEXT,
+  },
+  {
+    id: 2,
+    header: "Free Shipping",
+    description: "Increase order size by setting free shipping goals.",
+    type: ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING,
+  },
+  {
+    id: 3,
+    header: "Orders Counter",
+    description:
+      "Build trust by letting your customers know how many orders your store has shipped.",
+    type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
+  },
+  {
+    id: 4,
+    header: "Countdown Timer",
+    description: "Create urgency/expectations for ongoing/future events.",
+    type: ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER,
+  },
+  {
+    id: 5,
+    header: "Email Capture",
+    description: "Capture leads to grow your business.",
+    type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
+  },
+];
 export const STATUS = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
