@@ -1,4 +1,4 @@
-import { Avatar, Badge, Link, ResourceItem, ResourceList } from '@shopify/polaris';
+import {  Badge, Link, ResourceItem, ResourceList } from '@shopify/polaris';
 import React from 'react';
 import './style.css';
 

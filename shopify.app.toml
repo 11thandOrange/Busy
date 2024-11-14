@@ -3,7 +3,7 @@
 client_id = "66741fd2a46bacd291b55be34ac42d9d"
 name = "BusyBuddy"
 handle = "busybuddy-6"
-application_url = "https://beneath-pan-exam-nn.trycloudflare.com"
+application_url = "https://driving-charts-hungarian-lu.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://beneath-pan-exam-nn.trycloudflare.com/auth/callback",
-  "https://beneath-pan-exam-nn.trycloudflare.com/auth/shopify/callback",
-  "https://beneath-pan-exam-nn.trycloudflare.com/api/auth/callback"
+  "https://driving-charts-hungarian-lu.trycloudflare.com/auth/callback",
+  "https://driving-charts-hungarian-lu.trycloudflare.com/auth/shopify/callback",
+  "https://driving-charts-hungarian-lu.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
