@@ -1,6 +1,6 @@
 import React from "react";
 import "../../templates/Plan/style.css";
-import { Link } from "@shopify/polaris";
+import { Link } from "@remix-run/react";
 
 
 const PlanCard = ({ plan }) => {
@@ -17,7 +17,7 @@ const PlanCard = ({ plan }) => {
               </p>
               <p className="description">{plan.description}</p>
             </div>
-            <Link url={plan.url}>
+            <Link to={plan.url}>
               {plan.buttonText}
             </Link>
 
