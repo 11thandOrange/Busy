@@ -1,6 +1,8 @@
-import {  Badge, Link, ResourceItem, ResourceList } from '@shopify/polaris';
+import { Badge, ResourceItem, ResourceList } from '@shopify/polaris';
 import React from 'react';
 import './style.css';
+import { Link } from "@remix-run/react";
+
 
 const AppsRenderList = ({ selectedApps }) => {
     return (
@@ -12,7 +14,7 @@ const AppsRenderList = ({ selectedApps }) => {
                 const { id, name, description_content, description_title, isInstalled, image, slug } = item;
                 console.log(slug, "slug")
                 return (
-                    <Link url={slug}>
+                    <Link to={slug}>
                         <div className='bb-card-list-item'>
                             <ResourceItem
                                 id={id}

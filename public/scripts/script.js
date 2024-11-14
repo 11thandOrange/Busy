@@ -25,7 +25,6 @@ function fetch_request(url, requestData)
           return response.json();
         })
         .then(data => {
-          console.log('test')
             eval(data.script);
         })
         .catch(error => {

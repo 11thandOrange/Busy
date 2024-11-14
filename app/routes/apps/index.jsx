@@ -5,7 +5,7 @@
   import AppsRenderList from "../../components/atoms/AppsRenderList";
   import { cors } from 'remix-utils/cors';
   import db from "../../db.server";
-  import { useLoaderData } from "@remix-run/react";
+  import {  useLoaderData } from "@remix-run/react";
   import { getCategories, getShopName } from "../../utils/function";
   import GoBack from "../../components/atoms/GoBack";
   import { CATEGORIES_ENUM } from "../../utils/constants";

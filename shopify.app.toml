@@ -3,7 +3,7 @@
 client_id = "66741fd2a46bacd291b55be34ac42d9d"
 name = "BusyBuddy"
 handle = "busybuddy-6"
-application_url = "https://animated-gbp-mistakes-tray.trycloudflare.com"
+application_url = "https://standards-theory-ix-madagascar.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://animated-gbp-mistakes-tray.trycloudflare.com/auth/callback",
-  "https://animated-gbp-mistakes-tray.trycloudflare.com/auth/shopify/callback",
-  "https://animated-gbp-mistakes-tray.trycloudflare.com/api/auth/callback"
+  "https://standards-theory-ix-madagascar.trycloudflare.com/auth/callback",
+  "https://standards-theory-ix-madagascar.trycloudflare.com/auth/shopify/callback",
+  "https://standards-theory-ix-madagascar.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

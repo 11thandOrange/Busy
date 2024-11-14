@@ -121,6 +121,7 @@ model Announcement_bar {
   theme_style String?
   theme_setting String?
   createdAt   DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model countdown_timer {
@@ -146,4 +147,14 @@ model Cart_notice {
   general_setting String
   shop String?
   createdAt   DateTime @default(now())
+}
+
+model Setting{
+  id Int @id @default(autoincrement())
+  admin_language String?
+  lazy_load_images Boolean @default(false)
+  change_setting  Boolean @default(false)
+  color_theme String @default("light")
+  global_customizations String? 
+  shop  String?
 }
