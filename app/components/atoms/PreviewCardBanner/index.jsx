@@ -13,12 +13,11 @@ import {
 const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
   const { themeSettings, generalSettings, themeStyle } = settingsState;
   const {
-    buttonColor,
-    buttonTextColor,
-    buttonText,
-    message,
-    countDownStartAt,
-    countDownEndsAt,
+    buttonColor = "",
+    buttonTextColor = "",
+    buttonText = "",
+    countDownStartAt = "",
+    countDownEndsAt = "",
   } = generalSettings;
 
   const [timeLeft, setTimeLeft] = useState({
@@ -66,7 +65,6 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
         remainingMinutes: 0,
         remainingSeconds: 0,
       });
-   
     };
 
     let interval = null;

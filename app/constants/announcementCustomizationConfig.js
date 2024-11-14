@@ -1,9 +1,9 @@
 export const ANNOUNCEMENT_BAR_TYPES = {
-  TEXT: "TEXT",
-  FREE_SHIPPING: "FREE_SHIPPING",
-  ORDERS_COUNTER: "ORDERS_COUNTER",
-  COUNTDOWN_TIMER: "COUNTDOWN_TIMER",
-  EMAIL_CAPTURE: "EMAIL_CAPTURE",
+  TEXT: 0,
+  FREE_SHIPPING: 1,
+  ORDERS_COUNTER: 2,
+  COUNTDOWN_TIMER: 3,
+  EMAIL_CAPTURE: 4,
 };
 export const announcementPopoverData = [
   {
@@ -104,4 +104,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
       message: "Type Text Here",
     },
   },
+};
+
+export const ANNOUNCEMENT_BARS_TABS = {
+  ANNOUNCEMENT_BAR: 2,
 };

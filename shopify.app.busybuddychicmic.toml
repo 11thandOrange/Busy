@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://though-snowboard-boxing-distribute.trycloudflare.com"
+application_url = "https://cruz-assessments-pool-courage.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://though-snowboard-boxing-distribute.trycloudflare.com/auth/callback",
-  "https://though-snowboard-boxing-distribute.trycloudflare.com/auth/shopify/callback",
-  "https://though-snowboard-boxing-distribute.trycloudflare.com/api/auth/callback"
+  "https://cruz-assessments-pool-courage.trycloudflare.com/auth/callback",
+  "https://cruz-assessments-pool-courage.trycloudflare.com/auth/shopify/callback",
+  "https://cruz-assessments-pool-courage.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

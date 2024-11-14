@@ -1,11 +1,12 @@
 import React from "react";
 import "./homepageDetails.css"; // Assuming you will style using this file
 import PopoverContent from "../../templates/PopoverContent";
-import { ANNOUNCEMENT_BAR_TYPES, announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
+import {
+  ANNOUNCEMENT_BAR_TYPES,
+  announcementPopoverData,
+} from "../../../constants/announcementCustomizationConfig";
 
-
-
-const HomepageDetails = () => {
+const HomepageDetails = ({ selectedType, setSelectedType }) => {
   return (
     <>
       <div className="homepage-details">
@@ -56,8 +57,8 @@ const HomepageDetails = () => {
         <PopoverContent
           options={announcementPopoverData}
           heading="Create Announcement Bar"
-          onSelect={()=>{
-            
+          onSelect={(selectedType) => {
+            setSelectedType(selectedType)
           }}
         ></PopoverContent>
       </div>

@@ -28,12 +28,15 @@ const sliderTypeSelector = (type, content) => {
       return <video width="500px" src={content} controls></video>;
   }
 };
-export default function HomepageSlider() {
+export default function HomepageSlider({ selectedType, setSelectedType }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
     <>
-      <HomepageDetails></HomepageDetails>
+      <HomepageDetails
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+      ></HomepageDetails>
       <div>
         <Swiper
           style={{

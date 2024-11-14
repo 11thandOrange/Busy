@@ -6,7 +6,7 @@ const route = () => {
   return (
     <div>
       <AnnouncementCustomization
-        announcementBarType={ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER}
+        announcementBarType={ANNOUNCEMENT_BAR_TYPES.TEXT}
       ></AnnouncementCustomization>
     </div>
   );
