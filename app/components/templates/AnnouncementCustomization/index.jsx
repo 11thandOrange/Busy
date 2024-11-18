@@ -105,9 +105,6 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
         show={hasSettingsChanged}
       ></UnsavedChangesBar>
       <div className="customization-left-section">
-        {/* <Card>
-            <SettingsDisplay></SettingsDisplay>
-            </Card> */}
         <Card>
           <Selector
             options={options}

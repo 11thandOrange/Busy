@@ -34,14 +34,19 @@ const route = () => {
       component: <h1>Settings</h1>,
     },
     {
-      id: "Announcement-bars-1",
-      content: "Announcement Bars",
+      id: "Customization-1",
+      content: "Customization",
       // component: <CheckBars></CheckBars>,
       component: (
         <AnnouncementCustomization
           announcementBarType={selectedType}
         ></AnnouncementCustomization>
       ),
+    },
+    {
+      id: "Announcement-bars-1",
+      content: "Announcement Bars",
+      component: <CheckBars></CheckBars>,
     },
     // {
     //   id: "Countdown-timer-1",
