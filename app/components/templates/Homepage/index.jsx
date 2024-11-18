@@ -21,7 +21,7 @@ function Homepage({
   }, []);
 
   return (
-    <div>
+    <div className="bb-tabs-content">
       <Page
         backAction={{ content: "Settings", url: "#" }}
         title={header}

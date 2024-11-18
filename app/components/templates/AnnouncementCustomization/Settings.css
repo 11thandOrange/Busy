@@ -15,3 +15,10 @@
     flex-direction: column;
     gap: 10px;
 }
+.Polaris-Frame__Main,
+.Polaris-Box{
+    border:0;
+}
+.Polaris-Box{
+    border: 0;
+}

@@ -37,7 +37,7 @@ export default function HomepageSlider({ selectedType, setSelectedType }) {
         selectedType={selectedType}
         setSelectedType={setSelectedType}
       ></HomepageDetails>
-      <div>
+      <div className="bb-swiper-slider">
         <Swiper
           style={{
             "--swiper-navigation-color": "#fff",
