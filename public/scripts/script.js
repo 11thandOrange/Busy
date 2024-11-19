@@ -1,6 +1,7 @@
 const baseUrl = 'https://existing-grammar-discount-williams.trycloudflare.com';
 const dynamicSegment = '/app/activate';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
+const shopDomain = '{{ shop.permanent_domain }}';
 
 const requestData = {
   name: 'John Doe',
@@ -31,7 +32,7 @@ function fetch_request(url, requestData)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
-var apps = ['announcement-bar','cart-notice'];
+var apps = ['announcement-bar','cart-notice', 'inactive-tab-message'];
 
 const trackImpression = (elementId) => {
   const element = document.getElementById(elementId);
@@ -45,12 +46,12 @@ const trackImpression = (elementId) => {
   }, { threshold: 0.5 });
 
   observer.observe(element);
-  sendAnalyticsData('impression', { element: elementId, time: new Date().toISOString() });
+  sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
 
 };
 const trackClicks = (elementId) => {
   document.getElementById(elementId).addEventListener('click', function() {
-    sendAnalyticsData('impression', { element: elementId, time: new Date().toISOString() });
+    sendAnalyticsData(1, { element: elementId, time: new Date().toISOString() });
   });
 };
 apps.forEach((app)=> {
@@ -58,12 +59,12 @@ apps.forEach((app)=> {
   trackClicks(app)
 });
 
-function sendAnalyticsData(type, data) {
-  fetch('/your-analytics-endpoint', {
+function sendAnalyticsData(activity, data) {
+  fetch(fullUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ type, data })
+    body: JSON.stringify({ activity, data, pageUrl: window.location.href, shop:shopDomain, data })
   });
 }
