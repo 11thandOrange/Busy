@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { AppProvider } from "@shopify/shopify-app-remix/react";
 import { NavMenu } from "@shopify/app-bridge-react";
@@ -19,24 +19,28 @@ export const loader = async ({ request }) => {
 export default function App() {
   const { apiKey } = useLoaderData();
 
+
   return (
-    <AppProvider isEmbeddedApp apiKey={apiKey}>
-      <PolarisAppProvider i18n={en}>
-        <NavMenu>
-          <a href="/app" rel="home">
-            Home
-          </a>
-          <a href="/apps">Apps</a>
-          <a href="/widgets">Widgets</a>
-          <a href="/settings">Settings</a>
-          <a href="/app/plan">Plan</a>
-          <a href="/homepage">homepage</a>
-          <a href="/announcementBar">Announcement Customization</a>
-          <a href="/countdownTimer">Countdown Timer Customization</a>
-        </NavMenu>
-        <Outlet />
-      </PolarisAppProvider>
-    </AppProvider>
+    <>
+      <AppProvider isEmbeddedApp apiKey={apiKey}>
+        <PolarisAppProvider i18n={en}>
+          <NavMenu>
+            <Link href="/app" rel="home">
+              Home
+            </Link>
+            <Link to="/apps">Apps</Link>
+            <a href="/widgets">Widgets</a>
+            <a href="/settings">Settings</a>
+            <a href="/app/plan">Plan</a>
+            <a href="/homepage">homepage</a>
+            <a href="/announcementBar">Announcement Customization</a>
+            <a href="/countdownTimer">Countdown Timer Customization</a>
+            <Link to="/RouteTest">RouteTest</Link>
+          </NavMenu>
+          <Outlet />
+        </PolarisAppProvider>
+      </AppProvider>
+    </>
   );
 }
 

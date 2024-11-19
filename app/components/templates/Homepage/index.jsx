@@ -23,7 +23,7 @@ function Homepage({
   return (
     <div className="bb-tabs-content">
       <Page
-        backAction={{ content: "Settings", url: "#" }}
+        backAction={{ content: "Settings", url: "/apps" }}
         title={header}
         primaryAction={<ActiveButton></ActiveButton>}
       >
