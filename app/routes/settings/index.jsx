@@ -4,15 +4,16 @@ import GoBack from '../../components/atoms/GoBack'
 import db from '../../db.server'
 import { getShopName } from '../../utils/function';
 import { cors } from 'remix-utils/cors';
+import { useLoaderData } from '@remix-run/react';
 
-export const loader = async ({ request }) => {
-  let shop = await getShopName(request)
-  let setting = await db.setting.findFirst({
-    where:{
-      shop:shop
-    }
-  });
-  return cors(request, setting || {});
+  export const loader = async ({ request }) => {
+    let shop = await getShopName(request)
+    let setting = await db.setting.findFirst({
+      where:{
+        shop:shop
+      }
+    });
+    return cors(request, setting || {});
   };
   
   export const action = async ({ request }) => { 
@@ -52,6 +53,8 @@ export const loader = async ({ request }) => {
   };
 
 const Settings = () => {
+  const settings = useLoaderData();
+  console.log(settings, "settings")
   return (
     <>
         <GoBack/>

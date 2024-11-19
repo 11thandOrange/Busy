@@ -2,8 +2,18 @@ import { Page, Card, Select, Checkbox, RadioButton, TextField, Layout } from '@s
 import { useState } from 'react';
 import './style.css'
 import SettingSection from './SettingSection';
+import { useFetcher } from '@remix-run/react';
 
 const GlobalSettings = () => {
+  const fetcher = useFetcher();
+  const handleSaveSettings = () => {
+    fetcher.submit(
+      {
+        widgetId: widgetId,
+      },
+      { method: "POST", action: "/settings" }
+    );
+  }
   const [language, setLanguage] = useState('English');
   const [lazyLoadImages, setLazyLoadImages] = useState(true);
   const [allowSupportEdit, setAllowSupportEdit] = useState(false);
