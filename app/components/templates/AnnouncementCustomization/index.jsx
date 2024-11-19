@@ -93,8 +93,8 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
   );
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
 
-  return (
-    <div className="customization-container">
+  return (<>
+     <div className="customization-container">
       <UnsavedChangesBar
         saveActionButtonClick={() => {
           console.log("Updated state", settingsState);
@@ -167,7 +167,9 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
           appType={APP_TYPE.ANNOUNCEMENT_BARS}
         ></ProductPreviewCard>
       </div>
-      <DiscardChangesConfirmationPopup
+     
+    </div>
+   <DiscardChangesConfirmationPopup
         active={onDiscardChanges}
         toggleModal={() => setOnDiscardChanges(false)}
         primaryActionClick={() => {
@@ -175,7 +177,8 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
           setOnDiscardChanges(false);
         }}
       ></DiscardChangesConfirmationPopup>
-    </div>
+  </>
+   
   );
 };
 

@@ -6,6 +6,7 @@ import {
   Badge,
   hsbToHex,
 } from "@shopify/polaris";
+import "./style.css"
 import React, { useState } from "react";
 import PopoverContent from "../PopoverContent";
 import barsData from "../../../data/barsData";
