@@ -14,9 +14,9 @@ import { useState, useCallback, useEffect } from "react";
 import "./CustomColorPallete.css";
 import useDebounce from "../../../hooks/useDebounce";
 function CustomColorPallete({
-  colorHeading,
+  colorHeading = "Color",
   onColorChange = () => {},
-  initialColor,
+  initialColor = "#fffff",
 }) {
   const [popoverActive, setPopoverActive] = useState(false);
 

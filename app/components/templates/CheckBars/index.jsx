@@ -6,11 +6,12 @@ import {
   Badge,
   hsbToHex,
 } from "@shopify/polaris";
-import React from "react";
+import React, { useState } from "react";
 import PopoverContent from "../PopoverContent";
 import barsData from "../../../data/barsData";
 import popoverData from "../../../data/popoverData";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
+import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 const barState = {
   ACTIVE: "success",
   INACTIVE: "critical",
@@ -56,9 +57,13 @@ function CheckBars() {
   const promotedBulkActions = [
     {
       content: "Delete",
-      onAction: () => console.log("Todo: implement bulk edit"),
+      onAction: () => {
+        onConfirmDelete(true);
+      },
     },
   ];
+
+  const [confirmDelete, onConfirmDelete] = useState(false);
   return (
     <LegacyCard>
       <IndexTable
@@ -78,6 +83,20 @@ function CheckBars() {
           options={announcementPopoverData}
           heading="Create"
         ></PopoverContent>
+        <DiscardChangesConfirmationPopup
+          active={confirmDelete}
+          toggleModal={() => {
+            onConfirmDelete(false);
+          }}
+          primaryActionClick={() => {
+            console.log("Selected option: ", selectedResources);
+            onConfirmDelete(false);
+          }}
+          secondaryActionContent="close"
+          primaryActionContent="Delete"
+          mainContent="This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?"
+          title="Delete 1 item(s)?"
+        ></DiscardChangesConfirmationPopup>
       </div>
     </LegacyCard>
   );
