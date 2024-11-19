@@ -6,6 +6,7 @@ node_modules
 /public/build/
 /public/_dev
 /app/public/build
+/prisma/
 
 .env
 .env.*
@@ -16,3 +17,5 @@ node_modules
 # Ignore shopify files created during app dev
 .shopify/*
 .shopify.lock
+package.lock.*
+yarn.lock

@@ -1,6 +1,6 @@
 import { cors } from 'remix-utils/cors';
 import db from '../db.server';
-import { getEventTypes } from '../utils/function';
+import { getEventTypes, getShopName } from '../utils/function';
 
 export async function loader({ request }) {
   try {

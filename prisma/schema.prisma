@@ -34,35 +34,35 @@ model Activity {
 }
 
 model Category {
-  id          Int           @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   content     String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  apps        App[]        @relation("AppCategories")
-  widgets     Widget[]    @relation("WidgetCategories")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  apps        App[]             @relation("AppCategories")
+  widgets     Widget[]          @relation("WidgetCategories")
 }
 
 model Specification {
-  id        Int     @id @default(autoincrement())
-  content   String
-  apps      App[]   @relation("AppSpecifications")
+  id              Int           @id @default(autoincrement())
+  content         String
+  apps            App[]         @relation("AppSpecifications")
 }
 
 model App {
-  id                        Int           @id @default(autoincrement())
+  id                        Int                 @id @default(autoincrement())
   name                      String
   description_title         String?
   description_content       String?
   sliderImages              String?
   image                     String?
   slug                      String?
-  categories                Category[]    @relation("AppCategories")
-  activities                Activity[]    @relation("AppActivities")
-  specifications  Specification[]  @relation("AppSpecifications")
-  analytics    Analytics[] 
-  Merchant      Merchant[] 
-  createdAt                 DateTime      @default(now())
-  updatedAt                 DateTime      @updatedAt
+  categories                Category[]            @relation("AppCategories")
+  activities                Activity[]            @relation("AppActivities")
+  specifications            Specification[]       @relation("AppSpecifications")
+  analytics                 Analytics[] 
+  Merchant                  Merchant[] 
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
 }
 
 model Widget {
@@ -72,16 +72,16 @@ model Widget {
   description_content   String?
   image                 String?
   categories            Category[]    @relation("WidgetCategories")
-  Fav_widget   Fav_widget[]
+  Fav_widget            Fav_widget[]
   createdAt             DateTime      @default(now())
 }
 
 model Fav_widget {
-  id          Int      @id @default(autoincrement())
-  shop        String?
-  widgetId     Int
-  widget       Widget      @relation(fields: [widgetId], references: [id])
-  createdAt   DateTime @default(now())
+  id                    Int         @id @default(autoincrement())
+  shop                  String?
+  widgetId              Int
+  widget                Widget      @relation(fields: [widgetId], references: [id])
+  createdAt             DateTime @default(now())
   @@unique([widgetId, shop])
 }
 
@@ -92,50 +92,67 @@ model Setting{
   change_setting  Boolean @default(false)
   color_theme String @default("light")
   global_customizations String? 
-  shop  String?
+  shop String  @unique
 }
 
 model Analytics {
-  id              Int        @id @default(autoincrement())
+  id              Int                 @id @default(autoincrement())
   activityId      Int
-  activity        Activity      @relation(fields: [activityId], references: [id])
+  activity        Activity            @relation(fields: [activityId], references: [id])
   pageUrl         String
-  timestamp       DateTime @default(now())
+  timestamp       DateTime            @default(now())
   shop            String?
   appId           Int
-  app             App      @relation(fields: [appId], references: [id])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  app             App                 @relation(fields: [appId], references: [id])
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
 }
 
 model Merchant {
-  id        Int      @id @default(autoincrement())
-  enabled   Boolean  @default(false)
-  appId     Int
-  app       App      @relation(fields: [appId], references: [id])
-  shop      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  Int         @id @default(autoincrement())
+  enabled             Boolean     @default(false)
+  appId               Int
+  app                 App         @relation(fields: [appId], references: [id])
+  shop                String
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
   @@unique([appId, shop])
 }
 
 model Announcement_bar {
-  id          Int      @id @default(autoincrement())
-  shop String?
-  name        String?
-  status Boolean @default(false)
-  general_setting String?
-  theme_style String?
-  theme_setting String?
-  createdAt   DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                      Int               @id @default(autoincrement())
+  shop                    String?
+  name                    String?
+  status                  Boolean           @default(false)
+  general_setting         String?
+  theme_style             String?
+  theme_setting           String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
 }
 
 model Inactive_tab_message {
-  id          Int      @id @default(autoincrement())
-  message        String?
-  shop String  @unique
-  createdAt   DateTime @default(now())
+  id                    Int               @id @default(autoincrement())
+  message               String?
+  shop                  String            @unique
+  createdAt             DateTime          @default(now())
 }
 
+model Cart_notice {
+  id                      Int             @id @default(autoincrement())
+  primary_message         String?
+  secondary_message       String?
+  general_setting         String
+  shop                    String?
+  createdAt               DateTime        @default(now())
+}
 
+model countdown_timer {
+  id                    Int                 @id @default(autoincrement())
+  html                  String?
+  general_setting       String?
+  shop String?
+  display_setting       String?
+  position String?
+  createdAt             DateTime            @default(now())
+}

@@ -41,10 +41,8 @@ export const check_app_active = async (appId, shop) => {
           enabled: true,
         },
       });
-  
       return setting !== null;
     } catch (error) {
-      console.error('Error checking setting:', error);
       return false;
     }
   };
@@ -54,7 +52,6 @@ export const check_subscription = async () =>
   const { billing, session } = await authenticate.admin(request);
   const billingCheck = await billing.check({ plans: [STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN] });
   if (!billingCheck.appSubscriptions || billingCheck.appSubscriptions.length === 0) {
-    console.log('No subscription found');
     return {
       hasSubscription: false,
     };
@@ -128,3 +125,126 @@ export const getEventTypes = async (appId) => {
   const activityIds = eventTypes.activities.map(activity => activity.id);
   return activityIds;
 };
+
+export const getAnnouncementBar = async(shop) => {
+  let script = '';
+  const announcement_bar = await prisma.announcement_bar.findFirst({
+    where:{
+      shop:shop,
+      status: true
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+  });
+  if (announcement_bar && announcement_bar.status) {
+    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting)
+    announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting)
+    script = `const announcementBar = document.createElement('div');
+      announcementBar.classList.add('announcement-bar');
+      announcementBar.textContent = ${announcement_bar.general_setting.message};
+
+      announcementBar.style.backgroundColor = '#ffcc00';
+      announcementBar.style.padding = '10px';
+      announcementBar.style.textAlign = 'center';
+      announcementBar.style.fontWeight = 'bold';`;
+
+      if(announcement_bar.theme_setting?.position == 1)
+      {
+        script += `document.body.prepend(announcementBar)`;
+      }
+      else if(announcement_bar.theme_setting?.position == 2)
+      {
+        script += `document.body.prepend(announcementBar)`;
+      }
+      else
+      {
+        script += `document.body.appendChild(announcementBar);`
+      }
+  }
+    return {script}
+}
+
+export const getInactiveTabMessage = async(shop) => {
+  let message = await db.Inactive_tab_message.findFirst({
+    where:{
+      shop:shop
+    },
+    select:{
+      message: true
+    }
+  })
+  message = message ? message.message : ""
+  const script = `
+    (function() {
+      var originalTitle = document.title;
+      function handleVisibilityChange() {
+        if (document.hidden) {
+          document.title = "${message}";
+        } 
+          else {
+          document.title = originalTitle;
+        }
+      }
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      
+      if (document.hidden) {
+        document.title = "${message}";
+      }
+    })();
+  `;
+  return {script};
+}
+export const getCartNotice = async(shop) => {
+  let cartNotice = await db.Cart_notice.findFirst({
+    where:{
+      shop:shop
+    },
+    select:{
+      primary_message: true,
+      secondary_message: true,
+      general_setting:true
+    }
+  })
+  cartNotice = cartNotice ? cartNotice.primary_message : ""
+  const script = `
+    (function() {
+      const form = document.querySelector('form[action="/cart"]');
+      if (form) {
+        const htmlToInsert = '<div class="cart-notice">"${cartNotice}"</div>';
+        form.insertAdjacentHTML('beforebegin', htmlToInsert);
+      }
+    })();
+  `;
+  return {script};
+} 
+export const getCountdownTimer = async(shop) => {
+  let script;
+  let countdownTimer = await db.countdown_timer.findFirst({
+    where:{
+      shop:shop
+    },
+    select:{
+      html: true,
+      general_setting: true,
+      display_setting:true,
+      position:true
+    }
+  })
+  if(countdownTimer)
+  {
+    countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting)
+    countdownTimer.html = countdownTimer.html.replace('{{message}}', countdownTimer.general_setting.message);
+    script = `
+      (function() {
+        const form = document.querySelector('.product__info-wrapper');
+        if (form) {
+          const htmlToInsert = '<div class="countdown-timer">"${countdownTimer.html}"</div>';
+          form.insertAdjacentHTML('beforeend', htmlToInsert);
+        }
+      })();
+    `;
+  }
+  
+  return {script};
+} 
