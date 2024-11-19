@@ -1,10 +1,17 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "e839382a6178a1ba6e9b7ae24487c173"
-name = "Busy Buddy"
-handle = "busy-buddy-1"
-application_url = "https://campaign-entire-songs-disciplinary.trycloudflare.com"
+client_id = "5bf173e80edc15dc5b1620e0d0936bfd"
+application_url = "https://congo-dad-step-functions.trycloudflare.com"
 embedded = true
+name = "Busy Buddy"
+handle = "busy-buddy-3"
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "quickstart-53ae8bcc.myshopify.com"
+
+[webhooks]
+api_version = "2024-10"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -12,17 +19,10 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://campaign-entire-songs-disciplinary.trycloudflare.com/auth/callback",
-  "https://campaign-entire-songs-disciplinary.trycloudflare.com/auth/shopify/callback",
-  "https://campaign-entire-songs-disciplinary.trycloudflare.com/api/auth/callback"
+  "https://congo-dad-step-functions.trycloudflare.com/auth/callback",
+  "https://congo-dad-step-functions.trycloudflare.com/auth/shopify/callback",
+  "https://congo-dad-step-functions.trycloudflare.com/api/auth/callback"
 ]
-
-[webhooks]
-api_version = "2024-10"
 
 [pos]
 embedded = false
-
-[build]
-dev_store_url = "busybuddyreact.myshopify.com"
-automatically_update_urls_on_dev = true

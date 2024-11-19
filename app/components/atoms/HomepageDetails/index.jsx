@@ -5,8 +5,19 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   announcementPopoverData,
 } from "../../../constants/announcementCustomizationConfig";
-
+import {
+  CheckIcon
+} from '@shopify/polaris-icons';
+import { Icon } from "@shopify/polaris";
 const HomepageDetails = ({ selectedType, setSelectedType }) => {
+
+
+  const TickIcon = () => {
+    return   <Icon
+    source={CheckIcon}
+    tone="success"
+  />
+  }
   return (
     <>
       <div className="homepage-details">
@@ -16,10 +27,11 @@ const HomepageDetails = ({ selectedType, setSelectedType }) => {
           announcements with the help of header bars.
         </h2>
 
+       
         {/* Grid of Points */}
         <div className="points-grid">
           <div className="point left">
-            <span className="icon green-icon">✔️</span>{" "}
+          <TickIcon></TickIcon>
             {/* Green checkmark icon */}
             <div>
               <span className="point-description">
@@ -28,7 +40,7 @@ const HomepageDetails = ({ selectedType, setSelectedType }) => {
             </div>
           </div>
           <div className="point right">
-            <span className="icon green-icon">✔️</span>
+          <TickIcon></TickIcon>
             <div>
               <span className="point-description">
                 Create urgency with the Countdown Timer Bar
@@ -36,7 +48,7 @@ const HomepageDetails = ({ selectedType, setSelectedType }) => {
             </div>
           </div>
           <div className="point left">
-            <span className="icon green-icon">✔️</span>
+          <TickIcon></TickIcon>
             <div>
               <span className="point-description">
                 Capture emails by giving a discount with the Email Capture Bar
@@ -44,7 +56,7 @@ const HomepageDetails = ({ selectedType, setSelectedType }) => {
             </div>
           </div>
           <div className="point right">
-            <span className="icon green-icon">✔️</span>
+          <TickIcon></TickIcon>
             <div>
               <span className="point-description">
                 Choose from 10+ themes and easily customize the design
