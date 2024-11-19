@@ -29,6 +29,7 @@ export default function App() {
           <a href="/apps">Apps</a>
           <a href="/widgets">Widgets</a>
           <a href="/settings">Settings</a>
+          <a href="/analytics">Analytics</a>
           <a href="/app/plan">Plan</a>
         </NavMenu>
         <Outlet />
