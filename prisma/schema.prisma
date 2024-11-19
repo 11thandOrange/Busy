@@ -1,13 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
-// enough when changing adapters.
-// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
   provider = "sqlite"
   url      = "file:dev.sqlite"
@@ -31,65 +25,55 @@ model Session {
   emailVerified Boolean?  @default(false)
 }
 
+model Activity {
+  id          Int           @id @default(autoincrement())
+  content     String?
+  apps        App[]         @relation("AppActivities")
+  Analytics   Analytics[]
+  createdAt   DateTime      @default(now())
+}
+
 model Category {
   id          Int           @id @default(autoincrement())
-  content        String?
+  content     String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  apps         App[]        @relation("AppCategories")
+  apps        App[]        @relation("AppCategories")
   widgets     Widget[]    @relation("WidgetCategories")
 }
-model Event {
-  id          Int           @id @default(autoincrement())
-  content        String?
-  createdAt   DateTime      @default(now())
-  Analytics   Analytics[]
+
+model Specification {
+  id        Int     @id @default(autoincrement())
+  content   String
+  apps      App[]   @relation("AppSpecifications")
 }
+
 model App {
-  id          Int           @id @default(autoincrement())
-  name        String
-  description_title String?
-  description_content String?
-  image       String?
-  slug        String?
-  categories  Category[]  @relation("AppCategories")
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  alalytics    Analytics[] 
-  Merchant          Merchant[] 
-}
-model Analytics {
-  id              Int        @id @default(autoincrement())
-  eventId         Int
-  event           Event      @relation(fields: [eventId], references: [id])
-  pageUrl         String
-  timestamp       DateTime @default(now())
-  shop            String?
-  appId           Int
-  app             App      @relation(fields: [appId], references: [id])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-}
-model Merchant {
-  id        Int      @id @default(autoincrement())
-  enabled   Boolean  @default(false)
-  appId     Int
-  app       App      @relation(fields: [appId], references: [id])
-  shop      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@unique([appId, shop])
+  id                        Int           @id @default(autoincrement())
+  name                      String
+  description_title         String?
+  description_content       String?
+  sliderImages              String?
+  image                     String?
+  slug                      String?
+  categories                Category[]    @relation("AppCategories")
+  activities                Activity[]    @relation("AppActivities")
+  specifications  Specification[]  @relation("AppSpecifications")
+  analytics    Analytics[] 
+  Merchant      Merchant[] 
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
 }
 
 model Widget {
-  id          Int      @id @default(autoincrement())
-  name        String?
-  description_title String?
-  description_content String?
-  image       String?
-  categories  Category[]  @relation("WidgetCategories")
-  createdAt   DateTime @default(now())
+  id                    Int           @id @default(autoincrement())
+  name                  String?
+  description_title     String?
+  description_content   String?
+  image                 String?
+  categories            Category[]    @relation("WidgetCategories")
   Fav_widget   Fav_widget[]
+  createdAt             DateTime      @default(now())
 }
 
 model Fav_widget {
@@ -101,6 +85,40 @@ model Fav_widget {
   @@unique([widgetId, shop])
 }
 
+model Setting{
+  id Int @id @default(autoincrement())
+  admin_language String?
+  lazy_load_images Boolean @default(false)
+  change_setting  Boolean @default(false)
+  color_theme String @default("light")
+  global_customizations String? 
+  shop  String?
+}
+
+model Analytics {
+  id              Int        @id @default(autoincrement())
+  activityId      Int
+  activity        Activity      @relation(fields: [activityId], references: [id])
+  pageUrl         String
+  timestamp       DateTime @default(now())
+  shop            String?
+  appId           Int
+  app             App      @relation(fields: [appId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Merchant {
+  id        Int      @id @default(autoincrement())
+  enabled   Boolean  @default(false)
+  appId     Int
+  app       App      @relation(fields: [appId], references: [id])
+  shop      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([appId, shop])
+}
+
 model Announcement_bar {
   id          Int      @id @default(autoincrement())
   shop String?
@@ -110,15 +128,7 @@ model Announcement_bar {
   theme_style String?
   theme_setting String?
   createdAt   DateTime @default(now())
-}
-
-model countdown_timer {
-  id          Int      @id @default(autoincrement())
-  general_setting        String?
-  shop String?
-  display_setting String?
-  position String?
-  createdAt   DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Inactive_tab_message {
@@ -128,11 +138,4 @@ model Inactive_tab_message {
   createdAt   DateTime @default(now())
 }
 
-model Cart_notice {
-  id          Int      @id @default(autoincrement())
-  primary_message        String?
-  secondary_message        String?
-  general_setting String
-  shop String?
-  createdAt   DateTime @default(now())
-}
+

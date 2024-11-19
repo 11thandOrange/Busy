@@ -1,7 +1,6 @@
 import {Button, Popover, ActionList} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 import PopoverData from '../../atoms/popoverData';
-import { Link } from '@remix-run/react';
 
 function PopoverContent({options,heading}) {
   const [popoverActive, setPopoverActive] = useState(false);

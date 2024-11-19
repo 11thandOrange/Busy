@@ -1,71 +1,58 @@
+import { cors } from 'remix-utils/cors';
 import db from '../db.server';
 import { getEventTypes } from '../utils/function';
 
 export async function loader({ request }) {
-  let data = await request.formData();
-  data = Object.fromEntries(data);
-  const appId = data.app;
-  const shop = data.shop;
-  
-    const eventTypes = await getEventTypes(appId);
-    const eventCounts = await db.analytics.groupBy({
-        by: ['eventId'],
-        where: {
-          AND: [
-            {
-              OR: [
-                { appId: appId },
-                { appId: null },
-              ],
-            },
-            {
-              shop: shop,
-            },
-            {
-              event: {
-                type: {
-                  in: eventTypes,
-                },
-              },
-            },
-          ],
-        },
-        _count: {
-          eventId: true,
-        },
-      });
-      
-      
-      const eventCountMap = eventCounts.reduce((acc, group) => {
-        const eventType = group.event.type;
-      
-        if (!acc[eventType]) {
-          acc[eventType] = 0;
-        }
-      
-        acc[eventType] += group._count.eventId
-        return acc;
-      }, {});
-    const response = json(eventCountMap);
-    return cors(request, response);
-  }
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get('appId'));
+  const shop = url.searchParams.get('shop');
+  const fromDate = new Date(url.searchParams.get('analytics.fromDate'));
+  const toDate = new Date(url.searchParams.get('analytics.toDate'));  
+  const activityIds = await getEventTypes(appId);
 
-
-export async function action({ request }) {
-    let data = await request.formData();
-    data = Object.fromEntries(data);
-    const type = data.type;
-    const elementId = data.elementId;
-    const time = data.time;
-    const shop = data.shop;
-    await db.analytics.create({
-        data: {
-            type: type,
-            shop: shop,
-            elementId: elementId,
-            time: time,
-        },
-    });
+  const counts = await db.analytics.groupBy({
+    by: ['activityId'],
+    where: {
+      appId: appId,
+      shop: shop,
+      activityId: { in: activityIds },
+      createdAt: {
+        gte: fromDate,
+        lte: toDate
+      }
+    },
+    _count: {
+      id: true
+    }
+  });
   
-    return json({status:'ok'});
-  }
+  const formattedCounts = activityIds.map((activityId) => {
+    const record = counts.find((count) => count.activityId === activityId);
+    return {
+      appId: appId,
+      activityId: activityId,
+      count: record ? record._count.id : 0
+    };
+  });
+  
+  return cors(request, {analytics: formattedCounts});
+}
+
+export const action = async ({ request }) => { 
+  let analytics = await request.json();
+  const activityId = analytics.activity;
+  const pageUrl = analytics.pageUrl;
+  const shop = analytics.shop;
+  const appId = analytics.data.element;
+
+  await db.analytics.create({
+    data: {
+      activityId,
+      pageUrl,
+      appId,
+      shop
+    }
+  });
+  response = json({ message: "Analytics", success: true });
+  return cors(request, response);  
+};
