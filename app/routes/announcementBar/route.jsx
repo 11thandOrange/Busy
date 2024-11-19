@@ -1,13 +1,13 @@
 import React from "react";
-import Settings from "../../components/templates/AnnouncementCustomization";
-import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementBarConfig";
+import AnnouncementCustomization from "../../components/templates/AnnouncementCustomization";
+import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementCustomizationConfig";
 
 const route = () => {
   return (
     <div>
-      <Settings
-        announcementBarType={ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER}
-      ></Settings>
+      <AnnouncementCustomization
+        announcementBarType={ANNOUNCEMENT_BAR_TYPES.TEXT}
+      ></AnnouncementCustomization>
     </div>
   );
 };

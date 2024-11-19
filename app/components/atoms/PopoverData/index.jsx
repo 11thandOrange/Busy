@@ -1,13 +1,16 @@
-import React from 'react'
+import React from "react";
 
-const PopoverData = ({header, description,callback, id}) => {
+const PopoverData = ({ header, description, callback, type }) => {
   const handleClick = () => {
-    callback(id); 
+    callback(type);
   };
-  
-  return (
-    <div onClick={handleClick} ><div style={{fontWeight: 'bold'}}>{header}</div><div>{description}</div></div>
-  )
-}
 
-export default PopoverData
+  return (
+    <div onClick={handleClick}>
+      <div style={{ fontWeight: "bold" }}>{header}</div>
+      <div>{description}</div>
+    </div>
+  );
+};
+
+export default PopoverData;

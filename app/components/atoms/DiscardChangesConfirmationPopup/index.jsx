@@ -1,9 +1,17 @@
-import { Modal, Frame} from '@shopify/polaris';
+import { Modal, Frame } from "@shopify/polaris";
 
-const DiscardChangesConfirmationPopup = ({active = false, toggleModal = () => {}, title = 'Discard all unsaved changes', primaryActionContent = 'Discard changes', secondaryActionContent = 'Continue editing', primaryActionClick = () => {}, mainContent = ""}) => {
+const DiscardChangesConfirmationPopup = ({
+  active = false,
+  toggleModal = () => {},
+  title = "Discard all unsaved changes",
+  primaryActionContent = "Discard changes",
+  secondaryActionContent = "Continue editing",
+  primaryActionClick = () => {},
+  mainContent = "",
+}) => {
   return (
     <Frame>
-      <div style={{height: '500px'}}>
+      <div>
         <Modal
           open={active}
           onClose={toggleModal}
@@ -21,13 +29,14 @@ const DiscardChangesConfirmationPopup = ({active = false, toggleModal = () => {}
           ]}
         >
           <Modal.Section>
-            {mainContent ? mainContent : "If you discard changes, you’ll delete any edits you made since you last saved."}
+            {mainContent
+              ? mainContent
+              : "If you discard changes, you’ll delete any edits you made since you last saved."}
           </Modal.Section>
         </Modal>
       </div>
     </Frame>
   );
-}
-
+};
 
 export default DiscardChangesConfirmationPopup;

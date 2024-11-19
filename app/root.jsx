@@ -8,7 +8,7 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
-import './style.css'
+import "./style.css";
 
 function LinkWrapper(props) {
   return (
@@ -39,7 +39,7 @@ export default function App() {
             Polaris: {
               Page: {
                 Header: {
-                  rollupButton: 'Actions',
+                  rollupButton: "Actions",
                 },
               },
             },

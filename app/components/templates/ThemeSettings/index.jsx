@@ -5,7 +5,7 @@ import { Text } from "@shopify/polaris";
 import {
   THEME_SETTINGS_STATUS,
   ThemeStyleGridType,
-} from "../../../constants/announcementBarConfig";
+} from "../../../constants/announcementCustomizationConfig";
 import { updateSettingsState } from "../../../utils/clientFunctions";
 
 const ThemeSettings = ({ setSettingsState, settingsState }) => {

@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
-import { AppProvider  } from "@shopify/shopify-app-remix/react";
+import { AppProvider } from "@shopify/shopify-app-remix/react";
 import { NavMenu } from "@shopify/app-bridge-react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import { authenticate } from "../shopify.server";
@@ -31,6 +31,9 @@ export default function App() {
           <a href="/settings">Settings</a>
           <a href="/analytics">Analytics</a>
           <a href="/app/plan">Plan</a>
+          <a href="/homepage">homepage</a>
+          <a href="/announcementBar">Announcement Customization</a>
+          <a href="/countdownTimer">Countdown Timer Customization</a>
         </NavMenu>
         <Outlet />
       </PolarisAppProvider>

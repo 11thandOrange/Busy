@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Selector from "../../atoms/Selector";
 import "./Settings.css";
 import { Card, Text } from "@shopify/polaris";
@@ -14,12 +14,19 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   SETTINGS_INITIAL_STATE,
   STATUS,
-} from "../../../constants/announcementBarConfig";
+} from "../../../constants/announcementCustomizationConfig";
 import FreeShippingSettings from "../../atoms/generalSettings/announcementBars/FreeShipping";
 import OrderCounterSettings from "../../atoms/generalSettings/announcementBars/OrderCounter";
 import CountdownTimerSettings from "../../atoms/generalSettings/announcementBars/CountdownTimer";
 import EmailCaptureSettings from "../../atoms/generalSettings/announcementBars/EmailCapture";
-import { updateSettingsState } from "../../../utils/clientFunctions";
+import {
+  hasChanges,
+  updateSettingsState,
+} from "../../../utils/clientFunctions";
+import { APP_TYPE } from "../../../utils/constants";
+import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
+import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
+import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -32,8 +39,10 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
     ...SETTINGS_INITIAL_STATE,
     ...generalSettings,
   });
-
-  console.log("settingsState", settingsState);
+  const prevSettingsState = useRef({
+    ...SETTINGS_INITIAL_STATE,
+    ...generalSettings,
+  });
 
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {
@@ -76,22 +85,37 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
       default:
         break;
     }
-  }, []);
+  }, [settingsState]);
+
+  const hasSettingsChanged = useSettingsChanged(
+    settingsState,
+    prevSettingsState.current,
+  );
+  const [onDiscardChanges, setOnDiscardChanges] = useState(false);
 
   return (
     <div className="customization-container">
+      <UnsavedChangesBar
+        saveActionButtonClick={() => {
+          console.log("Updated state", settingsState);
+        }}
+        discardActionButtonClick={() => {
+          setOnDiscardChanges(hasSettingsChanged);
+        }}
+        show={hasSettingsChanged}
+      ></UnsavedChangesBar>
       <div className="customization-left-section">
-        {/* <Card>
-            <SettingsDisplay></SettingsDisplay>
-            </Card> */}
         <Card>
           <Selector
             options={options}
             label="Status"
             helpText="Only one announcement bar will be displayed at the time"
             onSelect={(value) => {
-              console.log("On select", value);
+              setSettingsState((prevState) =>
+                updateSettingsState("status", value, prevState),
+              );
             }}
+            initialValue={settingsState.status}
           ></Selector>
         </Card>
         <Card>
@@ -100,8 +124,11 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
             label="Name"
             helpText="The private name of this smart bar. Only you will see this."
             onValueChange={(value) => {
-              console.log("Text Field", value);
+              setSettingsState((prevState) =>
+                updateSettingsState("name", value, prevState),
+              );
             }}
+            value={settingsState.name}
           ></CustomTextField>
         </Card>
         <Card>
@@ -137,8 +164,17 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
           setSettingsState={setSettingsState}
           settingsState={settingsState}
           announcementBarType={announcementBarType}
+          appType={APP_TYPE.ANNOUNCEMENT_BARS}
         ></ProductPreviewCard>
       </div>
+      <DiscardChangesConfirmationPopup
+        active={onDiscardChanges}
+        toggleModal={() => setOnDiscardChanges(false)}
+        primaryActionClick={() => {
+          setSettingsState(prevSettingsState.current);
+          setOnDiscardChanges(false);
+        }}
+      ></DiscardChangesConfirmationPopup>
     </div>
   );
 };

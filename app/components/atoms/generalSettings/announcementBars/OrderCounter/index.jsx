@@ -12,7 +12,7 @@ const OrderCounterSettings = ({ setSettingsState, settingsState }) => {
         disabled={true}
       ></CustomTextField>
       <CustomTextField
-        value={settingsState.generalSettings.message}
+        value={ settingsState.generalSettings.message}
         onValueChange={(value) => {
           setSettingsState((prevState) =>
             updateSettingsState("generalSettings.message", value, prevState),

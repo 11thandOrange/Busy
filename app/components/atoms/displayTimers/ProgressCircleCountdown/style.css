@@ -1,0 +1,28 @@
+.ProgressCircleCountdown {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  color: #ff4e4e;
+}
+
+.ProgressCircleCountdown-item {
+  position: relative; /* Allows child elements to use absolute positioning */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ProgressCircleCountdown-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff4e4e;
+}
+
+.ProgressCircleCountdown-divider {
+  font-size: 30px;
+  color: #939191;
+}
