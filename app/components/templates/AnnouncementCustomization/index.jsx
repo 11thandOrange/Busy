@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Selector from "../../atoms/Selector";
 import "./Settings.css";
-import { Card, Text } from "@shopify/polaris";
+import { Card, Page, Text } from "@shopify/polaris";
 import CustomTextField from "../../atoms/CustomTextField";
 
 import ThemeStyleGrid from "../ThemeStyleGrid";
@@ -27,13 +27,17 @@ import { APP_TYPE } from "../../../utils/constants";
 import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
+import ManageDataChange from "../ManageDataChange";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
   { label: "Inactive", value: STATUS.INACTIVE },
 ];
 
-const AnnouncementCustomization = ({ announcementBarType }) => {
+const AnnouncementCustomization = ({
+  announcementBarType,
+  header = "Customization",
+}) => {
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
     ...SETTINGS_INITIAL_STATE,
@@ -45,6 +49,8 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
   });
 
   const selectGeneralSettings = useCallback(() => {
+    console.log("announcement bar type", announcementBarType);
+
     switch (announcementBarType) {
       case ANNOUNCEMENT_BAR_TYPES.TEXT:
         return (
@@ -85,96 +91,91 @@ const AnnouncementCustomization = ({ announcementBarType }) => {
       default:
         break;
     }
-  }, [settingsState]);
-
-  const hasSettingsChanged = useSettingsChanged(
-    settingsState,
-    prevSettingsState.current,
-  );
-  const [onDiscardChanges, setOnDiscardChanges] = useState(false);
+  }, [settingsState, ANNOUNCEMENT_BAR_TYPES]);
 
   return (
-    <div className="customization-container">
-      <UnsavedChangesBar
-        saveActionButtonClick={() => {
-          console.log("Updated state", settingsState);
-        }}
-        discardActionButtonClick={() => {
-          setOnDiscardChanges(hasSettingsChanged);
-        }}
-        show={hasSettingsChanged}
-      ></UnsavedChangesBar>
-      <div className="customization-left-section">
-        <Card>
-          <Selector
-            options={options}
-            label="Status"
-            helpText="Only one announcement bar will be displayed at the time"
-            onSelect={(value) => {
-              setSettingsState((prevState) =>
-                updateSettingsState("status", value, prevState),
-              );
+    <div>
+      <Page
+        backAction={{ content: "Settings", url: "/apps/announcementBar" }}
+        title={header}
+        // primaryAction={<ActiveButton></ActiveButton>}
+      >
+        <div className="customization-container">
+          <ManageDataChange
+            newState={settingsState}
+            prevState={prevSettingsState.current}
+            handleSaveChanges={() => {
+              console.log("Updated state", settingsState);
             }}
-            initialValue={settingsState.status}
-          ></Selector>
-        </Card>
-        <Card>
-          <CustomTextField
-            type="text"
-            label="Name"
-            helpText="The private name of this smart bar. Only you will see this."
-            onValueChange={(value) => {
-              setSettingsState((prevState) =>
-                updateSettingsState("name", value, prevState),
-              );
+            handleDiscardChanges={() => {
+              console.log("On discard changes");
             }}
-            value={settingsState.name}
-          ></CustomTextField>
-        </Card>
-        <Card>
-          <div className="general-settings-header">
-            <Text variant="bodyMd" fontWeight="bold" as="span">
-              General Settings
-            </Text>
+          />
+          <div className="customization-left-section">
+            <Card>
+              <Selector
+                options={options}
+                label="Status"
+                helpText="Only one announcement bar will be displayed at the time"
+                onSelect={(value) => {
+                  setSettingsState((prevState) =>
+                    updateSettingsState("status", value, prevState),
+                  );
+                }}
+                initialValue={settingsState.status}
+              ></Selector>
+            </Card>
+            <Card>
+              <CustomTextField
+                type="text"
+                label="Name"
+                helpText="The private name of this smart bar. Only you will see this."
+                onValueChange={(value) => {
+                  setSettingsState((prevState) =>
+                    updateSettingsState("name", value, prevState),
+                  );
+                }}
+                value={settingsState.name}
+              ></CustomTextField>
+            </Card>
+            <Card>
+              <div className="general-settings-header">
+                <Text variant="bodyMd" fontWeight="bold" as="span">
+                  General Settings
+                </Text>
+              </div>
+              {selectGeneralSettings()}
+            </Card>
+            <Card>
+              <ThemeStyleGrid
+                onThemeSelected={(value, type, image) => {
+                  setSettingsState((prevState) =>
+                    updateSettingsState(
+                      "themeStyle",
+                      { id: value, type: type, image: image },
+                      prevState,
+                    ),
+                  );
+                }}
+              ></ThemeStyleGrid>
+            </Card>
+            <Card>
+              <ThemeSettings
+                setSettingsState={setSettingsState}
+                settingsState={settingsState}
+              ></ThemeSettings>
+            </Card>
           </div>
-          {selectGeneralSettings()}
-        </Card>
-        <Card>
-          <ThemeStyleGrid
-            onThemeSelected={(value, type, image) => {
-              setSettingsState((prevState) =>
-                updateSettingsState(
-                  "themeStyle",
-                  { id: value, type: type, image: image },
-                  prevState,
-                ),
-              );
-            }}
-          ></ThemeStyleGrid>
-        </Card>
-        <Card>
-          <ThemeSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-          ></ThemeSettings>
-        </Card>
-      </div>
-      <div className="customization-right-section">
-        <ProductPreviewCard
-          setSettingsState={setSettingsState}
-          settingsState={settingsState}
-          announcementBarType={announcementBarType}
-          appType={APP_TYPE.ANNOUNCEMENT_BARS}
-        ></ProductPreviewCard>
-      </div>
-      <DiscardChangesConfirmationPopup
-        active={onDiscardChanges}
-        toggleModal={() => setOnDiscardChanges(false)}
-        primaryActionClick={() => {
-          setSettingsState(prevSettingsState.current);
-          setOnDiscardChanges(false);
-        }}
-      ></DiscardChangesConfirmationPopup>
+          <div className="customization-right-section">
+            <ProductPreviewCard
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+              announcementBarType={announcementBarType}
+              appType={APP_TYPE.ANNOUNCEMENT_BARS}
+            ></ProductPreviewCard>
+          </div>
+        </div>
+      </Page>
     </div>
   );
 };

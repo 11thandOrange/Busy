@@ -1,35 +1,34 @@
 import React from "react";
 import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementCustomizationConfig";
 import db from "../../db.server";
-import { cors } from 'remix-utils/cors';
+import { cors } from "remix-utils/cors";
 import { getShopName } from "../../utils/function";
+import AnnouncementCustomization from "../../components/templates/AnnouncementCustomization";
 
 export async function loader({ request }) {
-  const shop = await getShopName(request)
+  const shop = await getShopName(request);
   let announcement_bars = await db.announcement_bar.findMany({
-    where:{
-      shop: shop
+    where: {
+      shop: shop,
     },
-    select:{
+    select: {
       id: true,
-      name: true,       
-      status : true,
+      name: true,
+      status: true,
       general_setting: true,
       theme_style: true,
-      theme_setting: true
-    }
+      theme_setting: true,
+    },
   });
   return cors(request, announcement_bars);
 }
 
 export async function action({ request }) {
-
-  let shop = await getShopName(request)
+  let shop = await getShopName(request);
   let data = await request.formData();
   data = Object.fromEntries(data);
   const name = data.name;
   const _action = data._action;
-
 
   let response;
 
@@ -49,7 +48,7 @@ export async function action({ request }) {
       await db.Announcement_bar.deleteMany({
         where: {
           id: data.announcement_bar_id,
-          shop: shop
+          shop: shop,
         },
       });
       response = json({ success: true });
@@ -57,7 +56,6 @@ export async function action({ request }) {
     default:
       return new Response("Method Not Allowed", { status: 405 });
   }
-
 }
 
 const route = () => {
