@@ -92,7 +92,7 @@ model Setting{
   change_setting  Boolean @default(false)
   color_theme String @default("light")
   global_customizations String? 
-  shop  String?
+  shop String  @unique
 }
 
 model Analytics {

@@ -1,11 +1,11 @@
 import { cors } from 'remix-utils/cors';
 import db from '../db.server';
-import { getEventTypes } from '../utils/function';
+import { getEventTypes, getShopName } from '../utils/function';
 
 export async function loader({ request }) {
+  const shop = await getShopName(request)
   const url = new URL(request.url);
   const appId = parseInt(url.searchParams.get('appId'));
-  const shop = url.searchParams.get('shop');
   const fromDate = new Date(url.searchParams.get('analytics.fromDate'));
   const toDate = new Date(url.searchParams.get('analytics.toDate'));  
   const activityIds = await getEventTypes(appId);

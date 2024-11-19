@@ -3,28 +3,43 @@ import Analytics from '../../components/templates/Analytics'
 import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
+import { getEventTypes, getShopName } from '../utils/function';
 
-export const loader = async ({ request }) => {
-  let apps = await db.app.findMany({
-    include: {
-      Merchant: true,
-      categories: {
-        select: {
-          id:true
-        }
-      },
+export async function loader({ request }) {
+  const shop = await getShopName(request)
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get('appId'));
+  const fromDate = new Date(url.searchParams.get('analytics.fromDate'));
+  const toDate = new Date(url.searchParams.get('analytics.toDate'));  // 2024-01-01
+  const activityIds = await getEventTypes(appId);
+
+  const counts = await db.analytics.groupBy({
+    by: ['activityId'],
+    where: {
+      appId: appId,
+      shop: shop,
+      activityId: { in: activityIds },
+      createdAt: {
+        gte: fromDate,
+        lte: toDate
+      }
     },
+    _count: {
+      id: true
+    }
   });
-  apps = apps.map((app) => {  
+  
+  const formattedCounts = activityIds.map((activityId) => {
+    const record = counts.find((count) => count.activityId === activityId);
     return {
-      id: app.id,
-      name: app.name,
+      appId: appId,
+      activityId: activityId,
+      count: record ? record._count.id : 0
     };
   });
-
-  const response = {apps};
-  return cors(request, response);
-};
+  
+  return cors(request, {analytics: formattedCounts});
+}
 export const action = async ({ request }) => {
   const shop = getShopName(request);
   const formData = new URLSearchParams(await request.text());
