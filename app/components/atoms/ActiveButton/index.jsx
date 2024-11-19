@@ -29,14 +29,16 @@ export default function ActiveButton({beforeActiveString = 'Active', afterActiva
   );
 
   return (
-    <div style={{height: '10px'}}>
+    <div className='bb-sec-btn'>
       <Popover
         active={popoverActive}
         activator={activator}
         autofocusTarget="first-node"
         onClose={togglePopoverActive}
       >
+        <div  className="bb-deactive-app-btn">
         <ActionList
+         
           actionRole="menuitem"
           items={[{content: deactivateString }]}
           onActionAnyItem={()=>{
@@ -44,7 +46,8 @@ export default function ActiveButton({beforeActiveString = 'Active', afterActiva
             toggleIsActive()
             togglePopoverActive()
           }}
-        />
+          />
+          </div>
       </Popover>
     </div>
   );

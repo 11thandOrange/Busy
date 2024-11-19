@@ -1,0 +1,64 @@
+import React from 'react';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Register required Chart.js components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+const ChartRenderer = ({ data, basicOptions }) => {
+  // Default/common configuration options
+  const defaultOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Default Chart Title',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'X-axis',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Y-axis',
+        },
+      },
+    },
+  };
+
+  // Merge common options with dynamic basic options
+  const options = {
+    ...defaultOptions,
+    ...basicOptions,
+    plugins: {
+      ...defaultOptions.plugins,
+      ...basicOptions?.plugins,
+    },
+    scales: {
+      ...defaultOptions.scales,
+      ...basicOptions?.scales,
+    },
+  };
+
+  return <Line data={data} options={options} />;
+};
+
+export default ChartRenderer;

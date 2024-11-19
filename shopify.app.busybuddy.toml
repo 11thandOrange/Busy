@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "76cf44618bb669b695753abcee017644"
+name = "BusyBuddy"
+handle = "busybuddy-7"
+application_url = "https://absent-football-cartoon-contrary.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+dev_store_url = "busybuddyreact.myshopify.com"
+automatically_update_urls_on_dev = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://absent-football-cartoon-contrary.trycloudflare.com/auth/callback",
+  "https://absent-football-cartoon-contrary.trycloudflare.com/auth/shopify/callback",
+  "https://absent-football-cartoon-contrary.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[pos]
+embedded = false

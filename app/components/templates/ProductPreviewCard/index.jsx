@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css"; // Import CSS for styling
 import PreviewCardBanner from "../../atoms/PreviewCardBanner";
-
-// Banner configuration constant
-const bannerConfig = {
-  text: "Limited Offer!",
-  bgColor: "#f5a623",
-  bgImage: "", // You can add a URL to a background image here
-  position: "bottom", // Can be 'top-fixed', 'top-relative', or 'bottom'
-};
+import { APP_TYPE } from "../../../utils/constants";
+import PreviewCardTimer from "../../atoms/PreviewCardTimer";
 
 const ProductPreviewCard = ({
   settingsState,
   announcementBarType,
   setSettingsState,
+  appType = APP_TYPE.ANNOUNCEMENT_BARS,
 }) => {
   const [quantity, setQuantity] = useState(1);
   // console.log("settings state is here",settingsState);
@@ -23,14 +18,31 @@ const ProductPreviewCard = ({
     setQuantity(value);
   };
 
-  return (
-    <div className="product-preview-card">
-      <PreviewCardBanner
-        settingsState={settingsState}
-        announcementBarType={announcementBarType}
-        setSettingsState={setSettingsState}
-      ></PreviewCardBanner>
+  const fetchTimerComponent = () => {
+    switch (appType) {
+      case APP_TYPE.ANNOUNCEMENT_BARS:
+        return (
+          <PreviewCardBanner
+            settingsState={settingsState}
+            announcementBarType={announcementBarType}
+            setSettingsState={setSettingsState}
+          />
+        );
 
+      case APP_TYPE.COUNTDOWN_TIMER:
+        return (
+          <PreviewCardTimer settingsState={settingsState}></PreviewCardTimer>
+        );
+
+      default:
+        return null; // or handle other cases, if necessary
+    }
+  };
+  return (
+    <div
+      className="product-preview-card"
+      style={{ backgroundColor: "white", borderColor: "white" }}
+    >
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
       {/* Title Text */}
@@ -67,6 +79,8 @@ const ProductPreviewCard = ({
       <div className="add-to-cart-container">
         <button className="add-to-cart-button">Add to cart</button>
       </div>
+
+      {fetchTimerComponent()}
 
       {/* Product Description */}
       <div className="product-description">

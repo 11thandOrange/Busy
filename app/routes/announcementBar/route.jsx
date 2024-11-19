@@ -64,9 +64,9 @@ export async function action({ request }) {
 const route = () => {
   return (
     <div>
-      <Settings
-        announcementBarType={ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER}
-      ></Settings>
+      <AnnouncementCustomization
+        announcementBarType={ANNOUNCEMENT_BAR_TYPES.TEXT}
+      ></AnnouncementCustomization>
     </div>
   );
 };

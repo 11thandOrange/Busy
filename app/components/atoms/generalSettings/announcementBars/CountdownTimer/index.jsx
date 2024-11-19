@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import DatePicker from "../../../DatePicker";
 import CustomTextField from "../../../CustomTextField";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
+import {
+  isEndDateValid,
+  updateSettingsState,
+} from "../../../../../utils/clientFunctions";
 
 const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
+  // debugger;
+
   return (
     <div>
       <div>
@@ -17,13 +22,14 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
               ),
             );
           }}
+          initialValue={settingsState.generalSettings.countDownStartAt}
           label={"Countdown starts At"}
         ></DatePicker>
       </div>
       <div>
         <DatePicker
           onDatePicked={(date) => {
-            setSettingsState((prevState) =>
+            return setSettingsState((prevState) =>
               updateSettingsState(
                 "generalSettings.countDownEndsAt",
                 date,
@@ -31,7 +37,14 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
               ),
             );
           }}
+          initialValue={settingsState.generalSettings.countDownEndsAt}
           label={"Countdown ends At"}
+          minValue={settingsState?.generalSettings?.countDownStartAt}
+          errorMessage={
+            isEndDateValid(settingsState.generalSettings.countDownEndsAt)
+              ? false
+              : "Not valid"
+          }
         ></DatePicker>
       </div>
       <CustomTextField

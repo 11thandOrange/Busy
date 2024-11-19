@@ -86,13 +86,13 @@ model Fav_widget {
 }
 
 model Setting{
-  id                      Int @id       @default(autoincrement())
-  admin_language          String?
-  lazy_load_images        Boolean       @default(false)
-  change_setting          Boolean       @default(false)
-  color_theme             String        @default("light")
-  global_customizations   String? 
-  shop  String?
+  id Int @id @default(autoincrement())
+  admin_language String?
+  lazy_load_images Boolean @default(false)
+  change_setting  Boolean @default(false)
+  color_theme String @default("light")
+  global_customizations String? 
+  shop String  @unique
 }
 
 model Analytics {
