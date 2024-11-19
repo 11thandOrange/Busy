@@ -44,12 +44,12 @@ const GlobalSettings = ({settings = {}}) => {
         lazy_load_images: customization.lazyLoadImages,
         change_setting: customization.allowSupportEdit,
         color_theme: customization.theme,
-        global_customizations: {
+        global_customizations: JSON.stringify({
           customCSS: customization.customCSS,
           customJSFirst: customization.customJSFirst,
           customJSLast: customization.customJSLast,
           customJSHook: customization.customJSHook
-        }
+        })
       },
       { method: "POST", action: "/settings" }
     );

@@ -1,6 +1,5 @@
 import React from "react";
-import Settings from "../../components/templates/AnnouncementCustomization";
-import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementBarConfig";
+import { ANNOUNCEMENT_BAR_TYPES } from "../../constants/announcementCustomizationConfig";
 import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { getShopName } from "../../utils/function";

@@ -5,7 +5,7 @@ import db from '../../db.server'
 import { getShopName } from '../../utils/function';
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
-import json from '@remix-run/node';
+import { json } from "@remix-run/node";
 
   export const loader = async ({ request }) => {
     let shop = await getShopName(request)
@@ -23,6 +23,7 @@ import json from '@remix-run/node';
   };
   
   export const action = async ({ request }) => { 
+    let response = {}
     const shop = await getShopName(request);
     let settings = await request.formData();
     settings = Object.fromEntries(settings);
@@ -60,7 +61,6 @@ import json from '@remix-run/node';
 
 const Settings = () => {
   const settings = useLoaderData();
-  console.log(settings, "settings")
   return (
     <>
         <GoBack/>

@@ -3,20 +3,26 @@ import db from '../db.server';
 import { getEventTypes, getShopName } from '../utils/function';
 
 export async function loader({ request }) {
-  const shop = await getShopName(request)
-  const url = new URL(request.url);
-  const appId = parseInt(url.searchParams.get('appId'));
-  const fromDate = new Date(url.searchParams.get('analytics.fromDate'));
-  const toDate = new Date(url.searchParams.get('analytics.toDate'));  
-  const activityIds = await getEventTypes(appId);
+  try {
+    const url = new URL(request.url);
+    const appId = parseInt(url.searchParams.get('appId'));
+    const shop = url.searchParams.get('shop');
+    const fromDateString = url.searchParams.get('fromDate');
+    const toDateString = url.searchParams.get('toDate');
 
     if (!appId || !shop || !fromDateString || !toDateString) {
       return cors(request, { error: 'Missing required query parameters' }, { status: 400 });
     }
 
+    const fromDate = new Date(fromDateString);
+    const toDate = new Date(toDateString);
+
     if (isNaN(fromDate) || isNaN(toDate)) {
       return cors(request, { error: 'Invalid date format' }, { status: 400 });
     }
+
+    const activityIds = await getEventTypes(appId);
+
     const counts = await db.analytics.groupBy({
       by: ['activityId', 'createdAt'],
       where: {

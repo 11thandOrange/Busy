@@ -3,7 +3,7 @@ import Analytics from '../../components/templates/Analytics'
 import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
-import { getEventTypes, getShopName } from '../utils/function';
+import { getEventTypes, getShopName } from '../../utils/function';
 
 export async function loader({ request }) {
   const shop = await getShopName(request)
