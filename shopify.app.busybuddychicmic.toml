@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://soap-stayed-recognised-inside.trycloudflare.com"
+application_url = "https://yamaha-tip-conclude-construct.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://soap-stayed-recognised-inside.trycloudflare.com/auth/callback",
-  "https://soap-stayed-recognised-inside.trycloudflare.com/auth/shopify/callback",
-  "https://soap-stayed-recognised-inside.trycloudflare.com/api/auth/callback"
+  "https://yamaha-tip-conclude-construct.trycloudflare.com/auth/callback",
+  "https://yamaha-tip-conclude-construct.trycloudflare.com/auth/shopify/callback",
+  "https://yamaha-tip-conclude-construct.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

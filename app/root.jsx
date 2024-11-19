@@ -1,4 +1,5 @@
 import {
+  Link,
   Links,
   Meta,
   Outlet,
@@ -8,7 +9,6 @@ import {
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 import "./style.css";
-import { Link } from "react-router-dom";
 
 function LinkWrapper(props) {
   return (

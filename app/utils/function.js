@@ -111,15 +111,20 @@ export const createEvent = async(data) => {
     }
   });
 }
-export const getEventTypes = async(appId) =>{
+export const getEventTypes = async (appId) => {
   const eventTypes = await db.app.findFirst({
     where: {
-      appId: appId,
-      shop: shop,
+      id: appId,
     },
-    include:{
-      event:true
-    }
+    include: {
+      activities: {
+        select: {
+          id: true
+        }
+      }
+    },
   });
-  return eventTypes;
-}
+  if (!eventTypes) return [];
+  const activityIds = eventTypes.activities.map(activity => activity.id);
+  return activityIds;
+};
