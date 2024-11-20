@@ -44,12 +44,15 @@ function CheckBars({ barsData }) {
   };
 
   const rowMarkup = barsData.map(
-    ({ id, name, createdAt, status, general_setting }, index) => (
+    ({ id, name, createdAt, status, general_setting, type }, index) => (
       <IndexTable.Row
         id={id}
         key={id}
         selected={selectedResources.includes(id)}
         position={index}
+        onClick={() => {
+          navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`);
+        }}
       >
         <IndexTable.Cell>
           <div>
@@ -86,7 +89,7 @@ function CheckBars({ barsData }) {
 
   return (
     <LegacyCard>
-      {barsData.length > 0 ? (
+      {
         <>
           <IndexTable
             resourceName={resourceName}
@@ -94,6 +97,21 @@ function CheckBars({ barsData }) {
             selectedItemsCount={
               allResourcesSelected ? "All" : selectedResources.length
             }
+            emptyState={
+              <DynamicEmptyState
+                heading="Create your first Announcement Bar"
+                description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
+                actionContent={
+                  <PopoverContent
+                    options={announcementPopoverData}
+                    heading="Create Announcement Bar"
+                    onSelect={handleCreateClick}
+                  />
+                }
+                actionCallback={() => {}}
+              />
+            }
+            selectable={true}
             onSelectionChange={handleSelectionChange}
             headings={[
               { title: `Showing ${barsData.length} announcement bar(s)` },
@@ -104,11 +122,13 @@ function CheckBars({ barsData }) {
           </IndexTable>
 
           <div style={{ position: "absolute", top: "4px", right: "10px" }}>
-            <PopoverContent
-              options={announcementPopoverData}
-              heading="Create"
-              onSelect={handleCreateClick}
-            />
+            {barsData.length > 0 && (
+              <PopoverContent
+                options={announcementPopoverData}
+                heading="Create"
+                onSelect={handleCreateClick}
+              />
+            )}
             <DiscardChangesConfirmationPopup
               active={confirmDelete}
               toggleModal={() => setConfirmDelete(false)}
@@ -120,19 +140,7 @@ function CheckBars({ barsData }) {
             />
           </div>
         </>
-      ) : (
-        <DynamicEmptyState
-          heading="Create your first Announcement Bar"
-          description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
-          actionContent={
-            <PopoverContent
-              options={announcementPopoverData}
-              heading="Create Announcement Bar"
-              onSelect={handleCreateClick}
-            />
-          }
-        />
-      )}
+      }
     </LegacyCard>
   );
 }

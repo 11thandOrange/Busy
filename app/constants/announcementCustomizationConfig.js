@@ -33,8 +33,8 @@ export const announcementPopoverData = [
   },
 ];
 export const STATUS = {
-  ACTIVE: 1,
-  INACTIVE: 0,
+  ACTIVE: "1",
+  INACTIVE: "0",
 };
 export const THEME_SETTINGS_STATUS = {
   TOP_RELATIVE: "TOP_RELATIVE",
@@ -47,7 +47,7 @@ export const ThemeStyleGridType = {
 };
 export const SETTINGS_INITIAL_STATE = {
   status: STATUS.INACTIVE,
-  name: "",
+  name: "Text Bar",
   themeStyle: {
     id: 1,
     type: ThemeStyleGridType.COLOR,

@@ -8,7 +8,7 @@ const UnsavedChangesBar = ({
   show = true,
 }) => {
   return (
-    <div style={{ height: "250px" }}>
+    <div>
       {show && (
         <Frame>
           <ContextualSaveBar
