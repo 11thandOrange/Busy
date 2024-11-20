@@ -26,6 +26,11 @@ export const APP_TYPE = {
   COUNTDOWN_TIMER: 2,
 };
 
+export const TABS_ENUM = {
+  IMPRESSIONS: 1,
+  CLICK: 2
+}
+
 export const ROUTES = {
   HOME: "/app",
   APPS: "/apps",

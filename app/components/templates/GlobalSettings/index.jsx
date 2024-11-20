@@ -1,12 +1,14 @@
 import { Page, Card, Select, Checkbox, RadioButton, TextField, Layout } from '@shopify/polaris';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './style.css'
 import SettingSection from './SettingSection';
 import { useFetcher } from '@remix-run/react';
 import ManageDataChange from '../ManageDataChange';
+import Toast from '../../atoms/Toast';
 
 const GlobalSettings = ({settings = {}}) => {
   const fetcher = useFetcher();
+  const [showToast, setShowToast] = useState(false)
 
   const oldSettingRef = useRef({
     language: "English",
@@ -59,24 +61,36 @@ const GlobalSettings = ({settings = {}}) => {
     setCustomization(oldSettingRef.current)
   }
 
-  useState(() => {
+  const onDismiss = () => {
+    setShowToast(false)
+  }
+
+  useEffect(() => {
+    let globalCustomizations = JSON.parse(settings.global_customizations)
     let data = {
       language: settings.admin_language,
       lazyLoadImages : settings.lazy_load_images,
       allowSupportEdit : settings.change_setting,
       theme : settings.color_theme,
-      customCSS : settings.global_customizations?.customCSS,
-      customJSFirst: settings.global_customizations?.customJSFirst,
-      customJSLast: settings.global_customizations?.customJSLast,
-      customJSHook: settings.global_customizations?.customJSHook,
+      customCSS : globalCustomizations?.customCSS,
+      customJSFirst: globalCustomizations?.customJSFirst,
+      customJSLast: globalCustomizations?.customJSLast,
+      customJSHook: globalCustomizations?.customJSHook,
     }
     setCustomization(data);
     oldSettingRef.current = data;
   }, [settings])
 
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data) {
+      setShowToast(true)
+    }
+  }, [fetcher.state])
+
 
   return (
     <Page>
+      <Toast onDismiss={onDismiss} show={showToast} message='Settings saved'/>
       <ManageDataChange newState={customization} prevState={oldSettingRef.current} handleSaveChanges={handleSaveSettingsData} handleDiscardChanges={handleDiscardChanges}/>
       <Layout>
         {/* Admin language section */}
