@@ -214,21 +214,16 @@ export const getAnnouncementBar = async (shop) => {
             announcementBar.innerHTML = message;
           }
 
-          // If the countdown ends, stop updating
           if (difference.difference <= 0) {
             clearInterval(countdownInterval);
-            // Optionally, display a message when the countdown ends
             announcementBar.textContent = "Countdown Finished!";
             if (document.getElementById('busyBuddyAnnouncementBar')) {
               document.getElementById('busyBuddyAnnouncementBar').innerHTML = "Countdown Finished!";
             }
           }
         }
-
-        // Initial countdown display
         updateCountdown();
 
-        // Update the countdown every second
         let countdownInterval = setInterval(updateCountdown, 1000);
       `;
     }
