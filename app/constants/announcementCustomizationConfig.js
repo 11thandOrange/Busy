@@ -1,9 +1,9 @@
 export const ANNOUNCEMENT_BAR_TYPES = {
   TEXT: 1,
-  FREE_SHIPPING: 2,
-  ORDERS_COUNTER: 3,
-  COUNTDOWN_TIMER: 4,
-  EMAIL_CAPTURE: 5,
+  COUNTDOWN_TIMER: 2,
+  // FREE_SHIPPING: 2,
+  // ORDERS_COUNTER: 3,
+  // EMAIL_CAPTURE: 5,
 };
 export const announcementPopoverData = [
   {
@@ -12,35 +12,29 @@ export const announcementPopoverData = [
     description: "Boost sales by announcing your best offers.",
     type: ANNOUNCEMENT_BAR_TYPES.TEXT,
   },
+  // {
+  //   id: 2,
+  //   header: "Free Shipping",
+  //   description: "Increase order size by setting free shipping goals.",
+  //   type: ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING,
+  // },
+  // {
+  //   id: 3,
+  //   header: "Orders Counter",
+  //   description:
+  //     "Build trust by letting your customers know how many orders your store has shipped.",
+  //   type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
+  // },
   {
     id: 2,
-    header: "Free Shipping",
-    description: "Increase order size by setting free shipping goals.",
-    type: ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING,
-  },
-  {
-    id: 3,
-    header: "Orders Counter",
-    description:
-      "Build trust by letting your customers know how many orders your store has shipped.",
-    type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
-  },
-  {
-    id: 4,
     header: "Countdown Timer",
     description: "Create urgency/expectations for ongoing/future events.",
     type: ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER,
   },
-  {
-    id: 5,
-    header: "Email Capture",
-    description: "Capture leads to grow your business.",
-    type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
-  },
 ];
 export const STATUS = {
-  ACTIVE: "ACTIVE",
-  INACTIVE: "INACTIVE",
+  ACTIVE: 1,
+  INACTIVE: 0,
 };
 export const THEME_SETTINGS_STATUS = {
   TOP_RELATIVE: "TOP_RELATIVE",

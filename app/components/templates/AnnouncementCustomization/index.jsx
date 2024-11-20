@@ -28,6 +28,7 @@ import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
+import { useFetcher } from "@remix-run/react";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -39,6 +40,7 @@ const AnnouncementCustomization = ({
   header = "Customization",
   backActionRoute = ROUTES.APPS,
 }) => {
+  const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
     ...SETTINGS_INITIAL_STATE,
@@ -50,8 +52,6 @@ const AnnouncementCustomization = ({
   });
 
   const selectGeneralSettings = useCallback(() => {
-  
-
     switch (announcementBarType) {
       case ANNOUNCEMENT_BAR_TYPES.TEXT:
         return (
@@ -107,6 +107,23 @@ const AnnouncementCustomization = ({
             prevState={prevSettingsState.current}
             handleSaveChanges={() => {
               console.log("Updated state", settingsState);
+              fetcher.submit(
+                {
+                  name: settingsState.name,
+                  status: settingsState.status,
+                  general_setting: JSON.stringify(
+                    settingsState.generalSettings,
+                  ),
+                  theme_style: JSON.stringify(settingsState.themeStyle),
+                  theme_settings: JSON.stringify(settingsState.themeSettings),
+                  type: announcementBarType,
+                  _action:'CREATE'
+                },
+                {
+                  method: "POST",
+                  action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+                },
+              );
             }}
             handleDiscardChanges={() => {
               console.log("On discard changes");

@@ -12,6 +12,7 @@ import { ROUTES } from "../../../../utils/constants";
 import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
 import { getShopName } from "../../../../utils/function";
+import { json } from "@remix-run/node";
 
 export async function loader({ request }) {
   const shop = await getShopName(request);
@@ -24,12 +25,65 @@ export async function loader({ request }) {
       name: true,
       status: true,
       general_setting: true,
+      type:true,
       createdAt: true,
     },
   });
   return cors(request, announcement_bars);
 }
 
+
+export async function action({ request }) {
+  let shop = await getShopName(request);
+  let data = await request.formData();
+  let name, status, general_setting, theme_style, theme_setting;
+
+  data = Object.fromEntries(data);
+  const _action = data._action;
+  if (_action != "DELETE") {
+    name = data.name;
+    status = Boolean(data.status);
+    general_setting = data.general_setting;
+    theme_style = data.theme_style;
+    theme_setting = data.theme_setting;
+  }
+
+  let response;
+
+  switch (_action) {
+    case "CREATE":
+      const announcement_bar = await db.Announcement_bar.create({
+        data: {
+          name,
+          status,
+          general_setting,
+          theme_style,
+          theme_setting,
+          shop,
+        },
+      });
+
+      response = json({ message: "Announcement Bar Added", announcement_bar });
+      return cors(request, response);
+
+    case "DELETE":
+      console.log(data.announcement_bar_id, "TEst");
+      await db.Announcement_bar.deleteMany({
+        where: {
+          id: {
+            in: data.announcement_bar_id
+              .split(",")
+              .map((num) => parseInt(num, 10)),
+          },
+          shop: shop,
+        },
+      });
+      response = json({ success: true });
+      return cors(request, response);
+    default:
+      return new Response("Method Not Allowed", { status: 405 });
+  }
+}
 const route = () => {
   const announcementBarsData = useLoaderData();
   console.log("Announcnemnt bars data ", announcementBarsData);
