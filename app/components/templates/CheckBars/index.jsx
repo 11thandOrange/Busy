@@ -8,17 +8,21 @@ import {
 } from "@shopify/polaris";
 import React, { useState } from "react";
 import PopoverContent from "../PopoverContent";
-import barsData from "../../../data/barsData";
+// import barsData from "../../../data/barsData";
 import popoverData from "../../../data/popoverData";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import DynamicEmptyState from "../../atoms/DynamicEmptyState";
+import { formatDateAndTime } from "../../../utils/clientFunctions";
+import { useNavigate } from "@remix-run/react";
+import { ROUTES } from "../../../utils/constants";
 const barState = {
   ACTIVE: "success",
   INACTIVE: "critical",
 };
 hsbToHex;
-function CheckBars() {
+function CheckBars({ barsData }) {
+  const navigate = useNavigate();
   const resourceName = {
     singular: "order",
     plural: "orders",
@@ -27,34 +31,38 @@ function CheckBars() {
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(barsData);
 
-  const rowMarkup = barsData.map(({ id, order, date, state }, index) => (
-    <IndexTable.Row
-      id={id}
-      key={id}
-      selected={selectedResources.includes(id)}
-      position={index}
-    >
-      <IndexTable.Cell>
-        <div>
-          <Text variant="bodyMd" fontWeight="bold" as="span">
-            {order}
-          </Text>
-          <span style={{ marginLeft: "5px" }}>
-            {" "}
-            <Badge tone={state}>
-              {state === barState.ACTIVE ? "Active" : "Inactive"}
-            </Badge>
-          </span>
+  const rowMarkup = barsData.map(
+    ({ id, name, createdAt, status, general_setting }, index) => (
+      <IndexTable.Row
+        id={id}
+        key={id}
+        selected={selectedResources.includes(id)}
+        position={index}
+      >
+        <IndexTable.Cell>
+          <div>
+            <Text variant="bodyMd" fontWeight="bold" as="span">
+              {name}
+            </Text>
+            <span style={{ marginLeft: "5px" }}>
+              {" "}
+              <Badge
+                tone={status == true ? barState.ACTIVE : barState.INACTIVE}
+              >
+                {status === true ? "Active" : "Inactive"}
+              </Badge>
+            </span>
 
-          <p>Text tesing text is here </p>
-        </div>
-      </IndexTable.Cell>
+            <p>{general_setting} </p>
+          </div>
+        </IndexTable.Cell>
 
-      <Text as="span" alignment="end" numeric>
-        {date}
-      </Text>
-    </IndexTable.Row>
-  ));
+        <Text as="span" alignment="end" numeric>
+          {formatDateAndTime(createdAt)}
+        </Text>
+      </IndexTable.Row>
+    ),
+  );
   const promotedBulkActions = [
     {
       content: "Delete",
@@ -65,6 +73,7 @@ function CheckBars() {
   ];
 
   const [confirmDelete, onConfirmDelete] = useState(false);
+
   return (
     <LegacyCard>
       {barsData.length ? (
@@ -87,6 +96,11 @@ function CheckBars() {
             <PopoverContent
               options={announcementPopoverData}
               heading="Create"
+              onSelect={(selectedType) => {
+                navigate(
+                  `${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${selectedType}`,
+                );
+              }}
             ></PopoverContent>
             <DiscardChangesConfirmationPopup
               active={confirmDelete}
@@ -115,7 +129,9 @@ function CheckBars() {
               options={announcementPopoverData}
               heading="Create Announcement Bar"
               onSelect={(selectedType) => {
-                console.log(selectedType);
+                navigate(
+                  `${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${selectedType}`,
+                );
               }}
             ></PopoverContent>
           }

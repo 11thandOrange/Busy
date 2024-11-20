@@ -1,9 +1,9 @@
 export const ANNOUNCEMENT_BAR_TYPES = {
-  TEXT: 0,
-  FREE_SHIPPING: 1,
-  ORDERS_COUNTER: 2,
-  COUNTDOWN_TIMER: 3,
-  EMAIL_CAPTURE: 4,
+  TEXT: 1,
+  FREE_SHIPPING: 2,
+  ORDERS_COUNTER: 3,
+  COUNTDOWN_TIMER: 4,
+  EMAIL_CAPTURE: 5,
 };
 export const announcementPopoverData = [
   {

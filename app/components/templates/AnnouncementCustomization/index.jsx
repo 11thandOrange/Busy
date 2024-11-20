@@ -23,7 +23,7 @@ import {
   hasChanges,
   updateSettingsState,
 } from "../../../utils/clientFunctions";
-import { APP_TYPE } from "../../../utils/constants";
+import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
@@ -37,6 +37,7 @@ const options = [
 const AnnouncementCustomization = ({
   announcementBarType,
   header = "Customization",
+  backActionRoute = ROUTES.APPS,
 }) => {
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
@@ -49,7 +50,7 @@ const AnnouncementCustomization = ({
   });
 
   const selectGeneralSettings = useCallback(() => {
-    console.log("announcement bar type", announcementBarType);
+  
 
     switch (announcementBarType) {
       case ANNOUNCEMENT_BAR_TYPES.TEXT:
@@ -96,7 +97,7 @@ const AnnouncementCustomization = ({
   return (
     <div>
       <Page
-        backAction={{ content: "Settings", url: "/apps/announcementBar" }}
+        backAction={{ content: "Settings", url: backActionRoute }}
         title={header}
         // primaryAction={<ActiveButton></ActiveButton>}
       >

@@ -28,7 +28,7 @@ export const loader = async ({ request }) => {
 };
 export default function App() {
   const { apiKey } = useLoaderData();
-  console.log("Root is working");
+
   return (
     <html>
       <head>

@@ -7,8 +7,32 @@ import {
 import AnnouncementCustomization from "../../../../components/templates/AnnouncementCustomization";
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
-import { useNavigate } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { ROUTES } from "../../../../utils/constants";
+import { cors } from "remix-utils/cors";
+import db from "../../../../db.server";
+import { getShopName } from "../../../../utils/function";
+
+export async function loader({ request }) {
+  const shop = await getShopName(request);
+  let announcement_bars = await db.announcement_bar.findMany({
+    where: {
+      shop: shop,
+    },
+    select: {
+      id: true,
+      name: true,
+      status: true,
+      general_setting: true,
+      createdAt: true,
+    },
+  });
+  return cors(request, announcement_bars);
+}
+
 const route = () => {
+  const announcementBarsData = useLoaderData();
+  console.log("Announcnemnt bars data ", announcementBarsData);
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
@@ -21,8 +45,7 @@ const route = () => {
           selectedType={selectedType}
           setSelectedType={(type) => {
             setSelectedType(type);
-            navigate(`/apps/announcementBar/customization/${type}`);
-            // setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
+            navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
           }}
         />
       ),
@@ -45,7 +68,7 @@ const route = () => {
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
-      component: <CheckBars></CheckBars>,
+      component: <CheckBars barsData={announcementBarsData}></CheckBars>,
     },
     // {
     //   id: "Countdown-timer-1",

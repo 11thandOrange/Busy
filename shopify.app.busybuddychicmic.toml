@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://broken-cheers-atlanta-abstracts.trycloudflare.com"
+application_url = "https://super-choices-clara-xhtml.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://broken-cheers-atlanta-abstracts.trycloudflare.com/auth/callback",
-  "https://broken-cheers-atlanta-abstracts.trycloudflare.com/auth/shopify/callback",
-  "https://broken-cheers-atlanta-abstracts.trycloudflare.com/api/auth/callback"
+  "https://super-choices-clara-xhtml.trycloudflare.com/auth/callback",
+  "https://super-choices-clara-xhtml.trycloudflare.com/auth/shopify/callback",
+  "https://super-choices-clara-xhtml.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

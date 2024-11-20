@@ -7,6 +7,7 @@ import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import { authenticate } from "../shopify.server";
 import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
 import en from "@shopify/polaris/locales/en.json";
+import { ROUTES } from "../utils/constants";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
@@ -19,23 +20,22 @@ export const loader = async ({ request }) => {
 export default function App() {
   const { apiKey } = useLoaderData();
 
-
   return (
     <>
       <AppProvider isEmbeddedApp apiKey={apiKey}>
         <PolarisAppProvider i18n={en}>
           <NavMenu>
-            <Link href="/app" rel="home">
+            <Link href={ROUTES.HOME} rel="home">
               Home
             </Link>
-            <Link to="/apps">Apps</Link>
-            <a href="/widgets">Widgets</a>
-            <a href="/settings">Settings</a>
-            <a href="/app/plan">Plan</a>
-            <a href="/homepage">homepage</a>
-            <a href="/announcementBar">Announcement Customization</a>
-            <a href="/countdownTimer">Countdown Timer Customization</a>
-            <Link to="/RouteTest">RouteTest</Link>
+            <Link to={ROUTES.APPS}>Apps</Link>
+            <a href={ROUTES.WIDGETS}>Widgets</a>
+            <a href={ROUTES.SETTINGS}>Settings</a>
+            <a href={ROUTES.PLAN}>Plan</a>
+            <a href={ROUTES.HOMEPAGE}>homepage</a>
+            <a href={ROUTES.ANNOUNCEMENT_BAR}>Announcement Customization</a>
+            <a href={ROUTES.COUNTDOWN_TIMER}>Countdown Timer Customization</a>
+            <Link to={ROUTES.ROUTE_TEST}>RouteTest</Link>
           </NavMenu>
           <Outlet />
         </PolarisAppProvider>

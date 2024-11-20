@@ -181,3 +181,14 @@ function deepEqual(obj1, obj2) {
   }
   return true;
 }
+
+//2024-11-20T05:32:32.897Z to Nov 20 at 5:32am
+export const formatDateAndTime = (isoDate) => {
+  const date = new Date(isoDate);
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const day = date.getDate();
+  const hours = date.getHours() % 12 || 12;
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const amPm = date.getHours() >= 12 ? "pm" : "am";
+  return `${month} ${day} at ${hours}:${minutes}${amPm}`;
+};
