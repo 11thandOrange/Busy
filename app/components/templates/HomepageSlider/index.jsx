@@ -11,7 +11,7 @@ import "swiper/css/thumbs";
 import "./homepageSlider.css";
 
 // import required modules
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import HomepageDetails from "../../atoms/HomepageDetails";
 import sliderData from "../../../data/sliderData.json";
 
@@ -49,9 +49,9 @@ export default function HomepageSlider({ selectedType, setSelectedType }) {
             swiper:
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
-          modules={[FreeMode, Navigation, Thumbs]}
+          modules={[FreeMode, Navigation, Thumbs, Autoplay]}
           autoplay={{
-            delay: 2000,
+            delay: 1500,
             disableOnInteraction: false,
           }}
           className="mySwiper2"
