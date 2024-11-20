@@ -25,7 +25,7 @@ const AppsRenderList = ({ selectedApps }) => {
               <Link to={slug}>
                 <div className="bb-card-list-item">
                   {/* Commented Because of Routing error */}
-                  {/* <ResourceItem
+                  <ResourceItem
                     id={id}
                     accessibilityLabel={`View details for ${name}`}
                   >
@@ -34,7 +34,7 @@ const AppsRenderList = ({ selectedApps }) => {
                       style={{ display: "flex" }}
                     >
                       <div style={{ display: "flex" }}>
-                        <div className="bb-img-wrapper">
+                        {/* <div className="bb-img-wrapper">
                           <img src={image} />
                         </div>
                         <div
@@ -43,11 +43,11 @@ const AppsRenderList = ({ selectedApps }) => {
                           <h4>{name}</h4>
                           <h5>{description_title}</h5>
                           <span>{description_content}</span>
-                        </div>
+                        </div> */}
                       </div>
                       {isInstalled && <Badge tone="success">Active</Badge>}
                     </div>
-                  </ResourceItem> */}
+                  </ResourceItem>
                   {name}
                 </div>
               </Link>

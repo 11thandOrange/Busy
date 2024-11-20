@@ -51,7 +51,7 @@ function CheckBars({ barsData }) {
         selected={selectedResources.includes(id)}
         position={index}
         onClick={() => {
-          navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
+          navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`);
         }}
       >
         <IndexTable.Cell>

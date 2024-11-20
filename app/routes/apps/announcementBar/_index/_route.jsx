@@ -15,41 +15,69 @@ import { getShopName } from "../../../../utils/function";
 import { json } from "@remix-run/node";
 
 export async function loader({ request }) {
+  let announcement_bars;
   const shop = await getShopName(request);
-  let announcement_bars = await db.announcement_bar.findMany({
-    where: {
-      shop: shop,
-    },
-    select: {
-      id: true,
-      name: true,
-      status: true,
-      general_setting: true,
-      type: true,
-      createdAt: true,
-    },
-  });
+  const url = new URL(request.url);
+  if(url.searchParams.get('id'))
+  {
+    announcement_bars = await db.announcement_bar.findFirst({
+      where: {
+        id: parseInt(url.searchParams.get('id'))
+      },
+    })
+  }
+  else
+  { 
+    announcement_bars = await db.announcement_bar.findMany({
+      where: {
+        shop: shop,
+      },
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        general_setting: true,
+        type: true,
+        createdAt: true,
+      },
+    });
+  }
+  
   return cors(request, announcement_bars);
 }
 
 export async function action({ request }) {
   let shop = await getShopName(request);
   let data = await request.formData();
-  let name, status, general_setting, theme_style, theme_setting, type;
+  let id, name, status, general_setting, theme_style, theme_setting, type;
 
   data = Object.fromEntries(data);
   console.log("datata", data);
 
   const _action = data._action;
+  if(_action == "EDIT" || _action == "UPDATE")
+  {
+    id = parseInt(data.id);
+  }
   if (_action != "DELETE") {
     name = data.name;
     status = Boolean(Number(data.status));
     general_setting = data.general_setting;
     theme_style = data.theme_style;
-    theme_setting = data.theme_setting;
+    theme_setting = data.theme_settings;
     type = data.type;
   }
-
+  if(status==true)
+    {
+      await db.Announcement_bar.updateMany({
+        where: {
+          shop: shop
+        },
+        data: {
+          status: false,
+        },
+      });
+    }
   let response;
 
   switch (_action) {
@@ -68,7 +96,22 @@ export async function action({ request }) {
 
       response = json({ message: "Announcement Bar Added", announcement_bar });
       return cors(request, response);
-
+    case "UPDATE":
+      await db.Announcement_bar.update({
+        where: {
+          id: id
+        },
+        data: {
+          name,
+          status,
+          general_setting,
+          theme_style,
+          theme_setting,
+          type,
+        },
+      });
+      response = json({ message: "Announcement Bar Updated" });
+      return cors(request, response);
     case "DELETE":
       console.log(data.announcement_bar_id, "TEst");
       await db.Announcement_bar.deleteMany({

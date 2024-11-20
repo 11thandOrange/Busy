@@ -17,12 +17,11 @@ function CustomTextField({
   const [textFieldValue, setTextFieldValue] = useState(value);
   useEffect(() => {
     setTextFieldValue(value);
-  }, []);
+  }, [value]);
   const handleTextFieldChange = useCallback((value) => {
     setTextFieldValue(value);
     onValueChange(value);
   }, []);
-  
 
   return (
     <>

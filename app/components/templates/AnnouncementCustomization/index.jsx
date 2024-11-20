@@ -39,6 +39,7 @@ const AnnouncementCustomization = ({
   announcementBarType,
   header = "Customization",
   backActionRoute = ROUTES.APPS,
+  initialData,
 }) => {
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
@@ -94,6 +95,57 @@ const AnnouncementCustomization = ({
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES]);
 
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
+      prevSettingsState.current = initialData;
+      console.log("initial data", initialData);
+    }
+  }, [initialData]);
+
+  const handleOnSave = () => {
+    if (initialData) {
+      fetcher.submit(
+        {
+          id: initialData.id,
+          name: settingsState.name,
+          status: Number(settingsState.status),
+          general_setting: JSON.stringify(settingsState.generalSettings),
+          theme_style: JSON.stringify(settingsState.themeStyle),
+          theme_settings: JSON.stringify(settingsState.themeSettings),
+          type: announcementBarType,
+          _action: "UPDATE",
+        },
+        {
+          method: "POST",
+          action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+        },
+      );
+    } else {
+      console.log(
+        "onSave",
+        settingsState.status,
+        Number(settingsState.status),
+        Boolean(Number(settingsState.status)),
+      );
+
+      fetcher.submit(
+        {
+          name: settingsState.name,
+          status: Number(settingsState.status),
+          general_setting: JSON.stringify(settingsState.generalSettings),
+          theme_style: JSON.stringify(settingsState.themeStyle),
+          theme_settings: JSON.stringify(settingsState.themeSettings),
+          type: announcementBarType,
+          _action: "CREATE",
+        },
+        {
+          method: "POST",
+          action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+        },
+      );
+    }
+  };
   return (
     <div>
       <Page
@@ -105,26 +157,7 @@ const AnnouncementCustomization = ({
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
-            handleSaveChanges={() => {
-              console.log("Updated state", announcementBarType);
-              fetcher.submit(
-                {
-                  name: settingsState.name,
-                  status: settingsState.status,
-                  general_setting: JSON.stringify(
-                    settingsState.generalSettings,
-                  ),
-                  theme_style: JSON.stringify(settingsState.themeStyle),
-                  theme_settings: JSON.stringify(settingsState.themeSettings),
-                  type: announcementBarType,
-                  _action: "CREATE",
-                },
-                {
-                  method: "POST",
-                  action: ROUTES.ANNOUNCEMENT_OVERVIEW,
-                },
-              );
-            }}
+            handleSaveChanges={handleOnSave}
             handleDiscardChanges={() => {
               console.log("On discard changes");
             }}
@@ -136,8 +169,6 @@ const AnnouncementCustomization = ({
                 label="Status"
                 helpText="Only one announcement bar will be displayed at the time"
                 onSelect={(value) => {
-                 
-
                   setSettingsState((prevState) =>
                     updateSettingsState("status", value, prevState),
                   );
@@ -177,6 +208,7 @@ const AnnouncementCustomization = ({
                     ),
                   );
                 }}
+                selectedTheme={settingsState.themeStyle.id}
               ></ThemeStyleGrid>
             </Card>
             <Card>
