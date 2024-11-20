@@ -25,3 +25,8 @@ export const APP_TYPE = {
   ANNOUNCEMENT_BARS: 1,
   COUNTDOWN_TIMER: 2,
 };
+
+export const TABS_ENUM = {
+  IMPRESSIONS: 1,
+  CLICK: 2
+}
