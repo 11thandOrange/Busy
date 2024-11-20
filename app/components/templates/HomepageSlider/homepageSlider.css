@@ -252,10 +252,8 @@
       }
     }
     .Polaris-Scrollable{
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
+      overflow: unset !important;
       margin-bottom: 10px;
-      height: 275px;
       &::after{
         box-shadow: unset;
       }

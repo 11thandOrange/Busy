@@ -22,6 +22,7 @@
 .Polaris-Box{
     border: 0;
 }
+
 .customization-container{
     gap: 16px;
     .customization-left-section{
@@ -38,14 +39,7 @@
             margin-bottom: 16px;
         }
     }
-    div[style="height:250px"]{
-        .Polaris-Frame__ScrollbarAlwaysVisible{
-            display: block;
-        }
-    }
-    .Polaris-Frame__ScrollbarAlwaysVisible{
-        display: none;
-    }
+    
 
     /* customization-right-section */
     .customization-right-section{
