@@ -48,7 +48,17 @@ export async function action({ request }) {
     theme_setting = data.theme_settings;
     type = data.type;
   }
-
+  if(data.status==true)
+  {
+    await db.Announcement_bar.update({
+      where: {
+        shop: shop
+      },
+      data: {
+        status: false,
+      },
+    });
+  }
   let response;
 
   switch (_action) {

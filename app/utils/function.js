@@ -147,7 +147,6 @@ export const getEventTypes = async (appId) => {
 export const getAnnouncementBar = async (shop) => {
   let script = '';
 
-  // Fetch announcement bar from the database
   const announcement_bar = await prisma.announcement_bar.findFirst({
     where: {
       shop: shop,
@@ -159,12 +158,10 @@ export const getAnnouncementBar = async (shop) => {
   });
 
   if (announcement_bar && announcement_bar.status) {
-    // Parse JSON settings
     announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
     announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting);
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
-    // Start building the script to create the announcement bar
     script = `
       const announcementBar = document.createElement('div');
       announcementBar.classList.add('busy-buddy-announcement-bar');
@@ -181,9 +178,8 @@ export const getAnnouncementBar = async (shop) => {
     }
 
     if (announcement_bar.type == 2) { 
-      // Set countdown start time to the current time
-      const currentTime = new Date().getTime(); // Current time in milliseconds
-      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime(); // Countdown end time in milliseconds
+      const currentTime = new Date().getTime();
+      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
         function getTimeDifference(startAt, endsAt) {
@@ -204,12 +200,12 @@ export const getAnnouncementBar = async (shop) => {
           let difference = getTimeDifference(now, ${endTime});
           
           // Update the announcement bar text
-          let countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s</span>\`;
+          let countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
           announcementBar.innerHTML = message;
 
           if (document.getElementById('busyBuddyAnnouncementBar')) {
-            countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d  \${difference.hours}h  \${difference.minutes}m  \${difference.seconds}s</span>\`;
+            countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d  \${difference.hours}h  \${difference.minutes}m  \${difference.seconds}s </span>\`;
             message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
             announcementBar.innerHTML = message;
           }
@@ -241,7 +237,6 @@ export const getAnnouncementBar = async (shop) => {
       script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`
     }
 
-    // Check if the announcement bar should be fixed at the top
     if (announcement_bar.theme_setting?.status == 'TOP_FIXED') {
       script += `
         announcementBar.style.position = 'sticky';
