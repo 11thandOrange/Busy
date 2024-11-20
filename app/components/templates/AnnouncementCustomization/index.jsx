@@ -152,7 +152,7 @@ const AnnouncementCustomization = ({
             prevState={prevSettingsState.current}
             handleSaveChanges={handleOnSave}
             handleDiscardChanges={() => {
-              console.log("On discard changes");
+              setSettingsState(prevSettingsState.current);
             }}
           />
           <div className="customization-left-section">
