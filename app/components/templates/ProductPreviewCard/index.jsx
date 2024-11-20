@@ -41,7 +41,7 @@ const ProductPreviewCard = ({
   return (
     <div
       className="product-preview-card"
-      style={{ backgroundColor: "white", borderColor: "white" }}
+      style={{ backgroundColor: "black" }}
     >
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>
