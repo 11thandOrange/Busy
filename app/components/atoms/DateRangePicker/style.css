@@ -1,0 +1,11 @@
+.datepicker-container .Polaris-ShadowBevel {
+    width: 105%;
+}
+.datepicker-container .datepicker-left {
+    padding: 15px;
+}
+
+.popover-btn {
+    display: flex;
+    align-items: center;
+}
