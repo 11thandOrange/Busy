@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "8818a8f8aff443b82115ba6173479de5"
+name = "busybuddychicmic"
+handle = "busybuddychicmic"
+application_url = "https://terminology-undefined-ideal-dam.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+dev_store_url = "busybuddychicmic.myshopify.com"
+automatically_update_urls_on_dev = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://terminology-undefined-ideal-dam.trycloudflare.com/auth/callback",
+  "https://terminology-undefined-ideal-dam.trycloudflare.com/auth/shopify/callback",
+  "https://terminology-undefined-ideal-dam.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[pos]
+embedded = false

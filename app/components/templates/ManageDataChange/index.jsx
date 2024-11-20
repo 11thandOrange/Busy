@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { hasChanges } from '../../../utils/clientFunctions';
-import DiscardChangesConfirmationPopup from '../../atoms/DiscardChangesConfirmationPopup';
-import UnsavedChangesBar from '../../atoms/UnsavedChangesBar';
+import React, { useEffect, useState } from "react";
+import { hasChanges } from "../../../utils/clientFunctions";
+import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
+import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
 
-const ManageDataChange = ({newState, prevState, handleSaveChanges, handleDiscardChanges}) => {
-    const [hasChanged, setHasChanged] = useState(false);
-    const [onDiscardChanges, setOnDiscardChanges] = useState(false);
-    console.log('insie the component')
-    useEffect(() => {
-      setHasChanged(hasChanges(prevState, newState));
-    }, [newState, prevState]);
+const ManageDataChange = ({
+  newState,
+  prevState,
+  handleSaveChanges,
+  handleDiscardChanges,
+}) => {
+  const [hasChanged, setHasChanged] = useState(false);
+  const [onDiscardChanges, setOnDiscardChanges] = useState(false);
   
-    return <>
-        <UnsavedChangesBar
-            saveActionButtonClick={handleSaveChanges}
-            discardActionButtonClick={() => {
-                setOnDiscardChanges(true);
-            }}
-            show={hasChanged}
-        />
+  useEffect(() => {
+    setHasChanged(hasChanges(prevState, newState));
+  }, [newState, prevState]);
 
-        <DiscardChangesConfirmationPopup
-            active={onDiscardChanges}
-            toggleModal={() => setOnDiscardChanges(false)}
-            primaryActionClick={() => {
-                handleDiscardChanges()
-                setOnDiscardChanges(false);
-            }}
-        />
-    </>;
-}
+  return (
+    <>
+      <UnsavedChangesBar
+        saveActionButtonClick={handleSaveChanges}
+        discardActionButtonClick={() => {
+          setOnDiscardChanges(true);
+        }}
+        show={hasChanged}
+      />
 
-export default ManageDataChange
+      <DiscardChangesConfirmationPopup
+        active={onDiscardChanges}
+        toggleModal={() => setOnDiscardChanges(false)}
+        primaryActionClick={() => {
+          setOnDiscardChanges(false);
+          handleDiscardChanges();
+        }}
+      />
+    </>
+  );
+};
+
+export default ManageDataChange;

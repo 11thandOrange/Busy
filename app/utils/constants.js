@@ -30,3 +30,17 @@ export const TABS_ENUM = {
   IMPRESSIONS: 1,
   CLICK: 2
 }
+
+export const ROUTES = {
+  HOME: "/app",
+  APPS: "/apps",
+  WIDGETS: "/widgets",
+  SETTINGS: "/settings",
+  PLAN: "/app/plan",
+  HOMEPAGE: "/homepage",
+  ANNOUNCEMENT_BAR: "/announcementBar",
+  COUNTDOWN_TIMER: "/countdownTimer",
+  ROUTE_TEST: "/RouteTest",
+  ANNOUNCEMENT_CUSTOMIZATION_ROOT: "/apps/announcementBar/customization/",
+  ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar/",
+};

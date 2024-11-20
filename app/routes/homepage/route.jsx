@@ -23,7 +23,7 @@ const route = () => {
           selectedType={selectedType}
           setSelectedType={(type) => {
             setSelectedType(type);
-            setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
+            // setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
           }}
         />
       ),
@@ -33,16 +33,7 @@ const route = () => {
       content: "Settings",
       component: <h1>Settings</h1>,
     },
-    {
-      id: "Customization-1",
-      content: "Customization",
-      // component: <CheckBars></CheckBars>,
-      component: (
-        <AnnouncementCustomization
-          announcementBarType={selectedType}
-        ></AnnouncementCustomization>
-      ),
-    },
+
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",

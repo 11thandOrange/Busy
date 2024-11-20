@@ -14,6 +14,7 @@ import { json } from "@remix-run/node";
         shop:shop
       }
     });
+    setting.global_customizations = JSON.parse(setting.global_customizations)
     return cors(request, setting || {
       admin_language : "English",
       lazy_load_images: false,

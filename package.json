@@ -41,6 +41,7 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "remix-flat-routes": "^0.6.5",
     "remix-utils": "^7.5.0",
     "swiper": "^11.1.14",
     "vite-tsconfig-paths": "^5.0.1"

@@ -48,7 +48,8 @@ export async function loader({ request }) {
           
           if (existingEntry) {
             existingEntry.count += record._count.id;
-          } else {
+          } 
+          else {
             activityData.push({
               date: activityDate,
               count: record._count.id

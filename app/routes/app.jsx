@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { AppProvider } from "@shopify/shopify-app-remix/react";
 import { NavMenu } from "@shopify/app-bridge-react";
@@ -7,6 +7,7 @@ import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import { authenticate } from "../shopify.server";
 import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
 import en from "@shopify/polaris/locales/en.json";
+import { ROUTES } from "../utils/constants";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
@@ -20,24 +21,26 @@ export default function App() {
   const { apiKey } = useLoaderData();
 
   return (
-    <AppProvider isEmbeddedApp apiKey={apiKey}>
-      <PolarisAppProvider i18n={en}>
-        <NavMenu>
-          <a href="/app" rel="home">
-            Home
-          </a>
-          <a href="/apps">Apps</a>
-          <a href="/widgets">Widgets</a>
-          <a href="/settings">Settings</a>
-          <a href="/analytics">Analytics</a>
-          <a href="/app/plan">Plan</a>
-          <a href="/homepage">homepage</a>
-          <a href="/announcementBar">Announcement Customization</a>
-          <a href="/countdownTimer">Countdown Timer Customization</a>
-        </NavMenu>
-        <Outlet />
-      </PolarisAppProvider>
-    </AppProvider>
+    <>
+      <AppProvider isEmbeddedApp apiKey={apiKey}>
+        <PolarisAppProvider i18n={en}>
+          <NavMenu>
+            <Link href={ROUTES.HOME} rel="home">
+              Home
+            </Link>
+            <Link to={ROUTES.APPS}>Apps</Link>
+            <a href={ROUTES.WIDGETS}>Widgets</a>
+            <a href={ROUTES.SETTINGS}>Settings</a>
+            <a href={ROUTES.PLAN}>Plan</a>
+            <a href={ROUTES.HOMEPAGE}>homepage</a>
+            <a href={ROUTES.ANNOUNCEMENT_BAR}>Announcement Customization</a>
+            <a href={ROUTES.COUNTDOWN_TIMER}>Countdown Timer Customization</a>
+            <Link to={ROUTES.ROUTE_TEST}>RouteTest</Link>
+          </NavMenu>
+          <Outlet />
+        </PolarisAppProvider>
+      </AppProvider>
+    </>
   );
 }
 
