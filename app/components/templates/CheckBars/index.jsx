@@ -5,6 +5,7 @@ import {
   Text,
   Badge,
 } from "@shopify/polaris";
+import "./style.css"
 import React, { useState } from "react";
 import PopoverContent from "../PopoverContent";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";

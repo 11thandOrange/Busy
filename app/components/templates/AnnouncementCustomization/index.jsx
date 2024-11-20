@@ -154,7 +154,7 @@ const AnnouncementCustomization = ({
         // primaryAction={<ActiveButton></ActiveButton>}
       >
         <div className="customization-container">
-          <ManageDataChange
+        <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
             handleSaveChanges={handleOnSave}
