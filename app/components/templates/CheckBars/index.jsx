@@ -131,6 +131,7 @@ function CheckBars({ barsData }) {
               onSelect={handleCreateClick}
             />
           }
+          actionCallback={() => {}}
         />
       )}
     </LegacyCard>
