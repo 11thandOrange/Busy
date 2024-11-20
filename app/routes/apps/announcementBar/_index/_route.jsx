@@ -36,16 +36,17 @@ export async function loader({ request }) {
 export async function action({ request }) {
   let shop = await getShopName(request);
   let data = await request.formData();
-  let name, status, general_setting, theme_style, theme_setting;
-
+  let name, status, general_setting, theme_style, theme_setting, type;
   data = Object.fromEntries(data);
+  console.log(data)
   const _action = data._action;
   if (_action != "DELETE") {
     name = data.name;
     status = Boolean(data.status);
     general_setting = data.general_setting;
     theme_style = data.theme_style;
-    theme_setting = data.theme_setting;
+    theme_setting = data.theme_settings;
+    type = data.type;
   }
 
   let response;
@@ -59,6 +60,7 @@ export async function action({ request }) {
           general_setting,
           theme_style,
           theme_setting,
+          type,
           shop,
         },
       });
