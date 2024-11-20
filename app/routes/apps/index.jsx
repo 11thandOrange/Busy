@@ -1,4 +1,3 @@
-
   import { useState, useCallback, useEffect } from "react";
   import "@shopify/polaris/build/esm/styles.css";
   import AppListingTemplate from "../../components/templates/AppListingTemplate.jsx/index.";
@@ -100,3 +99,8 @@
   
   export default TabsInsideOfACardExample;
   
+
+  // const response = await fetch('/your-endpoint-path', {
+  //   method: 'POST',
+  //   body: formData,
+  // });

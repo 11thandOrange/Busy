@@ -16,12 +16,43 @@ export async function loader({ request }) {
       status : true,
       general_setting: true,
       theme_style: true,
-      theme_setting: true
+      theme_setting: true,
+      type: true
     }
   });
   return cors(request, announcement_bars);
 }
+export async function loader({ request}) {
+  const shop = await getShopName(request);
+  let announcement_bar_setting = await db.announcement_bar_setting.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
 
+  if (!announcement_bar_setting) {
+    announcement_bar_setting = {};
+  }
+  return json(announcement_bar_setting);
+}
+export async function action({ request }) {
+  let announcement_bar_setting = await request.formData();
+  announcement_bar_setting = Object.fromEntries(announcement_bar_setting);
+  const shop = await getShopName(request)
+  await db.announcement_bar_setting.upsert({
+    where: { shop: shop },
+    update: {
+      enable_close_button: announcement_bar_setting.enable_close_button,
+      shop: shop
+    },
+    create: {
+      enable_close_button: announcement_bar_setting.enable_close_button,
+      shop: shop
+    }
+  });
+
+  return json(inactive_tab_message);
+}
 export async function action({ request }) {
 
   let shop = await getShopName(request)
@@ -42,14 +73,17 @@ export async function action({ request }) {
         },
       });
 
+
       response = json({ message: "Announcement Bar Added", method: _action });
       return cors(request, response);
 
     case "DELETE":
       await db.Announcement_bar.deleteMany({
         where: {
-          id: data.announcement_bar_id,
-          shop: shop
+          id: {
+            in: data.announcement_bar_id,
+          },
+          shop: shop,
         },
       });
       response = json({ success: true });
