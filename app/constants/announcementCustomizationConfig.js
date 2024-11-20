@@ -47,7 +47,7 @@ export const ThemeStyleGridType = {
 };
 export const SETTINGS_INITIAL_STATE = {
   status: STATUS.INACTIVE,
-  name: "",
+  name: "Text Bar",
   themeStyle: {
     id: 1,
     type: ThemeStyleGridType.COLOR,

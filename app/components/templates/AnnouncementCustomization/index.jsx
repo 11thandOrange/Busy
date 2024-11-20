@@ -106,7 +106,7 @@ const AnnouncementCustomization = ({
             newState={settingsState}
             prevState={prevSettingsState.current}
             handleSaveChanges={() => {
-              console.log("Updated state", settingsState);
+              console.log("Updated state", announcementBarType);
               fetcher.submit(
                 {
                   name: settingsState.name,
@@ -117,7 +117,7 @@ const AnnouncementCustomization = ({
                   theme_style: JSON.stringify(settingsState.themeStyle),
                   theme_settings: JSON.stringify(settingsState.themeSettings),
                   type: announcementBarType,
-                  _action:'CREATE'
+                  _action: "CREATE",
                 },
                 {
                   method: "POST",
@@ -136,6 +136,8 @@ const AnnouncementCustomization = ({
                 label="Status"
                 helpText="Only one announcement bar will be displayed at the time"
                 onSelect={(value) => {
+                 
+
                   setSettingsState((prevState) =>
                     updateSettingsState("status", value, prevState),
                   );

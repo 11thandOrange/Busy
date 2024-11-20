@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import {
   ANNOUNCEMENT_BAR_TYPES,
@@ -25,27 +25,29 @@ export async function loader({ request }) {
       name: true,
       status: true,
       general_setting: true,
-      type:true,
+      type: true,
       createdAt: true,
     },
   });
   return cors(request, announcement_bars);
 }
 
-
 export async function action({ request }) {
   let shop = await getShopName(request);
   let data = await request.formData();
-  let name, status, general_setting, theme_style, theme_setting;
+  let name, status, general_setting, theme_style, theme_setting, type;
 
   data = Object.fromEntries(data);
+  console.log("datata", data);
+
   const _action = data._action;
   if (_action != "DELETE") {
     name = data.name;
-    status = Boolean(data.status);
+    status = Boolean(Number(data.status));
     general_setting = data.general_setting;
     theme_style = data.theme_style;
     theme_setting = data.theme_setting;
+    type = data.type;
   }
 
   let response;
@@ -59,6 +61,7 @@ export async function action({ request }) {
           general_setting,
           theme_style,
           theme_setting,
+          type,
           shop,
         },
       });
@@ -86,7 +89,7 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementBarsData = useLoaderData();
-  console.log("Announcnemnt bars data ", announcementBarsData);
+
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
@@ -134,6 +137,14 @@ const route = () => {
     //   ),
     // },
   ];
+
+  useEffect(() => {
+    // Set default tab to Announcement Bars tab if there are are announcement bars present
+    if (announcementBarsData && announcementBarsData.length > 0) {
+      setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
+    }
+  }, [announcementBarsData]);
+
   return (
     <>
       <Homepage
