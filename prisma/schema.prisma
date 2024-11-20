@@ -28,6 +28,7 @@ model Session {
 model Activity {
   id          Int           @id @default(autoincrement())
   content     String?
+  color       String?
   apps        App[]         @relation("AppActivities")
   Analytics   Analytics[]
   createdAt   DateTime      @default(now())
@@ -127,6 +128,17 @@ model Announcement_bar {
   general_setting         String?
   theme_style             String?
   theme_setting           String?
+  type                    String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+model announcement_bar_setting {
+  id                      Int               @id @default(autoincrement())
+  shop                    String            @unique
+  enable_close_button     Boolean           @default(false)
+  enable_bot_filter       Boolean           @default(false)
+  translations            String?
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @updatedAt
 }
