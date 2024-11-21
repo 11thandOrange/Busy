@@ -28,8 +28,8 @@ export const APP_TYPE = {
 
 export const TABS_ENUM = {
   IMPRESSIONS: 1,
-  CLICK: 2
-}
+  CLICK: 2,
+};
 
 export const ROUTES = {
   HOME: "/app",
@@ -43,5 +43,11 @@ export const ROUTES = {
   ROUTE_TEST: "/RouteTest",
   ANNOUNCEMENT_CUSTOMIZATION_ROOT: "/apps/announcementBar/customization/",
   ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar/",
-  ANALYTICS: "/analytics"
+  ANALYTICS: "/analytics",
+};
+
+export const FETCHER_STATE = {
+  IDLE: "idle",
+  LOADING: "loading",
+  SUBMITTING: "submitting",
 };

@@ -1,3 +1,5 @@
+import { FETCHER_STATE } from "./constants";
+
 export const updateSettingsState = (path, value, state) => {
   const keys = Array.isArray(path) ? path : path.split(".");
 
@@ -185,8 +187,8 @@ function deepEqual(obj1, obj2) {
 export function formatDate(dateString) {
   const date = new Date(dateString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
@@ -200,4 +202,11 @@ export const formatDateAndTime = (isoDate) => {
   const minutes = date.getMinutes().toString().padStart(2, "0");
   const amPm = date.getHours() >= 12 ? "pm" : "am";
   return `${month} ${day} at ${hours}:${minutes}${amPm}`;
+};
+
+export const isLoading = (fetchState) => {
+  return (
+    (fetchState === FETCHER_STATE.LOADING) ||
+    (fetchState === FETCHER_STATE.SUBMITTING)
+  );
 };

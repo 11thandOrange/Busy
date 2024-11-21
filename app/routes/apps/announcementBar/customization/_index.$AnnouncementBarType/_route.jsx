@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import AnnouncementCustomization from "../../../../../components/templates/AnnouncementCustomization";
 
-import {
-  useFetcher,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from "@remix-run/react";
-import { ROUTES } from "../../../../../utils/constants";
+import { useFetcher, useParams, useSearchParams } from "@remix-run/react";
+import { FETCHER_STATE, ROUTES } from "../../../../../utils/constants";
+import SpinnerExample from "../../../../../components/atoms/Spinner";
+import { isLoading } from "../../../../../utils/clientFunctions";
 
 const Customization = () => {
   const { AnnouncementBarType } = useParams();
@@ -39,11 +36,15 @@ const Customization = () => {
 
   return (
     <div>
-      <AnnouncementCustomization
-        announcementBarType={Number(AnnouncementBarType)}
-        backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
-        initialData={customizationData}
-      ></AnnouncementCustomization>
+      {isLoading(fetcher.state) ? (
+        <SpinnerExample></SpinnerExample>
+      ) : (
+        <AnnouncementCustomization
+          announcementBarType={Number(AnnouncementBarType)}
+          backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
+          initialData={customizationData}
+        ></AnnouncementCustomization>
+      )}
     </div>
   );
 };

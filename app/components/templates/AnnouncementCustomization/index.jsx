@@ -139,6 +139,9 @@ const AnnouncementCustomization = ({
       prevSettingsState.current = settingsState;
     }
   };
+
+
+
   return (
     <div>
       <Page
@@ -154,6 +157,7 @@ const AnnouncementCustomization = ({
             handleDiscardChanges={() => {
               setSettingsState(prevSettingsState.current);
             }}
+            fetcherState={fetcher.state}
           />
           <div className="customization-left-section">
             <Card>
