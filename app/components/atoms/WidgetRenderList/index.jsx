@@ -4,7 +4,7 @@ import SingleWidget from '../SingleWidget'
 
 const WidgetRenderList = ({selectedApps, handleAddToFavorite}) => {
   return (
-    <div class="cards-container">
+    <div className="cards-container">
         {selectedApps.map(widget => {
             return <SingleWidget widget={widget} handleAddToFavorite={handleAddToFavorite}/>
         })}

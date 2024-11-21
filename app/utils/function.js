@@ -1,25 +1,26 @@
-import db from '../db.server'
-import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN } from "../shopify.server";
+import db from "../db.server";
+import {
+  authenticate,
+  STARTER_MONTHLY_PLAN,
+  PRO_MONTHLY_PLAN,
+  ENTERPRISE_MONTHLY_PLAN,
+} from "../shopify.server";
 
-
-export const getShopName = async(request) => {
+export const getShopName = async (request) => {
   let parsedUrl;
-  if(request.method=='GET')
-  {
+  if (request.method == "GET") {
     parsedUrl = new URL(request.url);
-  }
-  else
-  {
-    parsedUrl = new URL(request.headers.get('referer'));
+  } else {
+    parsedUrl = new URL(request.headers.get("referer"));
   }
   const shop = parsedUrl.searchParams.get("shop");
   if (shop) {
     return shop;
   }
-  return '';
-}
-export const getCategories = async() =>{
-  try{
+  return "";
+};
+export const getCategories = async () => {
+  try {
     const categories = await db.Category.findMany({
       select: {
         id: true,
@@ -27,52 +28,55 @@ export const getCategories = async() =>{
       },
     });
     return categories;
-  }catch(error)
-  {
+  } catch (error) {
     return [];
   }
-}
+};
 export const check_app_active = async (appId, shop) => {
-    try {
-      const setting = await db.merchant.findFirst({
-        where: {
-          appId: appId,
-          shop: shop,
-          enabled: true,
-        },
-      });
-      return setting !== null;
-    } catch (error) {
-      return false;
-    }
-  };
+  try {
+    const setting = await db.merchant.findFirst({
+      where: {
+        appId: appId,
+        shop: shop,
+        enabled: true,
+      },
+    });
+    return setting !== null;
+  } catch (error) {
+    return false;
+  }
+};
 
-export const check_subscription = async () =>
-{
+export const check_subscription = async () => {
   const { billing, session } = await authenticate.admin(request);
-  const billingCheck = await billing.check({ plans: [STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN] });
-  if (!billingCheck.appSubscriptions || billingCheck.appSubscriptions.length === 0) {
+  const billingCheck = await billing.check({
+    plans: [STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN],
+  });
+  if (
+    !billingCheck.appSubscriptions ||
+    billingCheck.appSubscriptions.length === 0
+  ) {
     return {
       hasSubscription: false,
     };
   }
   const subscription = billingCheck.appSubscriptions[0];
-  console.log('Subscription found:', subscription);
+  console.log("Subscription found:", subscription);
 
   return {
     hasSubscription: true,
     subscription,
   };
-}
+};
 
-export const markWidgetAsFavorite = async(shop, widgetId) => {
+export const markWidgetAsFavorite = async (shop, widgetId) => {
   try {
     const existingFavorite = await db.fav_widget.findUnique({
       where: {
-        widgetId_shop:{
+        widgetId_shop: {
           shop: shop,
           widgetId: widgetId,
-        }
+        },
       },
     });
 
@@ -100,30 +104,34 @@ export const markWidgetAsFavorite = async(shop, widgetId) => {
     console.error(error);
     return false;
   }
-}
-export const createEvent = async(data) => {
+};
+export const createEvent = async (data) => {
   await db.analytics.create({
-    data:{
+    data: {
       eventId: data.eventId,
-    }
+    },
   });
-}
-export  function getTimeDifference(startTime, endTime) {
+};
+export function getTimeDifference(startTime, endTime) {
   const start = new Date(startTime);
   const end = new Date(endTime);
-  
+
   const differenceInMilliseconds = end - start;
 
   const days = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+  const hours = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
+  const minutes = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60),
+  );
   const seconds = Math.floor((differenceInMilliseconds % (1000 * 60)) / 1000);
-  
+
   return {
     days: days,
     hours: hours,
     minutes: minutes,
-    seconds: seconds
+    seconds: seconds,
   };
 }
 export const getEventTypes = async (appId) => {
@@ -134,31 +142,33 @@ export const getEventTypes = async (appId) => {
     include: {
       activities: {
         select: {
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     },
   });
   if (!eventTypes) return [];
-  const activityIds = eventTypes.activities.map(activity => activity.id);
+  const activityIds = eventTypes.activities.map((activity) => activity.id);
   return activityIds;
 };
 
 export const getAnnouncementBar = async (shop) => {
-  let script = '';
+  let script = "";
 
   const announcement_bar = await prisma.announcement_bar.findFirst({
     where: {
       shop: shop,
-      status: true
+      status: true,
     },
     orderBy: {
-      updatedAt: 'desc',
+      updatedAt: "desc",
     },
   });
 
   if (announcement_bar && announcement_bar.status) {
-    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
+    announcement_bar.general_setting = JSON.parse(
+      announcement_bar.general_setting,
+    );
     announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting);
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
@@ -172,14 +182,16 @@ export const getAnnouncementBar = async (shop) => {
       announcementBar.style.height = '45px';
       announcementBar.style.width = '100%';
     `;
-    
+
     if (announcement_bar.type == 1) {
-      script += `announcementBar.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";`
+      script += `announcementBar.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";`;
     }
 
-    if (announcement_bar.type == 2) { 
+    if (announcement_bar.type == 2) {
       const currentTime = new Date().getTime();
-      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
+      const endTime = new Date(
+        announcement_bar.general_setting.countDownEndsAt,
+      ).getTime();
 
       script += `
         function getTimeDifference(startAt, endsAt) {
@@ -226,18 +238,18 @@ export const getAnnouncementBar = async (shop) => {
 
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
-                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
+                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`;
     }
 
     if (announcement_bar.theme_style?.id == 2) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`;
     }
 
     if (announcement_bar.theme_style?.id == 3) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`;
     }
 
-    if (announcement_bar.theme_setting?.status == 'TOP_FIXED') {
+    if (announcement_bar.theme_setting?.status == "TOP_FIXED") {
       script += `
         announcementBar.style.position = 'sticky';
         announcementBar.style.top = '0'; 
@@ -246,7 +258,7 @@ export const getAnnouncementBar = async (shop) => {
       `;
     }
 
-    if (announcement_bar.theme_setting?.status == 'BOTTOM') {
+    if (announcement_bar.theme_setting?.status == "BOTTOM") {
       script += ` document.body.appendChild(announcementBar);`;
     } else {
       script += `document.body.prepend(announcementBar);`;
@@ -256,18 +268,16 @@ export const getAnnouncementBar = async (shop) => {
   return { script };
 };
 
-
-
-export const getInactiveTabMessage = async(shop) => {
+export const getInactiveTabMessage = async (shop) => {
   let message = await db.Inactive_tab_message.findFirst({
-    where:{
-      shop:shop
+    where: {
+      shop: shop,
     },
-    select:{
-      message: true
-    }
-  })
-  message = message ? message.message : ""
+    select: {
+      message: true,
+    },
+  });
+  message = message ? message.message : "";
   const script = `
     (function() {
       var originalTitle = document.title;
@@ -286,20 +296,20 @@ export const getInactiveTabMessage = async(shop) => {
       }
     })();
   `;
-  return {script};
-}
-export const getCartNotice = async(shop) => {
+  return { script };
+};
+export const getCartNotice = async (shop) => {
   let cartNotice = await db.Cart_notice.findFirst({
-    where:{
-      shop:shop
+    where: {
+      shop: shop,
     },
-    select:{
+    select: {
       primary_message: true,
       secondary_message: true,
-      general_setting:true
-    }
-  })
-  cartNotice = cartNotice ? cartNotice.primary_message : ""
+      general_setting: true,
+    },
+  });
+  cartNotice = cartNotice ? cartNotice.primary_message : "";
   const script = `
     (function() {
       const form = document.querySelector('form[action="/cart"]');
@@ -309,25 +319,27 @@ export const getCartNotice = async(shop) => {
       }
     })();
   `;
-  return {script};
-} 
-export const getCountdownTimer = async(shop) => {
+  return { script };
+};
+export const getCountdownTimer = async (shop) => {
   let script;
   let countdownTimer = await db.countdown_timer.findFirst({
-    where:{
-      shop:shop
+    where: {
+      shop: shop,
     },
-    select:{
+    select: {
       html: true,
       general_setting: true,
-      display_setting:true,
-      position:true
-    }
-  })
-  if(countdownTimer)
-  {
-    countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting)
-    countdownTimer.html = countdownTimer.html.replace('{{message}}', countdownTimer.general_setting.message);
+      display_setting: true,
+      position: true,
+    },
+  });
+  if (countdownTimer) {
+    countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
+    countdownTimer.html = countdownTimer.html.replace(
+      "{{message}}",
+      countdownTimer.general_setting.message,
+    );
     script = `
       (function() {
         const form = document.querySelector('.product__info-wrapper');
@@ -338,6 +350,6 @@ export const getCountdownTimer = async(shop) => {
       })();
     `;
   }
-  
-  return {script};
-} 
+
+  return { script };
+};
