@@ -43,4 +43,5 @@ export const ROUTES = {
   ROUTE_TEST: "/RouteTest",
   ANNOUNCEMENT_CUSTOMIZATION_ROOT: "/apps/announcementBar/customization/",
   ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar/",
+  ANALYTICS: "/analytics"
 };

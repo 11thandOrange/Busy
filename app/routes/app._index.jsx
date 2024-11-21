@@ -85,12 +85,27 @@ export default function Index() {
 
   return (
     <Page>
+      <div className='header'>
+        <img
+          src="https://via.placeholder.com/100"
+          alt="Logo"
+          className='logo'
+        />
+        <div>
+          <Text as="h1" variant="headingLg" className="title">
+            Busy Buddy
+          </Text>
+          <Text as="p" className="subtitle">
+            Every busy body needs busy buddy
+          </Text>
+        </div>
+      </div>
       <BlockStack gap="500">
         <Layout>
           <Layout.Section>
             <Card title="My Apps" sectioned>
               <Text as="h2" variant="headingSm">
-                Apps
+                Essentials Apps
               </Text>
               <div className="apps_list">
                 {apps?.apps?.map(item => {
@@ -100,6 +115,14 @@ export default function Index() {
                   </div>)
                 })}
               </div>
+            </Card>
+          </Layout.Section>
+          <Layout.Section>
+            <Card sectioned>
+              <Text as="h2" variant="headingSm">
+                Looking For Tips
+              </Text>
+              
             </Card>
           </Layout.Section>
         </Layout>
