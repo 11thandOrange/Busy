@@ -108,6 +108,24 @@ export const createEvent = async(data) => {
     }
   });
 }
+export  function getTimeDifference(startTime, endTime) {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  
+  const differenceInMilliseconds = end - start;
+
+  const days = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((differenceInMilliseconds % (1000 * 60)) / 1000);
+  
+  return {
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds
+  };
+}
 export const getEventTypes = async (appId) => {
   const eventTypes = await db.app.findFirst({
     where: {
@@ -126,44 +144,119 @@ export const getEventTypes = async (appId) => {
   return activityIds;
 };
 
-export const getAnnouncementBar = async(shop) => {
+export const getAnnouncementBar = async (shop) => {
   let script = '';
+
   const announcement_bar = await prisma.announcement_bar.findFirst({
-    where:{
-      shop:shop,
+    where: {
+      shop: shop,
       status: true
     },
     orderBy: {
       updatedAt: 'desc',
     },
   });
-  if (announcement_bar && announcement_bar.status) {
-    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting)
-    announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting)
-    script = `const announcementBar = document.createElement('div');
-      announcementBar.classList.add('announcement-bar');
-      announcementBar.textContent = ${announcement_bar.general_setting.message};
 
-      announcementBar.style.backgroundColor = '#ffcc00';
+  if (announcement_bar && announcement_bar.status) {
+    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
+    announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting);
+    announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
+
+    script = `
+      const announcementBar = document.createElement('div');
+      announcementBar.classList.add('busy-buddy-announcement-bar');
+      announcementBar.id = 'busyBuddyAnnouncementBar'; 
       announcementBar.style.padding = '10px';
       announcementBar.style.textAlign = 'center';
-      announcementBar.style.fontWeight = 'bold';`;
+      announcementBar.style.fontWeight = 'bold';
+      announcementBar.style.height = '45px';
+      announcementBar.style.width = '100%';
+    `;
+    
+    if (announcement_bar.type == 1) {
+      script += `announcementBar.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";`
+    }
 
-      if(announcement_bar.theme_setting?.position == 1)
-      {
-        script += `document.body.prepend(announcementBar)`;
-      }
-      else if(announcement_bar.theme_setting?.position == 2)
-      {
-        script += `document.body.prepend(announcementBar)`;
-      }
-      else
-      {
-        script += `document.body.appendChild(announcementBar);`
-      }
+    if (announcement_bar.type == 2) { 
+      const currentTime = new Date().getTime();
+      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
+
+      script += `
+        function getTimeDifference(startAt, endsAt) {
+          const difference = endsAt - startAt; // Time difference in milliseconds
+          
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  
+          return { days, hours, minutes, seconds, difference };
+        }
+
+        function updateCountdown() {
+          // Update the current time
+          const now = new Date().getTime();
+          
+          let difference = getTimeDifference(now, ${endTime});
+          
+          // Update the announcement bar text
+          let countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
+          let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
+          announcementBar.innerHTML = message;
+
+          if (document.getElementById('busyBuddyAnnouncementBar')) {
+            countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d  \${difference.hours}h  \${difference.minutes}m  \${difference.seconds}s </span>\`;
+            message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
+            announcementBar.innerHTML = message;
+          }
+
+          if (difference.difference <= 0) {
+            clearInterval(countdownInterval);
+            announcementBar.textContent = "Countdown Finished!";
+            if (document.getElementById('busyBuddyAnnouncementBar')) {
+              document.getElementById('busyBuddyAnnouncementBar').innerHTML = "Countdown Finished!";
+            }
+          }
+        }
+        updateCountdown();
+
+        let countdownInterval = setInterval(updateCountdown, 1000);
+      `;
+    }
+
+    if (announcement_bar.theme_style?.id == 1) {
+      script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
+                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
+    }
+
+    if (announcement_bar.theme_style?.id == 2) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`
+    }
+
+    if (announcement_bar.theme_style?.id == 3) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`
+    }
+
+    if (announcement_bar.theme_setting?.status == 'TOP_FIXED') {
+      script += `
+        announcementBar.style.position = 'sticky';
+        announcementBar.style.top = '0'; 
+        announcementBar.style.left = '0'; 
+        announcementBar.style.zIndex = '9999';
+      `;
+    }
+
+    if (announcement_bar.theme_setting?.status == 'BOTTOM') {
+      script += ` document.body.appendChild(announcementBar);`;
+    } else {
+      script += `document.body.prepend(announcementBar);`;
+    }
   }
-    return {script}
-}
+
+  return { script };
+};
+
+
 
 export const getInactiveTabMessage = async(shop) => {
   let message = await db.Inactive_tab_message.findFirst({

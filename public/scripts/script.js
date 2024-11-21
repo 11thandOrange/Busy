@@ -1,4 +1,4 @@
-const baseUrl = 'https://guatemala-facts-ab-supplies.trycloudflare.com';
+const baseUrl = 'https://reading-levy-mass-won.trycloudflare.com';
 const dynamicSegment = '/app/activate';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -102,4 +102,4 @@ function addCssLink(cssUrl) {
   // Append the <link> element to the <head> of the document
   document.head.appendChild(link);
 }
-addCssLink('https://guatemala-facts-ab-supplies.trycloudflare.com/styles/style.css')
+addCssLink('https://reading-levy-mass-won.trycloudflare.com/styles/style.css')
