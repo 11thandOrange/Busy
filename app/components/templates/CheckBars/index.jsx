@@ -30,8 +30,12 @@ function CheckBars({ barsData }) {
     plural: "announcement bars",
   };
 
-  const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(barsData);
+  const {
+    selectedResources,
+    allResourcesSelected,
+    handleSelectionChange,
+    clearSelection,
+  } = useIndexResourceState(barsData);
 
   const promotedBulkActions = [
     {
@@ -77,7 +81,6 @@ function CheckBars({ barsData }) {
   );
 
   const handleDeleteConfirm = () => {
-    console.log("Selected option: ", selectedResources);
     fetcher.submit(
       {
         _action: "DELETE",
@@ -86,6 +89,7 @@ function CheckBars({ barsData }) {
       { method: "DELETE", action: ROUTES.ANNOUNCEMENT_OVERVIEW },
     );
     setConfirmDelete(false);
+    clearSelection();
   };
 
   return (
@@ -95,9 +99,7 @@ function CheckBars({ barsData }) {
           <IndexTable
             resourceName={resourceName}
             itemCount={barsData.length}
-            selectedItemsCount={
-              allResourcesSelected ? "All" : selectedResources.length
-            }
+            selectedItemsCount={selectedResources.length}
             emptyState={
               <div className="bb-announcement-wrapper">
                 <DynamicEmptyState
