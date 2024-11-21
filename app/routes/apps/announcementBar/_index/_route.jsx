@@ -11,12 +11,13 @@ import { useLoaderData, useNavigate } from "@remix-run/react";
 import { ROUTES } from "../../../../utils/constants";
 import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
-import { getShopName } from "../../../../utils/function";
 import { json } from "@remix-run/node";
+import { authenticate } from "../../../../shopify.server";
 
 export async function loader({ request }) {
+  const {session} = await authenticate.admin(request)
   let announcement_bars;
-  const shop = await getShopName(request);
+  const shop = session.shop;
   const url = new URL(request.url);
   if(url.searchParams.get('id'))
   {
@@ -47,7 +48,8 @@ export async function loader({ request }) {
 }
 
 export async function action({ request }) {
-  let shop = await getShopName(request);
+  const {session} = await authenticate.admin(request)
+  let shop = session.shop;
   let data = await request.formData();
   let id, name, status, general_setting, theme_style, theme_setting, type;
 
