@@ -10,6 +10,7 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   ANNOUNCEMENT_BARS_TABS,
 } from "../../constants/announcementCustomizationConfig";
+import AnnouncementSettings from "../../components/templates/AnnouncementSettings";
 
 const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
@@ -31,7 +32,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <h1>Settings</h1>,
+      component: <AnnouncementSettings></AnnouncementSettings>,
     },
 
     {

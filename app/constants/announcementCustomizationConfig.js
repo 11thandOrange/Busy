@@ -51,7 +51,7 @@ export const SETTINGS_INITIAL_STATE = {
   themeStyle: {
     id: 1,
     type: ThemeStyleGridType.COLOR,
-    image: "",
+    image: "https://placehold.co/200",
   },
   themeSettings: {
     status: THEME_SETTINGS_STATUS.TOP_RELATIVE,

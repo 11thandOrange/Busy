@@ -24,7 +24,8 @@ const Customization = () => {
 
   useEffect(() => {
     if (fetcher.data) {
-      const data = fetcher.data;
+      const data = fetcher.data.announcement_bars;
+
       setCustomizationData({
         id: data.id,
         status: Number(data.status).toString(),
@@ -35,7 +36,6 @@ const Customization = () => {
       });
     }
   }, [fetcher.data]);
-
 
   return (
     <div>

@@ -7,27 +7,27 @@ import {
 import AnnouncementCustomization from "../../../../components/templates/AnnouncementCustomization";
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import { ROUTES } from "../../../../utils/constants";
 import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
-import { getShopName } from "../../../../utils/function";
 import { json } from "@remix-run/node";
+import { authenticate } from "../../../../shopify.server";
+import AnnouncementSettings from "../../../../components/templates/AnnouncementSettings";
+import { check_app_active } from "../../../../utils/function";
 
 export async function loader({ request }) {
-  let announcement_bars;
-  const shop = await getShopName(request);
+  const { session } = await authenticate.admin(request);
+  let announcement_bars, announcement_bar_setting, app_active;
+  const shop = session.shop;
   const url = new URL(request.url);
-  if(url.searchParams.get('id'))
-  {
+  if (url.searchParams.get("id")) {
     announcement_bars = await db.announcement_bar.findFirst({
       where: {
-        id: parseInt(url.searchParams.get('id'))
+        id: parseInt(url.searchParams.get("id")),
       },
-    })
-  }
-  else
-  { 
+    });
+  } else {
     announcement_bars = await db.announcement_bar.findMany({
       where: {
         shop: shop,
@@ -41,23 +41,43 @@ export async function loader({ request }) {
         createdAt: true,
       },
     });
+    announcement_bar_setting = await db.announcement_bar_setting.findFirst({
+      where: {
+        shop: shop,
+      },
+    });
+    app_active = await check_app_active(1, shop);
   }
-  
-  return cors(request, announcement_bars);
+
+  return cors(request, {
+    announcement_bars,
+    announcement_bar_setting,
+    app_active,
+  });
 }
 
 export async function action({ request }) {
-  let shop = await getShopName(request);
+  const { session } = await authenticate.admin(request);
+  let shop = session.shop;
   let data = await request.formData();
-  let id, name, status, general_setting, theme_style, theme_setting, type;
+  let id,
+    name,
+    status,
+    general_setting,
+    theme_style,
+    theme_setting,
+    type,
+    enable_close_button;
 
   data = Object.fromEntries(data);
   console.log("datata", data);
 
   const _action = data._action;
-  if(_action == "EDIT" || _action == "UPDATE")
-  {
+  if (_action == "EDIT" || _action == "UPDATE") {
     id = parseInt(data.id);
+  }
+  if (_action == "SETTING_CREATE") {
+    enable_close_button = JSON.parse(data.enable_close_button);
   }
   if (_action != "DELETE") {
     name = data.name;
@@ -67,17 +87,16 @@ export async function action({ request }) {
     theme_setting = data.theme_settings;
     type = data.type;
   }
-  if(status==true)
-    {
-      await db.Announcement_bar.updateMany({
-        where: {
-          shop: shop
-        },
-        data: {
-          status: false,
-        },
-      });
-    }
+  if (status == true) {
+    await db.Announcement_bar.updateMany({
+      where: {
+        shop: shop,
+      },
+      data: {
+        status: false,
+      },
+    });
+  }
   let response;
 
   switch (_action) {
@@ -96,10 +115,23 @@ export async function action({ request }) {
 
       response = json({ message: "Announcement Bar Added", announcement_bar });
       return cors(request, response);
+    case "SETTING_CREATE":
+      await db.announcement_bar_setting.upsert({
+        where: { shop: shop },
+        update: {
+          enable_close_button: enable_close_button,
+          shop: shop,
+        },
+        create: {
+          enable_close_button: enable_close_button,
+          shop: shop,
+        },
+      });
+      return cors(request, json({ success: true }));
     case "UPDATE":
       await db.Announcement_bar.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
           name,
@@ -131,7 +163,12 @@ export async function action({ request }) {
   }
 }
 const route = () => {
-  const announcementBarsData = useLoaderData();
+  const announcementData = useLoaderData();
+  const fetcher = useFetcher();
+  console.log(announcementData);
+  const announcementBarsData = announcementData.announcement_bars;
+  const announcementBarsSettings = announcementData.announcement_bar_setting;
+  const isAppActive = announcementData.app_active;
 
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -153,7 +190,11 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <h1>Settings</h1>,
+      component: (
+        <AnnouncementSettings
+          initialData={announcementBarsSettings}
+        ></AnnouncementSettings>
+      ),
     },
     // {
     //   id: "Customization-1",
@@ -188,13 +229,28 @@ const route = () => {
     }
   }, [announcementBarsData]);
 
+  const handleAppActive = (isActive) => {
+    fetcher.submit(
+      {
+        isActive,
+        appId: 1,
+      },
+      {
+        method: "POST",
+        action: "/app/activate",
+      },
+    );
+  };
+
   return (
     <>
       <Homepage
-        header="Countdown Timer"
+        header="Announcement Bar"
         tabs={tabs}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
+        isAppActive={isAppActive}
+        handleAppActive={handleAppActive}
       >
         {tabs[selectedTab].component}
       </Homepage>
