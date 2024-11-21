@@ -66,7 +66,11 @@ const GlobalSettings = ({settings = {}}) => {
   }
 
   useEffect(() => {
-    let globalCustomizations = JSON.parse(settings.global_customizations)
+    let globalCustomizations;
+    if(settings && settings?.globalCustomizations)
+    {
+      globalCustomizations = JSON.parse(settings.global_customizations)
+    }
     let data = {
       language: settings.admin_language,
       lazyLoadImages : settings.lazy_load_images,
