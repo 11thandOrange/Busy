@@ -1,0 +1,332 @@
+/* Swiper container */
+.swiper {
+    width: 50%;
+    height: 100%;
+  }
+  
+  /* General slide styling */
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Main Swiper slide images */
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Main Swiper */
+  .mySwiper2 {
+    height: 80%; /* Takes up 80% of the height for the main slider */
+    width: 50%; /* Full width */
+  }
+  
+  /* Thumbnail Swiper */
+  .mySwiper {
+    height: 20%; /* Takes up the remaining 20% of the height for thumbnails */
+    box-sizing: border-box;
+    padding: 10px 0; /* Adds some padding around the thumbnails */
+  }
+  
+  /* Thumbnail slides with rectangular proportions */
+  .mySwiper .swiper-slide {
+    width: 100px; /* Controls how many thumbnails fit in a row (smaller width = more thumbnails) */
+    height: 100px; /* Height of the thumbnails (you can adjust this for taller or shorter thumbnails) */
+    opacity: 0.4; /* Dim non-active thumbnails */
+    border-radius: 4px; /* Optional: Rounded corners for the thumbnail slides */
+    transition: opacity 0.3s ease; /* Smooth transition effect when thumbnail opacity changes */
+  }
+  
+  /* Active thumbnail */
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1; /* Full opacity for the active thumbnail */
+  }
+  
+  /* Thumbnail images with rectangular proportions */
+  .mySwiper .swiper-slide img {
+    display: block;
+    width: 100%; /* Full width of the thumbnail slide */
+    height: 100%; /* Full height of the thumbnail slide */
+    object-fit: cover; /* Ensures the images are cropped appropriately to fit the rectangular shape */
+  }
+  
+  /* Main slider specific dimensions */
+  .mySwiper2 .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Optional: Add some hover effects to the thumbnails for better UX */
+  .mySwiper .swiper-slide:hover {
+    opacity: 0.7; /* Slightly increase opacity when hovering over a thumbnail */
+    cursor: pointer;
+  }
+  
+  /* Swiper navigation buttons (for Main Swiper) */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #17171700; /* White navigation buttons */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    color: #393838; /* Lighten the buttons on hover */
+  }
+  
+  /* Thumbnail wrapper */
+.thumbnail {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Thumbnail title styling */
+  .thumbnail-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.6); /* Black transparent background */
+    color: #fff; /* White text */
+    text-align: center;
+    font-size: 14px; /* Adjust font size */
+    font-weight: bold;
+  }
+  .app-main{
+    .bb-tabs-content{
+      overflow: hidden;
+      .Polaris-Page{
+        background: #fff;
+        border-radius: .625rem;
+        box-shadow: 0 2px 1px rgba(0, 0, 0, .05), 0 0 1px rgba(0, 0, 0, .25);
+        display: flex;
+        flex: 0 0 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 9.375rem;
+        width: 100%;
+        .homepage-details{
+          margin-top: 10px;
+          h2.description{
+            color: #616161;
+            font-weight: 500;
+          }
+          .point-description{
+            font-size: 13px;
+          }
+          .points-grid{
+            padding-top:8px;
+            .point{
+              padding-top: 8px;
+            }
+          }
+        }
+        .mySwiper2{
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          height: auto;
+          flex: 1;
+          position: relative;
+          vertical-align: middle;
+          display: flex;
+          .swiper-slide{
+            padding: 2.25rem 3rem 1.5rem;
+            margin-top: 1.25rem;
+          }
+          video{
+            width: 100%;
+          }
+        }
+        [class*=swiper-button]{
+          -webkit-appearance: none !important;
+          appearance: none !important;
+          background: hsla(0, 0%, 100%, .8);
+          border: 0.0625rem solid #babfc3;
+          border-radius: 0.25rem;
+          box-sizing: border-box;
+          flex: 0 0 2rem;
+          height: 4.375rem;
+          outline: none !important;
+          transition: opacity .3s linear;
+          width: 2rem;
+          &:after{
+            font-size: 10px;
+            font-weight: 600;
+            color: #393838;
+          }
+        }
+        .swiper-button-prev{
+          left: 0;
+        }
+        .swiper-button-next{
+          right: 0;
+        }            
+        .mySwiper{
+          width: 100%;
+          .swiper-wrapper{
+            justify-content: center;
+            .swiper-slide{
+              border: 1px solid transparent;
+              display: inline-block;
+              padding: 0.25rem;
+              position: relative;
+              transition: border .3s linear;
+              width: 160px !important;
+              margin-right: 0 !important;
+              overflow: hidden;
+              border-radius: 6px;
+              opacity: 1;
+              &.swiper-slide-thumb-active{
+                border: 1px solid #2f6ecb;
+                border-radius: 6px;
+              }
+              img{
+                aspect-ratio: 16 / 9;
+                border-radius: 3px;
+                display: block;
+                border-radius: 6px;
+              }
+              .thumbnail-title{
+                max-width: calc(100% - 8px);
+                bottom: 4px;
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+              }
+              &:hover{
+                opacity: 0.8;
+                border: 1px solid #2f6ecb;
+                border-radius: 6px;
+              }
+            }
+          }
+        }
+        .swiper-watch-progress{ 
+            padding-bottom: 30px;
+            padding-top: 0; 
+        }
+        .bb-swiper-slider{
+          position: relative;
+          &::before{
+            content: "";
+            position: absolute;
+            width: 140%;
+            height: 1px;
+            background-color:#ebebeb ;
+            top: 10px;
+            left: -10%;
+            right: 0;
+            margin: auto;
+          }
+        }
+      }
+    }
+  } 
+  .Polaris-Popover__Content{
+    height: 100% !important;
+    max-height: 360px !important;   
+    .Polaris-Popover__Section{
+      .Polaris-Box{
+        padding: 12px;
+        p{
+          font-size: 13px;  
+          font-weight: 700; 
+        }
+      }
+    }
+    .Polaris-Scrollable{
+      overflow: unset !important;
+      margin-bottom: 10px;
+      &::after{
+        box-shadow: unset;
+      }
+      .Polaris-Box{
+        padding: 0;
+        .Polaris-InlineStack{
+          padding-inline: 6px;
+          .Polaris-InlineStack{
+            padding: 0;
+            span{
+              div{
+                color: #616161;
+                div[style="font-weight: bold;"]{
+                  font-weight: 500 !important;
+                  color: #303030;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .bb-sec-btn{
+    .Polaris-Button--variantSecondary{
+      background-color: #29845a;
+      box-shadow: 0rem -0.0625rem 0rem 0.0625rem rgba(12,81,50,.8) inset,0rem 0rem 0rem 0.0625rem rgba(19,111,69,.8) inset,0rem 0.03125rem 0rem 0.09375rem hsla(0,0%,100%,.251) inset;
+      color: #ffffff;
+      &:hover{
+        background-color: #136f45;
+      }
+      &:active, &.active{
+        background-color: #0c5132;
+        box-shadow: -0.0625rem 0rem 0.0625rem 0rem rgba(0,0,0,.2) inset,0.0625rem 0rem 0.0625rem 0rem rgba(0,0,0,.2) inset,0rem 0.125rem 0rem 0rem rgba(0,0,0,.6) inset;
+      }
+    }
+    .Polaris-Button--disclosure{
+      background-color: transparent;
+      color: #29845a;
+      box-shadow: 0rem -0.0625rem 0rem 0rem #b5b5b5 inset,0rem 0rem 0rem 0.0625rem rgba(0,0,0,.1) inset,0rem 0.03125rem 0rem 0.09375rem #fff inset;
+      svg{
+        fill: #29845a;
+      }
+      &:hover{
+        background-color: #fafafa;
+        color: #29845a;
+        box-shadow: 0rem -0.0625rem 0rem 0rem #b5b5b5 inset,0rem 0rem 0rem 0.0625rem rgba(0,0,0,.1) inset,0rem 0.03125rem 0rem 0.09375rem #fff inset;
+        svg{
+          fill: #29845a;
+        }
+      }
+    }
+  }
+  .Polaris-Scrollable{
+    &:has(.bb-deactive-app-btn){
+      height: auto;
+      overflow: unset !important;
+      margin-bottom: 0;
+      .Polaris-InlineStack{
+        padding: 0 !important;
+        .Polaris-ActionList__Item{
+          margin: 10px;
+          padding: 6px 12px;
+          color:#8e1f0b ;
+          box-shadow: 0rem -0.0625rem 0rem 0rem #b5b5b5 inset,0rem 0rem 0rem 0.0625rem rgba(0,0,0,.1) inset,0rem 0.03125rem 0rem 0.09375rem #fff inset;
+          &:hover{
+            color: #5f1507;
+          }
+          &:active, &.active{
+            color: #2f0a04;
+          }
+        }
+      }
+    }
+  }
+  

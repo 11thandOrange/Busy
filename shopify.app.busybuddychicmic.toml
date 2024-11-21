@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://timothy-greene-framing-renew.trycloudflare.com"
+application_url = "https://lifestyle-hungarian-suggest-mixture.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://timothy-greene-framing-renew.trycloudflare.com/auth/callback",
-  "https://timothy-greene-framing-renew.trycloudflare.com/auth/shopify/callback",
-  "https://timothy-greene-framing-renew.trycloudflare.com/api/auth/callback"
+  "https://lifestyle-hungarian-suggest-mixture.trycloudflare.com/auth/callback",
+  "https://lifestyle-hungarian-suggest-mixture.trycloudflare.com/auth/shopify/callback",
+  "https://lifestyle-hungarian-suggest-mixture.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
