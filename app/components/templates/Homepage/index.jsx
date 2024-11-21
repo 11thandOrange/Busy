@@ -11,6 +11,8 @@ function Homepage({
   header = "Tabs",
   onTabChange = () => {},
   selectedTab = 0,
+  isAppActive = false,
+  handleAppActive = () => {},
 }) {
   const handleTabChange = useCallback((selectedTabIndex) => {
     onTabChange(selectedTabIndex);
@@ -25,7 +27,12 @@ function Homepage({
       <Page
         backAction={{ content: "Settings", url: "/apps" }}
         title={header}
-        primaryAction={<ActiveButton></ActiveButton>}
+        primaryAction={
+          <ActiveButton
+            isAppActive={isAppActive}
+            handleAppActive={handleAppActive}
+          ></ActiveButton>
+        }
       >
         <LegacyTabs
           tabs={tabs}

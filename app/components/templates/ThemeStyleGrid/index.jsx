@@ -3,11 +3,12 @@ import "./style.css"; // Import the CSS file
 import { Text } from "@shopify/polaris";
 import { ThemeStyleGridType } from "../../../constants/announcementCustomizationConfig";
 
-function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme }) {
-  const [selectedIndex, setSelectedIndex] = useState(1);
+function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
+  const [selectedIndex, setSelectedIndex] = useState(selectedTheme);
   useEffect(() => {
     setSelectedIndex(selectedTheme);
   }, [selectedTheme]);
+  
   const gridData = [
     {
       id: 1,

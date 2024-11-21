@@ -76,7 +76,7 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     return () => clearInterval(interval);
   }, [countDownStartAt, countDownEndsAt]);
   const timeObjectString = (timeLeft) => {
-    return `${timeLeft.remainingDays} days, ${timeLeft.remainingHours} hours, ${timeLeft.remainingMinutes} minutes, ${timeLeft.remainingSeconds} seconds`;
+    return `${timeLeft.remainingDays}d ${timeLeft.remainingHours}h ${timeLeft.remainingMinutes}m ${timeLeft.remainingSeconds}s`;
   };
   return (
     <div

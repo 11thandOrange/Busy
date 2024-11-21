@@ -1,5 +1,6 @@
 import { cors } from 'remix-utils/cors';
 import { authenticate } from '../shopify.server';
+import db from '../db.server'
 
 
   export const loader = async ({ request }) => {
@@ -15,16 +16,16 @@ import { authenticate } from '../shopify.server';
     return cors(request, {});
   };
   export const action = async ({ request }) => {
-    const shop = getShopName(request);
+    const { session } = await authenticate.admin(request);
     let data = await request.formData();
     data = Object.fromEntries(data);
     const appId = parseInt(data.appId);
-    const enable = data.enable;
+    const enable = JSON.parse(data.isActive);
     try {
       const existingMerchant = await db.merchant.findFirst({
         where: {
           appId: appId,
-          shop: shop,
+          shop: session.shop,
         },
       });
   
@@ -39,17 +40,18 @@ import { authenticate } from '../shopify.server';
         });
         return updatedApp;
       } else {
+        console.log('test')
         const newMerchant = await db.merchant.create({
           data: {
             appId: appId,
-            shop: shop,
+            shop: session.shop,
             enabled: enable,
           },
         });
         return newMerchant;
       }
     } catch (error) {
-      throw new Error("Failed to update or create merchant");
+      throw new Error("Failed to update or create merchant", error);
     }
   };
   

@@ -11,7 +11,7 @@ const ManageDataChange = ({
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
-  
+
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
