@@ -6,7 +6,7 @@ import "./homepageSlider.css";
 // import required modules
 
 import HomepageDetails from "../../atoms/HomepageDetails";
-import Slider from "../Slider";
+import Slider from "../../atoms/Slider";
 
 export default function HomepageSlider({ selectedType, setSelectedType }) {
   return (

@@ -110,7 +110,106 @@
     font-size: 14px; /* Adjust font size */
     font-weight: bold;
   }
-  .app-main{
+
+  .mySwiper2{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    flex: 1;
+    position: relative;
+    vertical-align: middle;
+    display: flex;
+    .swiper-slide{
+      padding: 2.25rem 3rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+    video{
+      width: 100%;
+    }
+  }
+  [class*=swiper-button]{
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background: hsla(0, 0%, 100%, .8);
+    border: 0.0625rem solid #babfc3;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    flex: 0 0 2rem;
+    height: 4.375rem;
+    outline: none !important;
+    transition: opacity .3s linear;
+    width: 2rem;
+    &:after{
+      font-size: 10px;
+      font-weight: 600;
+      color: #393838;
+    }
+  }
+  .swiper-button-prev{
+    left: 0;
+  }
+  .swiper-button-next{
+    right: 0;
+  }            
+  .mySwiper{
+    width: 100%;
+    .swiper-wrapper{
+      justify-content: center;
+      .swiper-slide{
+        border: 1px solid transparent;
+        display: inline-block;
+        padding: 0.25rem;
+        position: relative;
+        transition: border .3s linear;
+        width: 160px !important;
+        margin-right: 0 !important;
+        overflow: hidden;
+        border-radius: 6px;
+        opacity: 1;
+        &.swiper-slide-thumb-active{
+          border: 1px solid #2f6ecb;
+          border-radius: 6px;
+        }
+        img{
+          aspect-ratio: 16 / 9;
+          border-radius: 3px;
+          display: block;
+          border-radius: 6px;
+        }
+        .thumbnail-title{
+          max-width: calc(100% - 8px);
+          bottom: 4px;
+          border-bottom-left-radius: 6px;
+          border-bottom-right-radius: 6px;
+        }
+        &:hover{
+          opacity: 0.8;
+          border: 1px solid #2f6ecb;
+          border-radius: 6px;
+        }
+      }
+    }
+  }
+  .swiper-watch-progress{ 
+      padding-bottom: 30px;
+      padding-top: 0; 
+  }
+  .bb-swiper-slider{
+    position: relative;
+    &::before{
+      content: "";
+      position: absolute;
+      width: 140%;
+      height: 1px;
+      background-color:#ebebeb ;
+      top: 10px;
+      left: -10%;
+      right: 0;
+      margin: auto;
+    }
+  }
+
+  
     .bb-tabs-content{
       overflow: hidden;
       .Polaris-Page{
@@ -238,7 +337,7 @@
         }
       }
     }
-  } 
+  
   .Polaris-Popover__Content{
     height: 100% !important;
     max-height: 360px !important;   
