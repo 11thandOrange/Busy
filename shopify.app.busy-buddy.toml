@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "5bf173e80edc15dc5b1620e0d0936bfd"
-application_url = "https://substances-supervision-ipod-newest.trycloudflare.com"
+application_url = "https://yours-farms-mask-cdna.trycloudflare.com"
 embedded = true
 name = "Busy Buddy"
 handle = "busy-buddy-3"
@@ -19,9 +19,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://substances-supervision-ipod-newest.trycloudflare.com/auth/callback",
-  "https://substances-supervision-ipod-newest.trycloudflare.com/auth/shopify/callback",
-  "https://substances-supervision-ipod-newest.trycloudflare.com/api/auth/callback"
+  "https://yours-farms-mask-cdna.trycloudflare.com/auth/callback",
+  "https://yours-farms-mask-cdna.trycloudflare.com/auth/shopify/callback",
+  "https://yours-farms-mask-cdna.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

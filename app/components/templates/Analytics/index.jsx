@@ -79,13 +79,17 @@ const Analytics = ({apps}) => {
   }, [fetcher.data, selectedTabs])
 
   return (
-    <div>
-      <Select
-        options={options}
-        onChange={handleSelectChange}
-        value={selected}
-      />
-      <DateRangeButton selectedDates={selectedDates} setDate={setSelectedDates}/>
+    <div className='bb-analytics'>
+      <div className='bb-analytics-head'>
+        <DateRangeButton selectedDates={selectedDates} setDate={setSelectedDates} />
+        <div className="bb-select-btn">
+          <Select
+            options={options}
+            onChange={handleSelectChange}
+            value={selected}
+          />
+        </div>
+      </div>
       <AnalyticsView handleSelectTab={handleSelect} selectedTabs={selectedTabs} tabs={tabs} chartData={chartData}/>
     </div>
   );
