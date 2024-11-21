@@ -12,9 +12,9 @@
     color: #303030;
     padding: 15px 15px;
 }
-.app-main .Polaris-LegacyCard{
+/* .app-main .Polaris-LegacyCard{
     padding-bottom: 30px;
-}
+} */
 .app-main .Polaris-LegacyCard__Section .Polaris-LegacyCard{
     padding-bottom: 0;
 }
@@ -98,10 +98,10 @@
     background: #fdac69; 
 } */
 
-.Polaris-Badge.Polaris-Badge--toneSuccess{
-    border: 1px solid rgb(165, 215, 175);
+.Polaris-Badge{
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
     margin-right: 10px;
+    margin-left: 4px;
 }
 
 .Polaris-LegacyCard .Polaris-Tabs__Outer{
