@@ -3,7 +3,7 @@
 client_id = "66741fd2a46bacd291b55be34ac42d9d"
 name = "BusyBuddy"
 handle = "busybuddy-6"
-application_url = "https://continues-consists-then-ethical.trycloudflare.com"
+application_url = "https://blade-ham-asn-europe.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_script_tags,write_script_tags"
 
 [auth]
 redirect_urls = [
-  "https://continues-consists-then-ethical.trycloudflare.com/auth/callback",
-  "https://continues-consists-then-ethical.trycloudflare.com/auth/shopify/callback",
-  "https://continues-consists-then-ethical.trycloudflare.com/api/auth/callback"
+  "https://blade-ham-asn-europe.trycloudflare.com/auth/callback",
+  "https://blade-ham-asn-europe.trycloudflare.com/auth/shopify/callback",
+  "https://blade-ham-asn-europe.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
