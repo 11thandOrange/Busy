@@ -50,6 +50,7 @@ const AnnouncementSettings = ({ initialData }) => {
           prevState={oldSettingRef.current}
           handleSaveChanges={handleSaveSettingsData}
           handleDiscardChanges={handleDiscardChanges}
+          fetcherState={fetcher.state}
         />
         <SettingSection heading={"Global Settings"}>
           <Checkbox

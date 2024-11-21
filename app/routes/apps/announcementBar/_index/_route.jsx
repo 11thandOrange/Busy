@@ -165,7 +165,7 @@ export async function action({ request }) {
 const route = () => {
   const announcementData = useLoaderData();
   const fetcher = useFetcher();
-  console.log(announcementData);
+
   const announcementBarsData = announcementData.announcement_bars;
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;

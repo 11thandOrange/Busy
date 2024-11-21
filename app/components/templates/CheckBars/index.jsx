@@ -41,6 +41,7 @@ function CheckBars({ barsData }) {
     {
       content: "Delete",
       onAction: () => setConfirmDelete(true),
+    
     },
   ];
 
@@ -142,6 +143,7 @@ function CheckBars({ barsData }) {
               primaryActionContent="Delete"
               mainContent="This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?"
               title={`Delete ${selectedResources.length} item(s)?`}
+              fetcherState={fetcher.state}
             />
           </div>
         </>
