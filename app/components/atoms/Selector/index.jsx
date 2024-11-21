@@ -5,17 +5,17 @@ function Selector({ label, options, helpText, onSelect, initialValue }) {
   // console.log("Selector component", initialValue);
 
   const [selected, setSelected] = useState(initialValue);
-  console.log(initialValue, "initialValue");
+
   useEffect(() => {
     setSelected(initialValue);
   }, [initialValue]);
 
   const handleSelectChange = useCallback((value) => {
-    console.log(value, "value");
+   
     setSelected(value);
     onSelect(value);
   }, []);
-  console.log(options, "options");
+  
   return (
     <>
       <Select

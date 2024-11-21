@@ -5,6 +5,7 @@ import {
   Text,
   Badge,
 } from "@shopify/polaris";
+import "./style.css";
 import React, { useState } from "react";
 import PopoverContent from "../PopoverContent";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
@@ -98,18 +99,20 @@ function CheckBars({ barsData }) {
               allResourcesSelected ? "All" : selectedResources.length
             }
             emptyState={
-              <DynamicEmptyState
-                heading="Create your first Announcement Bar"
-                description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
-                actionContent={
-                  <PopoverContent
-                    options={announcementPopoverData}
-                    heading="Create Announcement Bar"
-                    onSelect={handleCreateClick}
-                  />
-                }
-                actionCallback={() => {}}
-              />
+              <div className="bb-announcement-wrapper">
+                <DynamicEmptyState
+                  heading="Create your first Announcement Bar"
+                  description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
+                  actionContent={
+                    <PopoverContent
+                      options={announcementPopoverData}
+                      heading="Create Announcement Bar"
+                      onSelect={handleCreateClick}
+                    />
+                  }
+                  actionCallback={() => {}}
+                />
+              </div>
             }
             selectable={true}
             onSelectionChange={handleSelectionChange}

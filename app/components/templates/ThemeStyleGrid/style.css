@@ -32,6 +32,7 @@
     font-weight: bold;
     padding-left: 0px; /* Left padding for name */
     padding-bottom: 5px; /* Top padding for name */
+    font-size: 14px;
 }
   
 /* Image style (rectangular shape and aligned at the bottom) */

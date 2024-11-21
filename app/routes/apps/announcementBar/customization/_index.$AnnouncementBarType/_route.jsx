@@ -36,7 +36,7 @@ const Customization = () => {
     }
   }, [fetcher.data]);
 
-  console.log("bahar", fetcher.data);
+
   return (
     <div>
       <AnnouncementCustomization

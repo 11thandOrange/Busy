@@ -99,7 +99,6 @@ const AnnouncementCustomization = ({
     if (initialData) {
       setSettingsState(initialData);
       prevSettingsState.current = initialData;
-      console.log("initial data", initialData);
     }
   }, [initialData]);
 
@@ -122,13 +121,6 @@ const AnnouncementCustomization = ({
         },
       );
     } else {
-      console.log(
-        "onSave",
-        settingsState.status,
-        Number(settingsState.status),
-        Boolean(Number(settingsState.status)),
-      );
-
       fetcher.submit(
         {
           name: settingsState.name,
@@ -144,6 +136,7 @@ const AnnouncementCustomization = ({
           action: ROUTES.ANNOUNCEMENT_OVERVIEW,
         },
       );
+      prevSettingsState.current = settingsState;
     }
   };
   return (
@@ -159,7 +152,7 @@ const AnnouncementCustomization = ({
             prevState={prevSettingsState.current}
             handleSaveChanges={handleOnSave}
             handleDiscardChanges={() => {
-              console.log("On discard changes");
+              setSettingsState(prevSettingsState.current);
             }}
           />
           <div className="customization-left-section">
