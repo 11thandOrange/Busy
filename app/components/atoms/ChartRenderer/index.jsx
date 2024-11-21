@@ -25,20 +25,20 @@ const ChartRenderer = ({ data, basicOptions }) => {
       },
       title: {
         display: true,
-        text: 'Default Chart Title',
+        text: '',
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'X-axis',
+          text: '',
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Y-axis',
+          text: '',
         },
       },
     },

@@ -10,7 +10,6 @@ const DiscardChangesConfirmationPopup = ({
   mainContent = "",
 }) => {
   return (
-    <Frame>
       <div>
         <Modal
           open={active}
@@ -35,7 +34,6 @@ const DiscardChangesConfirmationPopup = ({
           </Modal.Section>
         </Modal>
       </div>
-    </Frame>
   );
 };
 

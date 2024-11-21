@@ -1,3 +1,10 @@
 .Polaris-Frame{
     min-height: unset;
 }
+
+.bb-announcement-wrapper .Polaris-InlineStack .Polaris-Button:not(button .Polaris-Button){
+    background-color: transparent;
+}
+.bb-announcement-wrapper .Polaris-InlineStack div{
+    height: auto !important;
+}
