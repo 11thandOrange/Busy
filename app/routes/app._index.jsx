@@ -1,30 +1,22 @@
+import { Page, Layout, Text, Card, BlockStack } from "@shopify/polaris";
 
-import {
-  Page,
-  Layout,
-  Text,
-  Card,
-  BlockStack,
-} from "@shopify/polaris";
-
-
-import { cors } from 'remix-utils/cors';
+import { cors } from "remix-utils/cors";
 import db from "../db.server";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
 
 export const loader = async ({ request }) => {
-  const shop  = await getShopName(request)
+  const shop = await getShopName(request);
   let apps = await db.app.findMany({
     include: {
       Merchant: true,
       categories: {
         select: {
-          id:true
-        }
+          id: true,
+        },
       },
     },
   });
@@ -32,8 +24,8 @@ export const loader = async ({ request }) => {
     include: {
       categories: {
         select: {
-          id:true
-        }
+          id: true,
+        },
       },
       Fav_widget: {
         where: { shop: shop },
@@ -44,34 +36,35 @@ export const loader = async ({ request }) => {
     },
   });
   widgets = widgets.map((widget) => {
-    const isFavorite = widget.Fav_widget.length > 0
-  
+    const isFavorite = widget.Fav_widget.length > 0;
+
     return {
       id: widget.id,
       name: widget.name,
       description_title: widget.description_title,
       description_content: widget.description_content,
       image: widget.image,
-      categoryId: widget.categories.map(item => item.id),
+      categoryId: widget.categories.map((item) => item.id),
       isFavorite,
     };
   });
   apps = apps.map((app) => {
     const isInstalled = app.Merchant.some((merchant) => merchant.enabled);
-  
+
     return {
       id: app.id,
       name: app.name,
       description: app.description,
-      image:app.image,
-      categoryId: app.categories.map(item => item.id),
+      image: app.image,
+      categoryId: app.categories.map((item) => item.id),
       createdAt: app.createdAt,
       updatedAt: app.updatedAt,
-      isInstalled, 
+      isInstalled,
+      slug: app.slug,
     };
   });
-  
-  const response = {apps, categories : await getCategories(), widgets};
+
+  const response = { apps, categories: await getCategories(), widgets };
   return cors(request, response);
 };
 export const action = async ({ request }) => {
@@ -121,17 +114,17 @@ export default function Index() {
       {
         widgetId: widgetId,
       },
-      { method: "POST", action: "/widgets" }
+      { method: "POST", action: "/widgets" },
     );
-  }
-console.log(data, "data main")
+  };
+  console.log(data, "data main");
   return (
     <Page>
-      <div className='header'>
+      <div className="header">
         <img
           src="https://via.placeholder.com/100"
           alt="Logo"
-          className='logo'
+          className="logo"
         />
         <div>
           <Text as="h1" variant="headingLg" className="title">
@@ -150,11 +143,15 @@ console.log(data, "data main")
                 Essentials Apps
               </Text>
               <div className="apps_list">
-                {data?.apps?.map(item => {
-                 return (<div className="list-item">
-                    <img src={item?.image}/>
-                    <span>{item.name}</span>
-                  </div>)
+                {data?.apps?.map((item) => {
+                  return (
+                    <Link to={"/apps/" + item.slug}>
+                      <div className="list-item">
+                        <img src={item?.image} />
+                        <span>{item.name}</span>
+                      </div>
+                    </Link>
+                  );
                 })}
               </div>
             </Card>
@@ -164,15 +161,26 @@ console.log(data, "data main")
               <Text as="h2" variant="headingSm">
                 Looking For Tips
               </Text>
-              <Slider autoplay={false} navigation={true}/>
+              <Slider autoplay={false} navigation={true} />
             </Card>
           </Layout.Section>
           <Layout.Section>
-            <Card sectioned>
+            <Card className="bb-card-wrapper" sectioned>
               <Text as="h2" variant="headingSm">
                 Suggested Apps
               </Text>
-              <SingleSlider autoplay={true} navigation={true} autoplayDelay={2000} sliderData={data.widgets} slideRenderer={(item) => <SingleWidget widget={item} handleAddToFavorite={handleAddToFavorite}/> }/>
+              <SingleSlider
+                autoplay={true}
+                navigation={true}
+                autoplayDelay={2000}
+                sliderData={data.widgets}
+                slideRenderer={(item) => (
+                  <SingleWidget
+                    widget={item}
+                    handleAddToFavorite={handleAddToFavorite}
+                  />
+                )}
+              />
             </Card>
           </Layout.Section>
         </Layout>

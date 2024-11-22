@@ -13,7 +13,7 @@ const GoBack = ({heading = 'Back'}) => {
         className="back-button"
         onClick={goBack}
       >
-        ← {heading}
+        <span>←</span> {heading}
       </button>
   )
 }
