@@ -29,7 +29,7 @@ const basicOptions = {
     },
   },
 }
-function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData}) {
+function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData, data}) {
 
     return (
       <Card sectioned>
@@ -45,7 +45,7 @@ function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData}) {
             >
               <TextContainer>
                 <h3 className="tabLabel">{tab.label}</h3>
-                <p className='tabValue'>0</p>
+                <p className='tabValue'>{data?.find(item => item.activityId == tab.key)?.totalCount}</p>
                 <p className='tabDescription'>No change</p>
               </TextContainer>
             </div>

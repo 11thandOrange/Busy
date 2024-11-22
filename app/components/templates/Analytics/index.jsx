@@ -8,11 +8,11 @@ import { formatDate } from '../../../utils/clientFunctions';
 import { TABS_ENUM } from '../../../utils/constants';
 import DateRangeButton from '../../atoms/DateRangePicker/Index';
 
-const Analytics = ({apps}) => {
+const Analytics = ({apps = [], showAppSelection = false, appId = null}) => {
   const fetcher = useFetcher();
-  const [selected, setSelected] = useState(apps[0].id);
+  const [selected, setSelected] = useState(apps?.[0]?.id);
   const [selectedDates, setSelectedDates] = useState({
-    start: new Date(),
+    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     end: new Date(),
   })
   const [selectedTabs, setSelectedTabs] = useState(Object.values(TABS_ENUM).map(item =>item));
@@ -37,7 +37,7 @@ const Analytics = ({apps}) => {
     });
   };
 
-  const options = apps.map(item => ({
+  const options = apps?.map(item => ({
     label: item.name,
     value: item.id
   }));
@@ -45,7 +45,7 @@ const Analytics = ({apps}) => {
   const handleSelectChange = (value) => setSelected(Number(value))
   
   const getAnalytics = () => {
-    const data = fetcher.load(`/analytics?appId=${selected}&fromDate=${formatDate(selectedDates?.start)}&toDate=${formatDate(selectedDates?.end)}`);
+    fetcher.load(`/analytics?appId=${showAppSelection ? selected : appId}&fromDate=${formatDate(selectedDates?.start)}&toDate=${formatDate(selectedDates?.end)}`);
   }
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Analytics = ({apps}) => {
       }))
       setChartData({
         labels: labels,
-        datasets: data.length ? data.map(item => {
+        datasets: data?.length ? data.map(item => {
           const tabData = tabs.find(tab => tab.key == item.activityId)
           return {
             label: tabData.label,
@@ -82,15 +82,15 @@ const Analytics = ({apps}) => {
     <div className='bb-analytics'>
       <div className='bb-analytics-head'>
         <DateRangeButton selectedDates={selectedDates} setDate={setSelectedDates} />
-        <div className="bb-select-btn">
+        {showAppSelection ? <div className="bb-select-btn">
           <Select
             options={options}
             onChange={handleSelectChange}
             value={selected}
           />
-        </div>
+        </div> : null}
       </div>
-      <AnalyticsView handleSelectTab={handleSelect} selectedTabs={selectedTabs} tabs={tabs} chartData={chartData}/>
+      <AnalyticsView handleSelectTab={handleSelect} selectedTabs={selectedTabs} tabs={tabs} chartData={chartData} data={fetcher?.data?.analytics}/>
     </div>
   );
 };

@@ -4,14 +4,16 @@ import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
 import { getEventTypes, getShopName } from '../../utils/function';
+import { authenticate } from '../../shopify.server';
 
 export async function loader({ request }) {
   try {
+    const {session} = await authenticate.admin(request);
     const url = new URL(request.url);
     const appId = parseInt(url.searchParams.get('appId'));
-    const shop = "https://quickstart-d7cce324.myshopify.com/";
     const fromDateString = url.searchParams.get('fromDate');
     const toDateString = url.searchParams.get('toDate');
+    const shop = session.shop;
 
     let apps = await db.app.findMany({
       include: {
@@ -59,6 +61,19 @@ export async function loader({ request }) {
       }
     });
 
+    const totalCountsByActivity = counts.reduce((acc, record) => {
+      const activityId = record.activityId;
+      const count = record._count.id;
+    
+      if (acc[activityId]) {
+        acc[activityId] += count;
+      } else {
+        acc[activityId] = count;
+      }
+    
+      return acc;
+    }, {});
+
     const formattedCounts = activityIds.map((activityId) => {
       const activityData = [];
       counts.forEach((record) => {
@@ -81,7 +96,8 @@ export async function loader({ request }) {
 
       return {
         activityId,
-        activityData
+        activityData,
+        totalCount: totalCountsByActivity[activityId] || 0
       };
     });
 
@@ -133,7 +149,7 @@ const GlobalAnalytics = () => {
   const apps = useLoaderData();
 
   return (
-   <Analytics apps={apps.apps}/>
+   <Analytics apps={apps.apps} showAppSelection={true}/>
   )
 }
 

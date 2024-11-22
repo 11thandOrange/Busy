@@ -7,7 +7,7 @@ import {
 import AnnouncementCustomization from "../../../../components/templates/AnnouncementCustomization";
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
-import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { useFetcher, useLoaderData, useLocation, useNavigate, useSearchParams } from "@remix-run/react";
 import { ROUTES } from "../../../../utils/constants";
 import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
@@ -15,6 +15,7 @@ import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
 import AnnouncementSettings from "../../../../components/templates/AnnouncementSettings";
 import { check_app_active } from "../../../../utils/function";
+import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -164,8 +165,9 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id")
   const fetcher = useFetcher();
-  console.log(announcementData);
   const announcementBarsData = announcementData.announcement_bars;
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
@@ -209,7 +211,12 @@ const route = () => {
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
-      component: <CheckBars barsData={announcementBarsData}></CheckBars>,
+      component: <CheckBars barsData={announcementBarsData}/>,
+    },
+    {
+      id: "announcement-bars-analytics",
+      content: "Analytics",
+      component: <Analytics appId={id}/>,
     },
     // {
     //   id: "Countdown-timer-1",
@@ -233,7 +240,7 @@ const route = () => {
     fetcher.submit(
       {
         isActive,
-        appId: 1,
+        appId: id,
       },
       {
         method: "POST",

@@ -29,6 +29,7 @@ import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmat
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
+import GoBack from "../../atoms/GoBack";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -141,9 +142,10 @@ const AnnouncementCustomization = ({
   };
   return (
     <div>
+      <GoBack heading={header}/>
       <Page
-        backAction={{ content: "Settings", url: backActionRoute }}
-        title={header}
+        // backAction={{ content: "Settings", url: backActionRoute }}
+        // title={header}
         // primaryAction={<ActiveButton></ActiveButton>}
       >
         <div className="customization-container">
