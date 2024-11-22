@@ -30,9 +30,7 @@
     color: #616161;
     font-weight: 550;
   }
-  .bb-app-link{
-    text-decoration: none;
-  }
-  .bb-app-link h5{
-    color: #303030b3;
-  }
+  .Polaris-IndexTable__StickyTableHeader ~ .Polaris-IndexTable__BulkActionsWrapper {
+    padding-block: 10px;
+}
+ 

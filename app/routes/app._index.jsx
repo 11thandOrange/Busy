@@ -145,8 +145,8 @@ export default function Index() {
               <div className="apps_list">
                 {data?.apps?.map((item) => {
                   return (
-                    <Link to={"/apps/" + item.slug}>
-                      <div className="list-item">
+                    <Link className="list-item bb-anchorTag" to={"/apps/" + item.slug}>
+                      <div>
                         <img src={item?.image} />
                         <span>{item.name}</span>
                       </div>

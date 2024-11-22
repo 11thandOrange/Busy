@@ -7,7 +7,13 @@ import {
 import AnnouncementCustomization from "../../../../components/templates/AnnouncementCustomization";
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
-import { useFetcher, useLoaderData, useLocation, useNavigate, useSearchParams } from "@remix-run/react";
+import {
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "@remix-run/react";
 import { ROUTES } from "../../../../utils/constants";
 import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
@@ -19,6 +25,7 @@ import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
+  console.log(session.shop)
   let announcement_bars, announcement_bar_setting, app_active;
   const shop = session.shop;
   const url = new URL(request.url);
@@ -167,9 +174,11 @@ const route = () => {
   const announcementData = useLoaderData();
   console.log(announcementData, "announcementData")
   const [searchParams] = useSearchParams();
-  const id = searchParams.get("id")
+  const id = searchParams.get("appId");
   const fetcher = useFetcher();
   const announcementBarsData = announcementData.announcement_bars;
+  console.log("Data", announcementData);
+
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
 
@@ -202,12 +211,12 @@ const route = () => {
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
-      component: <CheckBars barsData={announcementBarsData}/>,
+      component: <CheckBars barsData={announcementBarsData} />,
     },
     {
       id: "announcement-bars-analytics",
       content: "Analytics",
-      component: <Analytics appId={id}/>,
+      component: <Analytics appId={id} />,
     },
   ];
 

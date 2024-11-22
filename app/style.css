@@ -58,6 +58,13 @@
     align-items: center;
     gap: 10px;
     padding-block: 13px;
+    text-decoration: none;
+    color:#616161;
+}
+.apps_list .list-item.bb-anchorTag > div{
+    display: flex;
+    align-items: center;
+
 }
 
 .header {

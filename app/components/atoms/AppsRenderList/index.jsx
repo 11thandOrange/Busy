@@ -22,7 +22,7 @@ const AppsRenderList = ({ selectedApps }) => {
 
           return (
             <>
-              <Link className="bb-app-link" to={`${slug}?id=${id}`}>
+              <Link className="bb-app-link" to={`${slug}?appId=${id}`}>
                 <div className="bb-card-list-item">
                   {/* Commented Because of Routing error */}
                   
