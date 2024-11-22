@@ -25,8 +25,11 @@ import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
-  console.log(session.shop)
-  let announcement_bars, announcement_bar_setting, app_active, announcement_bars_customization;
+  console.log(session.shop);
+  let announcement_bars,
+    announcement_bar_setting,
+    app_active,
+    announcement_bars_customization;
   const shop = session.shop;
   const url = new URL(request.url);
   if (url.searchParams.get("id")) {
@@ -58,7 +61,7 @@ export async function loader({ request }) {
   }
 
   return cors(request, {
-    announcement_bars : announcement_bars?.length ? announcement_bars : [],
+    announcement_bars: announcement_bars?.length ? announcement_bars : [],
     announcement_customization: announcement_bars_customization,
     announcement_bar_setting,
     app_active,
@@ -173,12 +176,11 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
-  console.log(announcementData, "announcementData")
+  console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const fetcher = useFetcher();
   const announcementBarsData = announcementData.announcement_bars;
-  console.log("Data", announcementData);
 
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
@@ -204,9 +206,7 @@ const route = () => {
       id: "Settings-1",
       content: "Settings",
       component: (
-        <AnnouncementSettings
-          initialData={announcementBarsSettings}
-        />
+        <AnnouncementSettings initialData={announcementBarsSettings} />
       ),
     },
     {

@@ -13,12 +13,15 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Space between name and image */
-    padding: 16px;
+    padding: 6px;
     border: 1px solid #ddd; /* Border around each item */
-   
     transition: border-color 0.3s ease;
     cursor: pointer;
     min-height: 80px; /* Minimum height to create space for content */
+}
+.grid-item img{
+    border-radius: 4px;
+    object-position: left;
 }
   
 .grid-item.selected {

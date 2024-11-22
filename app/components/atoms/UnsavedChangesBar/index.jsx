@@ -2,7 +2,7 @@ import { Frame, ContextualSaveBar } from "@shopify/polaris";
 import React from "react";
 import { FETCHER_STATE } from "../../../utils/constants";
 import { isLoading } from "../../../utils/clientFunctions";
-
+import "./style.css";
 const UnsavedChangesBar = ({
   message = "Unsaved changes",
   saveActionButtonClick = () => {},

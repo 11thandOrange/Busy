@@ -1,4 +1,4 @@
- /* General slide styling */
+ General slide styling
   .swiper-slide {
     text-align: center;
     font-size: 18px;
@@ -240,4 +240,7 @@
     color: #303030;
     margin: 0;
     font-weight: 400;
+  }
+  .bb-swiper-slider .swiper{
+    width: 100%;
   }
