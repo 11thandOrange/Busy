@@ -21,7 +21,8 @@ const Customization = () => {
 
   useEffect(() => {
     if (fetcher.data) {
-      const data = fetcher.data.announcement_bars;
+      const data = fetcher.data.announcement_customization;
+      console.log("fetcherdata", fetcher.data);
 
       setCustomizationData({
         id: data.id,

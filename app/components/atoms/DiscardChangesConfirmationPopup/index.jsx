@@ -13,7 +13,7 @@ const DiscardChangesConfirmationPopup = ({
   fetcherState = FETCHER_STATE.IDLE,
 }) => {
   return (
-
+    <div>
       <Modal
         open={active}
         onClose={toggleModal}
@@ -37,7 +37,7 @@ const DiscardChangesConfirmationPopup = ({
             : "If you discard changes, you’ll delete any edits you made since you last saved."}
         </Modal.Section>
       </Modal>
-
+    </div>
   );
 };
 

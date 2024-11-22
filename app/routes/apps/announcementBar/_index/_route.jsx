@@ -26,11 +26,11 @@ import Analytics from "../../../../components/templates/Analytics";
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
   console.log(session.shop)
-  let announcement_bars, announcement_bar_setting, app_active;
+  let announcement_bars, announcement_bar_setting, app_active, announcement_bars_customization;
   const shop = session.shop;
   const url = new URL(request.url);
   if (url.searchParams.get("id")) {
-    announcement_bars = await db.announcement_bar.findFirst({
+    announcement_bars_customization = await db.announcement_bar.findFirst({
       where: {
         id: parseInt(url.searchParams.get("id")),
       },
@@ -59,6 +59,7 @@ export async function loader({ request }) {
 
   return cors(request, {
     announcement_bars : announcement_bars?.length ? announcement_bars : [],
+    announcement_customization: announcement_bars_customization,
     announcement_bar_setting,
     app_active,
   });
