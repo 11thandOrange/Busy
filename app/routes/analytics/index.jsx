@@ -109,42 +109,23 @@ export async function loader({ request }) {
   }
 }
 
-export const action = async ({ request }) => {
-  const shop = getShopName(request);
-  const formData = new URLSearchParams(await request.text());
-  const appId = parseInt(formData.get("appId"));
-  const enable = formData.get("enable") === true;
-  try {
-    const existingMerchant = await db.merchant.findFirst({
-      where: {
-        appId: appId,
-        shop: shop,
-      },
-    });
+export const action = async ({ request }) => { 
+  let analytics = await request.json();
+  const activityId = analytics.activity;
+  const pageUrl = analytics.pageUrl;
+  const shop = analytics.shop;
+  const appId = analytics.data.element;
 
-    if (existingMerchant) {
-      const updatedApp = await db.merchant.update({
-        where: {
-          id: existingMerchant.id,
-        },
-        data: {
-          enabled: enable,
-        },
-      });
-      return updatedApp;
-    } else {
-      const newMerchant = await db.merchant.create({
-        data: {
-          appId: appId,
-          shop: shop,
-          enabled: enable,
-        },
-      });
-      return newMerchant;
+  await db.analytics.create({
+    data: {
+      activityId,
+      pageUrl,
+      appId,
+      shop
     }
-  } catch (error) {
-    throw new Error("Failed to update or create merchant");
-  }
+  });
+  response = json({ message: "Analytics", success: true });
+  return cors(request, response);  
 };
 const GlobalAnalytics = () => {
   const apps = useLoaderData();

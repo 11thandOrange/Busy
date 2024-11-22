@@ -71,8 +71,10 @@ model Widget {
   name                  String?
   description_title     String?
   description_content   String?
+  slug                  String?
   image                 String?
   categories            Category[]    @relation("WidgetCategories")
+  type                  Int           @default(1)
   Fav_widget            Fav_widget[]
   createdAt             DateTime      @default(now())
 }
@@ -118,6 +120,11 @@ model Merchant {
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   @@unique([appId, shop])
+}
+
+model Type {
+  id              Int           @id @default(autoincrement())
+  content         String
 }
 
 model Announcement_bar {
