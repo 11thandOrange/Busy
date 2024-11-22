@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from "@remix-run/react";
 import './style.css'
 
-const GoBack = () => {
+const GoBack = ({heading = 'Back'}) => {
     const navigate = useNavigate();
 
     const goBack = () => {
@@ -13,7 +13,7 @@ const GoBack = () => {
         className="back-button"
         onClick={goBack}
       >
-        ← Back
+        <span>←</span> {heading}
       </button>
   )
 }

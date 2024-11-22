@@ -19,16 +19,13 @@ const AppsRenderList = ({ selectedApps }) => {
             image,
             slug,
           } = item;
-          console.log(slug, "slug");
+
           return (
             <>
-              <Link to={slug}>
+              <Link className="bb-app-link" to={`${slug}?appId=${id}`}>
                 <div className="bb-card-list-item">
                   {/* Commented Because of Routing error */}
-                  {/* <ResourceItem
-                    id={id}
-                    accessibilityLabel={`View details for ${name}`}
-                  >
+                  
                     <div
                       className="bb-list-content"
                       style={{ display: "flex" }}
@@ -47,8 +44,8 @@ const AppsRenderList = ({ selectedApps }) => {
                       </div>
                       {isInstalled && <Badge tone="success">Active</Badge>}
                     </div>
-                  </ResourceItem> */}
-                  {name}
+                
+                  {/* {name} */}
                 </div>
               </Link>
             </>

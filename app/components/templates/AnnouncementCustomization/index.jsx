@@ -29,6 +29,7 @@ import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmat
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
+import GoBack from "../../atoms/GoBack";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -39,6 +40,7 @@ const AnnouncementCustomization = ({
   announcementBarType,
   header = "Customization",
   backActionRoute = ROUTES.APPS,
+  initialData,
 }) => {
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
@@ -94,40 +96,70 @@ const AnnouncementCustomization = ({
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES]);
 
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
+      prevSettingsState.current = initialData;
+    }
+  }, [initialData]);
+
+  const handleOnSave = () => {
+    if (initialData) {
+      fetcher.submit(
+        {
+          id: initialData.id,
+          name: settingsState.name,
+          status: Number(settingsState.status),
+          general_setting: JSON.stringify(settingsState.generalSettings),
+          theme_style: JSON.stringify(settingsState.themeStyle),
+          theme_settings: JSON.stringify(settingsState.themeSettings),
+          type: announcementBarType,
+          _action: "UPDATE",
+        },
+        {
+          method: "POST",
+          action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+        },
+      );
+    } else {
+      fetcher.submit(
+        {
+          name: settingsState.name,
+          status: Number(settingsState.status),
+          general_setting: JSON.stringify(settingsState.generalSettings),
+          theme_style: JSON.stringify(settingsState.themeStyle),
+          theme_settings: JSON.stringify(settingsState.themeSettings),
+          type: announcementBarType,
+          _action: "CREATE",
+        },
+        {
+          method: "POST",
+          action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+        },
+      );
+      prevSettingsState.current = settingsState;
+    }
+  };
+
+
+
   return (
     <div>
+      <GoBack heading={header}/>
       <Page
-        backAction={{ content: "Settings", url: backActionRoute }}
-        title={header}
+        // backAction={{ content: "Settings", url: backActionRoute }}
+        // title={header}
         // primaryAction={<ActiveButton></ActiveButton>}
       >
         <div className="customization-container">
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
-            handleSaveChanges={() => {
-              console.log("Updated state", settingsState);
-              fetcher.submit(
-                {
-                  name: settingsState.name,
-                  status: settingsState.status,
-                  general_setting: JSON.stringify(
-                    settingsState.generalSettings,
-                  ),
-                  theme_style: JSON.stringify(settingsState.themeStyle),
-                  theme_settings: JSON.stringify(settingsState.themeSettings),
-                  type: announcementBarType,
-                  _action:'CREATE'
-                },
-                {
-                  method: "POST",
-                  action: ROUTES.ANNOUNCEMENT_OVERVIEW,
-                },
-              );
-            }}
+            handleSaveChanges={handleOnSave}
             handleDiscardChanges={() => {
-              console.log("On discard changes");
+              setSettingsState(prevSettingsState.current);
             }}
+            fetcherState={fetcher.state}
           />
           <div className="customization-left-section">
             <Card>
@@ -175,6 +207,7 @@ const AnnouncementCustomization = ({
                     ),
                   );
                 }}
+                selectedTheme={settingsState.themeStyle.id}
               ></ThemeStyleGrid>
             </Card>
             <Card>

@@ -14,7 +14,10 @@ import { json } from "@remix-run/node";
         shop:shop
       }
     });
-    setting.global_customizations = JSON.parse(setting.global_customizations)
+    console.log(setting, "settinge test")
+    if(setting?.global_customizations){
+      setting.global_customizations = setting?.global_customizations ? JSON.parse(setting?.global_customizations) : JSON.stringify({})
+    }
     return cors(request, setting || {
       admin_language : "English",
       lazy_load_images: false,

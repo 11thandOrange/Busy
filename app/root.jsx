@@ -13,7 +13,7 @@ import { AppProvider as RemixAppProvider } from "@shopify/shopify-app-remix/reac
 import "@shopify/polaris/build/esm/styles.css";
 import "./style.css";
 import { authenticate } from "./shopify.server";
-
+import en from "@shopify/polaris/locales/en.json";
 function LinkWrapper(props) {
   return (
     <Link to={props.url ?? props.to} ref={props.ref} {...props}>
@@ -44,18 +44,7 @@ export default function App() {
       </head>
       <body>
         <RemixAppProvider isEmbeddedApp apiKey={apiKey}>
-          <AppProvider
-            linkComponent={LinkWrapper}
-            i18n={{
-              Polaris: {
-                Page: {
-                  Header: {
-                    rollupButton: "Actions",
-                  },
-                },
-              },
-            }}
-          >
+          <AppProvider linkComponent={LinkWrapper} i18n={en}>
             <div className="app-main">
               <Outlet />
             </div>

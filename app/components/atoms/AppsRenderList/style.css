@@ -53,3 +53,10 @@
 .Polaris-Box, .head-searchbar{
     padding: 10px;
 }
+
+.bb-app-link{
+    text-decoration: none;
+  }
+  .bb-app-link h5{
+    color: #303030b3;
+  }

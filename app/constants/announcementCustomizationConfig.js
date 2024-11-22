@@ -33,8 +33,8 @@ export const announcementPopoverData = [
   },
 ];
 export const STATUS = {
-  ACTIVE: 1,
-  INACTIVE: 0,
+  ACTIVE: "1",
+  INACTIVE: "0",
 };
 export const THEME_SETTINGS_STATUS = {
   TOP_RELATIVE: "TOP_RELATIVE",
@@ -47,11 +47,11 @@ export const ThemeStyleGridType = {
 };
 export const SETTINGS_INITIAL_STATE = {
   status: STATUS.INACTIVE,
-  name: "",
+  name: "Text Bar",
   themeStyle: {
     id: 1,
     type: ThemeStyleGridType.COLOR,
-    image: "",
+    image: "https://placehold.co/200",
   },
   themeSettings: {
     status: THEME_SETTINGS_STATUS.TOP_RELATIVE,
@@ -74,8 +74,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
 
   [ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER]: {
     generalSettings: {
-      countDownStartAt: "2024-11-13T12:30",
-      countDownEndsAt: "2024-11-13T12:30",
+      countDownStartAt: "",
+      countDownEndsAt: "",
       message: "Offer ends in #countdown_timer#.",
     },
   },

@@ -3,7 +3,7 @@
 client_id = "66741fd2a46bacd291b55be34ac42d9d"
 name = "BusyBuddy"
 handle = "busybuddy-6"
-application_url = "https://loc-brad-flooring-console.trycloudflare.com"
+application_url = "https://reading-levy-mass-won.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_script_tags,write_script_tags"
 
 [auth]
 redirect_urls = [
-  "https://loc-brad-flooring-console.trycloudflare.com/auth/callback",
-  "https://loc-brad-flooring-console.trycloudflare.com/auth/shopify/callback",
-  "https://loc-brad-flooring-console.trycloudflare.com/api/auth/callback"
+  "https://reading-levy-mass-won.trycloudflare.com/auth/callback",
+  "https://reading-levy-mass-won.trycloudflare.com/auth/shopify/callback",
+  "https://reading-levy-mass-won.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

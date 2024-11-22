@@ -26,6 +26,11 @@ export const APP_TYPE = {
   COUNTDOWN_TIMER: 2,
 };
 
+export const TABS_ENUM = {
+  IMPRESSIONS: 1,
+  CLICK: 2,
+};
+
 export const ROUTES = {
   HOME: "/app",
   APPS: "/apps",
@@ -38,4 +43,11 @@ export const ROUTES = {
   ROUTE_TEST: "/RouteTest",
   ANNOUNCEMENT_CUSTOMIZATION_ROOT: "/apps/announcementBar/customization/",
   ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar/",
+  ANALYTICS: "/analytics",
+};
+
+export const FETCHER_STATE = {
+  IDLE: "idle",
+  LOADING: "loading",
+  SUBMITTING: "submitting",
 };

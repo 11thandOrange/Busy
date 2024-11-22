@@ -1,0 +1,36 @@
+.Polaris-Frame{
+    min-height: unset;
+}
+
+.bb-announcement-wrapper .Polaris-InlineStack .Polaris-Button:not(button .Polaris-Button){
+    background-color: transparent;
+}
+.bb-announcement-wrapper .Polaris-InlineStack div{
+    height: auto !important;
+}
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer thead th{
+    background-color: transparent;
+    padding-block:14px;
+  }
+  .Polaris-LegacyCard .Polaris-Button--disclosure{
+    margin-top: 6px;
+  }
+  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td span.Polaris-Text--bodyMd{
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td p{
+    font-size: 13px;
+    color: #616161;
+
+  }
+  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer span.Polaris-Text--numeric{
+    padding: 10px;
+    color: #616161;
+    font-weight: 550;
+  }
+  .Polaris-IndexTable__StickyTableHeader ~ .Polaris-IndexTable__BulkActionsWrapper {
+    padding-block: 10px;
+}
+ 

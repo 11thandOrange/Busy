@@ -31,11 +31,8 @@ export default function App() {
             <Link to={ROUTES.APPS}>Apps</Link>
             <a href={ROUTES.WIDGETS}>Widgets</a>
             <a href={ROUTES.SETTINGS}>Settings</a>
+            <a href={ROUTES.ANALYTICS}>Analytics</a>
             <a href={ROUTES.PLAN}>Plan</a>
-            <a href={ROUTES.HOMEPAGE}>homepage</a>
-            <a href={ROUTES.ANNOUNCEMENT_BAR}>Announcement Customization</a>
-            <a href={ROUTES.COUNTDOWN_TIMER}>Countdown Timer Customization</a>
-            <Link to={ROUTES.ROUTE_TEST}>RouteTest</Link>
           </NavMenu>
           <Outlet />
         </PolarisAppProvider>

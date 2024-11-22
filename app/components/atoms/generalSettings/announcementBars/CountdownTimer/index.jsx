@@ -5,12 +5,13 @@ import {
   isEndDateValid,
   updateSettingsState,
 } from "../../../../../utils/clientFunctions";
+import "./style.css";
 
 const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
   // debugger;
 
   return (
-    <div>
+    <div className="countdown-group">
       <div>
         <DatePicker
           onDatePicked={(date) => {

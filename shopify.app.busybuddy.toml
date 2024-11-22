@@ -3,7 +3,7 @@
 client_id = "76cf44618bb669b695753abcee017644"
 name = "BusyBuddy"
 handle = "busybuddy-7"
-application_url = "https://absent-football-cartoon-contrary.trycloudflare.com"
+application_url = "https://creativity-pub-transaction-velvet.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://absent-football-cartoon-contrary.trycloudflare.com/auth/callback",
-  "https://absent-football-cartoon-contrary.trycloudflare.com/auth/shopify/callback",
-  "https://absent-football-cartoon-contrary.trycloudflare.com/api/auth/callback"
+  "https://creativity-pub-transaction-velvet.trycloudflare.com/auth/callback",
+  "https://creativity-pub-transaction-velvet.trycloudflare.com/auth/shopify/callback",
+  "https://creativity-pub-transaction-velvet.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -1,4 +1,6 @@
 import { Modal, Frame } from "@shopify/polaris";
+import { FETCHER_STATE } from "../../../utils/constants";
+import { isLoading } from "../../../utils/clientFunctions";
 
 const DiscardChangesConfirmationPopup = ({
   active = false,
@@ -8,34 +10,34 @@ const DiscardChangesConfirmationPopup = ({
   secondaryActionContent = "Continue editing",
   primaryActionClick = () => {},
   mainContent = "",
+  fetcherState = FETCHER_STATE.IDLE,
 }) => {
   return (
-    <Frame>
-      <div>
-        <Modal
-          open={active}
-          onClose={toggleModal}
-          title={title}
-          primaryAction={{
-            destructive: true,
-            content: primaryActionContent,
-            onAction: primaryActionClick,
-          }}
-          secondaryActions={[
-            {
-              content: secondaryActionContent,
-              onAction: toggleModal,
-            },
-          ]}
-        >
-          <Modal.Section>
-            {mainContent
-              ? mainContent
-              : "If you discard changes, you’ll delete any edits you made since you last saved."}
-          </Modal.Section>
-        </Modal>
-      </div>
-    </Frame>
+    <div>
+      <Modal
+        open={active}
+        onClose={toggleModal}
+        title={title}
+        primaryAction={{
+          destructive: true,
+          content: primaryActionContent,
+          onAction: primaryActionClick,
+          loading: isLoading(fetcherState),
+        }}
+        secondaryActions={[
+          {
+            content: secondaryActionContent,
+            onAction: toggleModal,
+          },
+        ]}
+      >
+        <Modal.Section>
+          {mainContent
+            ? mainContent
+            : "If you discard changes, you’ll delete any edits you made since you last saved."}
+        </Modal.Section>
+      </Modal>
+    </div>
   );
 };
 

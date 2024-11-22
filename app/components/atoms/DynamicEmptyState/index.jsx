@@ -1,5 +1,5 @@
 import { EmptyState, LegacyCard } from "@shopify/polaris";
-
+import "./style.css";
 export default function DynamicEmptyState({
   heading,
   actionContent,
@@ -10,7 +10,7 @@ export default function DynamicEmptyState({
   description,
 }) {
   return (
-    <LegacyCard sectioned>
+    <LegacyCard sectioned >
       <EmptyState
         heading={heading}
         action={
@@ -25,7 +25,9 @@ export default function DynamicEmptyState({
         }
         image={image}
       >
-        {description && <p>{description}</p>}
+        {description && (
+          <p className="empty-state-description">{description}</p>
+        )}
       </EmptyState>
     </LegacyCard>
   );

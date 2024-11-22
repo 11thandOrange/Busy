@@ -29,6 +29,7 @@ const ThemeSettings = ({ setSettingsState, settingsState }) => {
         }}
         options={themeOptions}
         label="Status"
+        initialValue={settingsState.themeSettings.status}
         helpText="The announcement bar is displayed before/above the page content. When scrolling down, the announcement bar will not be visible anymore."
       ></Selector>
 

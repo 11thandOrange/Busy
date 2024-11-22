@@ -1,0 +1,9 @@
+
+.countdown-group{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .date-picker-container{
+        margin: 0;
+    }
+}
