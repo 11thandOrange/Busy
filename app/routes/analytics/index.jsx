@@ -3,7 +3,7 @@ import Analytics from '../../components/templates/Analytics'
 import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
-import { getEventTypes, getShopName } from '../../utils/function';
+import { getEventTypes } from '../../utils/function';
 import { authenticate } from '../../shopify.server';
 import GoBack from '../../components/atoms/GoBack';
 

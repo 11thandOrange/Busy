@@ -36,7 +36,7 @@ export const ROUTES = {
   APPS: "/apps",
   WIDGETS: "/widgets",
   SETTINGS: "/settings",
-  PLAN: "/app/plan",
+  PLAN: "/plan",
   HOMEPAGE: "/homepage",
   ANNOUNCEMENT_BAR: "/announcementBar",
   COUNTDOWN_TIMER: "/countdownTimer",
