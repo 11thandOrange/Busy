@@ -20,7 +20,7 @@ const barState = {
   INACTIVE: "critical",
 };
 
-function CheckBars({ barsData }) {
+function CheckBars({ barsData = [] }) {
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -49,7 +49,7 @@ function CheckBars({ barsData }) {
     navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${selectedType}`);
   };
 
-  const rowMarkup = barsData.map(
+  const rowMarkup = barsData?.map(
     ({ id, name, createdAt, status, general_setting, type }, index) => (
       <IndexTable.Row
         id={id}
@@ -99,7 +99,7 @@ function CheckBars({ barsData }) {
         <>
           <IndexTable
             resourceName={resourceName}
-            itemCount={barsData.length}
+            itemCount={barsData?.length}
             selectedItemsCount={selectedResources.length}
             emptyState={
               <div className="bb-announcement-wrapper">
@@ -120,7 +120,7 @@ function CheckBars({ barsData }) {
             selectable={true}
             onSelectionChange={handleSelectionChange}
             headings={[
-              { title: `Showing ${barsData.length} announcement bar(s)` },
+              { title: `Showing ${barsData?.length} announcement bar(s)` },
             ]}
             promotedBulkActions={promotedBulkActions}
           >
@@ -128,7 +128,7 @@ function CheckBars({ barsData }) {
           </IndexTable>
 
           <div style={{ position: "absolute", top: "4px", right: "10px" }}>
-            {barsData.length > 0 && (
+            {barsData?.length > 0 && (
               <PopoverContent
                 options={announcementPopoverData}
                 heading="Create"

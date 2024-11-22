@@ -19,7 +19,7 @@ const AppsRenderList = ({ selectedApps }) => {
             image,
             slug,
           } = item;
-          console.log(slug, "slug");
+
           return (
             <>
               <Link className="bb-app-link" to={`${slug}?id=${id}`}>

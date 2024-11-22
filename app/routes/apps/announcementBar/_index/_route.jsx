@@ -51,7 +51,7 @@ export async function loader({ request }) {
   }
 
   return cors(request, {
-    announcement_bars,
+    announcement_bars : announcement_bars?.length ? announcement_bars : [],
     announcement_bar_setting,
     app_active,
   });
@@ -165,6 +165,7 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
+  console.log(announcementData, "announcementData")
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
   const fetcher = useFetcher();
@@ -195,19 +196,9 @@ const route = () => {
       component: (
         <AnnouncementSettings
           initialData={announcementBarsSettings}
-        ></AnnouncementSettings>
+        />
       ),
     },
-    // {
-    //   id: "Customization-1",
-    //   content: "Customization",
-    //   // component: <CheckBars></CheckBars>,
-    //   component: (
-    //     <AnnouncementCustomization
-    //       announcementBarType={selectedType}
-    //     ></AnnouncementCustomization>
-    //   ),
-    // },
     {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
@@ -218,15 +209,6 @@ const route = () => {
       content: "Analytics",
       component: <Analytics appId={id}/>,
     },
-    // {
-    //   id: "Countdown-timer-1",
-    //   content: "Countdown Timer",
-    //   component: (
-    //     <CountDownTimerCustomization
-    //       type={selectedType}
-    //     ></CountDownTimerCustomization>
-    //   ),
-    // },
   ];
 
   useEffect(() => {

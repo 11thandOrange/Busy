@@ -5,6 +5,7 @@ import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
 import { getEventTypes, getShopName } from '../../utils/function';
 import { authenticate } from '../../shopify.server';
+import GoBack from '../../components/atoms/GoBack';
 
 export async function loader({ request }) {
   try {
@@ -149,7 +150,10 @@ const GlobalAnalytics = () => {
   const apps = useLoaderData();
 
   return (
-   <Analytics apps={apps.apps} showAppSelection={true}/>
+   <>
+    <GoBack/>
+    <Analytics apps={apps.apps} showAppSelection={true}/>
+   </>
   )
 }
 
