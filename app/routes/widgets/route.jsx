@@ -37,8 +37,10 @@ export const loader = async ({ request }) => {
       name: widget.name,
       description_title: widget.description_title,
       description_content: widget.description_content,
+      slug: widget.slug,
       image: widget.image,
       categoryId: widget.categories.map(item => item.id),
+      type: widget.type,
       isFavorite,
     };
   });
@@ -57,6 +59,7 @@ export const action = async ({ request }) => {
 function TabsInsideOfACardExample() {
   const fetcher = useFetcher();
   const widgets_data = useLoaderData();
+  console.log('test', widgets_data)
   const [widgets, setWidgets] = useState(null);
   const [tabs, setTabs] = useState([]);
 
