@@ -3,7 +3,7 @@ import Analytics from '../../components/templates/Analytics'
 import db from "../../db.server";
 import { cors } from 'remix-utils/cors';
 import { useLoaderData } from '@remix-run/react';
-import { getEventTypes, getShopName } from '../../utils/function';
+import { getEventTypes } from '../../utils/function';
 import { authenticate } from '../../shopify.server';
 import GoBack from '../../components/atoms/GoBack';
 
@@ -15,7 +15,6 @@ export async function loader({ request }) {
     const fromDateString = url.searchParams.get('fromDate');
     const toDateString = url.searchParams.get('toDate');
     const shop = session.shop;
-
     let apps = await db.app.findMany({
       include: {
         Merchant: true,
@@ -33,7 +32,7 @@ export async function loader({ request }) {
       };
     });
 
-    if (!appId || !shop || !fromDateString || !toDateString) {
+    if (!appId || !fromDateString || !toDateString) {
       return cors(request, { error: 'Missing required query parameters', apps }, { status: 400 });
     }
 
@@ -53,8 +52,8 @@ export async function loader({ request }) {
         shop: shop,
         activityId: { in: activityIds },
         createdAt: {
-          gte: fromDate,
-          lte: toDate
+          gte: new Date(fromDate.setHours(0, 0, 0, 0)),
+          lte: new Date(toDate.setHours(23, 59, 59, 999))
         }
       },
       _count: {
@@ -101,7 +100,7 @@ export async function loader({ request }) {
         totalCount: totalCountsByActivity[activityId] || 0
       };
     });
-
+console.log('test',formattedCounts)
     return cors(request, { analytics: formattedCounts, apps });
 
   } catch (error) {
@@ -129,6 +128,7 @@ export const action = async ({ request }) => {
 };
 const GlobalAnalytics = () => {
   const apps = useLoaderData();
+  console.log('analyticsnew', apps)
 
   return (
    <>

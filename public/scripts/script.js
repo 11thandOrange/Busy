@@ -1,11 +1,10 @@
-const baseUrl = 'https://reading-levy-mass-won.trycloudflare.com';
-const dynamicSegment = '/app/activate';
+const baseUrl = 'https://nightmare-electronics-knit-cams.trycloudflare.com';
+const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
-const shopDomain = 'quickstart-d7cce324.myshopify.com';
-
+const shopDomain = window.location.hostname;
 const elementIdMap = {
-  'announcement-bar': 1,
+  'busyBuddyAnnouncementBar': 1,
   'inactive-tab-message': 2,
 };
 
@@ -32,28 +31,31 @@ function fetch_request(url, app)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
-var apps = ['announcement-bar', 'inactive-tab-message'];
+var apps = ['busyBuddyAnnouncementBar', 'inactive-tab-message'];
 
-const trackImpression = (elementId) => {
+const trackImpressionsForDynamicElements = () => {
   const observer = new MutationObserver((mutationsList) => {
-    const element = document.getElementById(elementId);
-    
-    if (element) {
-      observer.disconnect();
-      
-      const elementObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            observer.disconnect();
+    mutationsList.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === 1 && apps.includes(node.id)) {
+          if (!node.dataset.tracked) {
+            node.dataset.tracked = 'true';
+
+          
+            const elementObserver = new IntersectionObserver((entries, observer) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  sendAnalyticsData(1, { element: entry.target.id, time: new Date().toISOString() });
+                  observer.disconnect();
+                }
+              });
+            }, { threshold: 0.5 });
+            elementObserver.observe(node);
           }
-        });
-      }, { threshold: 0.5 });
-
-      elementObserver.observe(element);
-      sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
-    }
+        }
+      });
+    });
   });
-
   observer.observe(document.body, { childList: true, subtree: true });
 };
 
@@ -65,18 +67,17 @@ const trackClicks = (elementId) => {
       observer.disconnect();
 
       element.addEventListener('click', function() {
-        sendAnalyticsData(1, { element: elementId, time: new Date().toISOString() });
+        sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
       });
     }
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
 };
-
+trackImpressionsForDynamicElements(); 
 apps.forEach((app) => {
-  app = elementIdMap[app]
-  fetch_request(apifullUrl, app);
-  trackImpression(app);
+  let app_id = elementIdMap[app]
+  fetch_request(apifullUrl, app_id);
   trackClicks(app);
 });
 
@@ -93,13 +94,10 @@ function sendAnalyticsData(activity, data) {
 }
 
 function addCssLink(cssUrl) {
-  // Create a <link> element
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.type = 'text/css';
   link.href = cssUrl;
-
-  // Append the <link> element to the <head> of the document
   document.head.appendChild(link);
 }
-addCssLink('https://reading-levy-mass-won.trycloudflare.com/styles/style.css')
+addCssLink('https://nightmare-electronics-knit-cams.trycloudflare.com/styles/style.css')

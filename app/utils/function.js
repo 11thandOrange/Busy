@@ -153,22 +153,20 @@ export const getEventTypes = async (appId) => {
 };
 
 export const getAnnouncementBar = async (shop) => {
-  let script = "";
+  let script = '';
 
   const announcement_bar = await prisma.announcement_bar.findFirst({
     where: {
       shop: shop,
-      status: true,
+      status: true
     },
     orderBy: {
-      updatedAt: "desc",
+      updatedAt: 'desc',
     },
   });
 
   if (announcement_bar && announcement_bar.status) {
-    announcement_bar.general_setting = JSON.parse(
-      announcement_bar.general_setting,
-    );
+    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
     announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting);
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
@@ -181,17 +179,46 @@ export const getAnnouncementBar = async (shop) => {
       announcementBar.style.fontWeight = 'bold';
       announcementBar.style.height = '45px';
       announcementBar.style.width = '100%';
+      announcementBar.style.position = 'relative'; /* Ensure space for the close button */
     `;
-
+    
+    // Close button creation
+    if(await check_enable_button(shop))
+    {
+        script += `
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'x';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '10px';
+        closeButton.style.right = '10px';
+        closeButton.style.border = 'none';
+        closeButton.style.background = 'transparent';
+        closeButton.style.fontSize = '18px';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.color = 'inherit';
+        closeButton.style.fontWeight = 'bold';
+        closeButton.addEventListener('click', function() {
+          announcementBar.style.display = 'none';
+        });
+        announcementBar.appendChild(closeButton);
+      `;
+    }
+    
+    script += `
+      const messageDiv = document.createElement('div');
+      announcementBar.appendChild(messageDiv);
+    `;
+    
+    // Display the message
     if (announcement_bar.type == 1) {
-      script += `announcementBar.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";`;
+      script += `
+        messageDiv.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";
+      `;
     }
 
-    if (announcement_bar.type == 2) {
+    if (announcement_bar.type == 2) { 
       const currentTime = new Date().getTime();
-      const endTime = new Date(
-        announcement_bar.general_setting.countDownEndsAt,
-      ).getTime();
+      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
         function getTimeDifference(startAt, endsAt) {
@@ -205,51 +232,58 @@ export const getAnnouncementBar = async (shop) => {
           return { days, hours, minutes, seconds, difference };
         }
 
+        let countdownInterval;  // Declare countdownInterval here
+
         function updateCountdown() {
-          // Update the current time
           const now = new Date().getTime();
-          
           let difference = getTimeDifference(now, ${endTime});
           
-          // Update the announcement bar text
           let countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
-          announcementBar.innerHTML = message;
 
-          if (document.getElementById('busyBuddyAnnouncementBar')) {
-            countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d  \${difference.hours}h  \${difference.minutes}m  \${difference.seconds}s </span>\`;
-            message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
-            announcementBar.innerHTML = message;
-          }
+          // Update only the message, not the close button
+          messageDiv.innerHTML = message;
 
           if (difference.difference <= 0) {
             clearInterval(countdownInterval);
-            announcementBar.textContent = "Countdown Finished!";
-            if (document.getElementById('busyBuddyAnnouncementBar')) {
-              document.getElementById('busyBuddyAnnouncementBar').innerHTML = "Countdown Finished!";
-            }
+            announcementBar.innerHTML = "";
           }
         }
         updateCountdown();
-
-        let countdownInterval = setInterval(updateCountdown, 1000);
+        countdownInterval = setInterval(updateCountdown, 1000);  // Start the countdown interval after its declaration
       `;
     }
 
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
-                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`;
+                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
+              
     }
 
     if (announcement_bar.theme_style?.id == 2) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`;
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`
     }
 
     if (announcement_bar.theme_style?.id == 3) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`;
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`
+    }
+    if (announcement_bar.theme_style?.id == 4) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-4');`
+    }
+    if (announcement_bar.theme_style?.id == 5) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-5');`
+    }
+    if (announcement_bar.theme_style?.id == 6) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-6');`
+    }
+    if (announcement_bar.theme_style?.id == 7) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-7');`
+    }
+    if (announcement_bar.theme_style?.id == 8) {
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-8');`
     }
 
-    if (announcement_bar.theme_setting?.status == "TOP_FIXED") {
+    if (announcement_bar.theme_setting?.status == 'TOP_FIXED') {
       script += `
         announcementBar.style.position = 'sticky';
         announcementBar.style.top = '0'; 
@@ -258,7 +292,7 @@ export const getAnnouncementBar = async (shop) => {
       `;
     }
 
-    if (announcement_bar.theme_setting?.status == "BOTTOM") {
+    if (announcement_bar.theme_setting?.status == 'BOTTOM') {
       script += ` document.body.appendChild(announcementBar);`;
     } else {
       script += `document.body.prepend(announcementBar);`;
@@ -352,4 +386,45 @@ export const getCountdownTimer = async (shop) => {
   }
 
   return { script };
+};
+export const check_enable_button = async (shop) => {
+  try {
+    const setting = await db.announcement_bar_setting.findFirst({
+      where: {
+        shop: shop,
+        enable_close_button: true,
+      },
+    });
+    return setting !== null;
+  } 
+  catch (error) {
+    return false;
+  }
+};
+
+export const can_active = async (shop) => {
+  try {
+    const setting = await db.merchant.findMany({
+      where: {
+        shop: shop,
+        enabled: true,
+      },
+      _count: {
+        id: true
+      }
+    });
+    let hasSubscription = check_subscription();
+    if(!((await hasSubscription).hasSubscription))
+    {
+      return setting.count <= 1;
+    }
+    else
+    {
+      return setting.count <= 4 && (await hasSubscription).hasSubscription()?true:false;;
+    }
+  } 
+  catch (error) 
+  {
+    return false;
+  }
 };

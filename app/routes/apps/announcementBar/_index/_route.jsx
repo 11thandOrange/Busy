@@ -178,7 +178,6 @@ const route = () => {
   const id = searchParams.get("appId");
   const fetcher = useFetcher();
   const announcementBarsData = announcementData.announcement_bars;
-  console.log("Data", announcementData);
 
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;

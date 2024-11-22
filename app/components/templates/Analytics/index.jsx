@@ -54,7 +54,9 @@ const Analytics = ({apps = [], showAppSelection = false, appId = null}) => {
 
   useEffect(() => {
     if (fetcher.data) {
+      console.log(fetcher.data)
       let data = fetcher.data?.analytics?.filter(item => selectedTabs.includes(item.activityId)).filter(item => item.activityData.length)
+      console.log(data)
       let labels = [];
       data?.forEach(item => item?.activityData?.forEach(itemData => {
         if(!labels.includes(itemData.date)){

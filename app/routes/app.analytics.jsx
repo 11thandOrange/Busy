@@ -1,7 +1,7 @@
 import { cors } from 'remix-utils/cors';
 import db from '../db.server';
-import { getEventTypes, getShopName } from '../utils/function';
-
+import { getEventTypes } from '../utils/function';
+import { json } from '@remix-run/node';
 export async function loader({ request }) {
   try {
     const url = new URL(request.url);
@@ -74,6 +74,7 @@ export async function loader({ request }) {
 }
 
 export const action = async ({ request }) => { 
+  let response;
   let analytics = await request.json();
   const activityId = analytics.activity;
   const pageUrl = analytics.pageUrl;
