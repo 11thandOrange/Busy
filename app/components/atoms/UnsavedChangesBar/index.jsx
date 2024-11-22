@@ -11,8 +11,8 @@ const UnsavedChangesBar = ({
   fetcherState = FETCHER_STATE.IDLE,
 }) => {
   return (
-    <div>
-      {show && (
+
+      show && (
         <Frame>
           <ContextualSaveBar
             message={message}
@@ -27,8 +27,8 @@ const UnsavedChangesBar = ({
             }}
           />
         </Frame>
-      )}
-    </div>
+      )
+ 
   );
 };
 

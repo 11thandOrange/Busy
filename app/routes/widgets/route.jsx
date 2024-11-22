@@ -85,7 +85,7 @@ function TabsInsideOfACardExample() {
   }
 
   return (
-    <div>
+    <div className="widgets">
       <GoBack/>
       <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props} handleAddToFavorite={handleAddToFavorite}/>}/>
     </div>
