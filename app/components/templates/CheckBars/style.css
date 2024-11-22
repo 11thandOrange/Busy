@@ -1,5 +1,5 @@
 .Polaris-Frame{
-    min-height: unset;
+    min-height: unset !important;
 }
 
 .bb-announcement-wrapper .Polaris-InlineStack .Polaris-Button:not(button .Polaris-Button){

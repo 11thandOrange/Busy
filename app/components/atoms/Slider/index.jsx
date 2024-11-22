@@ -19,7 +19,7 @@ const sliderTypeSelector = (type, content) => {
     case sliderType.IMAGE:
       return <img src={content} />;
     case sliderType.VIDEO:
-      return <video width="500px" src={content} controls></video>;
+      return <video width="500px" src={content} autoPlay={true}></video>;
   }
 };
 const Slider = ({
@@ -70,7 +70,7 @@ const Slider = ({
       >
         {sliderData.map((data, index) => (
           <SwiperSlide key={index}>
-            <img src={data.content} />
+            <img src={data.preview} />
             <div className="thumbnail-title">{data.title}</div>
           </SwiperSlide>
         ))}

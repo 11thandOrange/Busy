@@ -93,7 +93,7 @@ function TabsInsideOfACardExample() {
 
   return (
     <>
-      <GoBack />
+      <GoBack backLink="/app" />
       <AppListingTemplate
         tabs={tabs}
         list={appsList}

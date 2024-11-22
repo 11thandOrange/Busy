@@ -13,12 +13,12 @@ const SingleSlider = ({
   autoplayDelay = 1500,
   navigation = true,
   sliderData = {},
-  slideRenderer = () => {}
+  slideRenderer = () => {},
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
-    <div className="bb-swiper-slider">
+    <div className="bb-swiper-slider ">
       <Swiper
         style={{
           "--swiper-navigation-color": "#fff",
@@ -43,9 +43,7 @@ const SingleSlider = ({
         className="swiper-single"
       >
         {sliderData.map((data, index) => (
-          <SwiperSlide key={index}>
-            {slideRenderer(data)}
-          </SwiperSlide>
+          <SwiperSlide key={index}>{slideRenderer(data)}</SwiperSlide>
         ))}
       </Swiper>
     </div>

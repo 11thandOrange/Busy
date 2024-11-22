@@ -12,6 +12,9 @@ import GeneralSettings from "../../atoms/GeneralSettings/announcementBars/Text";
 import {
   ANNOUNCEMENT_BAR_INITIAL_STATE,
   ANNOUNCEMENT_BAR_TYPES,
+
+  COLOR_THEME,
+
   SETTINGS_INITIAL_STATE,
   STATUS,
 } from "../../../constants/announcementCustomizationConfig";
@@ -30,7 +33,7 @@ import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import GoBack from "../../atoms/GoBack";
-
+ 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
   { label: "Inactive", value: STATUS.INACTIVE },
@@ -41,6 +44,7 @@ const AnnouncementCustomization = ({
   header = "Customization",
   backActionRoute = ROUTES.APPS,
   initialData,
+  colorTheme=COLOR_THEME.LIGHT
 }) => {
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
@@ -100,6 +104,8 @@ const AnnouncementCustomization = ({
     if (initialData) {
       setSettingsState(initialData);
       prevSettingsState.current = initialData;
+      console.log("initial data",initialData);
+      
     }
   }, [initialData]);
 
@@ -142,7 +148,8 @@ const AnnouncementCustomization = ({
   };
 
 
-
+  
+  
   return (
     <div>
       <GoBack heading={header}/>
@@ -223,6 +230,7 @@ const AnnouncementCustomization = ({
               settingsState={settingsState}
               announcementBarType={announcementBarType}
               appType={APP_TYPE.ANNOUNCEMENT_BARS}
+              colorTheme={colorTheme}
             ></ProductPreviewCard>
           </div>
         </div>

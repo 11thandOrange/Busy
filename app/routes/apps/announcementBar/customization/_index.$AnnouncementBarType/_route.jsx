@@ -11,6 +11,7 @@ const Customization = () => {
   const fetcher = useFetcher();
   const [fetchQuery] = useSearchParams();
   const [customizationData, setCustomizationData] = useState(null);
+  const [colorTheme, setColorTheme] = useState('light');
 
   const barId = fetchQuery.get("id");
   useEffect(() => {
@@ -22,7 +23,10 @@ const Customization = () => {
   useEffect(() => {
     if (fetcher.data) {
       const data = fetcher.data.announcement_customization;
-      console.log("fetcherdata", fetcher.data);
+    
+      
+      
+      setColorTheme(fetcher.data.color_theme)
 
       setCustomizationData({
         id: data.id,
@@ -44,6 +48,7 @@ const Customization = () => {
           announcementBarType={Number(AnnouncementBarType)}
           backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
           initialData={customizationData}
+          colorTheme = {colorTheme}
         ></AnnouncementCustomization>
       )}
     </div>

@@ -25,10 +25,22 @@ import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
-  console.log(session.shop)
-  let announcement_bars, announcement_bar_setting, app_active, announcement_bars_customization;
+  
+  let announcement_bars,
+    announcement_bar_setting,
+    app_active,
+    announcement_bars_customization;
   const shop = session.shop;
   const url = new URL(request.url);
+  let setting = await db.setting.findFirst({
+    where:{
+      shop:shop
+    }
+  });
+    if(setting?.global_customizations){
+      setting.global_customizations = setting?.global_customizations ? JSON.parse(setting?.global_customizations) : JSON.stringify({})
+    }
+    
   if (url.searchParams.get("id")) {
     announcement_bars_customization = await db.announcement_bar.findFirst({
       where: {
@@ -56,12 +68,13 @@ export async function loader({ request }) {
     });
     app_active = await check_app_active(1, shop);
   }
-
+  
   return cors(request, {
-    announcement_bars : announcement_bars?.length ? announcement_bars : [],
+    announcement_bars: announcement_bars?.length ? announcement_bars : [],
     announcement_customization: announcement_bars_customization,
     announcement_bar_setting,
     app_active,
+    color_theme:  setting?.color_theme
   });
 }
 
@@ -173,7 +186,7 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
-  console.log(announcementData, "announcementData")
+  console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const fetcher = useFetcher();
@@ -203,9 +216,7 @@ const route = () => {
       id: "Settings-1",
       content: "Settings",
       component: (
-        <AnnouncementSettings
-          initialData={announcementBarsSettings}
-        />
+        <AnnouncementSettings initialData={announcementBarsSettings} />
       ),
     },
     {

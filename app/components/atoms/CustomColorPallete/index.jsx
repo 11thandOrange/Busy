@@ -18,6 +18,8 @@ function CustomColorPallete({
   onColorChange = () => {},
   initialColor = "#fffff",
 }) {
+
+  
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
@@ -27,6 +29,9 @@ function CustomColorPallete({
   const [color, setColor] = useState(
     rgbToHsb(hexToRgb(initialColor || "#fffff")),
   );
+  useEffect(()=>{
+    setColor(rgbToHsb(hexToRgb(initialColor || "#fffff")))
+  },[initialColor])
   const debouncedColor = useDebounce(color, 500);
   const activator = (
     <div

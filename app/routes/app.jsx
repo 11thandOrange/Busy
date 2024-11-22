@@ -25,10 +25,10 @@ export default function App() {
       <AppProvider isEmbeddedApp apiKey={apiKey}>
         <PolarisAppProvider i18n={en}>
           <NavMenu>
-            <Link href={ROUTES.HOME} rel="home">
+            <a href={ROUTES.HOME} rel="home">
               Home
-            </Link>
-            <Link to={ROUTES.APPS}>Apps</Link>
+            </a>
+            <a href={ROUTES.APPS}>Apps</a>
             <a href={ROUTES.WIDGETS}>Widgets</a>
             <a href={ROUTES.SETTINGS}>Settings</a>
             <a href={ROUTES.ANALYTICS}>Analytics</a>

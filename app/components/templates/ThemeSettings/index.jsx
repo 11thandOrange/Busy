@@ -62,19 +62,7 @@ const ThemeSettings = ({ setSettingsState, settingsState }) => {
             }}
             initialColor={settingsState.themeSettings.textColor}
           ></CustomColorPallete>
-          <CustomColorPallete
-            colorHeading={"Special Color"}
-            onColorChange={(color) => {
-              setSettingsState((prevState) =>
-                updateSettingsState(
-                  "themeSettings.specialColor",
-                  color,
-                  prevState,
-                ),
-              );
-            }}
-            initialColor={settingsState.themeSettings.specialColor}
-          ></CustomColorPallete>
+          
         </div>
       )}
     </div>

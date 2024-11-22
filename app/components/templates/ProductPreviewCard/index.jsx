@@ -3,12 +3,14 @@ import "./Style.css"; // Import CSS for styling
 import PreviewCardBanner from "../../atoms/PreviewCardBanner";
 import { APP_TYPE } from "../../../utils/constants";
 import PreviewCardTimer from "../../atoms/PreviewCardTimer";
+import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
 
 const ProductPreviewCard = ({
   settingsState,
   announcementBarType,
   setSettingsState,
   appType = APP_TYPE.ANNOUNCEMENT_BARS,
+  colorTheme=COLOR_THEME.LIGHT
 }) => {
   const [quantity, setQuantity] = useState(1);
   // console.log("settings state is here",settingsState);
@@ -41,7 +43,7 @@ const ProductPreviewCard = ({
   return (
     <div
       className="product-preview-card"
-      style={{ backgroundColor: "black" }}
+      style={{ backgroundColor: colorTheme==COLOR_THEME.LIGHT?"white":"black" }}
     >
       {/* Dummy URL bar */}
       <div className="url-bar">example.com/product-page</div>

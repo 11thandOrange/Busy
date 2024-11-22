@@ -103,3 +103,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
 export const ANNOUNCEMENT_BARS_TABS = {
   ANNOUNCEMENT_BAR: 2,
 };
+
+export const COLOR_THEME = {
+  LIGHT:"light",
+  DARK:"dark"
+}

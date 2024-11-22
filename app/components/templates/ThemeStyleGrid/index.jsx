@@ -8,25 +8,60 @@ function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
   useEffect(() => {
     setSelectedIndex(selectedTheme);
   }, [selectedTheme]);
-  
+
   const gridData = [
     {
       id: 1,
       name: "Solid Colors",
-      image: "https://placehold.co/200",
+      image:
+        "https://www.solidbackgrounds.com/images/7680x4320/7680x4320-pastel-red-solid-color-background.jpg",
       type: ThemeStyleGridType.COLOR,
     },
     {
       id: 2,
-      name: "Theme1",
-      image:
-        "https://plus.unsplash.com/premium_photo-1687203673190-d39c3719123a?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGVsbG98ZW58MHx8MHx8fDA%3D",
+      name: "Shapes",
+      image: "https://appsolve.io/asset/apps/vitals/img/smart_bar/shapes.png",
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 3,
-      name: "Theme2",
-      image: "https://placehold.co/200x200",
+      name: "Blue Shapes",
+      image:
+        "https://appsolve.io/asset/apps/vitals/img/smart_bar/blue-shapes.png",
+      type: ThemeStyleGridType.IMAGE,
+    },
+    {
+      id: 4,
+      name: "Abstract ",
+      image: "https://appsolve.io/asset/apps/vitals/img/smart_bar/abstract.svg",
+      type: ThemeStyleGridType.IMAGE,
+    },
+    {
+      id: 5,
+      name: "Winter",
+      image:
+        "https://appsolve.io/asset/apps/vitals/img/smart_bar/winter-mobile.svg",
+      type: ThemeStyleGridType.IMAGE,
+    },
+    {
+      id: 6,
+      name: "Valentines Day",
+      image:
+        "https://appsolve.io/asset/apps/vitals/img/smart_bar/valentine-mobile.svg",
+      type: ThemeStyleGridType.IMAGE,
+    },
+    {
+      id: 7,
+      name: "Hot Discount",
+      image:
+        "https://appsolve.io/asset/apps/vitals/img/smart_bar/hot-discounts-mobile.svg",
+      type: ThemeStyleGridType.IMAGE,
+    },
+    {
+      id: 8,
+      name: "Halloween",
+      image:
+        "https://appsolve.io/asset/apps/vitals/img/smart_bar/halloween-mobile.svg",
       type: ThemeStyleGridType.IMAGE,
     },
   ];

@@ -238,7 +238,7 @@ export const getAnnouncementBar = async (shop) => {
           const now = new Date().getTime();
           let difference = getTimeDifference(now, ${endTime});
           
-          let countdownString = \`<span style="color:${announcement_bar.theme_setting.specialColor}; !important">\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
+          let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
 
           // Update only the message, not the close button
@@ -259,7 +259,9 @@ export const getAnnouncementBar = async (shop) => {
                   announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
               
     }
-
+    if (announcement_bar.theme_style?.id != 1) {
+       script += `announcementBar.style.color = "#fff";`
+    }
     if (announcement_bar.theme_style?.id == 2) {
       script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`
     }
