@@ -107,7 +107,7 @@
     background: #fdac69; 
   } */
   
-  .Polaris-LegacyCard .Polaris-Tabs__Outer{
+ .Polaris-LegacyCard .Polaris-Tabs__Outer{
     border-bottom: 1px solid #fdac69;
   }
   .Polaris-LegacyCard:has(.Polaris-Spinner) .Polaris-Tabs__Outer{

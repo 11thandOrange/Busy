@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import sliderData from "../../../data/sliderData.json";
+import "./style.css";
 
 const sliderType = {
   IMAGE: "image",

@@ -116,13 +116,13 @@
       .Polaris-Page{
         background: #fff;
         border-radius: .625rem;
-        box-shadow: 0 2px 1px rgba(0, 0, 0, .05), 0 0 1px rgba(0, 0, 0, .25);
         display: flex;
         flex: 0 0 100%;
         flex-direction: column;
         justify-content: space-between;
         min-height: 9.375rem;
         width: 100%;
+        padding-bottom: 30px;
         .homepage-details{
           margin-top: 10px;
           h2.description{

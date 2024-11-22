@@ -25,7 +25,7 @@ const SingleSlider = ({
           "--swiper-pagination-color": "#fff",
         }}
         spaceBetween={10}
-        navigation={navigation}
+        navigation={false}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
@@ -40,7 +40,7 @@ const SingleSlider = ({
           disableOnInteraction: false,
         }}
         slidesPerView={3}
-        className="mySwiper2"
+        className="swiper-single"
       >
         {sliderData.map((data, index) => (
           <SwiperSlide key={index}>

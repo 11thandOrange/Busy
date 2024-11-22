@@ -168,7 +168,7 @@ console.log(data, "data main")
             </Card>
           </Layout.Section>
           <Layout.Section>
-            <Card sectioned>
+            <Card className="bb-card-wrapper" sectioned>
               <Text as="h2" variant="headingSm">
                 Suggested Apps
               </Text>
