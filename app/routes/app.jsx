@@ -33,6 +33,7 @@ export default function App() {
             <a href={ROUTES.SETTINGS}>Settings</a>
             <a href={ROUTES.ANALYTICS}>Analytics</a>
             <a href={ROUTES.PLAN}>Plan</a>
+            <a href={ROUTES.COUNTDOWN_TIMER}>Timer</a>
           </NavMenu>
           <Outlet />
         </PolarisAppProvider>

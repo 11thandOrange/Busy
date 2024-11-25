@@ -4,6 +4,7 @@ import PopoverData from "../../atoms/popoverData";
 
 function PopoverContent({ options, heading, onSelect = () => {} }) {
   const [popoverActive, setPopoverActive] = useState(false);
+  console.log("Options here", options);
 
   const togglePopoverActive = useCallback(
     () => setPopoverActive((popoverActive) => !popoverActive),
