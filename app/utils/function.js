@@ -339,24 +339,61 @@ export const getCartNotice = async (shop) => {
     where: {
       shop: shop,
     },
-    select: {
-      primary_message: true,
-      secondary_message: true,
-      general_setting: true,
-    },
   });
-  cartNotice = cartNotice ? cartNotice.primary_message : "";
+
+  let htmlToInsert = `<div class="buddyBossCartNotice">`;
+
+  if (cartNotice.primary_message) {
+    htmlToInsert += `<div class="primary-message">${cartNotice.primary_message}</div>`;
+  }
+
+  if (cartNotice.secondary_message) {
+    htmlToInsert += `<div class="secondary-message">${cartNotice.secondary_message}</div>`;
+  }
+
+  if (cartNotice.show_countdown && cartNotice.countdown_timer) {
+    htmlToInsert += `
+      <div class="countdown-timer">
+        <span id="countdown">${cartNotice.countdown_timer}</span> seconds remaining!
+      </div>
+      <script>
+        (function() {
+          let countdown = ${cartNotice.countdown_timer};
+          const countdownElement = document.getElementById('countdown');
+          const countdownInterval = setInterval(function() {
+            countdown--;
+            countdownElement.textContent = countdown + ' seconds remaining!';
+            if (countdown <= 0) {
+              clearInterval(countdownInterval);
+              countdownElement.textContent = 'Time is up!';
+            }
+          }, 1000);
+        })();
+      </script>
+    `;
+  }
+
+  if (cartNotice.fire_icon) {
+    htmlToInsert += `
+      <div class="fire-icon">
+        <i class="fas fa-fire"></i> Hot Deal!
+      </div>
+    `;
+  }
+
+  htmlToInsert += `</div>`;
+
   const script = `
-    (function() {
-      const form = document.querySelector('form[action="/cart"]');
-      if (form) {
-        const htmlToInsert = '<div class="cart-notice">"${cartNotice}"</div>';
-        form.insertAdjacentHTML('beforebegin', htmlToInsert);
-      }
-    })();
-  `;
+  (function() {
+    const forms = document.querySelectorAll('form[action="/cart"]');  // Select all forms
+    forms.forEach(function(form) {
+      form.insertAdjacentHTML('beforebegin', \`${htmlToInsert}\`);
+    });
+  })();
+`;
   return { script };
 };
+
 export const getCountdownTimer = async (shop) => {
   let script;
   let countdownTimer = await db.countdown_timer.findFirst({
@@ -430,3 +467,25 @@ export const can_active = async (shop) => {
     return false;
   }
 };
+export const storefront_api = async(shop, url, method) =>{
+  const session = await db.session.findFirst({
+    shop: shop
+  });
+  if(session)
+  {
+    fetch(url, {
+      method: method,
+      headers: {
+        'X-Shopify-Access-Token': session.accessToken,
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+     return {success: true, data};
+    })
+    .catch(error => {
+      return {success: false};
+    });
+  }
+}

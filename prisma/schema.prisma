@@ -161,6 +161,9 @@ model Cart_notice {
   id                      Int             @id @default(autoincrement())
   primary_message         String?
   secondary_message       String?
+  show_countdown          Boolean         @default(false)
+  countdown_timer         Int?
+  fire_icon               Boolean         @default(false)
   general_setting         String
   shop                    String?
   createdAt               DateTime        @default(now())

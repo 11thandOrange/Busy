@@ -9,7 +9,7 @@ import db from '../db.server'
     const script_tag = new admin.rest.resources.ScriptTag({session: session});
 
     script_tag.event = "onload";
-    script_tag.src = "https://nightmare-electronics-knit-cams.trycloudflare.com/scripts/script.js";
+    script_tag.src = "https://pit-conducted-electrical-critical.trycloudflare.com/scripts/script.js";
     await script_tag.save({
     update: true,
     });
