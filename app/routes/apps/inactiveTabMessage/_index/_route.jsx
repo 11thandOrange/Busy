@@ -1,8 +1,11 @@
 import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
-import AnnouncementSettings from "../../../../components/templates/AnnouncementSettings";
+
 import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";
+import sliderData from "../../../../data/sliderData.json";
+import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
+import InActiveTabSettings from "../../../../components/templates/InAppSettings/InActiveTabSettings";
 
 const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
@@ -21,13 +24,19 @@ const route = () => {
 
             // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
           }}
+          showCustomizeBtn={true}
+          sliderData={sliderData}
+          onCustomizeBtnClick={() => {
+            console.log("On customize button click");
+            setSelectedTab(1);
+          }}
         />
       ),
     },
     {
       id: "Settings-1",
       content: "Settings",
-      component: <AnnouncementSettings />,
+      component: <InActiveTabSettings />,
     },
   ];
 

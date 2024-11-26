@@ -10,7 +10,8 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   ANNOUNCEMENT_BARS_TABS,
 } from "../../constants/announcementCustomizationConfig";
-import AnnouncementSettings from "../../components/templates/AnnouncementSettings";
+import AnnouncementSettings from "../../components/templates/InAppSettings/AnnouncementSettings";
+
 
 const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);

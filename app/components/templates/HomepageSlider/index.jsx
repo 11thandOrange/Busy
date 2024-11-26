@@ -8,14 +8,17 @@ import "./homepageSlider.css";
 import HomepageDetails from "../../atoms/HomepageDetails";
 import Slider from "../../atoms/Slider";
 
-export default function HomepageSlider({ selectedType, setSelectedType }) {
+export default function HomepageSlider({ selectedType, setSelectedType, showPopOver=false,showCustomizeBtn=false, sliderData = [] ,onCustomizeBtnClick=()=>{}}) {
   return (
     <>
       <HomepageDetails
         selectedType={selectedType}
         setSelectedType={setSelectedType}
+        showPopOver={showPopOver}
+        showCustomizeBtn={showCustomizeBtn}
+        onCustomizeBtnClick= {onCustomizeBtnClick}
       ></HomepageDetails>
-      <Slider autoplay={true} navigation={true} autoplayDelay={1000}></Slider>
+      <Slider autoplay={true} navigation={true} autoplayDelay={1000} sliderData={sliderData}></Slider>
     </>
   );
 }

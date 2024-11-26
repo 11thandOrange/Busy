@@ -19,10 +19,11 @@ import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
-import AnnouncementSettings from "../../../../components/templates/AnnouncementSettings";
+
 import { check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
-
+import sliderData from "../../../../data/sliderData.json";
+import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
 
@@ -213,6 +214,8 @@ const route = () => {
 
             navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
           }}
+          sliderData={sliderData}
+          showPopOver={true}
         />
       ),
     },

@@ -5,10 +5,16 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   announcementPopoverData,
 } from "../../../constants/announcementCustomizationConfig";
-
-import { Icon } from "@shopify/polaris";
+import { SettingsIcon } from "@shopify/polaris-icons";
+import { Button, Icon } from "@shopify/polaris";
 import Details from "../Details";
-const HomepageDetails = ({ selectedType, setSelectedType }) => {
+const HomepageDetails = ({
+  selectedType,
+  setSelectedType,
+  showPopOver = false,
+  showCustomizeBtn = false,
+  onCustomizeBtnClick = () => {},
+}) => {
   const description =
     "Capture leads, communicate free shipping thresholds or make store-wide announcements with the help of header bars.";
   const points = [
@@ -22,13 +28,24 @@ const HomepageDetails = ({ selectedType, setSelectedType }) => {
     <>
       <Details description={description} points={points}></Details>
       <div>
-        <PopoverContent
-          options={announcementPopoverData}
-          heading="Create Announcement Bar"
-          onSelect={(selectedType) => {
-            setSelectedType(selectedType);
-          }}
-        ></PopoverContent>
+        {showPopOver && (
+          <PopoverContent
+            options={announcementPopoverData}
+            heading="Create Announcement Bar"
+            onSelect={(selectedType) => {
+              setSelectedType(selectedType);
+            }}
+          ></PopoverContent>
+        )}
+        {showCustomizeBtn && (
+          <Button
+            onClick={onCustomizeBtnClick}
+            size="medium"
+            icon={SettingsIcon}
+          >
+            Customize
+          </Button>
+        )}
       </div>
     </>
   );
