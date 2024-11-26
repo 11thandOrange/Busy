@@ -20,3 +20,12 @@
 .align-row{
     flex-direction: row;
 }
+.timer{
+    font-size: 16px;
+    .main-countdownt-title{
+        & ~ div{
+            padding-left: 6px;
+            font-weight: 600;
+        }
+    }
+}

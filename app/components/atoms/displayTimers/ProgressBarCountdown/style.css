@@ -29,11 +29,21 @@
   }
   
   .ProgressBarCountdown-divider {
-    font-size: 30px;
-    color: #939191;
-    
-    
+    font-size: 14px;
+    color: #555555;
+    padding-inline: 4px;
   }
-  .custom-progress{
-    
+  .Polaris-ProgressBar{
+    margin-block: 10px ;
   }
+  .ProgressBarCountdown-number{
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .Polaris-ProgressBar--toneHighlight{
+    background-color: #efefef;
+  }
+  .Polaris-ProgressBar__Indicator{
+    background-color: #cccccc;
+  }
+  

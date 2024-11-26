@@ -9,18 +9,22 @@ const HexagonCountdown = ({ days, hours, minutes, seconds, settingsState }) => {
       <div className="HexagonCountdown-item">
         
         <span className="HexagonCountdown-number">{days}</span>
+        <span className="hexaValue">days</span>
       </div>
 
       <div className="HexagonCountdown-item">
         <span className="HexagonCountdown-number">{hours}</span>
+        <span className="hexaValue">hours</span>
       </div>
 
       <div className="HexagonCountdown-item">
         <span className="HexagonCountdown-number">{minutes}</span>
+        <span className="hexaValue">minutes</span>
       </div>
 
       <div className="HexagonCountdown-item">
         <span className="HexagonCountdown-number">{seconds}</span>
+        <span className="hexaValue">seconds</span>
       </div>
     </div>
   );

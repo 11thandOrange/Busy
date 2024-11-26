@@ -34,7 +34,7 @@ const ProgressBarCountdown = ({
       />
       <div className="ProgressBarCountdown" style={{ color: digitsColor }}>
         <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">{days}</span>
+          <span className="ProgressBarCountdown-number">{days} <span className="innerTitle">days</span></span>
         </div>
         <span className="ProgressBarCountdown-divider">:</span>
         <div className="ProgressBarCountdown-item">
