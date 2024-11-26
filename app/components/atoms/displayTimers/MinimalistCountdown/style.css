@@ -6,7 +6,7 @@
     font-weight: 100;
     color: #ff4e4e;
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .countdown-item {
@@ -38,7 +38,15 @@
     background-color: #555555;
     transform: rotate(15deg);
   }
-  .countdown-item{
-
+  .RIGHT {
+    .countdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .countdown{
+      justify-content: center;
+    }
   }
   

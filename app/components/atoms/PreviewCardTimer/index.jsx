@@ -92,8 +92,11 @@ const PreviewCardTimer = ({ settingsState }) => {
     }
   }, [theme, settingsState, timeLeft]);
 
+  console.log("TEST",display.margin.top.value);
+  
   return (
     <div
+      style={{marginTop:`${display.margin.top.value}${display.margin.top.unit}`,marginBottom:`${display.margin.bottom.value}${display.margin.bottom.unit}`}}
       className={`preview-card-container timer ${timerAlignment} ${
         theme !== COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC
           ? "align-column"
