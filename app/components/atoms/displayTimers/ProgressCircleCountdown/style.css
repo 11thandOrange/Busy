@@ -13,6 +13,16 @@
 }
 
 .ProgressCircleCountdown-number {
+  display: block;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.ProgressCircleCountdown-divider {
+  font-size: 30px;
+  color: #939191;
+}
+.circle-progress-wrapper{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -20,9 +30,7 @@
   font-size: 30px;
   font-weight: bold;
   color: #ff4e4e;
-}
-
-.ProgressCircleCountdown-divider {
-  font-size: 30px;
-  color: #939191;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
 }
