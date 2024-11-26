@@ -164,6 +164,7 @@ export const getAnnouncementBar = async (shop) => {
       updatedAt: 'desc',
     },
   });
+  console.log(announcement_bar)
 
   if (announcement_bar && announcement_bar.status) {
     announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
@@ -252,6 +253,17 @@ export const getAnnouncementBar = async (shop) => {
         updateCountdown();
         countdownInterval = setInterval(updateCountdown, 1000);  // Start the countdown interval after its declaration
       `;
+    }
+    if(announcement_bar.type == 3)
+    {
+      const order_count = await getOrderCounter(shop);
+      script += `
+        messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
+    }
+    if(announcement_bar.type == 4)
+    {
+      const shipping_rule = await getShippingRule(shop);
+      console.log(shipping_rule);
     }
 
     if (announcement_bar.theme_style?.id == 1) {
@@ -406,9 +418,13 @@ export const getCountdownTimer = async (shop) => {
       display_setting: true,
       position: true,
     },
+    include:{
+      countdown_timer_type: true
+    }
   });
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
+    countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
     countdownTimer.html = countdownTimer.html.replace(
       "{{message}}",
       countdownTimer.general_setting.message,
@@ -467,25 +483,50 @@ export const can_active = async (shop) => {
     return false;
   }
 };
-export const storefront_api = async(shop, url, method) =>{
+export const storefront_api = async (shop, url, method, query) => {
   const session = await db.session.findFirst({
-    shop: shop
+    where: { shop: shop }
   });
-  if(session)
-  {
-    fetch(url, {
-      method: method,
-      headers: {
-        'X-Shopify-Access-Token': session.accessToken,
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-     return {success: true, data};
-    })
-    .catch(error => {
-      return {success: false};
-    });
+  
+  if (session) {
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'X-Shopify-Access-Token': session.accessToken,
+          'Content-Type': 'application/json',
+        },
+        body: query
+      });
+      const data = await response.json();
+      return { success: true, data };
+    } catch (error) {
+      console.error('API request failed:', error);
+      return { success: false, error: error.message };
+    }
+  } else {
+    return { success: false, error: 'Session not found' };
   }
+}
+export const getShippingRule = async(shop)=>{
+  const shipping_rule = await storefront_api(shop, `https://${shop}/admin/api/2024-04/shipping_zones.json`, 'GET');
+  console.log(shipping_rule.data.shipping_zones)
+  return shipping_rule;
+}
+export const getOrderCounter = async(shop)=>{
+  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/graphql.json`, 'POST', JSON.stringify({
+    query: `
+      query OrdersCount {
+      ordersCount(query:"fulfillment_status:fulfilled") {
+      count
+      precision,
+    },
+ 
+}`
+  }));
+  if(order_count.success)
+  {
+    return order_count.data.data.ordersCount.count;
+  }
+  return 0;
 }
