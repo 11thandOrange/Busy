@@ -1,16 +1,65 @@
 import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
-
+import { json } from "@remix-run/node";
 import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";
 import sliderData from "../../../../data/sliderData.json";
-import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
+import db from "../../../../db.server";
 import InActiveTabSettings from "../../../../components/templates/InAppSettings/InActiveTabSettings";
+import { authenticate } from "../../../../shopify.server";
+import { useLoaderData, useSearchParams } from "react-router-dom";
+import { useFetcher } from "@remix-run/react";
+import { check_app_active } from "../../../../utils/function";
+
+export async function loader({ request }) {
+  const { session } = await authenticate.admin(request);
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get("appId"));
+  const shop = session.shop;
+  let inactive_tab_message = await db.inactive_tab_message.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+
+  if (!inactive_tab_message) {
+    inactive_tab_message = { message: "" };
+  }
+  return json({
+    inactive_tab_message,
+    app_active: await check_app_active(appId, shop),
+  });
+}
+
+export async function action({ request }) {
+  console.log(request, "request");
+  const { session } = await authenticate.admin(request);
+  let inactive_tab_message = await request.formData();
+  inactive_tab_message = Object.fromEntries(inactive_tab_message);
+  const shop = session.shop;
+  await db.inactive_tab_message.upsert({
+    where: { shop: shop },
+    update: {
+      message: inactive_tab_message.message,
+      shop: shop,
+    },
+    create: {
+      message: inactive_tab_message.message,
+      shop: shop,
+    },
+  });
+
+  return json(inactive_tab_message);
+}
 
 const route = () => {
+  const inActiveTabData = useLoaderData();
+ 
+
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [isAppActive, setIsAppActive] = useState(false);
+  const isAppActive = inActiveTabData.app_active;
+ 
   const tabs = [
     {
       id: "Overview-1",
@@ -36,23 +85,26 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <InActiveTabSettings />,
+      component: (
+        <InActiveTabSettings
+          initialData={inActiveTabData.inactive_tab_message}
+        />
+      ),
     },
   ];
 
   return (
     <>
-      InActive Tab
-      {/* <Homepage
+      <Homepage
         header="Inactive tab message"
         tabs={tabs}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         isAppActive={isAppActive}
-        handleAppActive={setIsAppActive}
+       
       >
         {tabs[selectedTab].component}
-      </Homepage> */}
+      </Homepage>
     </>
   );
 };

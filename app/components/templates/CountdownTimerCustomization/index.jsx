@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProductPreviewCard from "../ProductPreviewCard";
 import CountdownTimerSettings from "../../atoms/CountdownTimerSettings";
 
@@ -8,13 +8,28 @@ import SettingsDisplay from "../SettingsDisplay";
 import { APP_TYPE } from "../../../utils/constants";
 import "./style.css";
 import { CUSTOMIZATON_INITIAL_STATE } from "../../../constants/countdownTimerCustomization";
+import ManageDataChange from "../ManageDataChange";
 const CountDownTimerCustomization = ({ announcementBarType }) => {
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
-
+  const prevSettingsState = useRef({
+    ...CUSTOMIZATON_INITIAL_STATE,
+  });
+  const handleOnSave = () => {
+    prevSettingsState.current = { ...settingsState };
+  };
   return (
     <div className="customization-container">
+      <ManageDataChange
+        newState={settingsState}
+        prevState={prevSettingsState.current}
+        handleSaveChanges={handleOnSave}
+        handleDiscardChanges={() => {
+          setSettingsState(prevSettingsState.current);
+        }}
+        // fetcherState={fetcher.state}
+      />
       <div className="customization-left-section">
         <Card>
           <CountdownTimerSettings

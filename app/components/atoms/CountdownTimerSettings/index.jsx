@@ -77,7 +77,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
           </div>
         );
     }
-  }, [settingsState.settings.status]);
+  }, [settingsState]);
   const handleSelectChange = (key, value) => {
     setSettingsState((prevState) => updateSettingsState(key, value, prevState));
   };

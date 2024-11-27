@@ -30,7 +30,7 @@ function Homepage({
         primaryAction={
           <ActiveButton
             isAppActive={isAppActive}
-            handleAppActive={handleAppActive}
+         
           ></ActiveButton>
         }
       >

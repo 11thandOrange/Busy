@@ -192,12 +192,9 @@ const route = () => {
   console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
-  const fetcher = useFetcher();
   const announcementBarsData = announcementData.announcement_bars;
-
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
-
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
@@ -245,19 +242,6 @@ const route = () => {
     }
   }, [announcementBarsData]);
 
-  const handleAppActive = (isActive) => {
-    fetcher.submit(
-      {
-        isActive,
-        appId: id,
-      },
-      {
-        method: "POST",
-        action: "/app/activate",
-      },
-    );
-  };
-
   return (
     <>
       <Homepage
@@ -266,7 +250,6 @@ const route = () => {
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         isAppActive={isAppActive}
-        handleAppActive={handleAppActive}
       >
         {tabs[selectedTab].component}
       </Homepage>
