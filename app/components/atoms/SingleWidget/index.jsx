@@ -4,11 +4,12 @@ import TooltipHOC from "../TooltipHOC";
 import IMAGES from "../../../utils/Images";
 import "./style.css";
 import { useNavigate } from "@remix-run/react";
+import ImageRenderer from "../ImageRenderer";
 const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
   const navigate = useNavigate();
   return (
     <div className="card" key={widget.id}>
-      <img src={widget.image} alt="Product Review" />
+      <ImageRenderer src={widget.image} alt="Product Review" />
       <div className="card-btn">
         <ActiveButton
           afterActivateString="Activate Widget"
@@ -33,7 +34,7 @@ const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
               widget.isFavorite ? "Remove from favorites" : "Add to favorites"
             }
           >
-            <img
+            <ImageRenderer
               src={
                 widget.isFavorite ? IMAGES.FilledHeartIcon : IMAGES.HeartIcon
               }
