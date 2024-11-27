@@ -42,7 +42,8 @@ const route = () => {
 
   return (
     <>
-      <Homepage
+      InActive Tab
+      {/* <Homepage
         header="Inactive tab message"
         tabs={tabs}
         selectedTab={selectedTab}
@@ -51,7 +52,7 @@ const route = () => {
         handleAppActive={setIsAppActive}
       >
         {tabs[selectedTab].component}
-      </Homepage>
+      </Homepage> */}
     </>
   );
 };
