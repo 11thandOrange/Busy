@@ -2,6 +2,7 @@ import { Badge, ResourceItem, ResourceList } from "@shopify/polaris";
 import React from "react";
 import "./style.css";
 import { Link } from "@remix-run/react";
+import ImageRenderer from "../ImageRenderer";
 
 const AppsRenderList = ({ selectedApps }) => {
   return (
@@ -32,7 +33,8 @@ const AppsRenderList = ({ selectedApps }) => {
                     >
                       <div style={{ display: "flex" }}>
                         <div className="bb-img-wrapper">
-                          <img src={image} />
+                          
+                          <ImageRenderer src={image} />
                         </div>
                         <div
                           style={{ display: "flex", flexDirection: "column" }}

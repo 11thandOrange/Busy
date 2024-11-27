@@ -4,6 +4,7 @@ import PreviewCardBanner from "../../atoms/PreviewCardBanner";
 import { APP_TYPE } from "../../../utils/constants";
 import PreviewCardTimer from "../../atoms/PreviewCardTimer";
 import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
+import ImageRenderer from "../../atoms/ImageRenderer";
 
 const ProductPreviewCard = ({
   settingsState,
@@ -52,11 +53,8 @@ const ProductPreviewCard = ({
       {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
       {/* Product Image */}
       <div className="product-image-container">
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Product"
-          className="product-image"
-        />
+       
+           <ImageRenderer src={"https://via.placeholder.com/150"} alt={"Product"} styleClass="product-image"/>
       </div>
 
       {/* Product Title, Price, and Quantity */}

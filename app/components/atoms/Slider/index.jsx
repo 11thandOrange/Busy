@@ -9,6 +9,7 @@ import "swiper/css/thumbs";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 import "./style.css";
+import ImageRenderer from "../ImageRenderer";
 
 const sliderType = {
   IMAGE: "image",
@@ -17,7 +18,7 @@ const sliderType = {
 const sliderTypeSelector = (type, content) => {
   switch (type) {
     case sliderType.IMAGE:
-      return <img src={content} />;
+      return <ImageRenderer src={content} />;
     case sliderType.VIDEO:
       return <video width="500px" src={content} autoPlay={true}></video>;
   }
@@ -26,7 +27,7 @@ const Slider = ({
   autoplay = true,
   autoplayDelay = 1500,
   navigation = true,
-  sliderData = []
+  sliderData = [],
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -71,7 +72,7 @@ const Slider = ({
       >
         {sliderData.map((data, index) => (
           <SwiperSlide key={index}>
-            <img src={data.preview} />
+            <ImageRenderer src={data.preview} />
             <div className="thumbnail-title">{data.title}</div>
           </SwiperSlide>
         ))}

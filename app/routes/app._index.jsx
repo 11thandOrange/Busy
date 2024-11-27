@@ -9,6 +9,7 @@ import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
 import IMAGES from "../utils/Images";
 import sliderData from "../data/sliderData.json";
+import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
 
 
@@ -132,7 +133,7 @@ export default function Index() {
                       to={"/apps/" + item.slug}
                     >
                       <div>
-                        <img src={item?.image} />
+                        <ImageRenderer src={item?.image} />
                         <span>{item.name}</span>
                       </div>
                     </Link>
