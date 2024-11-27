@@ -63,7 +63,9 @@ export const action = async ({ request }) => {
         },
       });
       return updatedApp;
-    } else {
+    } 
+    else 
+    {
       const newMerchant = await db.merchant.create({
         data: {
           appId: appId,
@@ -84,7 +86,6 @@ function TabsInsideOfACardExample() {
   const [appsList, setAppsList] = useState(null);
 
   useEffect(() => {
-    console.log(apps, "apps");
     setTabs(
       apps.categories.filter((item) => item.id != CATEGORIES_ENUM.favorites),
     );
