@@ -483,7 +483,7 @@ export const can_active = async (shop) => {
     return false;
   }
 };
-export const storefront_api = async (shop, url, method, query) => {
+export const storefront_api = async (shop, url, method, query=null) => {
   const session = await db.session.findFirst({
     where: { shop: shop }
   });
@@ -529,4 +529,13 @@ export const getOrderCounter = async(shop)=>{
     return order_count.data.data.ordersCount.count;
   }
   return 0;
+}
+
+export const addScriptTag = async(shop)=>{
+  const scriptTag = await storefront_api(shop, `https://${shop}/admin/api/2024-10/script_tags.json`, 'GET', JSON.stringify({
+    script_tag: {
+      event: 'onload',
+      src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
+    },
+  }));
 }

@@ -15,7 +15,6 @@ const options = [
 ];
 
 const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
-  // console.log("Settings CountdownTimerSettings state", settingsState);
 
   const renderTimer = useCallback(() => {
     switch (settingsState.settings.status) {
