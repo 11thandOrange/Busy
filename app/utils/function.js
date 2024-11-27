@@ -429,6 +429,17 @@ export const getCountdownTimer = async (shop) => {
       "{{message}}",
       countdownTimer.general_setting.message,
     );
+    if(countdownTimer.general_setting.countdown_timer_end_date==1)
+    {
+      if(countdownTimer.display_setting.theme==1)
+      {
+        script += `htmlToInsert = '<div><div>';`
+      }
+    }
+    else
+    {
+
+    }
     script = `
       (function() {
         const form = document.querySelector('.product__info-wrapper');

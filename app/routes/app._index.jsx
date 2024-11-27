@@ -7,26 +7,21 @@ import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
+import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
-  const shop = await getShopName(request);
+  const {session} = await authenticate.admin(request);
+  const shop = session.shop;
   let apps = await db.app.findMany({
-    include: {
-      Merchant: true,
-      categories: {
-        select: {
-          id: true,
-        },
-      },
-    },
+    select:{
+      id:true,
+      name: true,
+      image: true,
+      slug: true
+    }
   });
   let widgets = await db.widget.findMany({
     include: {
-      categories: {
-        select: {
-          id: true,
-        },
-      },
       Fav_widget: {
         where: { shop: shop },
         select: {
@@ -37,30 +32,13 @@ export const loader = async ({ request }) => {
   });
   widgets = widgets.map((widget) => {
     const isFavorite = widget.Fav_widget.length > 0;
-
     return {
       id: widget.id,
       name: widget.name,
       description_title: widget.description_title,
       description_content: widget.description_content,
       image: widget.image,
-      categoryId: widget.categories.map((item) => item.id),
       isFavorite,
-    };
-  });
-  apps = apps.map((app) => {
-    const isInstalled = app.Merchant.some((merchant) => merchant.enabled);
-
-    return {
-      id: app.id,
-      name: app.name,
-      description: app.description,
-      image: app.image,
-      categoryId: app.categories.map((item) => item.id),
-      createdAt: app.createdAt,
-      updatedAt: app.updatedAt,
-      isInstalled,
-      slug: app.slug,
     };
   });
 
