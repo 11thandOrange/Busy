@@ -7,6 +7,7 @@ import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
+import IMAGES from "../utils/Images";
 
 export const loader = async ({ request }) => {
   const shop = await getShopName(request);
@@ -117,12 +118,12 @@ export default function Index() {
       { method: "POST", action: "/widgets" },
     );
   };
-  console.log(data, "data main");
+
   return (
     <Page>
       <div className="header">
         <img
-          src="https://via.placeholder.com/100"
+          src={IMAGES.BusyBuddyLogo}
           alt="Logo"
           className="logo"
         />
