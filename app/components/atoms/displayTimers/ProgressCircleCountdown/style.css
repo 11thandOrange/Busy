@@ -34,3 +34,19 @@
   font-size: 10px;
   font-weight: 600;
 }
+.LEFT {
+  .ProgressCircleCountdown{
+    padding-left: 0 !important;
+  }
+}
+.RIGHT {
+  .ProgressCircleCountdown{
+    justify-content: right;
+    padding-left: 0 !important;
+  }
+}
+.CENTER {
+  .ProgressCircleCountdown{
+    justify-content: center;
+  }
+}

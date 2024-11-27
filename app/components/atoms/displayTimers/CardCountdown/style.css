@@ -57,4 +57,23 @@
     font-weight: 300;
     text-align: center;
   }
+  .LEFT {
+    .CardCountdown{
+      padding-left: 0 !important;
+    }
+  }
+  .RIGHT {
+    .CardCountdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .CardCountdown{
+      justify-content: center;
+    }
+  }
   
+  .main-countdownt-title{
+    margin-bottom: 8px;
+  }

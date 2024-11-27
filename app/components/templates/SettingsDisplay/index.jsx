@@ -184,6 +184,9 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
           />
         </div>
         {renderColorPallete()}
+
+        <div className="input-selector-container">
+         <span>margin</span> 
         <InputWithSelector
           inputType="number"
           title="Bottom"
@@ -203,7 +206,8 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
             handleSelectChange("display.margin.top.value", value);
             handleSelectChange("display.margin.top.unit", unit);
           }}
-        ></InputWithSelector>
+          ></InputWithSelector>
+          </div>
       </div>
 
       {/* <InputWithSelector

@@ -48,5 +48,15 @@
     font-size: 24px;
     font-weight: 400;
   }
-
+  .RIGHT {
+    .ModernsCountdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .ModernsCountdown{
+      justify-content: center;
+    }
+  }
   

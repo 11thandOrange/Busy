@@ -64,6 +64,22 @@
     }
   }
 }
+.RIGHT {
+  .main-countdownt-title{
+    text-align: right;
+  }
+  .HexagonCountdown{
+    justify-content: right;
+  }
+}
+.CENTER {
+  .main-countdownt-title{
+    text-align: center;
+  }
+  .HexagonCountdown{
+    justify-content: center;
+  }
+}
   
   
   
