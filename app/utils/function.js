@@ -5,6 +5,8 @@ import {
   PRO_MONTHLY_PLAN,
   ENTERPRISE_MONTHLY_PLAN,
 } from "../shopify.server";
+import { fetchTimeObject } from "./clientFunctions";
+import { getCardCountdownTimer, getClassicCountdownTimer, getDividerCountdownTimer, getHexagonCountdownTimer, getModernCountdownTimer, getProgressBarCountdownTimer, getProgressCircleCountdownTimer } from "./countdown_timer/countdown_timer";
 
 export const getShopName = async (request) => {
   let parsedUrl;
@@ -407,7 +409,7 @@ export const getCartNotice = async (shop) => {
 };
 
 export const getCountdownTimer = async (shop) => {
-  let script;
+  let countdownTimerHtml, script;
   let countdownTimer = await db.countdown_timer.findFirst({
     where: {
       shop: shop,
@@ -425,26 +427,50 @@ export const getCountdownTimer = async (shop) => {
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
     countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
-    countdownTimer.html = countdownTimer.html.replace(
-      "{{message}}",
-      countdownTimer.general_setting.message,
-    );
     if(countdownTimer.general_setting.countdown_timer_end_date==1)
     {
+      const timeLeft = fetchTimeObject(countdownTimer.general_setting.countdown_start, countdownTimer.general_setting.countdown_end);
+      countdownTimerHtml += `<div
+      style="margin-top:${countdownTimer.display_setting.marginTop}${display.margin.top.unit};margin-bottom:${countdownTimer.display_setting.marginBottom}${display.margin.bottom.unit};
+      class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
+        countdownTimer.display_setting.theme !== 1? "align-column": "align-row"}
+      >
+      <div className="main-countdownt-title" style="color:${countdownTimer.display_setting.titleColor};">${countdownTimer.display_setting.title}</div>`
       if(countdownTimer.display_setting.theme==1)
       {
-        script += `htmlToInsert = '<div><div>';`
+        countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer)
       }
-    }
-    else
-    {
-
+      if(countdownTimer.display_setting.theme == 2)
+      {
+        countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer)
+      }
+      if(countdownTimer.display_setting.theme==3)
+      {
+        countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer)
+      }
+      if(countdownTimer.display_setting.theme==4)
+      {
+        countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer)
+      }
+      if(countdownTimer.display_setting.theme==5)
+      {
+        countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer)
+      }
+      if(countdownTimer.display_setting.theme==6)
+      {
+        countdownTimerHtml += getProgressBarCountdownTimer(timeLeft, countdownTimer)
+      }
+      if(countdownTimer.display_setting.theme==7)
+      {
+        countdownTimerHtml += getDividerCountdownTimer(timeLeft, countdownTimer)
+      }
+      countdownTimerHtml += '</div>';
     }
     script = `
       (function() {
         const form = document.querySelector('.product__info-wrapper');
         if (form) {
-          const htmlToInsert = '<div class="countdown-timer">"${countdownTimer.html}"</div>';
+          const htmlToInsert = '<div class="busyBuddyCountdownTimer">"${countdownTimerHtml}"</div>';
           form.insertAdjacentHTML('beforeend', htmlToInsert);
         }
       })();
@@ -522,7 +548,7 @@ export const storefront_api = async (shop, url, method, query=null) => {
 export const getShippingRule = async(shop)=>{
   const shipping_rule = await storefront_api(shop, `https://${shop}/admin/api/2024-04/shipping_zones.json`, 'GET');
   console.log(shipping_rule.data.shipping_zones)
-  return shipping_rule;
+  return shipping_rule.data.shipping_zones;
 }
 export const getOrderCounter = async(shop)=>{
   const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/graphql.json`, 'POST', JSON.stringify({

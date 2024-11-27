@@ -6,8 +6,9 @@ const apifullUrl = `${baseUrl}/app/api`;
 const shopDomain = window.location.hostname;
 const elementIdMap = {
   'busyBuddyAnnouncementBar': 1,
-  'inactive-tab-message': 2,
+  'busyBuddyInactiveTabMessage': 2,
   'busyBuddyCartNotice': 3,
+  'busyBuddyCountdownTimer': 4,
 };
 
 fetch_request(apifullUrl)
@@ -33,7 +34,7 @@ function fetch_request(url, app)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
-var apps = ['busyBuddyAnnouncementBar', 'inactive-tab-message', 'busyBuddyCartNotice'];
+var apps = ['busyBuddyAnnouncementBar', 'busyBuddyInactiveTabMessage', 'busyBuddyCartNotice', 'busyBuddyCountdownTimer'];
 
 const trackImpressionsForDynamicElements = () => {
   const observer = new MutationObserver((mutationsList) => {
@@ -82,7 +83,6 @@ apps.forEach((app) => {
   fetch_request(apifullUrl, app_id);
   trackClicks(app);
 });
-
 
 function sendAnalyticsData(activity, data) {
   data.element = elementIdMap[data.element];
