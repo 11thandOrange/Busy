@@ -7,7 +7,10 @@ import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
+import IMAGES from "../utils/Images";
+import sliderData from "../data/sliderData.json";
 import { authenticate } from "../shopify.server";
+
 
 export const loader = async ({ request }) => {
   const {session} = await authenticate.admin(request);
@@ -95,14 +98,15 @@ export default function Index() {
       { method: "POST", action: "/widgets" },
     );
   };
-  console.log(data, "data main");
+
   return (
     <Page>
       <div className="header">
         <img
-          src="https://via.placeholder.com/100"
+          src={IMAGES.BusyBuddyLogo}
           alt="Logo"
           className="logo"
+          loading="lazy"
         />
         <div>
           <Text as="h1" variant="headingLg" className="title">
@@ -123,7 +127,10 @@ export default function Index() {
               <div className="apps_list">
                 {data?.apps?.map((item) => {
                   return (
-                    <Link className="list-item bb-anchorTag" to={"/apps/" + item.slug}>
+                    <Link
+                      className="list-item bb-anchorTag"
+                      to={"/apps/" + item.slug}
+                    >
                       <div>
                         <img src={item?.image} />
                         <span>{item.name}</span>
@@ -139,7 +146,11 @@ export default function Index() {
               <Text as="h2" variant="headingSm">
                 Looking For Tips
               </Text>
-              <Slider autoplay={false} navigation={true} />
+              <Slider
+                autoplay={false}
+                navigation={true}
+                sliderData={sliderData}
+              />
             </Card>
           </Layout.Section>
           <Layout.Section>

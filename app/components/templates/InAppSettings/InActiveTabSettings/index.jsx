@@ -1,22 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import SettingSection from "../GlobalSettings/SettingSection";
-import { Checkbox, Layout } from "@shopify/polaris";
-import ManageDataChange from "../ManageDataChange";
-import { ROUTES } from "../../../utils/constants";
-import { useFetcher } from "@remix-run/react";
 
-const AnnouncementSettings = ({ initialData }) => {
+import { Checkbox, Layout } from "@shopify/polaris";
+
+import { useFetcher } from "@remix-run/react";
+import ManageDataChange from "../../ManageDataChange";
+import { ROUTES } from "../../../../utils/constants";
+import SettingSection from "../../GlobalSettings/SettingSection";
+import CustomTextField from "../../../atoms/CustomTextField";
+
+const InActiveTabSettings = ({ initialData }) => {
   const fetcher = useFetcher();
   const [settings, setSettings] = useState({
-    enableCloseButton: false,
+    message: "",
     // enableBotFilter: false,
   });
   const oldSettingRef = useRef({
-    enableCloseButton: false,
+    message: "",
   });
   useEffect(() => {
     if (initialData) {
-      const data = { enableCloseButton: initialData.enable_close_button };
+      const data = { enableCloseButton: initialData.message };
       setSettings(data);
       oldSettingRef.current = data;
     }
@@ -52,25 +55,20 @@ const AnnouncementSettings = ({ initialData }) => {
           handleDiscardChanges={handleDiscardChanges}
           fetcherState={fetcher.state}
         />
-        <SettingSection heading={"Global Settings"}>
-          <Checkbox
-            label="Enable close button"
-            helpText="Enable this setting if you want to allow your customers to be able to close the bar while navigating the store."
-            checked={settings.enableCloseButton}
-            onChange={(value) =>
-              updateCustomization("enableCloseButton", value)
+        <SettingSection heading={"Settings"}>
+          <CustomTextField
+            helpText={
+              "The message that will show in the browser tab's title when the visitor changes to another tab."
             }
-          />
-          {/* <Checkbox
-            label="Enable bot filter (CAPTCHA)"
-            helpText="If enabled, user behavior will be validated with a CAPTCHA solution to ensure lead validity."
-            checked={settings.enableBotFilter}
-            onChange={(value) => updateCustomization("enableBotFilter", value)}
-          /> */}
+            label={"Message"}
+            type={"text"}
+            value={"Don't forget this..."}
+            onValueChange={(value) => updateCustomization("message", value)}
+          ></CustomTextField>
         </SettingSection>
       </Layout>
     </div>
   );
 };
 
-export default AnnouncementSettings;
+export default InActiveTabSettings;

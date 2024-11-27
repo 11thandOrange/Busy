@@ -1,5 +1,5 @@
 .preview-card-container{
-    padding: 10px;
+    padding-top: 10px;
     width: 100%;
     display: flex;
     
@@ -19,4 +19,22 @@
 }
 .align-row{
     flex-direction: row;
+}
+.timer{
+    font-size: 16px;
+    .main-countdownt-title{
+        & ~ div{
+            padding-left: 6px;
+            font-weight: 600;
+        }
+    }
+}
+
+.Polaris-ShadowBevel .Polaris-Text--bodyMd{
+    margin-bottom: 5px !important;
+    display: block;
+}
+.Polaris-ShadowBevel .Polaris-Text--bold{
+    margin-bottom: 16px !important;
+    display: block;
 }

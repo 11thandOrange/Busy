@@ -1,8 +1,8 @@
 .customization-container{
     display: flex;
     width:100%;
-    margin:auto
-    
+    margin:auto;
+    gap: 20px;
 }
 
 .customization-right-section, .customization-left-section{

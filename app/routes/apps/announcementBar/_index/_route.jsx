@@ -18,13 +18,14 @@ import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
-import AnnouncementSettings from "../../../../components/templates/AnnouncementSettings";
+
 import { check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
-
+import sliderData from "../../../../data/sliderData.json";
+import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
-  
+
   let announcement_bars,
     announcement_bar_setting,
     app_active,
@@ -32,14 +33,16 @@ export async function loader({ request }) {
   const shop = session.shop;
   const url = new URL(request.url);
   let setting = await db.setting.findFirst({
-    where:{
-      shop:shop
-    }
+    where: {
+      shop: shop,
+    },
   });
-    if(setting?.global_customizations){
-      setting.global_customizations = setting?.global_customizations ? JSON.parse(setting?.global_customizations) : JSON.stringify({})
-    }
-    
+  if (setting?.global_customizations) {
+    setting.global_customizations = setting?.global_customizations
+      ? JSON.parse(setting?.global_customizations)
+      : JSON.stringify({});
+  }
+
   if (url.searchParams.get("id")) {
     announcement_bars_customization = await db.announcement_bar.findFirst({
       where: {
@@ -67,13 +70,13 @@ export async function loader({ request }) {
     });
     app_active = await check_app_active(1, shop);
   }
-  
+
   return cors(request, {
     announcement_bars: announcement_bars?.length ? announcement_bars : [],
     announcement_customization: announcement_bars_customization,
     announcement_bar_setting,
     app_active,
-    color_theme:  setting?.color_theme
+    color_theme: setting?.color_theme,
   });
 }
 
@@ -206,8 +209,12 @@ const route = () => {
           selectedType={selectedType}
           setSelectedType={(type) => {
             setSelectedType(type);
+            console.log("Selected Type", type);
+
             navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
           }}
+          sliderData={sliderData}
+          showPopOver={true}
         />
       ),
     },

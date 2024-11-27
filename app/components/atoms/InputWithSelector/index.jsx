@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import CustomTextField from "../CustomTextField";
 import { TIMER_MARGIN_UNITS } from "../../../constants/countdownTimerCustomization";
 import Selector from "../Selector";
+import "./style.css"
 
 const InputWithSelector = ({
   inputType,
@@ -22,7 +23,7 @@ const InputWithSelector = ({
   ];
 
   return (
-    <div>
+    <div className="marginValue-wrapper">
       <CustomTextField
         type={inputType}
         label={title}
@@ -32,16 +33,19 @@ const InputWithSelector = ({
         }}
         value={inputValue}
 
-      ></CustomTextField>
-      <Selector
-        options={selectorOptions}
-        onSelect={(value) => {
-       
-          unit.current = value;
-          handleChange();
-        }}
-        initialValue={unitValue}
-      />
+      >
+      </CustomTextField>
+      <div className="marginValue">
+        <Selector
+          options={selectorOptions}
+          onSelect={(value) => {
+        
+            unit.current = value;
+            handleChange();
+          }}
+          initialValue={unitValue}
+        />
+      </div>
     </div>
   );
 };

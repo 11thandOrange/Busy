@@ -3,35 +3,50 @@
     /* align-items: center; */
     font-family: Arial, sans-serif;
     font-size: 24px;
+    font-weight: 100;
     color: #ff4e4e;
+    gap: 20px;
+    margin-top: 10px;
   }
   
   .countdown-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-block: 10px;
     /* margin: 0 10px; */
   }
   
   .countdown-number {
-    font-size: 20px;
+    font-size: 40px;
+    font-weight: 100 !important;
     font-weight: bold;
-    /* color: #ff4e4e; */
-    /* background-color: #b0d6ff; */
-    /* padding: 10px 20px; */
     border-radius: 5px;
   }
   
   .countdown-label {
     margin-top: 0px;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 100;
+    margin-top: 10px;
     /* color: #7f7f7f; */
   }
   
   .divider {
-    font-size: 40px;
-    color: #939191;
+    font-size: 0;
+    width: 1px;
+    background-color: #555555;
     transform: rotate(15deg);
-    
+  }
+  .RIGHT {
+    .countdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .countdown{
+      justify-content: center;
+    }
   }
   

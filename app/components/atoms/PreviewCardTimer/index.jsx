@@ -12,6 +12,7 @@ import HexagonCountdown from "../displayTimers/HexagonCountdown";
 import ProgressCircleCountdown from "../displayTimers/ProgressCircleCountdown";
 import CardCountdown from "../displayTimers/CardCountdown";
 import ProgressBarCountdown from "../displayTimers/ProgressBarCountdown";
+import ClassicTimer from "../displayTimers/ClassicTimer";
 
 const PreviewCardTimer = ({ settingsState }) => {
   const { settings, display } = settingsState;
@@ -63,11 +64,7 @@ const PreviewCardTimer = ({ settingsState }) => {
     switch (theme) {
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC:
         return (
-          <div>
-            <span style={{ color: digitsColor }}>
-              {`${timeLeft.remainingDays} days ${timeLeft.remainingHours}:${timeLeft.remainingMinutes}:${timeLeft.remainingSeconds}`}
-            </span>
-          </div>
+         <ClassicTimer {...commonProps}></ClassicTimer>
         );
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.HEXAGON_TIMER:
@@ -95,15 +92,18 @@ const PreviewCardTimer = ({ settingsState }) => {
     }
   }, [theme, settingsState, timeLeft]);
 
+  console.log("TEST",display.margin.top.value);
+  
   return (
     <div
-      className={`preview-card-container ${timerAlignment} ${
+      style={{marginTop:`${display.margin.top.value}${display.margin.top.unit}`,marginBottom:`${display.margin.bottom.value}${display.margin.bottom.unit}`}}
+      className={`preview-card-container timer ${timerAlignment} ${
         theme !== COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC
           ? "align-column"
           : "align-row"
       }`}
     >
-      <div style={{ color: titleColor }}>{title}</div>
+      <div className="main-countdownt-title" style={{ color: titleColor }}>{title}</div>
       {renderCountdown()}
     </div>
   );

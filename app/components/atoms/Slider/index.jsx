@@ -7,7 +7,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
-import sliderData from "../../../data/sliderData.json";
+
 import "./style.css";
 
 const sliderType = {
@@ -26,6 +26,7 @@ const Slider = ({
   autoplay = true,
   autoplayDelay = 1500,
   navigation = true,
+  sliderData = []
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 

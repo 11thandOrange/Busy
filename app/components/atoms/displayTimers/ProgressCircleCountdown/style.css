@@ -13,6 +13,16 @@
 }
 
 .ProgressCircleCountdown-number {
+  display: block;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.ProgressCircleCountdown-divider {
+  font-size: 30px;
+  color: #939191;
+}
+.circle-progress-wrapper{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -20,9 +30,23 @@
   font-size: 30px;
   font-weight: bold;
   color: #ff4e4e;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
 }
-
-.ProgressCircleCountdown-divider {
-  font-size: 30px;
-  color: #939191;
+.LEFT {
+  .ProgressCircleCountdown{
+    padding-left: 0 !important;
+  }
+}
+.RIGHT {
+  .ProgressCircleCountdown{
+    justify-content: right;
+    padding-left: 0 !important;
+  }
+}
+.CENTER {
+  .ProgressCircleCountdown{
+    justify-content: center;
+  }
 }

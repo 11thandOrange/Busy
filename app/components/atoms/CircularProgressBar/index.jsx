@@ -4,11 +4,12 @@ import "./style.css"; // Optional for additional styling
 const CircularProgressBar = ({
   progress,
   color,
-  size = 70,
-  strokeWidth = 8,
+  size = 80,
+  innerStrokeWidth = 4,
+  outerStrokeWidth =1,
   progressText = "",
 }) => {
-  const radius = (size - strokeWidth) / 2;
+  const radius = (size - outerStrokeWidth*10) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
 
@@ -21,9 +22,9 @@ const CircularProgressBar = ({
     >
       {/* Background Circle */}
       <circle
-        stroke="#e6e6e6"
+        stroke="#000000"
         fill="transparent"
-        strokeWidth={strokeWidth}
+        strokeWidth={outerStrokeWidth}
         r={radius}
         cx={size / 2}
         cy={size / 2}
@@ -32,7 +33,7 @@ const CircularProgressBar = ({
       <circle
         stroke={color}
         fill="transparent"
-        strokeWidth={strokeWidth}
+        strokeWidth={innerStrokeWidth}
         strokeLinecap="round"
         r={radius}
         cx={size / 2}
@@ -55,7 +56,9 @@ const CircularProgressBar = ({
         fill={color}
       >
         {progressText}
+        
       </text>
+     
     </svg>
   );
 };

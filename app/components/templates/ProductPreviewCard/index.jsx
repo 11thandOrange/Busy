@@ -41,6 +41,7 @@ const ProductPreviewCard = ({
     }
   };
   return (
+    <div className="product-preview-card-container">
     <div
       className="product-preview-card"
       style={{ backgroundColor: colorTheme==COLOR_THEME.LIGHT?"white":"black" }}
@@ -99,6 +100,7 @@ const ProductPreviewCard = ({
           </li>
         </ul>
       </div>
+    </div>
     </div>
   );
 };

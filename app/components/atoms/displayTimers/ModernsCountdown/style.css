@@ -29,9 +29,34 @@
   }
   
   .ModernsCountdown-divider {
-    font-size: 30px;
-    color: #939191;
-    
-    
+    font-size: 17px;
+    color: #555555;
+    vertical-align: middle;
+    padding-block: 6px;
+    margin-right: 2px;
+  }
+  .ModernsCountdown-item{
+    font: 300 35px Roboto, sans-serif;
+    z-index: 3;
+    border-radius: 10%;
+    margin: .3% 2px .3% .3%;
+    padding: 0 4px;
+    width: auto !important;
+    background: #f7f7f7;
+  }
+  .ModernsCountdown-number{
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .RIGHT {
+    .ModernsCountdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .ModernsCountdown{
+      justify-content: center;
+    }
   }
   

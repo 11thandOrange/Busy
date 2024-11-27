@@ -31,10 +31,10 @@ export const CUSTOMIZATON_INITIAL_STATE = {
   display: {
     timerForDiscountedProducts: false,
     theme: COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC,
-    timerAlignment: TIMER_ALIGNMENT_OPTIONS.CENTER,
+    timerAlignment: TIMER_ALIGNMENT_OPTIONS.LEFT,
     title: "Sale Ending in",
-    titleColor: "#ffffff",
-    digitsColor: "#ffffff",
+    titleColor: "#000000",
+    digitsColor: "#000000",
     backgroundColor: "#ff0000",
     borderColor: "#000000",
     gradientStartColor: "#ff0000",
