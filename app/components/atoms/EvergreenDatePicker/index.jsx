@@ -9,8 +9,6 @@ import { InlineError } from "@shopify/polaris";
 
 const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
   const isValid = useMemo(() => {
-    
-
     return isExpirationTimeValid(
       settingsState.settings.minExpTime,
       settingsState.settings.maxExpTime,
@@ -32,6 +30,7 @@ const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
         heading={"Minimum expiration deadline"}
         onDatePicked={(value) => {
          
+
           setSettingsState((prevState) =>
             updateSettingsState("settings.minExpTime", value, prevState),
           );
@@ -44,7 +43,6 @@ const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
           setSettingsState((prevState) =>
             updateSettingsState("settings.maxExpTime", value, prevState),
           );
-         
         }}
         initialValue={settingsState.settings.maxExpTime}
       ></InputDatePicker>

@@ -22,9 +22,9 @@ const InputDatePicker = ({
     }
     setDate((prevState) => {
       const updatedDate = { ...prevState, [key]: value };
-      onDatePicked(updatedDate);
       return updatedDate;
     });
+    onDatePicked({ ...date, [key]: value });
   };
 
   return (
