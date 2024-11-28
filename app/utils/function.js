@@ -224,18 +224,7 @@ export const getAnnouncementBar = async (shop) => {
       const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
-        function getTimeDifference(startAt, endsAt) {
-          const difference = endsAt - startAt; // Time difference in milliseconds
-          
-          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-  
-          return { days, hours, minutes, seconds, difference };
-        }
-
-        let countdownInterval;  // Declare countdownInterval here
+        let countdownInterval;
 
         function updateCountdown() {
           const now = new Date().getTime();
@@ -399,7 +388,7 @@ export const getCartNotice = async (shop) => {
 
   const script = `
   (function() {
-    const forms = document.querySelectorAll('form[action="/cart"]');  // Select all forms
+    const forms = document.querySelectorAll('form[action="/cart"]');
     forms.forEach(function(form) {
       form.insertAdjacentHTML('beforebegin', \`${htmlToInsert}\`);
     });
@@ -409,76 +398,95 @@ export const getCartNotice = async (shop) => {
 };
 
 export const getCountdownTimer = async (shop) => {
-  let countdownTimerHtml, script;
+  let countdownTimerHtml = '';  // Initialize it as an empty string
+  let script;
+
+  // Fetch the countdown timer settings from the database
   let countdownTimer = await db.countdown_timer.findFirst({
     where: {
       shop: shop,
     },
     select: {
-      html: true,
       general_setting: true,
       display_setting: true,
       position: true,
     },
-    include:{
-      countdown_timer_type: true
-    }
   });
+
+  // Check if countdown timer exists
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
     countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
-    if(countdownTimer.general_setting.countdown_timer_end_date==1)
-    {
-      const timeLeft = fetchTimeObject(countdownTimer.general_setting.countdown_start, countdownTimer.general_setting.countdown_end);
-      countdownTimerHtml += `<div
-      style="margin-top:${countdownTimer.display_setting.marginTop}${display.margin.top.unit};margin-bottom:${countdownTimer.display_setting.marginBottom}${display.margin.bottom.unit};
-      class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
-        countdownTimer.display_setting.theme !== 1? "align-column": "align-row"}
-      >
-      <div className="main-countdownt-title" style="color:${countdownTimer.display_setting.titleColor};">${countdownTimer.display_setting.title}</div>`
-      if(countdownTimer.display_setting.theme==1)
-      {
-        countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer)
+    
+    if (countdownTimer.general_setting.countdown_timer_end_date === 1) {
+      const timeLeft = fetchTimeObject(new Date().getTime(), countdownTimer.general_setting.countdown_end);
+      countdownTimerHtml += `
+        <div style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
+          class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
+          countdownTimer.display_setting.theme !== 1 ? "align-column" : "align-row"}">
+          <div class="main-countdown-title" style="color:${countdownTimer.display_setting.titleColor};">
+            ${countdownTimer.display_setting.title}
+          </div>
+      `;
+
+      switch (countdownTimer.display_setting.theme) {
+        case 1:
+          countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 2:
+          countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 3:
+          countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 4:
+          countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 5:
+          countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 6:
+          countdownTimerHtml += getProgressBarCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 7:
+          countdownTimerHtml += getDividerCountdownTimer(timeLeft, countdownTimer);
+          break;
+        default:
+          break;
       }
-      if(countdownTimer.display_setting.theme == 2)
-      {
-        countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer)
-      }
-      if(countdownTimer.display_setting.theme==3)
-      {
-        countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer)
-      }
-      if(countdownTimer.display_setting.theme==4)
-      {
-        countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer)
-      }
-      if(countdownTimer.display_setting.theme==5)
-      {
-        countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer)
-      }
-      if(countdownTimer.display_setting.theme==6)
-      {
-        countdownTimerHtml += getProgressBarCountdownTimer(timeLeft, countdownTimer)
-      }
-      if(countdownTimer.display_setting.theme==7)
-      {
-        countdownTimerHtml += getDividerCountdownTimer(timeLeft, countdownTimer)
-      }
+
       countdownTimerHtml += '</div>';
-    }
-    script = `
-      (function() {
-        const form = document.querySelector('.product__info-wrapper');
-        if (form) {
-          const htmlToInsert = '<div class="busyBuddyCountdownTimer">"${countdownTimerHtml}"</div>';
-          form.insertAdjacentHTML('beforeend', htmlToInsert);
+    
+      script = `
+        let countdownTimerInterval;
+        function updateCountdownNew() {
+          const now = new Date().getTime();
+          const endTime = ${new Date(countdownTimer.general_setting.countdown_end).getTime()};
+          const difference = getTimeDifference(now, endTime);
+          document.getElementById('seconds').textContent = difference.seconds;
+          document.getElementById('minutes').textContent = difference.minutes;
+          document.getElementById('hours').textContent = difference.hours;
+          document.getElementById('days').textContent = difference.days;
+          if (difference.difference <= 0) {
+            clearInterval(countdownTimerInterval);
+          }
         }
-      })();
-    `;
+        
+        (function() {
+          const form = document.querySelector('.product__info-wrapper');
+          if (form) {
+            const htmlToInsert = \`<div class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
+            form.insertAdjacentHTML('afterend', htmlToInsert);
+            countdownTimerInterval = setInterval(updateCountdownNew, 1000);
+          }
+        })();
+      `;
+    }
   }
 
-  return { script };
+  return { script, discount_products:countdownTimer?.display_setting?.show_on_discount_products };
 };
+
 export const check_enable_button = async (shop) => {
   try {
     const setting = await db.announcement_bar_setting.findFirst({

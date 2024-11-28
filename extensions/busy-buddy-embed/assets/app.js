@@ -1,5 +1,5 @@
-console.log('Script Added')
-const baseUrl = 'https://cb-shelter-scsi-convicted.trycloudflare.com';
+console.log('Script Added ML3')
+const baseUrl = 'https://mercy-bound-country-wma.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -28,7 +28,20 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-            eval(data.script);
+          console.log(data)
+          if(data?.discount_products)
+          { 
+            check_product_discount().then(isDiscounted => {
+              if(isDiscounted)
+              {
+                eval(data.script);
+              }
+            })           
+          }
+          else
+          {
+            eval(data.script)
+          }
         })
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);
@@ -93,4 +106,42 @@ function sendAnalyticsData(activity, data) {
     },
     body: JSON.stringify({ activity, data, pageUrl: window.location.href, shop:shopDomain, data })
   });
+}
+function get_product_id()
+{
+  var currentPath = window.location.pathname;
+  var productHandle = currentPath.split('/').pop();
+  fetch(`/products/${productHandle}.js`)
+    .then(response => response.json())
+    .then(data => {
+      var productId = data.id;
+      return productId;
+    })
+    .catch(error => {
+      console.error('Error fetching product data:', error);
+    });
+}
+function check_product_discount() {
+  var currentPath = window.location.pathname;
+  var productHandle = currentPath.split('/').pop();
+  return fetch(`/products/${productHandle}.js`)
+    .then(response => response.json())
+    .then(data => {
+      return data.compare_at_price ? true : false;
+    })
+    .catch(error => {
+      console.error('Error fetching product data:', error);
+      return false;
+    });
+}
+
+function getTimeDifference(startAt, endsAt) {
+  const difference = endsAt - startAt;
+  
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  return { days, hours, minutes, seconds, difference };
 }
