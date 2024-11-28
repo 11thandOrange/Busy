@@ -22,11 +22,26 @@ export const TIMER_MARGIN_UNITS = {
   PX: "px",
   REM: "rem",
 };
+// const SETTINGS_INITIAL_STATE = {
+//   [COUNTDOWN_TIMER_STATE.FIX_END_DATE]: {
+//     countDownStartAt: "",
+//     countDownEndsAt: "",
+//   },
+//   [COUNTDOWN_TIMER_STATE.EVERGREEN]: {
+//     coolOffTimer: 0,
+//     minExpTime: { days: 0, hours: 0, minutes: 0 },
+//     maxExpTime: { days: 0, hours: 0, minutes: 0 },
+//   },
+// };
 export const CUSTOMIZATON_INITIAL_STATE = {
   settings: {
     status: COUNTDOWN_TIMER_STATE.FIX_END_DATE,
+
     countDownStartAt: "",
     countDownEndsAt: "",
+    coolOffTimer: 0,
+    minExpTime: { days: 0, hours: 0, minutes: 0 },
+    maxExpTime: { days: 0, hours: 0, minutes: 0 },
   },
   display: {
     timerForDiscountedProducts: false,

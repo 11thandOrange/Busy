@@ -4,7 +4,7 @@ import "./style.css";
 const MinimalistCountdown = ({ timeUnits, settingsState }) => {
   const { display } = settingsState;
   const { digitsColor, borderColor } = display;
-  console.log("BorderColro", borderColor);
+ 
 
   return (
     <div className="countdown" style={{ color: digitsColor }}>

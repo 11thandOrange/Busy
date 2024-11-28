@@ -9,13 +9,14 @@ import Selector from "../Selector";
 import { COUNTDOWN_TIMER_STATE } from "../../../constants/countdownTimerCustomization";
 import { Text } from "@shopify/polaris";
 import InputDatePicker from "../InputDatePicker";
+import EvergreenDatePicker from "../EvergreenDatePicker";
 const options = [
   { label: "Fix End Date", value: COUNTDOWN_TIMER_STATE.FIX_END_DATE },
   { label: "Evergreen", value: COUNTDOWN_TIMER_STATE.EVERGREEN },
 ];
 
 const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
-  // console.log("Settings CountdownTimerSettings state", settingsState);
+ 
 
   const renderTimer = useCallback(() => {
     switch (settingsState.settings.status) {
@@ -59,22 +60,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
         );
       case COUNTDOWN_TIMER_STATE.EVERGREEN:
         return (
-          <div>
-            <CustomTextField
-              type="number"
-              label={"Cool off period (minutes)"}
-              helpText={
-                "Once the cool off period expires, the countdown timer will be shown again (individually for each customer on each product page)."
-              }
-              min={0}
-            ></CustomTextField>
-            <InputDatePicker
-              heading={"Minimum expiration deadline"}
-            ></InputDatePicker>
-            <InputDatePicker
-              heading={"Maximum expiration deadline"}
-            ></InputDatePicker>
-          </div>
+         <EvergreenDatePicker setSettingsState={setSettingsState} settingsState={settingsState} ></EvergreenDatePicker>
         );
     }
   }, [settingsState]);

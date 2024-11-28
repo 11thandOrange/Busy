@@ -206,7 +206,48 @@ export const formatDateAndTime = (isoDate) => {
 
 export const isLoading = (fetchState) => {
   return (
-    (fetchState === FETCHER_STATE.LOADING) ||
-    (fetchState === FETCHER_STATE.SUBMITTING)
+    fetchState === FETCHER_STATE.LOADING ||
+    fetchState === FETCHER_STATE.SUBMITTING
   );
+};
+
+export const pickRandomTime = (minExp, maxExp) => {
+  const minTotalMinutes =
+    minExp.days * 24 * 60 + minExp.hours * 60 + minExp.minutes;
+  const maxTotalMinutes =
+    maxExp.days * 24 * 60 + maxExp.hours * 60 + maxExp.minutes;
+
+  if (minTotalMinutes > maxTotalMinutes) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+
+  const randomMinutes =
+    Math.floor(Math.random() * (maxTotalMinutes - minTotalMinutes + 1)) +
+    minTotalMinutes;
+
+  const days = Math.floor(randomMinutes / (24 * 60));
+  const hours = Math.floor((randomMinutes % (24 * 60)) / 60);
+  const minutes = randomMinutes % 60;
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds: 0,
+  };
+};
+
+export const isExpirationTimeValid = (minExp, maxExp) => {
+  const minTotalMinutes =
+    minExp.days * 24 * 60 + minExp.hours * 60 + minExp.minutes;
+  const maxTotalMinutes =
+    maxExp.days * 24 * 60 + maxExp.hours * 60 + maxExp.minutes;
+
+  if (minTotalMinutes > maxTotalMinutes) return false;
+  return true;
 };

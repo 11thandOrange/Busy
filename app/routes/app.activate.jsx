@@ -32,8 +32,7 @@ import db from '../db.server'
       });
   
       if (existingMerchant) {
-        console.log(appId)
-        console.log(enable)
+  
         const updatedApp = await db.merchant.update({
           where: {
             id: existingMerchant.id,

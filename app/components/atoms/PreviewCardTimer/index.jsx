@@ -2,10 +2,14 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   fetchDateTimeFromString,
   fetchTimeObject,
+  pickRandomTime,
   startCountdown,
 } from "../../../utils/clientFunctions";
 import "./style.css";
-import { COUNTDOWN_TIMER_DISPLAY_FORMAT } from "../../../constants/countdownTimerCustomization";
+import {
+  COUNTDOWN_TIMER_DISPLAY_FORMAT,
+  COUNTDOWN_TIMER_STATE,
+} from "../../../constants/countdownTimerCustomization";
 import MinimalistCountdown from "../displayTimers/MinimalistCountdown";
 import ModernsCountdown from "../displayTimers/ModernsCountdown";
 import HexagonCountdown from "../displayTimers/HexagonCountdown";
@@ -16,7 +20,8 @@ import ClassicTimer from "../displayTimers/ClassicTimer";
 
 const PreviewCardTimer = ({ settingsState }) => {
   const { settings, display } = settingsState;
-  const { countDownStartAt, countDownEndsAt } = settings;
+  const { countDownStartAt, countDownEndsAt, status, minExpTime, maxExpTime } =
+    settings;
   const { title, timerAlignment, titleColor, digitsColor, theme } = display;
 
   const [timeLeft, setTimeLeft] = useState({
@@ -30,7 +35,9 @@ const PreviewCardTimer = ({ settingsState }) => {
   const timeObject = useMemo(() => {
     return fetchTimeObject(countDownStartAt, countDownEndsAt);
   }, [countDownStartAt, countDownEndsAt]);
-
+  const randomTimeobject = useMemo(() => {
+    return pickRandomTime(minExpTime, maxExpTime);
+  }, [minExpTime, maxExpTime]);
   useEffect(() => {
     const updateCallback = (timeObject) => setTimeLeft(timeObject);
     const finishCallback = () => {
@@ -44,13 +51,24 @@ const PreviewCardTimer = ({ settingsState }) => {
     };
 
     let interval = null;
-    if (countDownStartAt && countDownEndsAt) {
-      setIsFinished(false);
-      interval = startCountdown(timeObject, updateCallback, finishCallback);
+    if (status == COUNTDOWN_TIMER_STATE.FIX_END_DATE) {
+      if (countDownStartAt && countDownEndsAt) {
+        setIsFinished(false);
+        interval = startCountdown(timeObject, updateCallback, finishCallback);
+      }
+    } else if (status == COUNTDOWN_TIMER_STATE.EVERGREEN) {
+      if (minExpTime && maxExpTime) {
+        setIsFinished(false);
+        interval = startCountdown(
+          randomTimeobject,
+          updateCallback,
+          finishCallback,
+        );
+      }
     }
 
     return () => clearInterval(interval);
-  }, [countDownStartAt, countDownEndsAt]);
+  }, [countDownStartAt, countDownEndsAt, minExpTime, maxExpTime, status]);
 
   const renderCountdown = useCallback(() => {
     const timeUnits = [
@@ -92,7 +110,7 @@ const PreviewCardTimer = ({ settingsState }) => {
     }
   }, [theme, settingsState, timeLeft]);
 
-  console.log("TEST", display.margin.top.value);
+
 
   return (
     <div
