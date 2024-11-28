@@ -9,7 +9,10 @@ import { APP_TYPE } from "../../../utils/constants";
 import "./style.css";
 import { CUSTOMIZATON_INITIAL_STATE } from "../../../constants/countdownTimerCustomization";
 import ManageDataChange from "../ManageDataChange";
-const CountDownTimerCustomization = ({ announcementBarType }) => {
+const   CountDownTimerCustomization = ({
+  announcementBarType,
+  colorTheme = COLOR_THEME.LIGHT,
+}) => {
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
@@ -50,6 +53,7 @@ const CountDownTimerCustomization = ({ announcementBarType }) => {
           settingsState={settingsState}
           announcementBarType={announcementBarType}
           appType={APP_TYPE.COUNTDOWN_TIMER}
+          colorTheme={colorTheme}
         ></ProductPreviewCard>
       </div>
     </div>

@@ -26,7 +26,6 @@ const PreviewCardTimer = ({ settingsState }) => {
     remainingSeconds: 0,
   });
   const [isFinished, setIsFinished] = useState(false);
- 
 
   const timeObject = useMemo(() => {
     return fetchTimeObject(countDownStartAt, countDownEndsAt);
@@ -54,18 +53,19 @@ const PreviewCardTimer = ({ settingsState }) => {
   }, [countDownStartAt, countDownEndsAt]);
 
   const renderCountdown = useCallback(() => {
+    const timeUnits = [
+      { label: "days", value: timeLeft.remainingDays },
+      { label: "hours", value: timeLeft.remainingHours },
+      { label: "minutes", value: timeLeft.remainingMinutes },
+      { label: "seconds", value: timeLeft.remainingSeconds },
+    ];
     const commonProps = {
-      days: timeLeft.remainingDays,
-      hours: timeLeft.remainingHours,
-      minutes: timeLeft.remainingMinutes,
-      seconds: timeLeft.remainingSeconds,
+      timeUnits,
       settingsState: settingsState,
     };
     switch (theme) {
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC:
-        return (
-         <ClassicTimer {...commonProps}></ClassicTimer>
-        );
+        return <ClassicTimer {...commonProps}></ClassicTimer>;
 
       case COUNTDOWN_TIMER_DISPLAY_FORMAT.HEXAGON_TIMER:
         return <HexagonCountdown {...commonProps}></HexagonCountdown>;
@@ -92,18 +92,23 @@ const PreviewCardTimer = ({ settingsState }) => {
     }
   }, [theme, settingsState, timeLeft]);
 
-  console.log("TEST",display.margin.top.value);
-  
+  console.log("TEST", display.margin.top.value);
+
   return (
     <div
-      style={{marginTop:`${display.margin.top.value}${display.margin.top.unit}`,marginBottom:`${display.margin.bottom.value}${display.margin.bottom.unit}`}}
+      style={{
+        marginTop: `${display.margin.top.value}${display.margin.top.unit}`,
+        marginBottom: `${display.margin.bottom.value}${display.margin.bottom.unit}`,
+      }}
       className={`preview-card-container timer ${timerAlignment} ${
         theme !== COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC
           ? "align-column"
           : "align-row"
       }`}
     >
-      <div className="main-countdownt-title" style={{ color: titleColor }}>{title}</div>
+      <div className="main-countdownt-title" style={{ color: titleColor }}>
+        {title}
+      </div>
       {renderCountdown()}
     </div>
   );

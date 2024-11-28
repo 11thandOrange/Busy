@@ -11,6 +11,7 @@ import sliderData from "../../../../data/sliderData.json";
 // import { useFetcher } from "@remix-run/react";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
+import { COLOR_THEME } from "../../../../constants/announcementCustomizationConfig";
 
 // export async function loader({ request }) {
 //   const { session } = await authenticate.admin(request);
@@ -69,7 +70,11 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CountDownTimerCustomization></CountDownTimerCustomization>,
+      component: (
+        <CountDownTimerCustomization
+          colorTheme={COLOR_THEME.LIGHT}
+        ></CountDownTimerCustomization>
+      ),
     },
   ];
 
@@ -88,7 +93,6 @@ const route = () => {
 
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
-        
         onCustomizeBtnClick={() => {
           console.log("On customize button click");
           setSelectedTab(1);
