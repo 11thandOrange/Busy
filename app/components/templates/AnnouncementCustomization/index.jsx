@@ -12,9 +12,7 @@ import GeneralSettings from "../../atoms/GeneralSettings/announcementBars/Text";
 import {
   ANNOUNCEMENT_BAR_INITIAL_STATE,
   ANNOUNCEMENT_BAR_TYPES,
-
   COLOR_THEME,
-
   SETTINGS_INITIAL_STATE,
   STATUS,
 } from "../../../constants/announcementCustomizationConfig";
@@ -25,6 +23,7 @@ import EmailCaptureSettings from "../../atoms/generalSettings/announcementBars/E
 import {
   hasChanges,
   updateSettingsState,
+  isLoading,
 } from "../../../utils/clientFunctions";
 import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
@@ -33,7 +32,7 @@ import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import GoBack from "../../atoms/GoBack";
- 
+import { useNavigate } from "@remix-run/react";
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
   { label: "Inactive", value: STATUS.INACTIVE },
@@ -44,18 +43,16 @@ const AnnouncementCustomization = ({
   header = "Customization",
   backActionRoute = ROUTES.APPS,
   initialData,
-  colorTheme=COLOR_THEME.LIGHT
+  colorTheme = COLOR_THEME.LIGHT,
 }) => {
+  const navigate = useNavigate();
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
     ...SETTINGS_INITIAL_STATE,
     ...generalSettings,
   });
-  const prevSettingsState = useRef({
-    ...SETTINGS_INITIAL_STATE,
-    ...generalSettings,
-  });
+  const prevSettingsState = useRef({});
 
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {
@@ -104,8 +101,6 @@ const AnnouncementCustomization = ({
     if (initialData) {
       setSettingsState(initialData);
       prevSettingsState.current = initialData;
-      console.log("initial data",initialData);
-      
     }
   }, [initialData]);
 
@@ -147,24 +142,29 @@ const AnnouncementCustomization = ({
     }
   };
 
-
-  
-  
   return (
     <div>
-      <GoBack heading={header}/>
+      {/* <GoBack heading={header}/> */}
       <Page
-        // backAction={{ content: "Settings", url: backActionRoute }}
-        // title={header}
-        // primaryAction={<ActiveButton></ActiveButton>}
+      // backAction={{ content: "Settings", url: backActionRoute }}
+      // title={header}
+      // primaryAction={<ActiveButton></ActiveButton>}
       >
         <div className="customization-container">
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
-            handleSaveChanges={handleOnSave}
+            handleSaveChanges={() => {
+              handleOnSave();
+              if (!isLoading(fetcher.state)) {
+                navigate(-1);
+              }
+            }}
             handleDiscardChanges={() => {
-              setSettingsState(prevSettingsState.current);
+              if (Object.keys(prevSettingsState.current).length > 0) {
+                setSettingsState(prevSettingsState.current);
+              }
+              navigate(-1);
             }}
             fetcherState={fetcher.state}
           />

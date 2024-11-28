@@ -14,16 +14,18 @@ const ManageDataChange = ({
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
-
+ 
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
 
-
   return (
     <>
       <UnsavedChangesBar
-        saveActionButtonClick={handleSaveChanges}
+        saveActionButtonClick={() => {
+          handleSaveChanges();
+         
+        }}
         discardActionButtonClick={() => {
           setOnDiscardChanges(true);
         }}
@@ -37,6 +39,7 @@ const ManageDataChange = ({
         primaryActionClick={() => {
           setOnDiscardChanges(false);
           handleDiscardChanges();
+       
         }}
       />
     </>
