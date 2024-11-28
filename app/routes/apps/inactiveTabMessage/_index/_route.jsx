@@ -54,33 +54,16 @@ export async function action({ request }) {
 
 const route = () => {
   const inActiveTabData = useLoaderData();
- 
 
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const isAppActive = inActiveTabData.app_active;
- 
+
   const tabs = [
     {
       id: "Overview-1",
       content: "Overview",
-      component: (
-        <HomepageSlider
-          selectedType={selectedType}
-          setSelectedType={(type) => {
-            setSelectedType(type);
-            console.log("Selected Type", type);
-
-            // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
-          }}
-          showCustomizeBtn={true}
-          sliderData={sliderData}
-          onCustomizeBtnClick={() => {
-            console.log("On customize button click");
-            setSelectedTab(1);
-          }}
-        />
-      ),
+      component: <HomepageSlider sliderData={sliderData} />,
     },
     {
       id: "Settings-1",
@@ -101,7 +84,18 @@ const route = () => {
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         isAppActive={isAppActive}
+        selectedType={selectedType}
+        setSelectedType={(type) => {
+          setSelectedType(type);
+          console.log("Selected Type", type);
+
+          // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
+        }}
        
+        onCustomizeBtnClick={() => {
+          console.log("On customize button click");
+          setSelectedTab(1);
+        }}
       >
         {tabs[selectedTab].component}
       </Homepage>

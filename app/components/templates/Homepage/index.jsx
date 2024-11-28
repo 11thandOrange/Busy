@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useState, useCallback } from "react";
 import "./homepage.css";
 import ActiveButton from "../../atoms/ActiveButton";
+import HomepageDetails from "../../atoms/HomepageDetails";
 
 function Homepage({
   children,
@@ -13,6 +14,11 @@ function Homepage({
   selectedTab = 0,
   isAppActive = false,
   handleAppActive = () => {},
+  selectedType,
+  setSelectedType,
+  showPopOver = false,
+  showCustomizeBtn = false,
+  onCustomizeBtnClick = () => {},
 }) {
   const handleTabChange = useCallback((selectedTabIndex) => {
     onTabChange(selectedTabIndex);
@@ -27,13 +33,15 @@ function Homepage({
       <Page
         backAction={{ content: "Settings", url: "/apps" }}
         title={header}
-        primaryAction={
-          <ActiveButton
-            isAppActive={isAppActive}
-         
-          ></ActiveButton>
-        }
+        primaryAction={<ActiveButton isAppActive={isAppActive}></ActiveButton>}
       >
+        <HomepageDetails
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
+          showPopOver={showPopOver}
+          showCustomizeBtn={showCustomizeBtn}
+          onCustomizeBtnClick={onCustomizeBtnClick}
+        ></HomepageDetails>
         <LegacyTabs
           tabs={tabs}
           selected={selectedTab}

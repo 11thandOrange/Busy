@@ -76,7 +76,7 @@ const route = () => {
   return (
     <>
       <Homepage
-        header="Countdown Timer"
+        header="Cart Notice"
         tabs={tabs}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
