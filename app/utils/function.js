@@ -166,7 +166,6 @@ export const getAnnouncementBar = async (shop) => {
       updatedAt: 'desc',
     },
   });
-  console.log(announcement_bar)
 
   if (announcement_bar && announcement_bar.status) {
     announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
@@ -174,6 +173,7 @@ export const getAnnouncementBar = async (shop) => {
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
     script = `
+     
       const announcementBar = document.createElement('div');
       announcementBar.classList.add('busy-buddy-announcement-bar');
       announcementBar.id = 'busyBuddyAnnouncementBar'; 
@@ -185,7 +185,6 @@ export const getAnnouncementBar = async (shop) => {
       announcementBar.style.position = 'relative'; /* Ensure space for the close button */
     `;
     
-    // Close button creation
     if(await check_enable_button(shop))
     {
         script += `
@@ -211,8 +210,7 @@ export const getAnnouncementBar = async (shop) => {
       const messageDiv = document.createElement('div');
       announcementBar.appendChild(messageDiv);
     `;
-    
-    // Display the message
+  
     if (announcement_bar.type == 1) {
       script += `
         messageDiv.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";
@@ -249,12 +247,38 @@ export const getAnnouncementBar = async (shop) => {
     {
       const order_count = await getOrderCounter(shop);
       script += `
-        messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
+      messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
     }
     if(announcement_bar.type == 4)
     {
       const shipping_rule = await getShippingRule(shop);
-      console.log(shipping_rule);
+      const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
+      const price = getDomestingShipping.price_based_shipping_rates;
+      const free_price = price.find((pr)=> pr.price == 0);
+      if(free_price.min_order_subtotal != null)
+      {
+        script +=  `let shipping_price = ${free_price.min_order_subtotal}
+                    get_cart_total(function(price){
+                   
+                      if(price == 0)
+                      {
+                        messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";
+                      }
+                      else if(price!=0 && price < shipping_price)
+                      {
+                        let difference = price - shipping_price
+                        let message_content = "${announcement_bar.general_setting.shipping_process_message}"
+                        messageDiv.textContent = message_content.replace('#amount#', difference);
+                      }
+                      else
+                      {
+                        messageDiv.textContent = "${announcement_bar.general_setting.shipping_complete_message}";
+                      }
+      })
+        `;
+        script += `
+        let shipping_message = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";`;
+      }
     }
 
     if (announcement_bar.theme_style?.id == 1) {
@@ -555,23 +579,13 @@ export const storefront_api = async (shop, url, method, query=null) => {
 }
 export const getShippingRule = async(shop)=>{
   const shipping_rule = await storefront_api(shop, `https://${shop}/admin/api/2024-04/shipping_zones.json`, 'GET');
-  console.log(shipping_rule.data.shipping_zones)
   return shipping_rule.data.shipping_zones;
 }
 export const getOrderCounter = async(shop)=>{
-  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/graphql.json`, 'POST', JSON.stringify({
-    query: `
-      query OrdersCount {
-      ordersCount(query:"fulfillment_status:fulfilled") {
-      count
-      precision,
-    },
- 
-}`
-  }));
+  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?status=any`, 'GET');
   if(order_count.success)
   {
-    return order_count.data.data.ordersCount.count;
+    return order_count.data.count;
   }
   return 0;
 }
