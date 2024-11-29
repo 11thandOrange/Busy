@@ -5,7 +5,7 @@ import CountdownTimerSettings from "../../atoms/CountdownTimerSettings";
 import { Card } from "@shopify/polaris";
 import Selector from "../../atoms/Selector";
 import SettingsDisplay from "../SettingsDisplay";
-import { APP_TYPE } from "../../../utils/constants";
+import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import "./style.css";
 import {
   COUNTDOWN_ERROR_STATE,
@@ -14,10 +14,12 @@ import {
 } from "../../../constants/countdownTimerCustomization";
 import ManageDataChange from "../ManageDataChange";
 import { checkError, updateState } from "../../../utils/clientFunctions";
+import { useFetcher } from "@remix-run/react";
 const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
+  const fetcher = useFetcher();
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
@@ -25,6 +27,16 @@ const CountDownTimerCustomization = ({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
   const handleOnSave = () => {
+    fetcher.submit(
+      {
+        settings: JSON.stringify(settingsState.settings),
+        display: JSON.stringify(settingsState.display),
+      },
+      {
+        method: "POST",
+        action: ROUTES.COUNTDOWN_TIMER,
+      },
+    );
     prevSettingsState.current = { ...settingsState };
   };
 
@@ -47,7 +59,7 @@ const CountDownTimerCustomization = ({
         handleDiscardChanges={() => {
           setSettingsState(prevSettingsState.current);
         }}
-        // fetcherState={fetcher.state}
+        fetcherState={fetcher.state}
         isError={checkError(error)}
       />
       <div className="customization-left-section">

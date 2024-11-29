@@ -88,8 +88,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
   [ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING]: {
     generalSettings: {
       message: "Free shipping for orders over #amount#.",
-      progressMessage: "",
-      finalMessage: "",
+      progressMessage: "Only #amount# away from free shipping.",
+      finalMessage: "Congratulations! You've got free shipping.",
     },
   },
   [ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER]: {

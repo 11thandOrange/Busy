@@ -16,14 +16,32 @@ const FreeShippingSettings = ({ setSettingsState, settingsState }) => {
         }}
       ></CustomTextField>
       <CustomTextField
-        value={"Only #amount# away from free shipping."}
+        value={settingsState.generalSettings.progressMessage}
         type="text"
         label="Progress Message"
+        onValueChange={(value) => {
+          setSettingsState((prevState) => {
+            return updateState(
+              "generalSettings.progressMessage",
+              value,
+              prevState,
+            );
+          });
+        }}
       ></CustomTextField>
       <CustomTextField
-        value={"Congratulations! You've got free shipping."}
+        value={settingsState.generalSettings.finalMessage}
         type="text"
         label="Message"
+        onValueChange={(value) => {
+          setSettingsState((prevState) => {
+            return updateState(
+              "generalSettings.finalMessage",
+              value,
+              prevState,
+            );
+          });
+        }}
       ></CustomTextField>
     </div>
   );
