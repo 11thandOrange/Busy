@@ -1,6 +1,6 @@
 import React from "react";
 import CustomTextField from "../../../CustomTextField";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
+import { updateState } from "../../../../../utils/clientFunctions";
 
 const OrderCounterSettings = ({ setSettingsState, settingsState }) => {
   return (
@@ -12,10 +12,10 @@ const OrderCounterSettings = ({ setSettingsState, settingsState }) => {
         disabled={true}
       ></CustomTextField>
       <CustomTextField
-        value={ settingsState.generalSettings.message}
+        value={settingsState.generalSettings.message}
         onValueChange={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("generalSettings.message", value, prevState),
+            updateState("generalSettings.message", value, prevState),
           );
         }}
         type="text"

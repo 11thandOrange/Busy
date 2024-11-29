@@ -7,7 +7,7 @@ import {
   COUNTDOWN_TIMER_DISPLAY_FORMAT,
   TIMER_ALIGNMENT_OPTIONS,
 } from "../../../constants/countdownTimerCustomization";
-import { updateSettingsState } from "../../../utils/clientFunctions";
+import { updateState } from "../../../utils/clientFunctions";
 import "./style.css";
 import InputWithSelector from "../../atoms/InputWithSelector";
 
@@ -20,9 +20,8 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
   );
 
   const handleSelectChange = (key, value) => {
-    setSettingsState((prevState) => updateSettingsState(key, value, prevState));
+    setSettingsState((prevState) => updateState(key, value, prevState));
   };
-  
 
   const options = [
     { label: "Classic", value: COUNTDOWN_TIMER_DISPLAY_FORMAT.CLASSIC },
@@ -131,8 +130,10 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
 
       <Checkbox
         label="Only show the countdown timer for products that are currently discounted"
-        checked={checked}
-        onChange={handleCheckboxChange}
+        checked={settingsState.display.timerForDiscountedProducts}
+        onChange={(value) => {
+          handleSelectChange("display.timerForDiscountedProducts", value);
+        }}
       />
 
       <div className="display-child">
@@ -143,6 +144,7 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
           onSelect={(value) => {
             handleSelectChange("display.theme", value);
           }}
+          initialValue={settingsState.display.theme}
         />
       </div>
 
@@ -186,28 +188,28 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
         {renderColorPallete()}
 
         <div className="input-selector-container">
-         <span>margin</span> 
-        <InputWithSelector
-          inputType="number"
-          title="Bottom"
-          inputValue={settingsState.display.margin.bottom.value}
-          unitValue={settingsState.display.margin.bottom.unit}
-          onValueChange={(value, unit) => {
-            handleSelectChange("display.margin.bottom.value", value);
-            handleSelectChange("display.margin.bottom.unit", unit);
-          }}
-        ></InputWithSelector>
-        <InputWithSelector
-          inputType="number"
-          title="Top"
-          inputValue={settingsState.display.margin.top.value}
-          unitValue={settingsState.display.margin.top.unit}
-          onValueChange={(value, unit) => {
-            handleSelectChange("display.margin.top.value", value);
-            handleSelectChange("display.margin.top.unit", unit);
-          }}
+          <span>margin</span>
+          <InputWithSelector
+            inputType="number"
+            title="Bottom"
+            inputValue={settingsState.display.margin.bottom.value}
+            unitValue={settingsState.display.margin.bottom.unit}
+            onValueChange={(value, unit) => {
+              handleSelectChange("display.margin.bottom.value", value);
+              handleSelectChange("display.margin.bottom.unit", unit);
+            }}
           ></InputWithSelector>
-          </div>
+          <InputWithSelector
+            inputType="number"
+            title="Top"
+            inputValue={settingsState.display.margin.top.value}
+            unitValue={settingsState.display.margin.top.unit}
+            onValueChange={(value, unit) => {
+              handleSelectChange("display.margin.top.value", value);
+              handleSelectChange("display.margin.top.unit", unit);
+            }}
+          ></InputWithSelector>
+        </div>
       </div>
 
       {/* <InputWithSelector

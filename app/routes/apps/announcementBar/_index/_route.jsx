@@ -191,12 +191,9 @@ const route = () => {
   console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
-  const fetcher = useFetcher();
   const announcementBarsData = announcementData.announcement_bars;
-
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
-
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
@@ -206,17 +203,15 @@ const route = () => {
       content: "Overview",
       component: (
         <HomepageSlider
-          selectedType={selectedType}
-          setSelectedType={(type) => {
-            setSelectedType(type);
-            console.log("Selected Type", type);
-
-            navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
-          }}
           sliderData={sliderData}
-          showPopOver={true}
+          // showPopOver={true}
         />
       ),
+    },
+    {
+      id: "Announcement-bars-1",
+      content: "Create Announcement Bar",
+      component: <CheckBars barsData={announcementBarsData} />,
     },
     {
       id: "Settings-1",
@@ -225,11 +220,7 @@ const route = () => {
         <AnnouncementSettings initialData={announcementBarsSettings} />
       ),
     },
-    {
-      id: "Announcement-bars-1",
-      content: "Announcement Bars",
-      component: <CheckBars barsData={announcementBarsData} />,
-    },
+
     {
       id: "announcement-bars-analytics",
       content: "Analytics",
@@ -237,25 +228,12 @@ const route = () => {
     },
   ];
 
-  useEffect(() => {
-    // Set default tab to Announcement Bars tab if there are are announcement bars present
-    if (announcementBarsData && announcementBarsData.length > 0) {
-      setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
-    }
-  }, [announcementBarsData]);
-
-  const handleAppActive = (isActive) => {
-    fetcher.submit(
-      {
-        isActive,
-        appId: id,
-      },
-      {
-        method: "POST",
-        action: "/app/activate",
-      },
-    );
-  };
+  // useEffect(() => {
+  //   // Set default tab to Announcement Bars tab if there are are announcement bars present
+  //   if (announcementBarsData && announcementBarsData.length > 0) {
+  //     setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
+  //   }
+  // }, [announcementBarsData]);
 
   return (
     <>
@@ -265,7 +243,13 @@ const route = () => {
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         isAppActive={isAppActive}
-        handleAppActive={handleAppActive}
+        selectedType={selectedType}
+        setSelectedType={(type) => {
+          setSelectedType(type);
+          console.log("Selected Type", type);
+
+          navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
+        }}
       >
         {tabs[selectedTab].component}
       </Homepage>

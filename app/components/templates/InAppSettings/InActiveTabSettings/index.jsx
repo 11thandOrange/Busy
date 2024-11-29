@@ -19,7 +19,7 @@ const InActiveTabSettings = ({ initialData }) => {
   });
   useEffect(() => {
     if (initialData) {
-      const data = { enableCloseButton: initialData.message };
+      const data = { message: initialData.message };
       setSettings(data);
       oldSettingRef.current = data;
     }
@@ -28,10 +28,9 @@ const InActiveTabSettings = ({ initialData }) => {
   const handleSaveSettingsData = () => {
     fetcher.submit(
       {
-        enable_close_button: settings.enableCloseButton,
-        _action: "SETTING_CREATE",
+        message: settings.message,
       },
-      { method: "POST", action: ROUTES.ANNOUNCEMENT_OVERVIEW },
+      { method: "POST", action: ROUTES.INACTIVE_TAB },
     );
   };
 
@@ -62,7 +61,7 @@ const InActiveTabSettings = ({ initialData }) => {
             }
             label={"Message"}
             type={"text"}
-            value={"Don't forget this..."}
+            value={settings.message}
             onValueChange={(value) => updateCustomization("message", value)}
           ></CustomTextField>
         </SettingSection>

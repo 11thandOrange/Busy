@@ -3,8 +3,11 @@ import CustomTextField from "../../../CustomTextField";
 import { Text } from "@shopify/polaris";
 import "./style.css";
 import DatePicker from "../../../DatePicker";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
-const GeneralSettings = ({ setSettingsState,settingsState={settingsState}  }) => {
+import { updateState } from "../../../../../utils/clientFunctions";
+const GeneralSettings = ({
+  setSettingsState,
+  settingsState = { settingsState },
+}) => {
   return (
     <div>
       <CustomTextField
@@ -12,7 +15,7 @@ const GeneralSettings = ({ setSettingsState,settingsState={settingsState}  }) =>
         label="Message"
         onValueChange={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("generalSettings.message", value, prevState),
+            updateState("generalSettings.message", value, prevState),
           );
         }}
         value={settingsState.generalSettings.message}

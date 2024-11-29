@@ -1,5 +1,5 @@
 console.log('Script Added ML3')
-const baseUrl = 'https://host-motel-exchanges-evident.trycloudflare.com';
+const baseUrl = 'https://adopt-ship-hat-chest.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;

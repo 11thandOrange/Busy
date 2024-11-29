@@ -11,9 +11,10 @@ import PopoverContent from "../PopoverContent";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import DynamicEmptyState from "../../atoms/DynamicEmptyState";
-import { formatDateAndTime } from "../../../utils/clientFunctions";
+import { formatDateAndTime, isLoading } from "../../../utils/clientFunctions";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { ROUTES } from "../../../utils/constants";
+import SpinnerExample from "../../atoms/Spinner";
 
 const barState = {
   ACTIVE: "success",
@@ -41,7 +42,6 @@ function CheckBars({ barsData = [] }) {
     {
       content: "Delete",
       onAction: () => setConfirmDelete(true),
-    
     },
   ];
 
@@ -71,7 +71,7 @@ function CheckBars({ barsData = [] }) {
             >
               {status ? "Active" : "Inactive"}
             </Badge>
-            <p>{JSON.parse(general_setting).message}</p>
+            <p>{JSON.parse(general_setting).message || "Description"}</p>
           </div>
         </IndexTable.Cell>
         <Text as="span" alignment="end" numeric>
@@ -95,59 +95,55 @@ function CheckBars({ barsData = [] }) {
 
   return (
     <LegacyCard>
-      {
-        <>
-          <IndexTable
-            resourceName={resourceName}
-            itemCount={barsData?.length}
-            selectedItemsCount={selectedResources.length}
-            emptyState={
-              <div className="bb-announcement-wrapper">
-                <DynamicEmptyState
-                  heading="Create your first Announcement Bar"
-                  description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
-                  actionContent={
-                    <PopoverContent
-                      options={announcementPopoverData}
-                      heading="Create Announcement Bar"
-                      onSelect={handleCreateClick}
-                    />
-                  }
-                  actionCallback={() => {}}
+      <IndexTable
+        resourceName={resourceName}
+        itemCount={barsData?.length}
+        selectedItemsCount={selectedResources.length}
+        emptyState={
+          <div className="bb-announcement-wrapper">
+            <DynamicEmptyState
+              heading="Create your first Announcement Bar"
+              description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
+              actionContent={
+                <PopoverContent
+                  options={announcementPopoverData}
+                  heading="Create Announcement Bar"
+                  onSelect={handleCreateClick}
                 />
-              </div>
-            }
-            selectable={true}
-            onSelectionChange={handleSelectionChange}
-            headings={[
-              { title: `Showing ${barsData?.length} announcement bar(s)` },
-            ]}
-            promotedBulkActions={promotedBulkActions}
-          >
-            {rowMarkup}
-          </IndexTable>
-
-          <div style={{ position: "absolute", top: "4px", right: "10px" }}>
-            {barsData?.length > 0 && (
-              <PopoverContent
-                options={announcementPopoverData}
-                heading="Create"
-                onSelect={handleCreateClick}
-              />
-            )}
-            <DiscardChangesConfirmationPopup
-              active={confirmDelete}
-              toggleModal={() => setConfirmDelete(false)}
-              primaryActionClick={handleDeleteConfirm}
-              secondaryActionContent="Close"
-              primaryActionContent="Delete"
-              mainContent="This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?"
-              title={`Delete ${selectedResources.length} item(s)?`}
-              fetcherState={fetcher.state}
+              }
+              actionCallback={() => {}}
             />
           </div>
-        </>
-      }
+        }
+        selectable={true}
+        onSelectionChange={handleSelectionChange}
+        headings={[
+          { title: `Showing ${barsData?.length} announcement bar(s)` },
+        ]}
+        promotedBulkActions={promotedBulkActions}
+      >
+        {rowMarkup}
+      </IndexTable>
+      <div style={{ position: "absolute", top: "4px", right: "10px" }}>
+        {barsData?.length > 0 && (
+          <PopoverContent
+            options={announcementPopoverData}
+            heading="Create"
+            onSelect={handleCreateClick}
+          />
+        )}
+        <DiscardChangesConfirmationPopup
+          active={confirmDelete}
+          toggleModal={() => setConfirmDelete(false)}
+          primaryActionClick={handleDeleteConfirm}
+          secondaryActionContent="Close"
+          primaryActionContent="Delete"
+          mainContent="This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?"
+          title={`Delete ${selectedResources.length} item(s)?`}
+          fetcherState={fetcher.state}
+        />
+      </div>
+      {isLoading(fetcher.state) && <SpinnerExample></SpinnerExample>}
     </LegacyCard>
   );
 }

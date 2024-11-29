@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { TextField } from "@shopify/polaris";
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 function CustomTextField({
   type,
@@ -13,13 +13,10 @@ function CustomTextField({
   disabled = false,
   min,
   errorMessage = false,
+  max,
+  maxLength = 20,
 }) {
-  const [textFieldValue, setTextFieldValue] = useState(value);
-  useEffect(() => {
-    setTextFieldValue(value);
-  }, [value]);
   const handleTextFieldChange = useCallback((value) => {
-    setTextFieldValue(value);
     onValueChange(value);
   }, []);
 
@@ -28,13 +25,15 @@ function CustomTextField({
       <TextField
         label={label}
         type={type}
-        value={textFieldValue}
+        value={value}
         onChange={handleTextFieldChange}
         helpText={helpText}
         placeholder={value}
         disabled={disabled}
-        {...(min !== undefined ? { min } : {})} //Temp
+        {...(min !== undefined ? { min } : {})}
+        {...(max !== undefined ? { max } : {})}
         error={errorMessage}
+        maxLength={maxLength}
       />
     </>
   );

@@ -244,43 +244,40 @@ export const getAnnouncementBar = async (shop) => {
       `;
     }
     if(announcement_bar.type == 3)
+      {
+        const shipping_rule = await getShippingRule(shop);
+        const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
+        const price = getDomestingShipping.price_based_shipping_rates;
+        const free_price = price.find((pr)=> pr.price == 0);
+        console.log('free price', free_price)
+        
+          script +=  `let shipping_price = ${free_price.min_order_subtotal}
+                      get_cart_total(function(price){
+                      console.log(price)
+                        if(price == 0)
+                        {
+                          messageDiv.textContent = "${announcement_bar.general_setting.initialMessage.replace('#amount#', free_price.min_order_subtotal)}";
+                        }
+                        else if(price!=0 && price < shipping_price)
+                        {
+                          let difference = price - shipping_price
+                          let message_content = "${announcement_bar.general_setting.progressMessage}"
+                          messageDiv.textContent = message_content.replace('#amount#', difference);
+                        }
+                        else
+                        {
+                          messageDiv.textContent = "${announcement_bar.general_setting.message}";
+                        }
+        })
+          `;
+        
+      }
+    if(announcement_bar.type == 4)
     {
       const order_count = await getOrderCounter(shop);
       script += `
       messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
     }
-    if(announcement_bar.type == 4)
-    {
-      const shipping_rule = await getShippingRule(shop);
-      const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
-      const price = getDomestingShipping.price_based_shipping_rates;
-      const free_price = price.find((pr)=> pr.price == 0);
-      if(free_price.min_order_subtotal != null)
-      {
-        script +=  `let shipping_price = ${free_price.min_order_subtotal}
-                    get_cart_total(function(price){
-                   
-                      if(price == 0)
-                      {
-                        messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";
-                      }
-                      else if(price!=0 && price < shipping_price)
-                      {
-                        let difference = price - shipping_price
-                        let message_content = "${announcement_bar.general_setting.shipping_process_message}"
-                        messageDiv.textContent = message_content.replace('#amount#', difference);
-                      }
-                      else
-                      {
-                        messageDiv.textContent = "${announcement_bar.general_setting.shipping_complete_message}";
-                      }
-      })
-        `;
-        script += `
-        let shipping_message = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";`;
-      }
-    }
-
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
                   announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`

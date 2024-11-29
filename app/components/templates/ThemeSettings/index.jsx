@@ -6,7 +6,7 @@ import {
   THEME_SETTINGS_STATUS,
   ThemeStyleGridType,
 } from "../../../constants/announcementCustomizationConfig";
-import { updateSettingsState } from "../../../utils/clientFunctions";
+import { updateState } from "../../../utils/clientFunctions";
 
 const ThemeSettings = ({ setSettingsState, settingsState }) => {
   const themeOptions = [
@@ -24,7 +24,7 @@ const ThemeSettings = ({ setSettingsState, settingsState }) => {
       <Selector
         onSelect={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("themeSettings.status", value, prevState),
+            updateState("themeSettings.status", value, prevState),
           );
         }}
         options={themeOptions}
@@ -39,11 +39,7 @@ const ThemeSettings = ({ setSettingsState, settingsState }) => {
             colorHeading={"Background Color"}
             onColorChange={(color) => {
               setSettingsState((prevState) =>
-                updateSettingsState(
-                  "themeSettings.backgroundColor",
-                  color,
-                  prevState,
-                ),
+                updateState("themeSettings.backgroundColor", color, prevState),
               );
             }}
             initialColor={settingsState.themeSettings.backgroundColor}
@@ -53,16 +49,11 @@ const ThemeSettings = ({ setSettingsState, settingsState }) => {
             colorHeading={"Text Color"}
             onColorChange={(color) => {
               setSettingsState((prevState) =>
-                updateSettingsState(
-                  "themeSettings.textColor",
-                  color,
-                  prevState,
-                ),
+                updateState("themeSettings.textColor", color, prevState),
               );
             }}
             initialColor={settingsState.themeSettings.textColor}
           ></CustomColorPallete>
-          
         </div>
       )}
     </div>

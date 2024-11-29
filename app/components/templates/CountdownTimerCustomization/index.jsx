@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProductPreviewCard from "../ProductPreviewCard";
 import CountdownTimerSettings from "../../atoms/CountdownTimerSettings";
 
@@ -7,17 +7,45 @@ import Selector from "../../atoms/Selector";
 import SettingsDisplay from "../SettingsDisplay";
 import { APP_TYPE } from "../../../utils/constants";
 import "./style.css";
-import { CUSTOMIZATON_INITIAL_STATE } from "../../../constants/countdownTimerCustomization";
-const CountDownTimerCustomization = ({ announcementBarType }) => {
+import {
+  COUNTDOWN_ERROR_STATE,
+  CUSTOMIZATON_INITIAL_STATE,
+} from "../../../constants/countdownTimerCustomization";
+import ManageDataChange from "../ManageDataChange";
+import { checkError } from "../../../utils/clientFunctions";
+const CountDownTimerCustomization = ({
+  announcementBarType,
+  colorTheme = COLOR_THEME.LIGHT,
+}) => {
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
+  const prevSettingsState = useRef({
+    ...CUSTOMIZATON_INITIAL_STATE,
+  });
+  const [error, setError] = useState({ ...COUNTDOWN_ERROR_STATE });
+  const handleOnSave = () => {
+    prevSettingsState.current = { ...settingsState };
+  };
+
 
   return (
     <div className="customization-container">
+      <ManageDataChange
+        newState={settingsState}
+        prevState={prevSettingsState.current}
+        handleSaveChanges={handleOnSave}
+        handleDiscardChanges={() => {
+          setSettingsState(prevSettingsState.current);
+        }}
+        // fetcherState={fetcher.state}
+        isError={checkError(error)}
+      />
       <div className="customization-left-section">
         <Card>
           <CountdownTimerSettings
+            setError={setError}
+            error={error}
             setSettingsState={setSettingsState}
             settingsState={settingsState}
           ></CountdownTimerSettings>
@@ -35,6 +63,7 @@ const CountDownTimerCustomization = ({ announcementBarType }) => {
           settingsState={settingsState}
           announcementBarType={announcementBarType}
           appType={APP_TYPE.COUNTDOWN_TIMER}
+          colorTheme={colorTheme}
         ></ProductPreviewCard>
       </div>
     </div>

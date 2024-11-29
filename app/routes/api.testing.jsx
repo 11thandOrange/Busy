@@ -11,15 +11,15 @@ export const loader = async ({ request }) => {
     const shop = session.shop;
     const appId = 1;
     let response;
-    console.log('new')
+ 
   if(!(await check_app_active(appId, shop)))
   {
-    console.log('back')
+  
     return json(response)
   }
   if(appId==1)
   {
-    console.log('run')
+   
     response = await getAnnouncementBar(shop);
   }
   else if(appId == 2)

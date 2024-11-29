@@ -3,57 +3,48 @@ import "./style.css";
 import CircularProgressBar from "../../CircularProgressBar";
 import useCountdownProgress from "../../../../hooks/useCountdownProgress";
 
-const ProgressCircleCountdown = ({
-  days,
-  hours,
-  minutes,
-  seconds,
-  settingsState,
-}) => {
+const ProgressCircleCountdown = ({ timeUnits, settingsState }) => {
   const { display, settings } = settingsState;
   const { countDownStartAt, countDownEndsAt } = settings;
   const { digitsColor, borderColor } = display;
   const { daysProgress, hoursProgress, minutesProgress, secondsProgress } =
     useCountdownProgress(countDownStartAt, countDownEndsAt, {
-      days,
-      hours,
-      minutes,
-      seconds,
+      days: timeUnits.find((unit) => unit.label === "days")?.value,
+      hours: timeUnits.find((unit) => unit.label === "hours")?.value,
+      minutes: timeUnits.find((unit) => unit.label === "minutes")?.value,
+      seconds: timeUnits.find((unit) => unit.label === "seconds")?.value,
     });
 
+  const progressUnits = {
+    days: daysProgress,
+    hours: hoursProgress,
+    minutes: minutesProgress,
+    seconds: secondsProgress,
+  };
   return (
     <div className="ProgressCircleCountdown" style={{ color: digitsColor }}>
-      <div className="ProgressCircleCountdown-item">
-        <CircularProgressBar progress={daysProgress} color={borderColor} />
-        <div className="circle-progress-wrapper">
-          <span className="ProgressCircleCountdown-number">{days}</span>
-          <span className="">days</span>
-        </div>
-      </div>
-      <span className="ProgressCircleCountdown-divider">:</span>
-      <div className="ProgressCircleCountdown-item">
-        <CircularProgressBar progress={hoursProgress} color={borderColor} />        
-        <div className="circle-progress-wrapper">
-          <span className="ProgressCircleCountdown-number">{hours}</span>
-          <span className="">hours</span>
-        </div>
-      </div>
-      <span className="ProgressCircleCountdown-divider">:</span>
-      <div className="ProgressCircleCountdown-item">
-        <CircularProgressBar progress={minutesProgress} color={borderColor} />        
-        <div className="circle-progress-wrapper">
-          <span className="ProgressCircleCountdown-number">{minutes}</span>
-          <span className="">minutes</span>
-        </div>
-      </div>
-      <span className="ProgressCircleCountdown-divider">:</span>
-      <div className="ProgressCircleCountdown-item">
-        <CircularProgressBar progress={secondsProgress} color={borderColor} />        
-        <div className="circle-progress-wrapper">
-          <span className="ProgressCircleCountdown-number">{seconds}</span>
-          <span className="">seconds</span>
-        </div>
-      </div>
+      {timeUnits.map((unit, index) => (
+        <React.Fragment key={unit.label}>
+          <div className="ProgressCircleCountdown-item">
+            <CircularProgressBar
+              progress={progressUnits[unit.label]}
+              color={borderColor}
+            />
+            <div
+              className="circle-progress-wrapper"
+              style={{ color: digitsColor }}
+            >
+              <span className="ProgressCircleCountdown-number">
+                {unit.value}
+              </span>
+              <span className="">{unit.label}</span>
+            </div>
+          </div>
+          {index < timeUnits.length - 1 && (
+            <span className="ProgressCircleCountdown-divider">:</span>
+          )}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

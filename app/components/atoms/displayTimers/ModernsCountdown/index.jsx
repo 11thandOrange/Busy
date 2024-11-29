@@ -1,30 +1,22 @@
 import React from "react";
 import "./style.css";
 
-const ModernsCountdown = ({ days, hours, minutes, seconds, settingsState }) => {
+const ModernsCountdown = ({ timeUnits, settingsState }) => {
   const { display } = settingsState;
   const { digitsColor } = display;
+
   return (
     <div className="ModernsCountdown" style={{ color: digitsColor }}>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">{days}</span>
-      
-      </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">{hours}</span>
-        
-      </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">{minutes}</span>
-    
-      </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">{seconds}</span>
-       
-      </div>
+      {timeUnits.map((unit, index) => (
+        <React.Fragment key={unit.label}>
+          <div className="ModernsCountdown-item">
+            <span className="ModernsCountdown-number">{unit.value}</span>
+          </div>
+          {index < timeUnits.length - 1 && (
+            <span className="ModernsCountdown-divider">:</span>
+          )}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

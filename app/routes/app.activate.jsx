@@ -43,4 +43,3 @@ import { authenticate } from '../shopify.server';
       throw new Error("Failed to update or create merchant");
     }
   };
-  
