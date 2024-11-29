@@ -19,7 +19,7 @@ const ManageDataChange = ({
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
-  console.log("Inside is error", isError);
+ 
 
   return (
     <>

@@ -7,8 +7,23 @@ import {
 } from "../../../../../utils/clientFunctions";
 import "./style.css";
 
-const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
+const CountdownTimerSettings = ({
+  setSettingsState,
+  settingsState,
+  error,
+  setError,
+}) => {
   // debugger;
+  useEffect(() => {
+    setError((prevState) =>
+      updateState(
+        "endDateErr",
+        !isEndDateValid(settingsState.generalSettings.countDownEndsAt),
+        prevState,
+      ),
+    );
+  }, [settingsState.generalSettings.countDownEndsAt]);
+  console.log("CountdownTimerSettings", error);
 
   return (
     <div className="countdown-group">
@@ -33,11 +48,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
           initialValue={settingsState.generalSettings.countDownEndsAt}
           label={"Countdown ends At"}
           minValue={settingsState?.generalSettings?.countDownStartAt}
-          errorMessage={
-            isEndDateValid(settingsState.generalSettings.countDownEndsAt)
-              ? false
-              : "Not valid"
-          }
+          errorMessage={error.endDateErr ? "Not valid" : false}
         ></DatePicker>
       </div>
       <CustomTextField

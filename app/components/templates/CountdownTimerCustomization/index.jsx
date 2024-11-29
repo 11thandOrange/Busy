@@ -1,34 +1,55 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ProductPreviewCard from "../ProductPreviewCard";
 import CountdownTimerSettings from "../../atoms/CountdownTimerSettings";
 
 import { Card } from "@shopify/polaris";
 import Selector from "../../atoms/Selector";
 import SettingsDisplay from "../SettingsDisplay";
-import { APP_TYPE } from "../../../utils/constants";
+import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import "./style.css";
 import {
   COUNTDOWN_ERROR_STATE,
+  COUNTDOWN_TIMER_STATE,
   CUSTOMIZATON_INITIAL_STATE,
 } from "../../../constants/countdownTimerCustomization";
 import ManageDataChange from "../ManageDataChange";
-import { checkError } from "../../../utils/clientFunctions";
+import { checkError, updateState } from "../../../utils/clientFunctions";
+import { useFetcher } from "@remix-run/react";
 const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
+  const fetcher = useFetcher();
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
   const prevSettingsState = useRef({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
-  const [error, setError] = useState({ ...COUNTDOWN_ERROR_STATE });
   const handleOnSave = () => {
+    fetcher.submit(
+      {
+        settings: JSON.stringify(settingsState.settings),
+        display: JSON.stringify(settingsState.display),
+      },
+      {
+        method: "POST",
+        action: ROUTES.COUNTDOWN_TIMER,
+      },
+    );
     prevSettingsState.current = { ...settingsState };
   };
 
-
+  const [error, setError] = useState({ ...COUNTDOWN_ERROR_STATE });
+  useEffect(() => {
+    if (settingsState?.settings?.status == COUNTDOWN_TIMER_STATE.FIX_END_DATE) {
+      setError((prevState) => updateState("minMaxExp", false, prevState));
+    } else if (
+      settingsState?.settings?.status == COUNTDOWN_TIMER_STATE.EVERGREEN
+    ) {
+      setError((prevState) => updateState("endDateErr", false, prevState));
+    }
+  }, [settingsState.settings.status]);
   return (
     <div className="customization-container">
       <ManageDataChange
@@ -38,7 +59,7 @@ const CountDownTimerCustomization = ({
         handleDiscardChanges={() => {
           setSettingsState(prevSettingsState.current);
         }}
-        // fetcherState={fetcher.state}
+        fetcherState={fetcher.state}
         isError={checkError(error)}
       />
       <div className="customization-left-section">

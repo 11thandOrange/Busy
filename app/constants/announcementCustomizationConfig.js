@@ -87,9 +87,9 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
   },
   [ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING]: {
     generalSettings: {
-      initialMessage: "",
-      progressMessage: "",
       message: "Free shipping for orders over #amount#.",
+      progressMessage: "Only #amount# away from free shipping.",
+      finalMessage: "Congratulations! You've got free shipping.",
     },
   },
   [ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER]: {
@@ -113,4 +113,7 @@ export const ANNOUNCEMENT_BARS_TABS = {
 export const COLOR_THEME = {
   LIGHT: "light",
   DARK: "dark",
+};
+export const ANNOUNCEMENT_BARS_ERROR_STATE = {
+  endDateErr: false,
 };

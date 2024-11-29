@@ -74,6 +74,7 @@ function CheckBars({ barsData = [] }) {
             <p>{JSON.parse(general_setting).message || "Description"}</p>
           </div>
         </IndexTable.Cell>
+        
         <Text as="span" alignment="end" numeric>
           {formatDateAndTime(createdAt)}
         </Text>

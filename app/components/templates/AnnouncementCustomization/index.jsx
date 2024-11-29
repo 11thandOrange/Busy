@@ -12,6 +12,7 @@ import GeneralSettings from "../../atoms/GeneralSettings/announcementBars/Text";
 import {
   ANNOUNCEMENT_BAR_INITIAL_STATE,
   ANNOUNCEMENT_BAR_TYPES,
+  ANNOUNCEMENT_BARS_ERROR_STATE,
   COLOR_THEME,
   SETTINGS_INITIAL_STATE,
   STATUS,
@@ -24,6 +25,7 @@ import {
   hasChanges,
   updateState,
   isLoading,
+  checkError,
 } from "../../../utils/clientFunctions";
 import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
@@ -53,7 +55,7 @@ const AnnouncementCustomization = ({
     ...generalSettings,
   });
   const prevSettingsState = useRef({});
-
+  const [error, setError] = useState({ ...ANNOUNCEMENT_BARS_ERROR_STATE });
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {
       case ANNOUNCEMENT_BAR_TYPES.TEXT:
@@ -82,6 +84,8 @@ const AnnouncementCustomization = ({
           <CountdownTimerSettings
             setSettingsState={setSettingsState}
             settingsState={settingsState}
+            error={error}
+            setError={setError}
           ></CountdownTimerSettings>
         );
       case ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE:
@@ -95,7 +99,7 @@ const AnnouncementCustomization = ({
       default:
         break;
     }
-  }, [settingsState, ANNOUNCEMENT_BAR_TYPES]);
+  }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
 
   useEffect(() => {
     if (initialData) {
@@ -167,6 +171,7 @@ const AnnouncementCustomization = ({
               navigate(-1);
             }}
             fetcherState={fetcher.state}
+            isError={checkError(error)}
           />
           <div className="customization-left-section">
             <Card>
