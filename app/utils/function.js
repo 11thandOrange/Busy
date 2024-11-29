@@ -156,7 +156,6 @@ export const getEventTypes = async (appId) => {
 
 export const getAnnouncementBar = async (shop) => {
   let script = '';
-
   const announcement_bar = await prisma.announcement_bar.findFirst({
     where: {
       shop: shop,
@@ -250,14 +249,15 @@ export const getAnnouncementBar = async (shop) => {
         const price = getDomestingShipping.price_based_shipping_rates;
         const free_price = price.find((pr)=> pr.price == 0);
         if(free_price.min_order_subtotal == null) return {script:''}
+       
         
           script +=  `let shipping_price = ${free_price.min_order_subtotal}
                       get_cart_total(function(price){
                         if(price == 0)
                         {
-                          messageDiv.textContent = "${announcement_bar.general_setting.initialMessage.replace('#amount#', free_price.min_order_subtotal)}";
+                          messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";
                         }
-                        else if(price!=0 && price < shipping_price)
+                        else if(price != 0 && price < shipping_price)
                         {
                           let difference = price - shipping_price
                           let message_content = "${announcement_bar.general_setting.progressMessage}"
@@ -265,7 +265,7 @@ export const getAnnouncementBar = async (shop) => {
                         }
                         else
                         {
-                          messageDiv.textContent = "${announcement_bar.general_setting.message}";
+                          messageDiv.textContent = "${announcement_bar.general_setting.finalMessage}";
                         }
         })
           `;

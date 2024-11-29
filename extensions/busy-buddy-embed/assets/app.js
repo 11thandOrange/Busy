@@ -150,10 +150,10 @@ function get_cart_total(callback) {
     .then(response => response.json())
     .then(cart => {
       const totalPrice = cart.total_price ? (cart.total_price / 100) : 0;
-      callback(totalPrice); // Use callback to pass the result back
+      callback(totalPrice);
     })
     .catch(error => {
       console.error('Error fetching cart data:', error);
-      callback(0); // Pass 0 if there is an error
+      callback(0);
     });
 }
