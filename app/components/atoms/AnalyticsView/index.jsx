@@ -3,6 +3,7 @@ import { Card, Icon, TextContainer } from '@shopify/polaris';
 import { ChartPopularIcon } from '@shopify/polaris-icons';
 import ChartRenderer from '../ChartRenderer';
 import './style.css'
+import IMAGES from '../../../utils/Images';
 
 const basicOptions = {
   plugins: {
@@ -29,13 +30,14 @@ const basicOptions = {
     },
   },
 }
-function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData, data}) {
+function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData, data, chartRef}) {
 
     return (
       <Card sectioned>
         <div className='tabsContainer'>
-          {tabs.map((tab) => (
-            <div
+          {tabs.map((tab) => {
+            const currentTab = data?.find(item => item.activityId == tab.key)
+            return <div
               key={tab.key}
               onClick={() => handleSelectTab(tab.key)}
               className={`tab ${selectedTabs.includes(tab.key) ? 'tabSelected' : ''}`}
@@ -45,16 +47,17 @@ function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData, data}) {
             >
               <TextContainer>
                 <h3 className="tabLabel">{tab.label}</h3>
-                <p className='tabValue'>{data?.find(item => item.activityId == tab.key)?.totalCount}</p>
-                <p className='tabDescription'>No change</p>
+                <p className='tabValue'>{currentTab?.totalCount}</p>
+                {currentTab?.changePercentage ? <p className='tabDescription'><img src={currentTab?.hasIncreased ? IMAGES.UpArrowWhite : IMAGES.DownArrowWhite}/> {currentTab?.changePercentage}%</p> : ""}
               </TextContainer>
             </div>
-          ))}
+          }
+          )}
         </div>
 
-        {chartData.labels.length ? <ChartRenderer data={chartData} basicOptions={basicOptions}/> : 
+        <span><ChartRenderer chartRef={chartRef} data={chartData} basicOptions={basicOptions}/></span>
   
-        <div className='footer'>
+        <div className='footer' style={!chartData.labels.length ? {display: 'unset'} : {display: 'none'}}>
           <Icon
             source={ChartPopularIcon}
             tone="base"
@@ -63,7 +66,7 @@ function AnalyticsView({handleSelectTab, selectedTabs, tabs, chartData, data}) {
             <p>Your analytics will be displayed here</p>
             <p>No data available yet.</p>
           </TextContainer>
-        </div>}
+        </div>
       </Card>
     );
 }

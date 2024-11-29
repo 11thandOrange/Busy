@@ -56,7 +56,7 @@ export const action = async ({ request }) => {
   return markWidgetAsFavorite(shop, widgetId);
 };
 
-function TabsInsideOfACardExample() {
+function TabsInsideOfACard() {
   const fetcher = useFetcher();
   const widgets_data = useLoaderData();
   console.log('test', widgets_data)
@@ -95,4 +95,4 @@ function TabsInsideOfACardExample() {
   );
 }
 
-export default TabsInsideOfACardExample;
+export default TabsInsideOfACard;

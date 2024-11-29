@@ -129,10 +129,10 @@ export default function Index() {
         />
         <div>
           <Text as="h1" variant="headingLg" className="title">
-            Busy Buddy
+            BusyBuddy
           </Text>
           <Text as="p" className="subtitle">
-            Every busy body needs busy buddy
+            Every busy body needs busybuddy
           </Text>
         </div>
       </div>
