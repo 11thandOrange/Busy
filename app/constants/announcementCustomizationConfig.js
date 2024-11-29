@@ -114,3 +114,6 @@ export const COLOR_THEME = {
   LIGHT: "light",
   DARK: "dark",
 };
+export const ANNOUNCEMENT_BARS_ERROR_STATE = {
+  endDateErr: false,
+};

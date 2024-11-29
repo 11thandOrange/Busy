@@ -189,7 +189,7 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
-  console.log(announcementData, "announcementData");
+  // console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const announcementBarsData = announcementData.announcement_bars;
