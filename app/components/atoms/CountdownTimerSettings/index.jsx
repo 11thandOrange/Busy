@@ -1,9 +1,6 @@
 import React, { useCallback } from "react";
 import DatePicker from "../DatePicker";
-import {
-  isEndDateValid,
-  updateSettingsState,
-} from "../../../utils/clientFunctions";
+import { isEndDateValid, updateState } from "../../../utils/clientFunctions";
 import CustomTextField from "../CustomTextField";
 import Selector from "../Selector";
 import { COUNTDOWN_TIMER_STATE } from "../../../constants/countdownTimerCustomization";
@@ -15,9 +12,12 @@ const options = [
   { label: "Evergreen", value: COUNTDOWN_TIMER_STATE.EVERGREEN },
 ];
 
-const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
- 
-
+const CountdownTimerSettings = ({
+  setSettingsState,
+  settingsState,
+  setError,
+  error,
+}) => {
   const renderTimer = useCallback(() => {
     switch (settingsState.settings.status) {
       case COUNTDOWN_TIMER_STATE.FIX_END_DATE:
@@ -26,11 +26,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
             <DatePicker
               onDatePicked={(date) => {
                 setSettingsState((prevState) =>
-                  updateSettingsState(
-                    "settings.countDownStartAt",
-                    date,
-                    prevState,
-                  ),
+                  updateState("settings.countDownStartAt", date, prevState),
                 );
               }}
               initialValue={settingsState.settings.countDownStartAt}
@@ -39,11 +35,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
             <DatePicker
               onDatePicked={(date) => {
                 return setSettingsState((prevState) =>
-                  updateSettingsState(
-                    "settings.countDownEndsAt",
-                    date,
-                    prevState,
-                  ),
+                  updateState("settings.countDownEndsAt", date, prevState),
                 );
               }}
               initialValue={settingsState.settings.countDownEndsAt}
@@ -60,12 +52,17 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
         );
       case COUNTDOWN_TIMER_STATE.EVERGREEN:
         return (
-         <EvergreenDatePicker setSettingsState={setSettingsState} settingsState={settingsState} ></EvergreenDatePicker>
+          <EvergreenDatePicker
+            setError={setError}
+            setSettingsState={setSettingsState}
+            settingsState={settingsState}
+            error={error}
+          ></EvergreenDatePicker>
         );
     }
-  }, [settingsState]);
+  }, [settingsState, error]);
   const handleSelectChange = (key, value) => {
-    setSettingsState((prevState) => updateSettingsState(key, value, prevState));
+    setSettingsState((prevState) => updateState(key, value, prevState));
   };
   return (
     <div>

@@ -1,6 +1,6 @@
 import { FETCHER_STATE } from "./constants";
 
-export const updateSettingsState = (path, value, state) => {
+export const updateState = (path, value, state) => {
   const keys = Array.isArray(path) ? path : path.split(".");
 
   let updatedState = { ...state };
@@ -19,7 +19,7 @@ export const updateSettingsState = (path, value, state) => {
 
   current[keys[keys.length - 1]] = value;
 
-  // console.log("updatedState", updatedState);
+  console.log("updatedState", updatedState);
 
   return updatedState;
 };
@@ -250,4 +250,8 @@ export const isExpirationTimeValid = (minExp, maxExp) => {
 
   if (minTotalMinutes > maxTotalMinutes) return false;
   return true;
+};
+
+export const checkError = (error) => {
+  return Object.values(error).some((value) => value);
 };

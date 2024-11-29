@@ -1,20 +1,31 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import CustomTextField from "../CustomTextField";
 import InputDatePicker from "../InputDatePicker";
 import {
   isExpirationTimeValid,
-  updateSettingsState,
+  updateState,
 } from "../../../utils/clientFunctions";
 import { InlineError } from "@shopify/polaris";
 
-const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
-  const isValid = useMemo(() => {
-    return isExpirationTimeValid(
-      settingsState.settings.minExpTime,
-      settingsState.settings.maxExpTime,
+const EvergreenDatePicker = ({
+  setSettingsState,
+  settingsState,
+  setError,
+  error,
+}) => {
+  useEffect(() => {
+    setError((prevState) =>
+      updateState(
+        "minMaxExp",
+        !isExpirationTimeValid(
+          settingsState.settings.minExpTime,
+          settingsState.settings.maxExpTime,
+        ),
+        prevState,
+      ),
     );
   }, [settingsState.settings.minExpTime, settingsState.settings.maxExpTime]);
-
+  
   return (
     <div>
       {" "}
@@ -29,10 +40,8 @@ const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
       <InputDatePicker
         heading={"Minimum expiration deadline"}
         onDatePicked={(value) => {
-         
-
           setSettingsState((prevState) =>
-            updateSettingsState("settings.minExpTime", value, prevState),
+            updateState("settings.minExpTime", value, prevState),
           );
         }}
         initialValue={settingsState.settings.minExpTime}
@@ -41,12 +50,12 @@ const EvergreenDatePicker = ({ setSettingsState, settingsState }) => {
         heading={"Maximum expiration deadline"}
         onDatePicked={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("settings.maxExpTime", value, prevState),
+            updateState("settings.maxExpTime", value, prevState),
           );
         }}
         initialValue={settingsState.settings.maxExpTime}
       ></InputDatePicker>
-      {!isValid && (
+      {error.minMaxExp && (
         <InlineError
           message="The maximum expiration deadline should be later than the minimum."
           fieldID="ExpirationId"

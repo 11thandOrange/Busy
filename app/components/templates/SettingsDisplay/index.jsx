@@ -7,7 +7,7 @@ import {
   COUNTDOWN_TIMER_DISPLAY_FORMAT,
   TIMER_ALIGNMENT_OPTIONS,
 } from "../../../constants/countdownTimerCustomization";
-import { updateSettingsState } from "../../../utils/clientFunctions";
+import { updateState } from "../../../utils/clientFunctions";
 import "./style.css";
 import InputWithSelector from "../../atoms/InputWithSelector";
 
@@ -20,7 +20,7 @@ const SettingsDisplay = ({ setSettingsState, settingsState }) => {
   );
 
   const handleSelectChange = (key, value) => {
-    setSettingsState((prevState) => updateSettingsState(key, value, prevState));
+    setSettingsState((prevState) => updateState(key, value, prevState));
   };
 
   const options = [

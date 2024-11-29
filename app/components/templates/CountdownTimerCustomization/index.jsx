@@ -7,9 +7,13 @@ import Selector from "../../atoms/Selector";
 import SettingsDisplay from "../SettingsDisplay";
 import { APP_TYPE } from "../../../utils/constants";
 import "./style.css";
-import { CUSTOMIZATON_INITIAL_STATE } from "../../../constants/countdownTimerCustomization";
+import {
+  COUNTDOWN_ERROR_STATE,
+  CUSTOMIZATON_INITIAL_STATE,
+} from "../../../constants/countdownTimerCustomization";
 import ManageDataChange from "../ManageDataChange";
-const   CountDownTimerCustomization = ({
+import { checkError } from "../../../utils/clientFunctions";
+const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
@@ -19,9 +23,12 @@ const   CountDownTimerCustomization = ({
   const prevSettingsState = useRef({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
+  const [error, setError] = useState({ ...COUNTDOWN_ERROR_STATE });
   const handleOnSave = () => {
     prevSettingsState.current = { ...settingsState };
   };
+
+
   return (
     <div className="customization-container">
       <ManageDataChange
@@ -32,10 +39,13 @@ const   CountDownTimerCustomization = ({
           setSettingsState(prevSettingsState.current);
         }}
         // fetcherState={fetcher.state}
+        isError={checkError(error)}
       />
       <div className="customization-left-section">
         <Card>
           <CountdownTimerSettings
+            setError={setError}
+            error={error}
             setSettingsState={setSettingsState}
             settingsState={settingsState}
           ></CountdownTimerSettings>

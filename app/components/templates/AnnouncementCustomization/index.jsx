@@ -22,7 +22,7 @@ import CountdownTimerSettings from "../../atoms/generalSettings/announcementBars
 import EmailCaptureSettings from "../../atoms/generalSettings/announcementBars/EmailCapture";
 import {
   hasChanges,
-  updateSettingsState,
+  updateState,
   isLoading,
 } from "../../../utils/clientFunctions";
 import { APP_TYPE, ROUTES } from "../../../utils/constants";
@@ -176,7 +176,7 @@ const AnnouncementCustomization = ({
                 helpText="Only one announcement bar will be displayed at the time"
                 onSelect={(value) => {
                   setSettingsState((prevState) =>
-                    updateSettingsState("status", value, prevState),
+                    updateState("status", value, prevState),
                   );
                 }}
                 initialValue={settingsState.status}
@@ -189,7 +189,7 @@ const AnnouncementCustomization = ({
                 helpText="The private name of this smart bar. Only you will see this."
                 onValueChange={(value) => {
                   setSettingsState((prevState) =>
-                    updateSettingsState("name", value, prevState),
+                    updateState("name", value, prevState),
                   );
                 }}
                 value={settingsState.name}
@@ -207,7 +207,7 @@ const AnnouncementCustomization = ({
               <ThemeStyleGrid
                 onThemeSelected={(value, type, image) => {
                   setSettingsState((prevState) =>
-                    updateSettingsState(
+                    updateState(
                       "themeStyle",
                       { id: value, type: type, image: image },
                       prevState,

@@ -35,7 +35,7 @@ export const TIMER_MARGIN_UNITS = {
 // };
 export const CUSTOMIZATON_INITIAL_STATE = {
   settings: {
-    status: COUNTDOWN_TIMER_STATE.FIX_END_DATE,
+    status: COUNTDOWN_TIMER_STATE.EVERGREEN,
 
     countDownStartAt: "",
     countDownEndsAt: "",
@@ -59,4 +59,8 @@ export const CUSTOMIZATON_INITIAL_STATE = {
       bottom: { value: 0, unit: TIMER_MARGIN_UNITS.REM },
     },
   },
+};
+
+export const COUNTDOWN_ERROR_STATE = {
+  minMaxExp: false,
 };
