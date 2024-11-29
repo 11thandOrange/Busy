@@ -13,26 +13,26 @@ export function  getClassicCountdownTimer(timeLeft, countdownTimer)
 export const getHexagonCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml = `<div className="HexagonCountdown" style={{ color: digitsColor }}>
-        <div className="HexagonCountdown-item">
+    countdownTimerHtml = `<div class="HexagonCountdown" style="color:${countdownTimer.display_setting?.digitsColor}">
+        <div class="HexagonCountdown-item">
         
-        <span className="HexagonCountdown-number"> ${timeLeft.days}</span>
-        <span className="hexaValue">days</span>
+        <span class="HexagonCountdown-number" id="days"> ${timeLeft.days}</span>
+        <span class="hexaValue">days</span>
         </div>
 
-        <div className="HexagonCountdown-item">
-        <span className="HexagonCountdown-number">${timeLeft.hours}</span>
-        <span className="hexaValue">hours</span>
+        <div class="HexagonCountdown-item">
+        <span class="HexagonCountdown-number" id="hours">${timeLeft.hours}</span>
+        <span class="hexaValue">hours</span>
         </div>
 
-        <div className="HexagonCountdown-item">
-        <span className="HexagonCountdown-number">${timeLeft.minutes}</span>
-        <span className="hexaValue">minutes</span>
+        <div class="HexagonCountdown-item">
+        <span class="HexagonCountdown-number" id="minutes">${timeLeft.minutes}</span>
+        <span class="hexaValue">minutes</span>
         </div>
 
-        <div className="HexagonCountdown-item">
-        <span className="HexagonCountdown-number">${timeLeft.seconds}</span>
-        <span className="hexaValue">seconds</span>
+        <div class="HexagonCountdown-item">
+        <span class="HexagonCountdown-number" id="seconds">${timeLeft.seconds}</span>
+        <span class="hexaValue">seconds</span>
         </div>
     </div>`
     return countdownTimerHtml
@@ -44,13 +44,13 @@ export const getProgressCircleCountdownTimer = (timeLeft, countdownTimer) =>
     let hours = timeLeft.hours;
     let minutes = timeLeft.minutes
     let seconds = timeLeft.seconds;
-    const { daysProgress, hoursProgress, minutesProgress, secondsProgress } = useCountdownProgress(countDownStartAt, countDownEndsAt, {
+    const { daysProgress, hoursProgress, minutesProgress, secondsProgress } = useCountdownProgress(countdownTimer.general_settings.countDownStartAt, countdownTimer.general_settings.countDownEndsAt, {
       days,
       hours,
       minutes,
       seconds,
     });
-    countdownTimerHtml += `
+    countdownTimerHtml = `
         <div class="ProgressCircleCountdown" style="color:${countdownTimer.display_setting?.digitsColor}">
             <div class="ProgressCircleCountdown-item">
                 <svg width="80" height="80" viewBox="0 0 80 80" class="circular-progress-bar">
@@ -150,25 +150,25 @@ export const getProgressCircleCountdownTimer = (timeLeft, countdownTimer) =>
 export const getCardCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml += `<div className="CardCountdown" style="color: ${countdownTimer.display_setting.digitsColor }>
-      <div className="CardCountdown-item">
-        <span className="CardCountdown-number">${timeLeft.days}</span>
-        <span className="cardCountdown-title">days</span>
+    countdownTimerHtml = `<div class="CardCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
+      <div class="CardCountdown-item">
+        <span class="CardCountdown-number">${timeLeft.days}</span>
+        <span class="cardCountdown-title">days</span>
       </div>
-      <span className="CardCountdown-divider">:</span>
-      <div className="CardCountdown-item">
-        <span className="CardCountdown-number">${timeLeft.hours}</span>
-        <span className="cardCountdown-title">hours</span>
+      <span class="CardCountdown-divider">:</span>
+      <div class="CardCountdown-item">
+        <span class="CardCountdown-number">${timeLeft.hours}</span>
+        <span class="cardCountdown-title">hours</span>
       </div>
-      <span className="CardCountdown-divider">:</span>
-      <div className="CardCountdown-item">
-        <span className="CardCountdown-number">${timeLeft.minutes}</span>
-        <span className="cardCountdown-title">minutes</span>
+      <span class="CardCountdown-divider">:</span>
+      <div class="CardCountdown-item">
+        <span class="CardCountdown-number">${timeLeft.minutes}</span>
+        <span class="cardCountdown-title">minutes</span>
       </div>
-      <span className="CardCountdown-divider">:</span>
-      <div className="CardCountdown-item">
-        <span className="CardCountdown-number">${timeLeft.seconds}</span>
-        <span className="cardCountdown-title">seconds</span>
+      <span class="CardCountdown-divider">:</span>
+      <div class="CardCountdown-item">
+        <span class="CardCountdown-number">${timeLeft.seconds}</span>
+        <span class="cardCountdown-title">seconds</span>
       </div>
     </div>`
     return countdownTimerHtml;
@@ -176,24 +176,24 @@ export const getCardCountdownTimer = (timeLeft, countdownTimer) =>
 export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml += `<div className="ModernsCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">${timeLeft.days}</span>
+    countdownTimerHtml = `<div class="ModernsCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
+      <div class="ModernsCountdown-item">
+        <span class="ModernsCountdown-number">${timeLeft.days}</span>
       
       </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">${timeLeft.hours}</span>
+      <span class="ModernsCountdown-divider">:</span>
+      <div class="ModernsCountdown-item">
+        <span class="ModernsCountdown-number">${timeLeft.hours}</span>
         
       </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">${timeLeft.minutes}</span>
+      <span class="ModernsCountdown-divider">:</span>
+      <div class="ModernsCountdown-item">
+        <span class="ModernsCountdown-number">${timeLeft.minutes}</span>
     
       </div>
-      <span className="ModernsCountdown-divider">:</span>
-      <div className="ModernsCountdown-item">
-        <span className="ModernsCountdown-number">${timeLeft.seconds}</span>
+      <span class="ModernsCountdown-divider">:</span>
+      <div class="ModernsCountdown-item">
+        <span class="ModernsCountdown-number">${timeLeft.seconds}</span>
        
       </div>
     </div>`
@@ -202,21 +202,21 @@ export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
 export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml += `<div className="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">${timeLeft.days} <span className="innerTitle">days</span></span>
+    countdownTimerHtml = `<div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
+        <div class="ProgressBarCountdown-item">
+          <span class="ProgressBarCountdown-number">${timeLeft.days} <span class="innerTitle">days</span></span>
         </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">${timeLeft.hours}</span>
+        <span class="ProgressBarCountdown-divider">:</span>
+        <div class="ProgressBarCountdown-item">
+          <span class="ProgressBarCountdown-number">${timeLeft.hours}</span>
         </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number" id="minutes">${timeLeft.minutes}</span>
+        <span class="ProgressBarCountdown-divider">:</span>
+        <div class="ProgressBarCountdown-item">
+          <span class="ProgressBarCountdown-number" id="minutes">${timeLeft.minutes}</span>
         </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number" id="seconds">${timeLeft.seconds}</span>
+        <span class="ProgressBarCountdown-divider">:</span>
+        <div class="ProgressBarCountdown-item">
+          <span class="ProgressBarCountdown-number" id="seconds">${timeLeft.seconds}</span>
         </div>
       </div>`
     return countdownTimerHtml
@@ -224,32 +224,32 @@ export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
 export const getDividerCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml += `<div className="countdown" style="color: ${countdownTimer.display_setting.digitsColor };">
-      <div className="countdown-item">
-        <span className="countdown-number" id="days">${timeLeft.days}</span>
-        <span className="countdown-label">days</span>
+    countdownTimerHtml = `<div class="countdown" style="color: ${countdownTimer.display_setting.digitsColor };">
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">${timeLeft.days}</span>
+        <span class="countdown-label">days</span>
       </div>
       ${divider()}
-      <div className="countdown-item">
-        <span className="countdown-number" id="hours">${timeLeft.hours}</span>
-        <span className="countdown-label">hours</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">${timeLeft.hours}</span>
+        <span class="countdown-label">hours</span>
       </div>
       ${divider()}
-      <div className="countdown-item">
-        <span className="countdown-number" id="minutes">${timeLeft.minutes}</span>
-        <span className="countdown-label">minutes</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">${timeLeft.minutes}</span>
+        <span class="countdown-label">minutes</span>
       </div>
       ${divider()}
-      <div className="countdown-item">
-        <span className="countdown-number" id="seconds">${timeLeft.seconds}</span>
-        <span className="countdown-label">seconds</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">${timeLeft.seconds}</span>
+        <span class="countdown-label">seconds</span>
       </div>
-    </div>`
+    </div>`;
     return countdownTimerHtml;
 }
 function divider()
 {
-    return `<span className="divider" style={{ color: borderColor }}>
+    return `<span class="divider">
         /
       </span>`;
 }
