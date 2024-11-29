@@ -249,11 +249,10 @@ export const getAnnouncementBar = async (shop) => {
         const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
         const price = getDomestingShipping.price_based_shipping_rates;
         const free_price = price.find((pr)=> pr.price == 0);
-        console.log('free price', free_price)
+        if(free_price.min_order_subtotal == null) return {script:''}
         
           script +=  `let shipping_price = ${free_price.min_order_subtotal}
                       get_cart_total(function(price){
-                      console.log(price)
                         if(price == 0)
                         {
                           messageDiv.textContent = "${announcement_bar.general_setting.initialMessage.replace('#amount#', free_price.min_order_subtotal)}";
@@ -579,7 +578,7 @@ export const getShippingRule = async(shop)=>{
   return shipping_rule.data.shipping_zones;
 }
 export const getOrderCounter = async(shop)=>{
-  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?status=any`, 'GET');
+  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?fulfillment_status=shipped`, 'GET');
   if(order_count.success)
   {
     return order_count.data.count;
