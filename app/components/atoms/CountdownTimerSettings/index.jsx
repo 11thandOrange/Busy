@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import DatePicker from "../DatePicker";
 import { isEndDateValid, updateState } from "../../../utils/clientFunctions";
 import CustomTextField from "../CustomTextField";
@@ -18,6 +18,16 @@ const CountdownTimerSettings = ({
   setError,
   error,
 }) => {
+  useEffect(() => {
+    setError((prevState) =>
+      updateState(
+        "endDateErr",
+        !isEndDateValid(settingsState.settings.countDownEndsAt),
+        prevState,
+      ),
+    );
+  }, [settingsState.settings.countDownEndsAt, settingsState.settings.status]);
+
   const renderTimer = useCallback(() => {
     switch (settingsState.settings.status) {
       case COUNTDOWN_TIMER_STATE.FIX_END_DATE:
@@ -42,11 +52,7 @@ const CountdownTimerSettings = ({
               label={"Countdown ends At"}
               settingsState={settingsState}
               minValue={settingsState.settings.countDownStartAt}
-              errorMessage={
-                isEndDateValid(settingsState.settings.countDownEndsAt)
-                  ? false
-                  : "Not valid"
-              }
+              errorMessage={error.endDateErr ? "Not valid" : false}
             ></DatePicker>
           </div>
         );

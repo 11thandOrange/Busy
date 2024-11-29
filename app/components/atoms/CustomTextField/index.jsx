@@ -14,7 +14,7 @@ function CustomTextField({
   min,
   errorMessage = false,
   max,
-  maxLength = 20,
+  maxLength = 1000,
 }) {
   const handleTextFieldChange = useCallback((value) => {
     onValueChange(value);

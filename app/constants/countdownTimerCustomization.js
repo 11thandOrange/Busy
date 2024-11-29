@@ -63,4 +63,5 @@ export const CUSTOMIZATON_INITIAL_STATE = {
 
 export const COUNTDOWN_ERROR_STATE = {
   minMaxExp: false,
+  endDateErr: false,
 };

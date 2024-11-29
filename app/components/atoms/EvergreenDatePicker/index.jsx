@@ -25,7 +25,7 @@ const EvergreenDatePicker = ({
       ),
     );
   }, [settingsState.settings.minExpTime, settingsState.settings.maxExpTime]);
-  
+
   return (
     <div>
       {" "}

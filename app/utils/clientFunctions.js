@@ -19,7 +19,7 @@ export const updateState = (path, value, state) => {
 
   current[keys[keys.length - 1]] = value;
 
-  console.log("updatedState", updatedState);
+  // console.log("updatedState", updatedState);
 
   return updatedState;
 };
