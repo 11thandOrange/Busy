@@ -9,23 +9,25 @@ import GoBack from '../../components/atoms/GoBack';
 
 export async function loader({ request }) {
   try {
-    const {session} = await authenticate.admin(request);
+    const { session } = await authenticate.admin(request);
     const url = new URL(request.url);
     const appId = parseInt(url.searchParams.get('appId'));
     const fromDateString = url.searchParams.get('fromDate');
     const toDateString = url.searchParams.get('toDate');
     const shop = session.shop;
+
     let apps = await db.app.findMany({
       include: {
         Merchant: true,
         categories: {
           select: {
-            id:true
+            id: true
           }
-        },
+        }
       },
     });
-    apps = apps.map((app) => {    
+
+    apps = apps.map((app) => {
       return {
         id: app.id,
         name: app.name,
@@ -44,7 +46,7 @@ export async function loader({ request }) {
     }
 
     const activityIds = await getEventTypes(appId);
-
+    
     const counts = await db.analytics.groupBy({
       by: ['activityId', 'createdAt'],
       where: {
@@ -64,49 +66,76 @@ export async function loader({ request }) {
     const totalCountsByActivity = counts.reduce((acc, record) => {
       const activityId = record.activityId;
       const count = record._count.id;
-    
+
       if (acc[activityId]) {
         acc[activityId] += count;
       } else {
         acc[activityId] = count;
       }
-    
+
       return acc;
     }, {});
 
     const formattedCounts = activityIds.map((activityId) => {
-      const activityData = [];
+      const lastDay = new Date(toDate);
+      lastDay.setHours(0, 0, 0, 0);
+
+      const secondToLastDay = new Date(lastDay);
+      secondToLastDay.setDate(lastDay.getDate() - 1);
+
+      let lastDayCount = 0;
+      let secondToLastDayCount = 0;
+
       counts.forEach((record) => {
+        const recordDate = new Date(record.createdAt).toLocaleDateString();
         if (record.activityId === activityId) {
-          const activityDate = new Date(record.createdAt).toLocaleDateString();
-          const existingEntry = activityData.find(entry => entry.date === activityDate);
-          
-          if (existingEntry) {
-            existingEntry.count += record._count.id;
-          } else {
-            activityData.push({
-              date: activityDate,
-              count: record._count.id
-            });
+          if (recordDate === lastDay.toLocaleDateString()) {
+            lastDayCount += record._count.id;
+          }
+          else if (recordDate === secondToLastDay.toLocaleDateString()) {
+            secondToLastDayCount += record._count.id;
           }
         }
       });
 
-      activityData.sort((a, b) => new Date(a.date) - new Date(b.date));
+      let percentageChange = null;
+      if (secondToLastDayCount > 0) {
+        percentageChange = ((lastDayCount - secondToLastDayCount) / secondToLastDayCount) * 100;
+        percentageChange = percentageChange.toFixed(2);
+      } else if (lastDayCount > 0) {
+        percentageChange = 100;
+      } else {
+        percentageChange = 0;
+      }
 
       return {
         activityId,
-        activityData,
+        activityData: [
+          {
+            date: lastDay.toLocaleDateString(),
+            count: lastDayCount
+          },
+          {
+            date: secondToLastDay.toLocaleDateString(),
+            count: secondToLastDayCount
+          }
+        ],
+        percentageChange: (percentageChange || 0) +'%',
         totalCount: totalCountsByActivity[activityId] || 0
       };
     });
-console.log('test',formattedCounts)
+
+
     return cors(request, { analytics: formattedCounts, apps });
 
   } catch (error) {
+    console.error('Error occurred:', error);
     return cors(request, { error: 'An error occurred while processing your request' }, { status: 500 });
   }
 }
+
+
+
 
 export const action = async ({ request }) => { 
   let analytics = await request.json();

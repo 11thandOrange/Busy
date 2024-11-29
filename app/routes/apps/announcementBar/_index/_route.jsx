@@ -4,7 +4,6 @@ import {
   ANNOUNCEMENT_BAR_TYPES,
   ANNOUNCEMENT_BARS_TABS,
 } from "../../../../constants/announcementCustomizationConfig";
-import AnnouncementCustomization from "../../../../components/templates/AnnouncementCustomization";
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
 import {
