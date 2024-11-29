@@ -14,7 +14,7 @@ export const loader = async ({ request }) => {
   }
   if(appId==1)
   {
-    response = await getAnnouncementBar(shop);
+    response = await getAnnouncementBar(shop);    
   }
   else if(appId == 2)
   {

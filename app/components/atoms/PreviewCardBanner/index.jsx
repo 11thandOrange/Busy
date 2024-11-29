@@ -76,7 +76,17 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
     return () => clearInterval(interval);
   }, [countDownStartAt, countDownEndsAt]);
   const timeObjectString = (timeLeft) => {
-    return `${timeLeft.remainingDays}d ${timeLeft.remainingHours}h ${timeLeft.remainingMinutes}m ${timeLeft.remainingSeconds}s`;
+    switch (announcementBarType) {
+      case ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER:
+        return `${timeLeft.remainingDays}d ${timeLeft.remainingHours}h ${timeLeft.remainingMinutes}m ${timeLeft.remainingSeconds}s`;
+      case ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER:
+        return `${settingsState.generalSettings.orderCount}`;
+      case ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING:
+        return `100`; //dummy data
+
+      default:
+        return "";
+    }
   };
   return (
     <div

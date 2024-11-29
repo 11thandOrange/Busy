@@ -3,12 +3,27 @@ import DatePicker from "../../../DatePicker";
 import CustomTextField from "../../../CustomTextField";
 import {
   isEndDateValid,
-  updateSettingsState,
+  updateState,
 } from "../../../../../utils/clientFunctions";
 import "./style.css";
 
-const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
+const CountdownTimerSettings = ({
+  setSettingsState,
+  settingsState,
+  error,
+  setError,
+}) => {
   // debugger;
+  useEffect(() => {
+    setError((prevState) =>
+      updateState(
+        "endDateErr",
+        !isEndDateValid(settingsState.generalSettings.countDownEndsAt),
+        prevState,
+      ),
+    );
+  }, [settingsState.generalSettings.countDownEndsAt]);
+  console.log("CountdownTimerSettings", error);
 
   return (
     <div className="countdown-group">
@@ -16,11 +31,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
         <DatePicker
           onDatePicked={(date) => {
             setSettingsState((prevState) =>
-              updateSettingsState(
-                "generalSettings.countDownStartAt",
-                date,
-                prevState,
-              ),
+              updateState("generalSettings.countDownStartAt", date, prevState),
             );
           }}
           initialValue={settingsState.generalSettings.countDownStartAt}
@@ -31,21 +42,13 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
         <DatePicker
           onDatePicked={(date) => {
             return setSettingsState((prevState) =>
-              updateSettingsState(
-                "generalSettings.countDownEndsAt",
-                date,
-                prevState,
-              ),
+              updateState("generalSettings.countDownEndsAt", date, prevState),
             );
           }}
           initialValue={settingsState.generalSettings.countDownEndsAt}
           label={"Countdown ends At"}
           minValue={settingsState?.generalSettings?.countDownStartAt}
-          errorMessage={
-            isEndDateValid(settingsState.generalSettings.countDownEndsAt)
-              ? false
-              : "Not valid"
-          }
+          errorMessage={error.endDateErr ? "Not valid" : false}
         ></DatePicker>
       </div>
       <CustomTextField
@@ -54,7 +57,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
         helpText="Do not remove the #countdown_timer# tag, that's where the timer will be displayed!"
         onValueChange={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("generalSettings.message", value, prevState),
+            updateState("generalSettings.message", value, prevState),
           );
         }}
         value={settingsState.generalSettings.message}

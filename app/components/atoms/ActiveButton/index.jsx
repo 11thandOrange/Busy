@@ -1,6 +1,8 @@
 import { Button, Popover, ActionList } from "@shopify/polaris";
 import { useState, useCallback, useEffect } from "react";
 import "./activeButton.css";
+import { useSearchParams } from "react-router-dom";
+import { useFetcher } from "@remix-run/react";
 export default function ActiveButton({
   beforeActiveString = "Active",
   afterActivateString = "Activate App",
@@ -8,8 +10,23 @@ export default function ActiveButton({
   isAppActive = false,
   handleAppActive = () => {},
 }) {
+  const fetcher = useFetcher();
   const [popoverActive, setPopoverActive] = useState(false);
   const [isActive, setIsActive] = useState(isAppActive);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("appId");
+  const handleActive = (isActive) => {
+    fetcher.submit(
+      {
+        isActive,
+        appId: id,
+      },
+      {
+        method: "POST",
+        action: "/app/activate",
+      },
+    );
+  };
   useEffect(() => {
     setIsActive(isAppActive);
   }, [isAppActive]);
@@ -17,7 +34,7 @@ export default function ActiveButton({
     setPopoverActive((popoverActive) => !popoverActive);
   }, []);
   const toggleIsActive = useCallback(() => {
-    handleAppActive(!isActive);
+    handleActive(!isActive);
     setIsActive((isActive) => !isActive);
   }, []);
   const onActiveClick = () => {

@@ -31,12 +31,12 @@ export const announcementPopoverData = [
       "Build trust by letting your customers know how many orders your store has shipped.",
     type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
   },
-  {
-    id: 5,
-    header: "Email Capture",
-    description: "Capture Leads to grow your business",
-    type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
-  },
+  // {
+  //   id: 5,
+  //   header: "Email Capture",
+  //   description: "Capture Leads to grow your business",
+  //   type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
+  // },
 ];
 export const STATUS = {
   ACTIVE: "1",
@@ -87,9 +87,9 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
   },
   [ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING]: {
     generalSettings: {
-      initialMessage: "",
-      progressMessage: "",
       message: "Free shipping for orders over #amount#.",
+      progressMessage: "",
+      finalMessage: "",
     },
   },
   [ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER]: {
@@ -113,4 +113,7 @@ export const ANNOUNCEMENT_BARS_TABS = {
 export const COLOR_THEME = {
   LIGHT: "light",
   DARK: "dark",
+};
+export const ANNOUNCEMENT_BARS_ERROR_STATE = {
+  endDateErr: false,
 };

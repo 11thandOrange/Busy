@@ -1,21 +1,32 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import DatePicker from "../DatePicker";
-import {
-  isEndDateValid,
-  updateSettingsState,
-} from "../../../utils/clientFunctions";
+import { isEndDateValid, updateState } from "../../../utils/clientFunctions";
 import CustomTextField from "../CustomTextField";
 import Selector from "../Selector";
 import { COUNTDOWN_TIMER_STATE } from "../../../constants/countdownTimerCustomization";
 import { Text } from "@shopify/polaris";
 import InputDatePicker from "../InputDatePicker";
+import EvergreenDatePicker from "../EvergreenDatePicker";
 const options = [
   { label: "Fix End Date", value: COUNTDOWN_TIMER_STATE.FIX_END_DATE },
   { label: "Evergreen", value: COUNTDOWN_TIMER_STATE.EVERGREEN },
 ];
 
-const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
-  // console.log("Settings CountdownTimerSettings state", settingsState);
+const CountdownTimerSettings = ({
+  setSettingsState,
+  settingsState,
+  setError,
+  error,
+}) => {
+  useEffect(() => {
+    setError((prevState) =>
+      updateState(
+        "endDateErr",
+        !isEndDateValid(settingsState.settings.countDownEndsAt),
+        prevState,
+      ),
+    );
+  }, [settingsState.settings.countDownEndsAt, settingsState.settings.status]);
 
   const renderTimer = useCallback(() => {
     switch (settingsState.settings.status) {
@@ -25,11 +36,7 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
             <DatePicker
               onDatePicked={(date) => {
                 setSettingsState((prevState) =>
-                  updateSettingsState(
-                    "settings.countDownStartAt",
-                    date,
-                    prevState,
-                  ),
+                  updateState("settings.countDownStartAt", date, prevState),
                 );
               }}
               initialValue={settingsState.settings.countDownStartAt}
@@ -38,48 +45,30 @@ const CountdownTimerSettings = ({ setSettingsState, settingsState }) => {
             <DatePicker
               onDatePicked={(date) => {
                 return setSettingsState((prevState) =>
-                  updateSettingsState(
-                    "settings.countDownEndsAt",
-                    date,
-                    prevState,
-                  ),
+                  updateState("settings.countDownEndsAt", date, prevState),
                 );
               }}
               initialValue={settingsState.settings.countDownEndsAt}
               label={"Countdown ends At"}
               settingsState={settingsState}
               minValue={settingsState.settings.countDownStartAt}
-              errorMessage={
-                isEndDateValid(settingsState.settings.countDownEndsAt)
-                  ? false
-                  : "Not valid"
-              }
+              errorMessage={error.endDateErr ? "Not valid" : false}
             ></DatePicker>
           </div>
         );
       case COUNTDOWN_TIMER_STATE.EVERGREEN:
         return (
-          <div>
-            <CustomTextField
-              type="number"
-              label={"Cool off period (minutes)"}
-              helpText={
-                "Once the cool off period expires, the countdown timer will be shown again (individually for each customer on each product page)."
-              }
-              min={0}
-            ></CustomTextField>
-            <InputDatePicker
-              heading={"Minimum expiration deadline"}
-            ></InputDatePicker>
-            <InputDatePicker
-              heading={"Maximum expiration deadline"}
-            ></InputDatePicker>
-          </div>
+          <EvergreenDatePicker
+            setError={setError}
+            setSettingsState={setSettingsState}
+            settingsState={settingsState}
+            error={error}
+          ></EvergreenDatePicker>
         );
     }
-  }, [settingsState.settings.status]);
+  }, [settingsState, error]);
   const handleSelectChange = (key, value) => {
-    setSettingsState((prevState) => updateSettingsState(key, value, prevState));
+    setSettingsState((prevState) => updateState(key, value, prevState));
   };
   return (
     <div>

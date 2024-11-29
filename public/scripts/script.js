@@ -1,4 +1,4 @@
-const baseUrl = 'https://nightmare-electronics-knit-cams.trycloudflare.com';
+const baseUrl = 'https://pit-conducted-electrical-critical.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -6,12 +6,14 @@ const shopDomain = window.location.hostname;
 const elementIdMap = {
   'busyBuddyAnnouncementBar': 1,
   'inactive-tab-message': 2,
+  'busyBuddyCartNotice': 3,
 };
 
 fetch_request(apifullUrl)
 
 function fetch_request(url, app)
 {
+  console.log(app)
     fetch(url+'?appId='+app+'&shop='+shopDomain, {
         method: 'GET',
         headers: {
@@ -25,13 +27,17 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
+          console.log('test', app)
+          console.log(data.script)
             eval(data.script);
         })
         .catch(error => {
+          console.log('err', app)
+          console.log(error)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
-var apps = ['busyBuddyAnnouncementBar', 'inactive-tab-message'];
+var apps = ['busyBuddyAnnouncementBar', 'inactive-tab-message', 'busyBuddyCartNotice'];
 
 const trackImpressionsForDynamicElements = () => {
   const observer = new MutationObserver((mutationsList) => {
@@ -100,4 +106,4 @@ function addCssLink(cssUrl) {
   link.href = cssUrl;
   document.head.appendChild(link);
 }
-addCssLink('https://nightmare-electronics-knit-cams.trycloudflare.com/styles/style.css')
+addCssLink('https://pit-conducted-electrical-critical.trycloudflare.com/styles/style.css')

@@ -1,6 +1,6 @@
 import React from "react";
 import CustomTextField from "../../../CustomTextField";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
+import { updateState } from "../../../../../utils/clientFunctions";
 
 const FreeShippingSettings = ({ setSettingsState, settingsState }) => {
   return (
@@ -11,11 +11,7 @@ const FreeShippingSettings = ({ setSettingsState, settingsState }) => {
         label="Initial Message"
         onValueChange={(value) => {
           setSettingsState((prevState) => {
-            return updateSettingsState(
-              "generalSettings.message",
-              value,
-              prevState,
-            );
+            return updateState("generalSettings.message", value, prevState);
           });
         }}
       ></CustomTextField>

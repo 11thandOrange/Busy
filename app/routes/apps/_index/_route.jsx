@@ -8,8 +8,11 @@ import { useLoaderData } from "@remix-run/react";
 import { getCategories, getShopName } from "../../../utils/function";
 import GoBack from "../../../components/atoms/GoBack";
 import { CATEGORIES_ENUM } from "../../../utils/constants";
+import { authenticate } from "../../../shopify.server";
 
 export const loader = async ({ request }) => {
+  const {session} = await authenticate.admin(request);
+  const shop = session.shop
   let apps = await db.app.findMany({
     include: {
       Merchant: true,
@@ -21,7 +24,7 @@ export const loader = async ({ request }) => {
     },
   });
   apps = apps.map((app) => {
-    const isInstalled = app.Merchant.some((merchant) => merchant.enabled);
+    const isInstalled = app.Merchant.some((merchant) => merchant.enabled && merchant.shop == shop);
 
     return {
       id: app.id,
@@ -63,7 +66,9 @@ export const action = async ({ request }) => {
         },
       });
       return updatedApp;
-    } else {
+    } 
+    else 
+    {
       const newMerchant = await db.merchant.create({
         data: {
           appId: appId,
@@ -84,7 +89,6 @@ function TabsInsideOfACard() {
   const [appsList, setAppsList] = useState(null);
 
   useEffect(() => {
-    console.log(apps, "apps");
     setTabs(
       apps.categories.filter((item) => item.id != CATEGORIES_ENUM.favorites),
     );

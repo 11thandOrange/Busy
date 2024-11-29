@@ -11,6 +11,7 @@ const ManageDataChange = ({
   handleSaveChanges,
   handleDiscardChanges,
   fetcherState = FETCHER_STATE.IDLE,
+  isError = false,
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
@@ -18,16 +19,18 @@ const ManageDataChange = ({
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
-
+ 
 
   return (
     <>
       <UnsavedChangesBar
-        saveActionButtonClick={handleSaveChanges}
+        saveActionButtonClick={() => {
+          handleSaveChanges();
+        }}
         discardActionButtonClick={() => {
           setOnDiscardChanges(true);
         }}
-        show={hasChanged}
+        show={hasChanged && !isError}
         fetcherState={fetcherState}
       />
 

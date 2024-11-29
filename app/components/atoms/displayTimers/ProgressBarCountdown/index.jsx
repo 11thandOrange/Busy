@@ -1,53 +1,36 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import "./style.css";
 import { ProgressBar } from "@shopify/polaris";
-import {
-  calculateProgressPercentage,
-  calculateTimeDifferenceInSeconds,
-  calculateTotalSeconds,
-} from "../../../../utils/clientFunctions";
 import useCountdownProgress from "../../../../hooks/useCountdownProgress";
 
-const ProgressBarCountdown = ({
-  days,
-  hours,
-  minutes,
-  seconds,
-
-  settingsState,
-}) => {
+const ProgressBarCountdown = ({ timeUnits, settingsState }) => {
   const { display, settings } = settingsState;
   const { countDownStartAt, countDownEndsAt } = settings;
-  const { digitsColor, backgroundColor } = display;
+  const { digitsColor } = display;
+
   const { progress } = useCountdownProgress(countDownStartAt, countDownEndsAt, {
-    days,
-    hours,
-    minutes,
-    seconds,
+    days: timeUnits.find((unit) => unit.label === "days")?.value,
+    hours: timeUnits.find((unit) => unit.label === "hours")?.value,
+    minutes: timeUnits.find((unit) => unit.label === "minutes")?.value,
+    seconds: timeUnits.find((unit) => unit.label === "seconds")?.value,
   });
+
   return (
     <div>
-      <ProgressBar
-        // style={{ backgroundColor: backgroundColor }}
-        progress={progress}
-        size="small"
-      />
+      <ProgressBar progress={progress} size="small" />
       <div className="ProgressBarCountdown" style={{ color: digitsColor }}>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">{days} <span className="innerTitle">days</span></span>
-        </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">{hours}</span>
-        </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">{minutes}</span>
-        </div>
-        <span className="ProgressBarCountdown-divider">:</span>
-        <div className="ProgressBarCountdown-item">
-          <span className="ProgressBarCountdown-number">{seconds}</span>
-        </div>
+        {timeUnits.map((unit, index) => (
+          <React.Fragment key={unit.label}>
+            <div className="ProgressBarCountdown-item">
+              <span className="ProgressBarCountdown-number">
+                {unit.value} <span className="innerTitle">{unit.label}</span>
+              </span>
+            </div>
+            {index < timeUnits.length - 1 && (
+              <span className="ProgressBarCountdown-divider">:</span>
+            )}
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

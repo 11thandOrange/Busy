@@ -161,17 +161,29 @@ model Cart_notice {
   id                      Int             @id @default(autoincrement())
   primary_message         String?
   secondary_message       String?
+  show_countdown          Boolean         @default(false)
+  countdown_timer         Int?
+  fire_icon               Boolean         @default(false)
   general_setting         String
-  shop                    String?
+  shop                    String            @unique
   createdAt               DateTime        @default(now())
 }
 
+model countdown_timer_type{
+  id              Int         @id @default(autoincrement())
+  html            String
+  countdown_timerId               Int
+  countdown_timer                 countdown_timer         @relation(fields: [countdown_timerId], references: [id])
+  createdAt             DateTime            @default(now())
+}
+
+
 model countdown_timer {
   id                    Int                 @id @default(autoincrement())
-  html                  String?
   general_setting       String?
-  shop String?
+  shop String           @unique
   display_setting       String?
-  position String?
+  position                String?
+  countdown_timer_type         countdown_timer_type[] 
   createdAt             DateTime            @default(now())
 }

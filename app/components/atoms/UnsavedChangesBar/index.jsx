@@ -12,22 +12,22 @@ const UnsavedChangesBar = ({
 }) => {
   return (
     <div>
-      {show && (
-        <Frame>
-          <ContextualSaveBar
-            message={message}
-            saveAction={{
-              onAction: saveActionButtonClick,
-              content: "Save",
-              loading: isLoading(fetcherState),
-            }}
-            discardAction={{
-              onAction: discardActionButtonClick,
-              content: "Discard",
-            }}
-          />
-        </Frame>
-      )}
+      <Frame>
+        <ContextualSaveBar
+          message={message}
+          saveAction={{
+            onAction: saveActionButtonClick,
+            content: "Save",
+            loading: isLoading(fetcherState),
+            disabled: !show,
+          }}
+          discardAction={{
+            onAction: discardActionButtonClick,
+            content: "Discard",
+            disabled: isLoading(fetcherState),
+          }}
+        />
+      </Frame>
     </div>
   );
 };

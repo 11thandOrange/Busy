@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.css"; // Import the CSS file
 import { Text } from "@shopify/polaris";
 import { ThemeStyleGridType } from "../../../constants/announcementCustomizationConfig";
+import ImageRenderer from "../../atoms/ImageRenderer";
 
 function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
   const [selectedIndex, setSelectedIndex] = useState(selectedTheme);
@@ -86,7 +87,8 @@ function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
             onClick={() => handleItemClick(item.id, item.type, item.image)}
           >
             <p>{item.name}</p>
-            <img src={item.image} alt={item.name} />
+
+            <ImageRenderer src={item.image} alt={item.name} />
           </div>
         ))}
       </div>

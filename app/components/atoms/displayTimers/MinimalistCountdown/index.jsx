@@ -1,46 +1,26 @@
-import React, { useCallback } from "react";
+import React from "react";
 import "./style.css";
 
-const MinimalistCountdown = ({
-  days,
-  hours,
-  minutes,
-  seconds,
-  settingsState,
-}) => {
+const MinimalistCountdown = ({ timeUnits, settingsState }) => {
   const { display } = settingsState;
   const { digitsColor, borderColor } = display;
+ 
 
-  const divider = useCallback(() => {
-    
-
-    return (
-      <span className="divider" style={{ color: borderColor }}>
-        /
-      </span>
-    );
-  }, [borderColor]);
   return (
     <div className="countdown" style={{ color: digitsColor }}>
-      <div className="countdown-item">
-        <span className="countdown-number">{days}</span>
-        <span className="countdown-label">days</span>
-      </div>
-      {divider()}
-      <div className="countdown-item">
-        <span className="countdown-number">{hours}</span>
-        <span className="countdown-label">hours</span>
-      </div>
-      {divider()}
-      <div className="countdown-item">
-        <span className="countdown-number">{minutes}</span>
-        <span className="countdown-label">minutes</span>
-      </div>
-      {divider()}
-      <div className="countdown-item">
-        <span className="countdown-number">{seconds}</span>
-        <span className="countdown-label">seconds</span>
-      </div>
+      {timeUnits.map((unit, index) => (
+        <React.Fragment key={unit.label}>
+          <div className="countdown-item">
+            <span className="countdown-number">{unit.value}</span>
+            <span className="countdown-label">{unit.label}</span>
+          </div>
+          {index < timeUnits.length - 1 && (
+            <span className="divider" style={{ backgroundColor: borderColor }}>
+              /
+            </span>
+          )}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

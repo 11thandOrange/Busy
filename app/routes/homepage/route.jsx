@@ -12,7 +12,6 @@ import {
 } from "../../constants/announcementCustomizationConfig";
 import AnnouncementSettings from "../../components/templates/InAppSettings/AnnouncementSettings";
 
-
 const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -20,15 +19,7 @@ const route = () => {
     {
       id: "Overview-1",
       content: "Overview",
-      component: (
-        <HomepageSlider
-          selectedType={selectedType}
-          setSelectedType={(type) => {
-            setSelectedType(type);
-            // setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
-          }}
-        />
-      ),
+      component: <HomepageSlider />,
     },
     {
       id: "Settings-1",
@@ -41,15 +32,6 @@ const route = () => {
       content: "Announcement Bars",
       component: <CheckBars></CheckBars>,
     },
-    // {
-    //   id: "Countdown-timer-1",
-    //   content: "Countdown Timer",
-    //   component: (
-    //     <CountDownTimerCustomization
-    //       type={selectedType}
-    //     ></CountDownTimerCustomization>
-    //   ),
-    // },
   ];
   return (
     <>
@@ -58,6 +40,11 @@ const route = () => {
         tabs={tabs}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
+        selectedType={selectedType}
+        setSelectedType={(type) => {
+          setSelectedType(type);
+        }}
+        
       >
         {tabs[selectedTab].component}
       </Homepage>

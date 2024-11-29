@@ -1,7 +1,7 @@
 import React from "react";
 import CustomTextField from "../../../CustomTextField";
 import CustomColorPallete from "../../../CustomColorPallete";
-import { updateSettingsState } from "../../../../../utils/clientFunctions";
+import { updateState } from "../../../../../utils/clientFunctions";
 
 const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
   return (
@@ -12,7 +12,7 @@ const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
         value={settingsState.generalSettings.message}
         onValueChange={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("generalSettings.message", value, prevState),
+            updateState("generalSettings.message", value, prevState),
           );
         }}
       ></CustomTextField>
@@ -22,7 +22,7 @@ const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
         label="Button Text"
         onValueChange={(value) => {
           setSettingsState((prevState) =>
-            updateSettingsState("generalSettings.buttonText", value, prevState),
+            updateState("generalSettings.buttonText", value, prevState),
           );
         }}
       ></CustomTextField>
@@ -30,11 +30,7 @@ const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
         colorHeading={"Button Color"}
         onColorChange={(color) => {
           setSettingsState((prevState) =>
-            updateSettingsState(
-              "generalSettings.buttonColor",
-              color,
-              prevState,
-            ),
+            updateState("generalSettings.buttonColor", color, prevState),
           );
         }}
         initialColor={settingsState.generalSettings.buttonColor}
@@ -43,11 +39,7 @@ const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
         colorHeading={"Button Text Color"}
         onColorChange={(color) => {
           setSettingsState((prevState) =>
-            updateSettingsState(
-              "generalSettings.buttonTextColor",
-              color,
-              prevState,
-            ),
+            updateState("generalSettings.buttonTextColor", color, prevState),
           );
         }}
         initialColor={settingsState.generalSettings.buttonTextColor}

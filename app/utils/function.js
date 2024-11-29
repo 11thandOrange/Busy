@@ -5,6 +5,8 @@ import {
   PRO_MONTHLY_PLAN,
   ENTERPRISE_MONTHLY_PLAN,
 } from "../shopify.server";
+import { fetchTimeObject } from "./clientFunctions";
+import { getCardCountdownTimer, getClassicCountdownTimer, getDividerCountdownTimer, getHexagonCountdownTimer, getModernCountdownTimer, getProgressBarCountdownTimer, getProgressCircleCountdownTimer } from "./countdown_timer/countdown_timer";
 
 export const getShopName = async (request) => {
   let parsedUrl;
@@ -171,6 +173,7 @@ export const getAnnouncementBar = async (shop) => {
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
     script = `
+     
       const announcementBar = document.createElement('div');
       announcementBar.classList.add('busy-buddy-announcement-bar');
       announcementBar.id = 'busyBuddyAnnouncementBar'; 
@@ -182,7 +185,6 @@ export const getAnnouncementBar = async (shop) => {
       announcementBar.style.position = 'relative'; /* Ensure space for the close button */
     `;
     
-    // Close button creation
     if(await check_enable_button(shop))
     {
         script += `
@@ -208,8 +210,7 @@ export const getAnnouncementBar = async (shop) => {
       const messageDiv = document.createElement('div');
       announcementBar.appendChild(messageDiv);
     `;
-    
-    // Display the message
+  
     if (announcement_bar.type == 1) {
       script += `
         messageDiv.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";
@@ -221,18 +222,7 @@ export const getAnnouncementBar = async (shop) => {
       const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
-        function getTimeDifference(startAt, endsAt) {
-          const difference = endsAt - startAt; // Time difference in milliseconds
-          
-          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-  
-          return { days, hours, minutes, seconds, difference };
-        }
-
-        let countdownInterval;  // Declare countdownInterval here
+        let countdownInterval;
 
         function updateCountdown() {
           const now = new Date().getTime();
@@ -253,7 +243,41 @@ export const getAnnouncementBar = async (shop) => {
         countdownInterval = setInterval(updateCountdown, 1000);  // Start the countdown interval after its declaration
       `;
     }
-
+    if(announcement_bar.type == 3)
+      {
+        const shipping_rule = await getShippingRule(shop);
+        const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
+        const price = getDomestingShipping.price_based_shipping_rates;
+        const free_price = price.find((pr)=> pr.price == 0);
+        console.log('free price', free_price)
+        
+          script +=  `let shipping_price = ${free_price.min_order_subtotal}
+                      get_cart_total(function(price){
+                      console.log(price)
+                        if(price == 0)
+                        {
+                          messageDiv.textContent = "${announcement_bar.general_setting.initialMessage.replace('#amount#', free_price.min_order_subtotal)}";
+                        }
+                        else if(price!=0 && price < shipping_price)
+                        {
+                          let difference = price - shipping_price
+                          let message_content = "${announcement_bar.general_setting.progressMessage}"
+                          messageDiv.textContent = message_content.replace('#amount#', difference);
+                        }
+                        else
+                        {
+                          messageDiv.textContent = "${announcement_bar.general_setting.message}";
+                        }
+        })
+          `;
+        
+      }
+    if(announcement_bar.type == 4)
+    {
+      const order_count = await getOrderCounter(shop);
+      script += `
+      messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
+    }
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
                   announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
@@ -339,56 +363,151 @@ export const getCartNotice = async (shop) => {
     where: {
       shop: shop,
     },
-    select: {
-      primary_message: true,
-      secondary_message: true,
-      general_setting: true,
-    },
   });
-  cartNotice = cartNotice ? cartNotice.primary_message : "";
+
+  let htmlToInsert = `<div class="buddyBossCartNotice">`;
+
+  if (cartNotice.primary_message) {
+    htmlToInsert += `<div class="primary-message">${cartNotice.primary_message}</div>`;
+  }
+
+  if (cartNotice.secondary_message) {
+    htmlToInsert += `<div class="secondary-message">${cartNotice.secondary_message}</div>`;
+  }
+
+  if (cartNotice.show_countdown && cartNotice.countdown_timer) {
+    htmlToInsert += `
+      <div class="countdown-timer">
+        <span id="countdown">${cartNotice.countdown_timer}</span> seconds remaining!
+      </div>
+      <script>
+        (function() {
+          let countdown = ${cartNotice.countdown_timer};
+          const countdownElement = document.getElementById('countdown');
+          const countdownInterval = setInterval(function() {
+            countdown--;
+            countdownElement.textContent = countdown + ' seconds remaining!';
+            if (countdown <= 0) {
+              clearInterval(countdownInterval);
+              countdownElement.textContent = 'Time is up!';
+            }
+          }, 1000);
+        })();
+      </script>
+    `;
+  }
+
+  if (cartNotice.fire_icon) {
+    htmlToInsert += `
+      <div class="fire-icon">
+        <i class="fas fa-fire"></i> Hot Deal!
+      </div>
+    `;
+  }
+
+  htmlToInsert += `</div>`;
+
   const script = `
-    (function() {
-      const form = document.querySelector('form[action="/cart"]');
-      if (form) {
-        const htmlToInsert = '<div class="cart-notice">"${cartNotice}"</div>';
-        form.insertAdjacentHTML('beforebegin', htmlToInsert);
-      }
-    })();
-  `;
+  (function() {
+    const forms = document.querySelectorAll('form[action="/cart"]');
+    forms.forEach(function(form) {
+      form.insertAdjacentHTML('beforebegin', \`${htmlToInsert}\`);
+    });
+  })();
+`;
   return { script };
 };
+
 export const getCountdownTimer = async (shop) => {
+  let countdownTimerHtml = '';  // Initialize it as an empty string
   let script;
+
+  // Fetch the countdown timer settings from the database
   let countdownTimer = await db.countdown_timer.findFirst({
     where: {
       shop: shop,
     },
     select: {
-      html: true,
       general_setting: true,
       display_setting: true,
       position: true,
     },
   });
+
+  // Check if countdown timer exists
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
-    countdownTimer.html = countdownTimer.html.replace(
-      "{{message}}",
-      countdownTimer.general_setting.message,
-    );
-    script = `
-      (function() {
-        const form = document.querySelector('.product__info-wrapper');
-        if (form) {
-          const htmlToInsert = '<div class="countdown-timer">"${countdownTimer.html}"</div>';
-          form.insertAdjacentHTML('beforeend', htmlToInsert);
+    countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
+    
+    if (countdownTimer.general_setting.countdown_timer_end_date === 1) {
+      const timeLeft = fetchTimeObject(new Date().getTime(), countdownTimer.general_setting.countdown_end);
+      countdownTimerHtml += `
+        <div style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
+          class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
+          countdownTimer.display_setting.theme !== 1 ? "align-column" : "align-row"}">
+          <div class="main-countdown-title" style="color:${countdownTimer.display_setting.titleColor};">
+            ${countdownTimer.display_setting.title}
+          </div>
+      `;
+
+      switch (countdownTimer.display_setting.theme) {
+        case 1:
+          countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 2:
+          countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 3:
+          countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 4:
+          countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 5:
+          countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 6:
+          countdownTimerHtml += getProgressBarCountdownTimer(timeLeft, countdownTimer);
+          break;
+        case 7:
+          countdownTimerHtml += getDividerCountdownTimer(timeLeft, countdownTimer);
+          break;
+        default:
+          break;
+      }
+
+      countdownTimerHtml += '</div>';
+    
+      script = `
+        let countdownTimerInterval;
+        function updateCountdownNew() {
+          const now = new Date().getTime();
+          const endTime = ${new Date(countdownTimer.general_setting.countdown_end).getTime()};
+          const difference = getTimeDifference(now, endTime);
+          document.getElementById('seconds').textContent = difference.seconds;
+          document.getElementById('minutes').textContent = difference.minutes;
+          document.getElementById('hours').textContent = difference.hours;
+          document.getElementById('days').textContent = difference.days;
+          if (difference.difference <= 0) {
+            clearInterval(countdownTimerInterval);
+          }
         }
-      })();
-    `;
+        
+        (function() {
+          const form = document.querySelector('.product__info-wrapper');
+          if (form) {
+            const htmlToInsert = \`<div class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
+            form.insertAdjacentHTML('afterend', htmlToInsert);
+            countdownTimerInterval = setInterval(updateCountdownNew, 1000);
+          }
+        })();
+      `;
+    }
   }
 
-  return { script };
+  return { script, discount_products:countdownTimer?.display_setting?.show_on_discount_products };
 };
+
 export const check_enable_button = async (shop) => {
   try {
     const setting = await db.announcement_bar_setting.findFirst({
@@ -430,3 +549,49 @@ export const can_active = async (shop) => {
     return false;
   }
 };
+export const storefront_api = async (shop, url, method, query=null) => {
+  const session = await db.session.findFirst({
+    where: { shop: shop }
+  });
+  
+  if (session) {
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'X-Shopify-Access-Token': session.accessToken,
+          'Content-Type': 'application/json',
+        },
+        body: query
+      });
+      const data = await response.json();
+      return { success: true, data };
+    } catch (error) {
+      console.error('API request failed:', error);
+      return { success: false, error: error.message };
+    }
+  } else {
+    return { success: false, error: 'Session not found' };
+  }
+}
+export const getShippingRule = async(shop)=>{
+  const shipping_rule = await storefront_api(shop, `https://${shop}/admin/api/2024-04/shipping_zones.json`, 'GET');
+  return shipping_rule.data.shipping_zones;
+}
+export const getOrderCounter = async(shop)=>{
+  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?status=any`, 'GET');
+  if(order_count.success)
+  {
+    return order_count.data.count;
+  }
+  return 0;
+}
+
+export const addScriptTag = async(shop)=>{
+  const scriptTag = await storefront_api(shop, `https://${shop}/admin/api/2024-10/script_tags.json`, 'GET', JSON.stringify({
+    script_tag: {
+      event: 'onload',
+      src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
+    },
+  }));
+}

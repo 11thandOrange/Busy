@@ -81,7 +81,7 @@ import Spinner from "../../atoms/Spinner";
     const [selectedApps, setSelectedApps] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15; // Default number of items per page
-  console.log(items, "items")
+
     // Derived pagination controls
     const hasNext = (currentPage * itemsPerPage) < items?.length;
     const hasPrevious = currentPage > 1;
