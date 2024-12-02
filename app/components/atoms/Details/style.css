@@ -12,28 +12,28 @@
   }
   
   .points-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     margin-bottom: 10px;
-    /* Increased gap for better spacing between points */
-    justify-items: start; /* Align points to the left */
+    flex-wrap: wrap;
+    gap: 2%;
   }
   
   .point {
     display: flex;
-    align-items: center; /* Ensure the icon and text are aligned vertically */
+    align-items: flex-start; /* Ensure the icon and text are aligned vertically */
     gap: 5px; /* Space between the icon and the text */
     padding: 5px;
+    width: 45%;
   }
   
-  .left {
-    justify-content: flex-start;
+  .point > div {
+    text-align: left;
   }
-  
-  .right {
-    justify-content: flex-end;
+
+  .point .Polaris-Icon {
+    margin: 0px;
   }
-  
+
   .icon.green-icon {
     color: green;  /* Green color for the checkmark icon */
     font-size: 8px;
@@ -45,9 +45,6 @@
   .point-description {
     font-size: 14px;
     color: #343434; /* Slightly darker gray for description text */
-    white-space: nowrap; /* Prevent text from wrapping to multiple lines */
-    overflow: hidden; /* Ensure no overflow of text */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
   }
   
   p {
