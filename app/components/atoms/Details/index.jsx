@@ -1,10 +1,10 @@
 import { Icon } from "@shopify/polaris";
 import React from "react";
-import { CheckIcon } from "@shopify/polaris-icons";
+import { BulletIcon } from "@shopify/polaris-icons";
 import "./style.css";
 
 const TickIcon = () => {
-  return <Icon source={CheckIcon} tone="success" />;
+  return <Icon source={BulletIcon} tone="success" />;
 };
 
 const Details = ({ description, points }) => {

@@ -250,6 +250,15 @@ const route = () => {
 
           navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
+        headerContent={{
+          description: `Get Noticed! 🔔
+Want to make sure your message doesn’t get missed? Announcement Bar lets you display important alerts right at the top of your store. Whether it’s a sale, promotion, or update, it’s impossible to ignore!`,
+          points: [
+            `🖌 Customizable – Colors, fonts, and style to match your brand.`,
+            `🚨 Attention-grabbing – Keep your customers informed without disrupting their shopping.`,
+            `📱 Responsive – Looks great on any device.`,
+          ],
+        }}
       >
         {tabs[selectedTab].component}
       </Homepage>
