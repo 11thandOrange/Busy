@@ -85,11 +85,11 @@ export function startCountdown(timeObject, updateCallback, finishCallback) {
       remainingSeconds,
     };
 
-    updateCallback(remainingTimeObject); // Update the time display via the update callback
+    updateCallback(remainingTimeObject);
   }
 
   const timerInterval = setInterval(updateTimer, 1000);
-  return timerInterval; // Return the interval ID for cleanup if needed
+  return timerInterval;
 }
 
 export function replaceString(inputString, value) {

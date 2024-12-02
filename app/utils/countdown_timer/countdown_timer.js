@@ -5,7 +5,7 @@ export function  getClassicCountdownTimer(timeLeft, countdownTimer)
     let countdownTimerHtml;
     countdownTimerHtml = `<div>
         <span style="color:${countdownTimer.display_setting?.digitsColor}">
-            ${timeLeft.days}days ${timeLeft.hours}:${timeLeft.minutes}:<span id="seconds">${timeLeft.seconds}</span>
+            ${timeLeft.days}days <span id="hours">${timeLeft.hours}</span>:<span id="minutes">${timeLeft.minutes}</span>:<span id="seconds">${timeLeft.seconds}</span>
         </span>
     </div>`
     return countdownTimerHtml;
@@ -40,110 +40,40 @@ export const getHexagonCountdownTimer = (timeLeft, countdownTimer) =>
 export const getProgressCircleCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    let days = timeLeft.days;
-    let hours = timeLeft.hours;
-    let minutes = timeLeft.minutes
-    let seconds = timeLeft.seconds;
-    const { daysProgress, hoursProgress, minutesProgress, secondsProgress } = useCountdownProgress(countdownTimer.general_settings.countDownStartAt, countdownTimer.general_settings.countDownEndsAt, {
-      days,
-      hours,
-      minutes,
-      seconds,
-    });
-    countdownTimerHtml = `
-        <div class="ProgressCircleCountdown" style="color:${countdownTimer.display_setting?.digitsColor}">
-            <div class="ProgressCircleCountdown-item">
-                <svg width="80" height="80" viewBox="0 0 80 80" class="circular-progress-bar">
-                    <circle stroke="#000000" fill="transparent" stroke-width="1" r="35" cx="40" cy="40"></circle>
-                    <circle 
-                        stroke="#000000" 
-                        fill="transparent" 
-                        stroke-width="4" 
-                        stroke-linecap="round" 
-                        r="35" 
-                        cx="40" 
-                        cy="40" 
-                        style="stroke-dasharray: 219.911; stroke-dashoffset: ${getStrokeDashOffset(24 * 3600, days * 24 * 3600)}; transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%;">
-                    </circle>
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20px" fill="#000000">${days}</text>
-                </svg>
-                <div class="circle-progress-wrapper">
-                    <span class="ProgressCircleCountdown-number">${days}</span>
-                    <span>days</span>
-                </div>
-            </div>
+    countdownTimerHtml = `<div class="progress-container">
+    <div class="progress-wrapper">
+      <svg width="200" height="200">
+        <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+        <circle class="circle-progress" id="days-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+      </svg>
+      <div class="progress-text" id="days-text" style="color:${countdownTimer.display_setting.digitsColor};">0 days</div>
+    </div>
 
-            <span class="ProgressCircleCountdown-divider">:</span>
+    <div class="progress-wrapper">
+      <svg width="200" height="200">
+        <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+        <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+      </svg>
+      <div class="progress-text" id="hours-text" style="color:${countdownTimer.display_setting.digitsColor};">0 hours</div>
+    </div>
 
-            <div class="ProgressCircleCountdown-item">
-                <svg width="80" height="80" viewBox="0 0 80 80" class="circular-progress-bar">
-                    <circle stroke="#000000" fill="transparent" stroke-width="1" r="35" cx="40" cy="40"></circle>
-                    <circle 
-                        stroke="#000000" 
-                        fill="transparent" 
-                        stroke-width="4" 
-                        stroke-linecap="round" 
-                        r="35" 
-                        cx="40" 
-                        cy="40" 
-                        style="stroke-dasharray: 219.911; stroke-dashoffset: ${getStrokeDashOffset(3600, hours * 3600)}; transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%;">
-                    </circle>
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20px" fill="#000000">${hours}</text>
-                </svg>
-                <div class="circle-progress-wrapper">
-                    <span class="ProgressCircleCountdown-number">${hours}</span>
-                    <span>hours</span>
-                </div>
-            </div>
+    <div class="progress-wrapper">
+      <svg width="200" height="200">
+        <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+        <circle class="circle-progress" id="minutes-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+      </svg>
+      <div class="progress-text" id="minutes-text" style="color:${countdownTimer.display_setting.digitsColor};">0 minutes</div>
+    </div>
 
-            <span class="ProgressCircleCountdown-divider">:</span>
+    <div class="progress-wrapper">
+      <svg width="200" height="200">
+        <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+        <circle class="circle-progress" id="seconds-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+      </svg>
+      <div class="progress-text" id="seconds-text" style="color:${countdownTimer.display_setting.digitsColor};">0 seconds</div>
+    </div>
+  </div>
 
-            <!-- Minutes -->
-            <div class="ProgressCircleCountdown-item">
-                <svg width="80" height="80" viewBox="0 0 80 80" class="circular-progress-bar">
-                    <circle stroke="#000000" fill="transparent" stroke-width="1" r="35" cx="40" cy="40"></circle>
-                    <circle 
-                        stroke="#000000" 
-                        fill="transparent" 
-                        stroke-width="4" 
-                        stroke-linecap="round" 
-                        r="35" 
-                        cx="40" 
-                        cy="40" 
-                        style="stroke-dasharray: 219.911; stroke-dashoffset: ${getStrokeDashOffset(60, minutes * 60)}; transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%;">
-                    </circle>
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20px" fill="#000000">${minutes}</text>
-                </svg>
-                <div class="circle-progress-wrapper">
-                    <span class="ProgressCircleCountdown-number">${minutes}</span>
-                    <span>minutes</span>
-                </div>
-            </div>
-
-            <span class="ProgressCircleCountdown-divider">:</span>
-
-            <!-- Seconds -->
-            <div class="ProgressCircleCountdown-item">
-                <svg width="80" height="80" viewBox="0 0 80 80" class="circular-progress-bar">
-                    <circle stroke="#000000" fill="transparent" stroke-width="1" r="35" cx="40" cy="40"></circle>
-                    <circle 
-                        stroke="#000000" 
-                        fill="transparent" 
-                        stroke-width="4" 
-                        stroke-linecap="round" 
-                        r="35" 
-                        cx="40" 
-                        cy="40" 
-                        style="stroke-dasharray: 219.911; stroke-dashoffset: ${getStrokeDashOffset(60, seconds)}; transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%;">
-                    </circle>
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20px" fill="#000000">${seconds}</text>
-                </svg>
-                <div class="circle-progress-wrapper">
-                    <span class="ProgressCircleCountdown-number">${seconds}</span>
-                    <span>seconds</span>
-                </div>
-            </div>
-        </div>
     `;
     return countdownTimerHtml;
 }
@@ -152,22 +82,22 @@ export const getCardCountdownTimer = (timeLeft, countdownTimer) =>
     let countdownTimerHtml;
     countdownTimerHtml = `<div class="CardCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
       <div class="CardCountdown-item">
-        <span class="CardCountdown-number">${timeLeft.days}</span>
+        <span class="CardCountdown-number" id="days">${timeLeft.days}</span>
         <span class="cardCountdown-title">days</span>
       </div>
       <span class="CardCountdown-divider">:</span>
       <div class="CardCountdown-item">
-        <span class="CardCountdown-number">${timeLeft.hours}</span>
+        <span class="CardCountdown-number" id="hours">${timeLeft.hours}</span>
         <span class="cardCountdown-title">hours</span>
       </div>
       <span class="CardCountdown-divider">:</span>
       <div class="CardCountdown-item">
-        <span class="CardCountdown-number">${timeLeft.minutes}</span>
+        <span class="CardCountdown-number" id="minutes">${timeLeft.minutes}</span>
         <span class="cardCountdown-title">minutes</span>
       </div>
       <span class="CardCountdown-divider">:</span>
       <div class="CardCountdown-item">
-        <span class="CardCountdown-number">${timeLeft.seconds}</span>
+        <span class="CardCountdown-number" id="seconds">${timeLeft.seconds}</span>
         <span class="cardCountdown-title">seconds</span>
       </div>
     </div>`
@@ -178,22 +108,22 @@ export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
     let countdownTimerHtml;
     countdownTimerHtml = `<div class="ModernsCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
       <div class="ModernsCountdown-item">
-        <span class="ModernsCountdown-number">${timeLeft.days}</span>
+        <span class="ModernsCountdown-number" id="days">${timeLeft.days}</span>
       
       </div>
       <span class="ModernsCountdown-divider">:</span>
       <div class="ModernsCountdown-item">
-        <span class="ModernsCountdown-number">${timeLeft.hours}</span>
+        <span class="ModernsCountdown-number" id="hours">${timeLeft.hours}</span>
         
       </div>
       <span class="ModernsCountdown-divider">:</span>
       <div class="ModernsCountdown-item">
-        <span class="ModernsCountdown-number">${timeLeft.minutes}</span>
+        <span class="ModernsCountdown-number" id="minutes">${timeLeft.minutes}</span>
     
       </div>
       <span class="ModernsCountdown-divider">:</span>
       <div class="ModernsCountdown-item">
-        <span class="ModernsCountdown-number">${timeLeft.seconds}</span>
+        <span class="ModernsCountdown-number" id="seconds">${timeLeft.seconds}</span>
        
       </div>
     </div>`
@@ -202,18 +132,17 @@ export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
 export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    let {progress} = useCountdownProgress(countdownTimer.general_settings.countDownStartAt, countdownTimer.general_settings.countDownEndsAt)
     countdownTimerHtml = `
-    <div class="progress-bar-container">
-      <div class="progress-bar" style="width: ${progress}%;"></div> <!-- Change width to update progress -->
+    <div id="progressBar">
+      <div class="bar"></div>
     </div>
     <div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number">${timeLeft.days} <span class="innerTitle">days</span></span>
+          <span class="ProgressBarCountdown-number" id="days">${timeLeft.days} <span class="innerTitle">days</span></span>
         </div>
         <span class="ProgressBarCountdown-divider">:</span>
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number">${timeLeft.hours}</span>
+          <span class="ProgressBarCountdown-number" id="hours">${timeLeft.hours}</span>
         </div>
         <span class="ProgressBarCountdown-divider">:</span>
         <div class="ProgressBarCountdown-item">
@@ -257,4 +186,13 @@ function divider()
     return `<span class="divider">
         /
       </span>`;
+}
+export const get_random_time = (randomTime) =>
+{
+  const countdownEndsAt = new Date();
+  countdownEndsAt.setSeconds(countdownEndsAt.getSeconds() + randomTime.seconds);
+  countdownEndsAt.setMinutes(countdownEndsAt.getMinutes() + randomTime.minutes);
+  countdownEndsAt.setHours(countdownEndsAt.getHours() + randomTime.hours);
+  countdownEndsAt.setDate(countdownEndsAt.getDate() + randomTime.days); 
+  return countdownEndsAt;
 }

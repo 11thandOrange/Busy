@@ -15,6 +15,8 @@ import CountDownTimerCustomization from "../../../../components/templates/Countd
 export async function loader({ request }) {
   const {session} = await authenticate.admin(request)
     const shop = session.shop;
+    const url = new URL(request.url);
+    const appId = parseInt(url.searchParams.get("appId"));
     let cartNotice = await db.Cart_notice.findFirst({
       where: {
         shop: shop,
@@ -24,16 +26,19 @@ export async function loader({ request }) {
     if (!cartNotice) {
       cartNotice = {};
     }
-    return json(cartNotice);
+    return json({cartNotice, app_active: await check_app_active(appId, shop)});
 }
 
 export async function action({ request }) {
+  const {session} = await authenticate.admin(request)
   let cartNotice = await request.formData();
     cartNotice = Object.fromEntries(cartNotice);
-    const shop = await getShopName(request);
+    const shop = session.shop;
     await db.Cart_notice.upsert({
       where: { shop: shop },
       update: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
         primary_message: cartNotice.primary_message,
         secondary_message: cartNotice.secondary_message,
         show_countdown: cartNotice.show_countdown,
@@ -43,6 +48,8 @@ export async function action({ request }) {
         shop: shop,
       },
       create: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
         primary_message: cartNotice.primary_message,
         secondary_message: cartNotice.secondary_message,
         show_countdown: cartNotice.show_countdown,

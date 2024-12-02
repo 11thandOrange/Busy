@@ -319,7 +319,67 @@
 }
 /* Card Countdown */
 
+/* Progress Bar Countdown Timer */
 
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #B8C3C3;
+}
+#progressBar div {
+  height: 100%;
+  text-align: center;
+  width: 0;
+  background-color: #4B5863;
+  box-sizing: border-box;
+}
+p{
+  text-align: center
+}
+/* Progress Bar Countdown Timer */
+
+
+/* Progress Circle Countdown Timer */
+.progress-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.progress-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+svg {
+  transform: rotate(-90deg); /* Rotate so we start from the top */
+}
+
+.circle-background {
+  fill: none;
+  stroke: #f0f0f0;
+  stroke-width: 5;
+}
+
+.circle-progress {
+  fill: none;
+  stroke: #4caf50; /* Green color */
+  stroke-width: 5;
+  stroke-dasharray: 440; /* Circumference of the circle */
+  stroke-dashoffset: 0; /* Initially no progress */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+/* Progress Circle Countdown Timer */
 
 /* Cart Notice */
 

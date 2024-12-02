@@ -13,46 +13,43 @@ import sliderData from "../../../../data/sliderData.json";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import { COLOR_THEME } from "../../../../constants/announcementCustomizationConfig";
 
-// export async function loader({ request }) {
-//   const { session } = await authenticate.admin(request);
-//   const url = new URL(request.url);
-//   const appId = parseInt(url.searchParams.get("appId"));
-//   const shop = session.shop;
-//   let inactive_tab_message = await db.inactive_tab_message.findFirst({
-//     where: {
-//       shop: shop,
-//     },
-//   });
+export async function loader({ request }) {
+  const {session} = await authenticate.admin(request);
+  const shop = session.shop;
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get("appId"));
+  let countdownTimer = await db.countdown_timer.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
 
-//   if (!inactive_tab_message) {
-//     inactive_tab_message = { message: "" };
-//   }
-//   return json({
-//     inactive_tab_message,
-//     app_active: await check_app_active(appId, shop),
-//   });
-// }
+  if (!countdownTimer) {
+    countdownTimer = {};
+  }
+  return json({countdownTimer, app_active: await check_app_active(appId, shop)});
+}
 
-// export async function action({ request }) {
-//   console.log(request, "request");
-//   const { session } = await authenticate.admin(request);
-//   let inactive_tab_message = await request.formData();
-//   inactive_tab_message = Object.fromEntries(inactive_tab_message);
-//   const shop = session.shop;
-//   await db.inactive_tab_message.upsert({
-//     where: { shop: shop },
-//     update: {
-//       message: inactive_tab_message.message,
-//       shop: shop,
-//     },
-//     create: {
-//       message: inactive_tab_message.message,
-//       shop: shop,
-//     },
-//   });
+export async function action({ request }) {
+  const {session} = await authenticate.admin(request);
+  let countdownTimer = await request.formData();
+  countdownTimer = Object.fromEntries(countdownTimer);
+  const shop = session.shop;
+  await db.countdown_timer.upsert({
+    where: { shop: shop },
+    update: {
+      general_setting: countdownTimer.settings,
+      display_setting: countdownTimer.display
+    },
+    create: {
+      general_setting: countdownTimer.settings,
+      display_setting: countdownTimer.display,
+      shop: shop,
+    },
+  });
 
-//   return json(inactive_tab_message);
-// }
+  return json(countdownTimer);
+}
 
 const route = () => {
   //   const inActiveTabData = useLoaderData();
