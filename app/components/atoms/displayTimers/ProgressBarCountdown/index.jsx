@@ -2,11 +2,12 @@ import React from "react";
 import "./style.css";
 import { ProgressBar } from "@shopify/polaris";
 import useCountdownProgress from "../../../../hooks/useCountdownProgress";
+import LinearProgressBar from "../../LinearProgressBar";
 
 const ProgressBarCountdown = ({ timeUnits, settingsState }) => {
   const { display, settings } = settingsState;
   const { countDownStartAt, countDownEndsAt } = settings;
-  const { digitsColor } = display;
+  const { digitsColor, backgroundColor } = display;
 
   const { progress } = useCountdownProgress(countDownStartAt, countDownEndsAt, {
     days: timeUnits.find((unit) => unit.label === "days")?.value,
@@ -17,7 +18,10 @@ const ProgressBarCountdown = ({ timeUnits, settingsState }) => {
 
   return (
     <div>
-      <ProgressBar progress={progress} size="small" />
+      <LinearProgressBar
+        progress={progress}
+        color={backgroundColor}
+      ></LinearProgressBar>
       <div className="ProgressBarCountdown" style={{ color: digitsColor }}>
         {timeUnits.map((unit, index) => (
           <React.Fragment key={unit.label}>

@@ -48,7 +48,7 @@ const AnnouncementCustomization = ({
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
   const navigate = useNavigate();
- 
+
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
@@ -146,7 +146,7 @@ const AnnouncementCustomization = ({
       prevSettingsState.current = settingsState;
     }
   };
-  
+
   return (
     <div>
       {/* <GoBack heading={header}/> */}
@@ -166,14 +166,14 @@ const AnnouncementCustomization = ({
             handleSaveChanges={() => {
               handleOnSave();
               if (!isLoading(fetcher.state)) {
-                navigate(-1);
+                navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
               }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              navigate(-1);
+              navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}
