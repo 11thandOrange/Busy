@@ -11,6 +11,7 @@ import sliderData from "../../../../data/sliderData.json";
 // import { useFetcher } from "@remix-run/react";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
+import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
 
 // export async function loader({ request }) {
 //   const { session } = await authenticate.admin(request);
@@ -69,7 +70,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CountDownTimerCustomization></CountDownTimerCustomization>,
+      component: <CustomizationCartNotice/>,
     },
   ];
 
