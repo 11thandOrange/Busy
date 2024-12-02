@@ -8,7 +8,7 @@ const ClassicTimer = ({ timeUnits, settingsState }) => {
         {timeUnits.map((unit, index) => (
           <React.Fragment key={unit.label}>
             {unit.value}
-            {unit.label && <span className="unit-label">{unit.label}</span>}
+            {unit.label && <span className="unit-label">{unit.label[0]}</span>}
             {index < timeUnits.length - 1 && <span className="divider">:</span>}
           </React.Fragment>
         ))}

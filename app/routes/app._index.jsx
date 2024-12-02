@@ -130,6 +130,7 @@ export default function Index() {
                     <Link
                       className="list-item bb-anchorTag"
                       to={`/apps/${item.slug}?appId=${item.id}`}
+                      key={item.id}
                     >
                       <div>
                         <ImageRenderer src={item?.image} />
