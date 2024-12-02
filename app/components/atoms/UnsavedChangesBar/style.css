@@ -1,3 +1,7 @@
-.Polaris-Frame{
+.Polaris-Frame {
     min-height: unset;
+}
+
+.Polaris-Frame-ContextualSaveBar {
+    background-color: var(--p-color-bg-fill-critical);
 }

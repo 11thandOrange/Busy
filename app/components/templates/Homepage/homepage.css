@@ -24,3 +24,20 @@
 .bb-tabs-content .customization-left-section {
     margin-right: 20px !important;
 }
+
+.Polaris-Page-Header--mediumTitle .Polaris-Page-Header__Row {
+    margin-top:10px;
+}
+
+.customization-container {
+    gap:0px !important;
+}
+
+.customization-container > div:empty {
+    display: none;
+}
+
+.bb-tabs-content .customization-left-section, .bb-tabs-content .customization-right-section {
+    max-width: 475px;
+    width: 100%;
+}

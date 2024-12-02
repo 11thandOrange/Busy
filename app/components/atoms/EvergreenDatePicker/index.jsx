@@ -6,7 +6,7 @@ import {
   updateState,
 } from "../../../utils/clientFunctions";
 import { InlineError } from "@shopify/polaris";
-
+import "./style.css"
 const EvergreenDatePicker = ({
   setSettingsState,
   settingsState,
@@ -27,8 +27,7 @@ const EvergreenDatePicker = ({
   }, [settingsState.settings.minExpTime, settingsState.settings.maxExpTime]);
 
   return (
-    <div>
-      {" "}
+    <div className="settingContainer">
       <CustomTextField
         type="number"
         label={"Cool off period (minutes)"}

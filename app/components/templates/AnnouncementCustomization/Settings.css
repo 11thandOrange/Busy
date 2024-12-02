@@ -25,7 +25,9 @@
 
 .customization-container{
     gap: 16px;
+    margin-top: 15px;
     .customization-left-section{
+            margin-right: 20px !important;
         .Polaris-Box{
             padding: 16px;
             .grid-container{
