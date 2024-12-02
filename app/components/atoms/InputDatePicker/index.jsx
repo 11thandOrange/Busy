@@ -10,22 +10,25 @@ const InputDatePicker = ({
   maxValues = { days: 24, hours: 24, minutes: 60 },
   maxLength = { days: 2, hours: 2, minutes: 2 },
 }) => {
-  const [date, setDate] = useState({ days: 0, hours: 0, minutes: 0 });
-  useEffect(() => {
-    setDate(initialValue);
-  }, [initialValue]);
+  const [date, setDate] = useState(initialValue);
+  // useEffect(() => {
+  //   setDate(initialValue);
+  // }, [initialValue]);
   const onDateChange = (key, value) => {
     if (isNaN(value)) {
       value = 0;
     } else if (value > maxValues[key]) {
       value = maxValues[key];
     }
+
     setDate((prevState) => {
-      const updatedDate = { ...prevState, [key]: value };
-      return updatedDate;
+      return { ...prevState, [key]: value };
     });
-    onDatePicked({ ...date, [key]: value });
   };
+
+  useEffect(() => {
+    onDatePicked(date);
+  }, [date]);
 
   return (
     <div>
