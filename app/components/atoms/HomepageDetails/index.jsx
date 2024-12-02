@@ -14,6 +14,7 @@ const HomepageDetails = ({
   showPopOver = false,
   showCustomizeBtn = false,
   onCustomizeBtnClick = () => {},
+  headerContent = { description: "", points: [] },
 }) => {
   const description =
     "Capture leads, communicate free shipping thresholds or make store-wide announcements with the help of header bars.";
@@ -26,7 +27,10 @@ const HomepageDetails = ({
 
   return (
     <>
-      <Details description={description} points={points}></Details>
+      <Details
+        description={headerContent.description}
+        points={headerContent.points}
+      ></Details>
       <div>
         {showPopOver && (
           <PopoverContent

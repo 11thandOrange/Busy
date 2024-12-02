@@ -91,10 +91,18 @@ const route = () => {
 
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
-       
         onCustomizeBtnClick={() => {
           console.log("On customize button click");
           setSelectedTab(1);
+        }}
+        headerContent={{
+          description: `Don’t Let Them Forget! 🔖
+Keep your store top-of-mind – even when customers switch tabs! Inactive Tab Message displays a custom alert in the title of their browser tab, so they’ll remember their cart, discounts, or promotions!`,
+          points: [
+            `🔔 Stay top-of-mind – Show reminders even when they’re not on your site.`,
+            `✍️ Customizable text – Tailor your message to promotions, cart reminders, and more.  `,
+            `📱 Works everywhere – Visible on both desktop and mobile tabs`,
+          ],
         }}
       >
         {tabs[selectedTab].component}

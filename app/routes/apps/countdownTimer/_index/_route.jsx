@@ -97,6 +97,14 @@ const route = () => {
           console.log("On customize button click");
           setSelectedTab(1);
         }}
+        headerContent={{
+          description: `Make every second count with Countdown Timer! Add a customizable countdown alert to your site and create urgency around your sales. Let customers know exactly how much time’s left to grab that deal!`,
+          points: [
+            `⏰ Create urgency – Countdown to sales, flash deals, and more.`,
+            `🎨 Fully customizable – Colors, fonts, and styles that match your brand.`,
+            `📱 Mobile-friendly – Works perfectly on all devices. `,
+          ],
+        }}
       >
         {tabs[selectedTab].component}
       </Homepage>

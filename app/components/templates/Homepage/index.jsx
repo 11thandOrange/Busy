@@ -19,6 +19,7 @@ function Homepage({
   showPopOver = false,
   showCustomizeBtn = false,
   onCustomizeBtnClick = () => {},
+  headerContent = { description: "", points: [] },
 }) {
   const handleTabChange = useCallback((selectedTabIndex) => {
     onTabChange(selectedTabIndex);
@@ -41,6 +42,7 @@ function Homepage({
           showPopOver={showPopOver}
           showCustomizeBtn={showCustomizeBtn}
           onCustomizeBtnClick={onCustomizeBtnClick}
+          headerContent={headerContent}
         ></HomepageDetails>
         <LegacyTabs
           tabs={tabs}
