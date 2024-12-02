@@ -9,12 +9,13 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler
 } from 'chart.js';
 
 // Register required Chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const ChartRenderer = ({ data, basicOptions }) => {
+const ChartRenderer = ({ data, basicOptions, chartRef }) => {
   // Default/common configuration options
   const defaultOptions = {
     responsive: true,
@@ -58,7 +59,7 @@ const ChartRenderer = ({ data, basicOptions }) => {
     },
   };
 
-  return <Line data={data} options={options} />;
+  return <Line data={data} options={options} ref={chartRef}/>;
 };
 
 export default ChartRenderer;

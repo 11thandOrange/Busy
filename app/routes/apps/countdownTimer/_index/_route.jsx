@@ -1,5 +1,7 @@
 import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
+import { authenticate } from "../../../../shopify.server";
+import db from '../../../../db.server'
 // import { json } from "@remix-run/node";
 // import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";

@@ -12,7 +12,7 @@ import {
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
 import { CATEGORIES_ENUM } from "../../../utils/constants";
   import './style.css'
-import SpinnerExample from "../../atoms/Spinner";
+import Spinner from "../../atoms/Spinner";
 
   const items = [
     {
@@ -156,7 +156,7 @@ import SpinnerExample from "../../atoms/Spinner";
           ) : (
             items ? 
             <DynamicEmptyState heading={emptyDataString} image={emptyDataImage} /> :
-            <SpinnerExample/>
+            <Spinner/>
           )}
         </LegacyCard.Section>
         

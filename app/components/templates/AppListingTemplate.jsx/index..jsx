@@ -7,7 +7,7 @@ import {
 import TabsWithSearchBar from "../../atoms/TabsWithSearchBar";
   import './style.css'
 import { CATEGORIES_ENUM } from "../../../utils/constants";
-import SpinnerExample from "../../atoms/Spinner";
+import Spinner from "../../atoms/Spinner";
 
 const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [], emptyDataString="No Data to Show", emptyDataImage="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"}) => {
     const [selected, setSelected] = useState(0);
@@ -71,7 +71,7 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
             ) : (
               list ? 
             <DynamicEmptyState heading={emptyDataString} image={emptyDataImage} /> :
-            <SpinnerExample/>
+            <Spinner/>
             )}
           </LegacyCard.Section>
         </LegacyCard>

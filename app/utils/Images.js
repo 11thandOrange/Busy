@@ -9,11 +9,16 @@ import Holidays from "../assets/themes/Holidays.svg";
 import Squares from "../assets/themes/Squares.svg";
 import Sunshine from "../assets/themes/Sunshine.svg";
 import Watercolor from "../assets/themes/Watercolor.svg";
+import DownArrowWhite from '../assets/icons/down_arrow_white.svg';
+import UpArrowWhite from '../assets/icons/up_arrow_white.svg';
+
 const IMAGES = {
   HeartIcon,
   FilledHeartIcon,
   BadgeIcon,
   BusyBuddyLogo,
+  DownArrowWhite,
+  UpArrowWhite,
   Abstract,
   Christmas,
   Circles,
