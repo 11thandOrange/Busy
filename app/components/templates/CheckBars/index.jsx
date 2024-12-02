@@ -65,18 +65,21 @@ function CheckBars({ barsData = [] }) {
             <Text variant="bodyMd" fontWeight="bold" as="span">
               {name}
             </Text>
-            <Badge
-              tone={status ? barState.ACTIVE : barState.INACTIVE}
-              style={{ marginLeft: "5px" }}
-            >
-              {status ? "Active" : "Inactive"}
-            </Badge>
             <p>{JSON.parse(general_setting).message || "Description"}</p>
           </div>
         </IndexTable.Cell>
-        <Text as="span" alignment="end" numeric>
-          {formatDateAndTime(createdAt)}
-        </Text>
+        <div className="dateContainerContent">
+          <div className="dateContainer">
+            <Badge
+              tone={status ? barState.ACTIVE : barState.INACTIVE}
+            >
+              {status ? "Active" : "Inactive"}
+            </Badge>
+            <Text as="span" alignment="end" numeric>
+              {formatDateAndTime(createdAt)}
+            </Text>
+          </div>
+        </div>
       </IndexTable.Row>
     ),
   );
@@ -111,7 +114,7 @@ function CheckBars({ barsData = [] }) {
                   onSelect={handleCreateClick}
                 />
               }
-              actionCallback={() => {}}
+              actionCallback={() => { }}
             />
           </div>
         }
