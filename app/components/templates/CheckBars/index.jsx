@@ -15,6 +15,8 @@ import { formatDateAndTime, isLoading } from "../../../utils/clientFunctions";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { ROUTES } from "../../../utils/constants";
 import SpinnerExample from "../../atoms/Spinner";
+import ToastBar from "../../atoms/Toast";
+import useToast from "../../../hooks/useToast";
 
 const barState = {
   ACTIVE: "success",
@@ -25,7 +27,7 @@ function CheckBars({ barsData = [] }) {
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
-
+  const { showToast, onDismiss } = useToast(fetcher);
   const resourceName = {
     singular: "announcement bar",
     plural: "announcement bars",
@@ -70,9 +72,7 @@ function CheckBars({ barsData = [] }) {
         </IndexTable.Cell>
         <div className="dateContainerContent">
           <div className="dateContainer">
-            <Badge
-              tone={status ? barState.ACTIVE : barState.INACTIVE}
-            >
+            <Badge tone={status ? barState.ACTIVE : barState.INACTIVE}>
               {status ? "Active" : "Inactive"}
             </Badge>
             <Text as="span" alignment="end" numeric>
@@ -98,6 +98,11 @@ function CheckBars({ barsData = [] }) {
 
   return (
     <LegacyCard>
+      <ToastBar
+        onDismiss={onDismiss}
+        show={showToast}
+        message="Announcement bar(s) deleted successfully"
+      />
       <IndexTable
         resourceName={resourceName}
         itemCount={barsData?.length}
@@ -114,7 +119,7 @@ function CheckBars({ barsData = [] }) {
                   onSelect={handleCreateClick}
                 />
               }
-              actionCallback={() => { }}
+              actionCallback={() => {}}
             />
           </div>
         }

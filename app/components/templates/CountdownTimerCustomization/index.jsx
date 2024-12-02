@@ -15,11 +15,14 @@ import {
 import ManageDataChange from "../ManageDataChange";
 import { checkError, updateState } from "../../../utils/clientFunctions";
 import { useFetcher } from "@remix-run/react";
+import useToast from "../../../hooks/useToast";
+import ToastBar from "../../atoms/Toast";
 const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
   const fetcher = useFetcher();
+  const { showToast, onDismiss } = useToast(fetcher);
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
@@ -52,6 +55,11 @@ const CountDownTimerCustomization = ({
   }, [settingsState.settings.status]);
   return (
     <div className="customization-container">
+      <ToastBar
+        onDismiss={onDismiss}
+        show={showToast}
+        message="Customization saved successfully"
+      />
       <ManageDataChange
         newState={settingsState}
         prevState={prevSettingsState.current}

@@ -8,9 +8,12 @@ import { FETCHER_STATE, ROUTES } from "../../../../utils/constants";
 import SettingSection from "../../GlobalSettings/SettingSection";
 import ToastBar from "../../../atoms/Toast";
 import { isLoading } from "../../../../utils/clientFunctions";
+import useToast from "../../../../hooks/useToast";
 
 const AnnouncementSettings = ({ initialData }) => {
   const fetcher = useFetcher();
+  const { showToast, onDismiss } = useToast(fetcher);
+
   const [settings, setSettings] = useState({
     enableCloseButton: false,
     // enableBotFilter: false,
@@ -49,6 +52,11 @@ const AnnouncementSettings = ({ initialData }) => {
   return (
     <div>
       <Layout>
+        <ToastBar
+          onDismiss={onDismiss}
+          show={showToast}
+          message="Settings saved"
+        />
         <ManageDataChange
           newState={settings}
           prevState={oldSettingRef.current}
