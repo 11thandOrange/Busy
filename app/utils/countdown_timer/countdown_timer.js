@@ -202,7 +202,12 @@ export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
 export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml = `<div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
+    let {progress} = useCountdownProgress(countdownTimer.general_settings.countDownStartAt, countdownTimer.general_settings.countDownEndsAt)
+    countdownTimerHtml = `
+    <div class="progress-bar-container">
+      <div class="progress-bar" style="width: ${progress}%;"></div> <!-- Change width to update progress -->
+    </div>
+    <div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
         <div class="ProgressBarCountdown-item">
           <span class="ProgressBarCountdown-number">${timeLeft.days} <span class="innerTitle">days</span></span>
         </div>

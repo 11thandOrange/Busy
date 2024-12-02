@@ -3,7 +3,7 @@ import AnnouncementCustomization from "../../../../../components/templates/Annou
 
 import { useFetcher, useParams, useSearchParams } from "@remix-run/react";
 import { FETCHER_STATE, ROUTES } from "../../../../../utils/constants";
-import SpinnerExample from "../../../../../components/atoms/Spinner";
+import Spinner from "../../../../../components/atoms/Spinner";
 import { isLoading } from "../../../../../utils/clientFunctions";
 
 const Customization = () => {
@@ -42,14 +42,14 @@ const Customization = () => {
   return (
     <div>
       {isLoading(fetcher.state) ? (
-        <SpinnerExample></SpinnerExample>
+        <Spinner/>
       ) : (
         <AnnouncementCustomization
           announcementBarType={Number(AnnouncementBarType)}
           backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
           initialData={customizationData}
           colorTheme = {colorTheme}
-        ></AnnouncementCustomization>
+        />
       )}
     </div>
   );

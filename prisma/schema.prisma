@@ -154,6 +154,11 @@ model Cart_notice {
   id                      Int             @id @default(autoincrement())
   primary_message         String?
   secondary_message       String?
+  backgroundColor         String?         @default("#fff5cd")
+  textColor               String?          @default("#222222")
+  fire_icon               Boolean         @default(false)
+  showCountdown           Boolean     @default(true)
+  countdown_timer         Int             @default(1)
   general_setting         String
   shop                    String?
   createdAt               DateTime        @default(now())

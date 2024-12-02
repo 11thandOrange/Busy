@@ -46,7 +46,7 @@ export async function loader({ request }) {
     }
 
     const activityIds = await getEventTypes(appId);
-    
+
     const counts = await db.analytics.groupBy({
       by: ['activityId', 'createdAt'],
       where: {
@@ -120,7 +120,8 @@ export async function loader({ request }) {
             count: secondToLastDayCount
           }
         ],
-        percentageChange: (percentageChange || 0) +'%',
+        isIncremented: (percentageChange > 0 ? true:false),
+        percentageChange: (Math.abs(percentageChange) || 0) +'%',
         totalCount: totalCountsByActivity[activityId] || 0
       };
     });

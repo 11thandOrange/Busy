@@ -83,7 +83,7 @@ export const action = async ({ request }) => {
   }
 };
 
-function TabsInsideOfACardExample() {
+function TabsInsideOfACard() {
   const apps = useLoaderData();
   const [tabs, setTabs] = useState([]);
   const [appsList, setAppsList] = useState(null);
@@ -107,4 +107,4 @@ function TabsInsideOfACardExample() {
   );
 }
 
-export default TabsInsideOfACardExample;
+export default TabsInsideOfACard;

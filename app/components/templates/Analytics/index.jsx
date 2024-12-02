@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 
 import AnalyticsView from "../../atoms/AnalyticsView";
@@ -22,10 +22,11 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
     labels: [],
     datasets: [],
   });
+  const chartRef = useRef(null)
 
   const tabs = [
-    { key: TABS_ENUM.IMPRESSIONS, label: "Impressions", color: "#7e57c2" },
-    { key: TABS_ENUM.CLICK, label: "Clicks", color: "#ff7043" },
+    { key: TABS_ENUM.IMPRESSIONS, label: "Impressions", color: "#e65d4a" },
+    { key: TABS_ENUM.CLICK, label: "Clicks", color: "#ffa857" },
   ];
 
   const handleSelect = (key) => {
@@ -74,6 +75,17 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
         datasets: data?.length
           ? data.map((item) => {
               const tabData = tabs.find((tab) => tab.key == item.activityId);
+              let gradient = '';
+              if(chartRef.current){
+                const ctx = chartRef.current.canvas.getContext('2d');
+                if (ctx) {
+                  // Create gradient dynamically based on canvas height
+                  gradient = ctx.createLinearGradient(0, 0, 0, chartRef.current.canvas.height);
+                  gradient.addColorStop(0, tabData.color + '80'); // Semi-transparent
+                  gradient.addColorStop(1, tabData.color + '00'); // Fully transparent
+                }
+              }
+
               return {
                 label: tabData.label,
                 data: item.activityData.map((data) => ({
@@ -81,7 +93,9 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
                   y: data.count,
                 })),
                 borderColor: tabData.color,
-                backgroundColor: tabData.color,
+                pointBackgroundColor: tabData.color,
+                fill: true,
+                backgroundColor: gradient,
                 borderWidth: 2,
                 tension: 0.4,
               };
@@ -114,6 +128,7 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
         tabs={tabs}
         chartData={chartData}
         data={fetcher?.data?.analytics}
+        chartRef={chartRef}
       />
     </div>
   );

@@ -1,60 +1,71 @@
 import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
-// import { json } from "@remix-run/node";
+import { json } from "@remix-run/node";
 // import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";
 import sliderData from "../../../../data/sliderData.json";
-// import db from "../../../../db.server";
+import db from "../../../../db.server";
 // import InActiveTabSettings from "../../../../components/templates/InAppSettings/InActiveTabSettings";
-// import { authenticate } from "../../../../shopify.server";
+import { authenticate } from "../../../../shopify.server";
 // import { useLoaderData, useSearchParams } from "react-router-dom";
 // import { useFetcher } from "@remix-run/react";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
+import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
+import { getShopName } from "../../../../utils/function";
+import { useLoaderData } from "@remix-run/react";
 
-// export async function loader({ request }) {
-//   const { session } = await authenticate.admin(request);
-//   const url = new URL(request.url);
-//   const appId = parseInt(url.searchParams.get("appId"));
-//   const shop = session.shop;
-//   let inactive_tab_message = await db.inactive_tab_message.findFirst({
-//     where: {
-//       shop: shop,
-//     },
-//   });
+export async function loader({ request }) {
+  const {session} = await authenticate.admin(request)
+    const shop = session.shop;
+    let cartNotice = await db.Cart_notice.findFirst({
+      where: {
+        shop: shop,
+      },
+    });
+  
+    if (!cartNotice) {
+      cartNotice = {};
+    }
+    return json(cartNotice);
+}
 
-//   if (!inactive_tab_message) {
-//     inactive_tab_message = { message: "" };
-//   }
-//   return json({
-//     inactive_tab_message,
-//     app_active: await check_app_active(appId, shop),
-//   });
-// }
+export async function action({ request }) {
+  let cartNotice = await request.formData();
+    cartNotice = Object.fromEntries(cartNotice);
+    console.log('cartNotice', cartNotice);
+    const shop = await getShopName(request);
+    await db.Cart_notice.upsert({
+      where: { shop: shop },
+      update: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
+        primary_message: cartNotice.primary_message,
+        secondary_message: cartNotice.secondary_message,
+        showCountdown: Boolean(cartNotice.show_countdown),
+        countdown_timer: parseInt(cartNotice.countdown_timer),
+        fire_icon: Boolean(cartNotice.fire_icon),
+        general_setting: cartNotice.general_setting,
+        shop: shop,
+      },
+      create: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
+        primary_message: cartNotice.primary_message,
+        secondary_message: cartNotice.secondary_message,
+        showCountdown: Boolean(cartNotice.show_countdown),
+        countdown_timer: parseInt(cartNotice.countdown_timer),
+        fire_icon: Boolean(cartNotice.fire_icon),
+        general_setting: cartNotice.general_setting,
+        shop: shop,
+      },
+    });
+  
+    return json(cartNotice);
+}
 
-// export async function action({ request }) {
-//   console.log(request, "request");
-//   const { session } = await authenticate.admin(request);
-//   let inactive_tab_message = await request.formData();
-//   inactive_tab_message = Object.fromEntries(inactive_tab_message);
-//   const shop = session.shop;
-//   await db.inactive_tab_message.upsert({
-//     where: { shop: shop },
-//     update: {
-//       message: inactive_tab_message.message,
-//       shop: shop,
-//     },
-//     create: {
-//       message: inactive_tab_message.message,
-//       shop: shop,
-//     },
-//   });
-
-//   return json(inactive_tab_message);
-// }
-
-const route = () => {
-  //   const inActiveTabData = useLoaderData();
+const CartNotice = () => {
+    const cartNoticeData = useLoaderData();
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -69,7 +80,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CountDownTimerCustomization></CountDownTimerCustomization>,
+      component: <CustomizationCartNotice cartSettings={cartNoticeData}/>,
     },
   ];
 
@@ -100,4 +111,4 @@ const route = () => {
   );
 };
 
-export default route;
+export default CartNotice;

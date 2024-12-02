@@ -161,6 +161,20 @@
 /* Divider Countdown CSS End */
 
 /* Progress Bar Countdown */
+.progress-bar-container {
+  width: 80%;  /* Adjust the width of the container */
+  height: 30px;  /* Height of the progress bar */
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50;  /* Color of the progress bar */
+  border-radius: 15px;
+  transition: width 0.3s ease-in-out;
+}
 .ProgressBarCountdown {
   display: flex;
   /* align-items: center; */
@@ -304,3 +318,45 @@
   margin-bottom: 8px;
 }
 /* Card Countdown */
+
+
+
+/* Cart Notice */
+
+#busyBuddyCartNotice
+{
+  margin: 5px 0 5px 0;
+  padding: 15px 0 15px 0;
+}
+.di-flex
+{
+  color: #222222;
+  background-color: #fff5cd;
+} 
+.fireEmoji
+{
+  margin: 0 10px !important;
+  float: left;
+  font-size: 25px;
+  vertical-align: top;
+}
+#cart_reserved_box {
+  color: #222222;
+  background-color: #fff5cd;
+}
+#cart_reserved_message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+}
+.cartReservedTimerText {
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+}
