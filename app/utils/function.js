@@ -358,62 +358,66 @@ export const getInactiveTabMessage = async (shop) => {
   return { script };
 };
 export const getCartNotice = async (shop) => {
+  let htmlToInsert;
   let cartNotice = await db.Cart_notice.findFirst({
     where: {
       shop: shop,
     },
   });
 
-  let htmlToInsert = `<div class="buddyBossCartNotice">`;
-
-  if (cartNotice.primary_message) {
-    htmlToInsert += `<div class="primary-message">${cartNotice.primary_message}</div>`;
+  if(cartNotice)
+  {
+    console.log('countdown', cartNotice)
+    htmlToInsert = `<div id="buddyBossCartNotice" class="di-flex" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor}">`;
+    if(cartNotice.fire_icon)
+    {
+      htmlToInsert += '<div class="fireEmoji">🔥</div>'
+    }
+    htmlToInsert += `<div class="cart-reserved-text-box"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
+    <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
+    if(cartNotice.showCountdown)
+    {
+      htmlToInsert += `<span class="busyBuddyCartReservedTimer" style="color: red;">${parseInt(cartNotice.countdown_timer)*60}</span>`
+    }
+      htmlToInsert += `</span></div></div>`;
   }
-
-  if (cartNotice.secondary_message) {
-    htmlToInsert += `<div class="secondary-message">${cartNotice.secondary_message}</div>`;
-  }
-
-  if (cartNotice.show_countdown && cartNotice.countdown_timer) {
-    htmlToInsert += `
-      <div class="countdown-timer">
-        <span id="countdown">${cartNotice.countdown_timer}</span> seconds remaining!
-      </div>
-      <script>
-        (function() {
-          let countdown = ${cartNotice.countdown_timer};
-          const countdownElement = document.getElementById('countdown');
-          const countdownInterval = setInterval(function() {
-            countdown--;
-            countdownElement.textContent = countdown + ' seconds remaining!';
-            if (countdown <= 0) {
-              clearInterval(countdownInterval);
-              countdownElement.textContent = 'Time is up!';
-            }
-          }, 1000);
-        })();
-      </script>
-    `;
-  }
-
-  if (cartNotice.fire_icon) {
-    htmlToInsert += `
-      <div class="fire-icon">
-        <i class="fas fa-fire"></i> Hot Deal!
-      </div>
-    `;
-  }
-
-  htmlToInsert += `</div>`;
-
+  
   const script = `
   (function() {
-    const forms = document.querySelectorAll('form[action="/cart"]');
-    forms.forEach(function(form) {
-      form.insertAdjacentHTML('beforebegin', \`${htmlToInsert}\`);
-    });
+    // Ensure the DOM is fully loaded before running the script
+    
+      // Insert the HTML content before the form
+      const forms = document.querySelectorAll('form[action="/cart"]');
+      forms.forEach(function(form) {
+        form.insertAdjacentHTML('beforebegin', \`${htmlToInsert}\`);
+      });
+
+      // Countdown logic for multiple timers
+      const countdownElements = document.querySelectorAll('.busyBuddyCartReservedTimer');
+      if (countdownElements.length > 0) {
+        countdownElements.forEach(function(countdownElement) {
+          let countdownTime = ${cartNotice.showCountdown ? parseInt(cartNotice.countdown_timer) * 60 : 0}; // countdown in seconds
+
+          // Update countdown every second for each timer
+          const countdownInterval = setInterval(function() {
+            if (countdownTime > 0) {
+              countdownTime--;
+              countdownElement.textContent = countdownTime;
+            } else {
+              clearInterval(countdownInterval);
+            const noticeElements = document.querySelectorAll('#buddyBossCartNotice');
+                noticeElements.forEach(function(element) {
+                element.remove();
+              });
+            }
+          }, 1000);
+        });
+      }
+    
   })();
-`;
+  `;
+
+
   return { script };
 };
 

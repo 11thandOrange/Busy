@@ -318,3 +318,45 @@
   margin-bottom: 8px;
 }
 /* Card Countdown */
+
+
+
+/* Cart Notice */
+
+#busyBuddyCartNotice
+{
+  margin: 5px 0 5px 0;
+  padding: 15px 0 15px 0;
+}
+.di-flex
+{
+  color: #222222;
+  background-color: #fff5cd;
+} 
+.fireEmoji
+{
+  margin: 0 10px !important;
+  float: left;
+  font-size: 25px;
+  vertical-align: top;
+}
+#cart_reserved_box {
+  color: #222222;
+  background-color: #fff5cd;
+}
+#cart_reserved_message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+}
+.cartReservedTimerText {
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+}

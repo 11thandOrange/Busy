@@ -1,5 +1,5 @@
 console.log('Script Added ML3')
-const baseUrl = 'https://adopt-ship-hat-chest.trycloudflare.com';
+const baseUrl = 'https://invited-kits-upload-ordinary.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -144,6 +144,17 @@ function getTimeDifference(startAt, endsAt) {
   const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
   return { days, hours, minutes, seconds, difference };
+}
+function get_cart(callback) {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      callback(cart);
+    })
+    .catch(error => {
+      console.error('Error fetching cart data:', error);
+      callback(0);
+    });
 }
 function get_cart_total(callback) {
   fetch('/cart.js')
