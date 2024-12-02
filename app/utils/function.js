@@ -174,7 +174,7 @@ export const getAnnouncementBar = async (shop) => {
     script = `
      
       const announcementBar = document.createElement('div');
-      announcementBar.classList.add('busy-buddy-announcement-bar');
+      announcementBar.classList.add('busyBuddyAnnouncementBar');
       announcementBar.id = 'busyBuddyAnnouncementBar'; 
       announcementBar.style.padding = '10px';
       announcementBar.style.textAlign = 'center';
@@ -368,7 +368,7 @@ export const getCartNotice = async (shop) => {
   if(cartNotice)
   {
     cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
-    htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop};margin-bottom:${cartNotice.general_setting.marginBottom};">`;
+    htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop};margin-bottom:${cartNotice.general_setting.marginBottom};">`;
     if(!(cartNotice.fire_icon))
     {
       htmlToInsert += '<div class="fireEmoji">🔥</div>'
@@ -402,7 +402,7 @@ export const getCartNotice = async (shop) => {
                 countdownElement.textContent = countdownTime;
               } else {
                 clearInterval(countdownInterval);
-              const noticeElements = document.querySelectorAll('#buddyBossCartNotice');
+              const noticeElements = document.querySelectorAll('#busyBuddyCartNotice');
                   noticeElements.forEach(function(element) {
                   element.remove();
                 });

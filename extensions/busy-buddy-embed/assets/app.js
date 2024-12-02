@@ -1,4 +1,3 @@
-console.log('Script Added ML3')
 const baseUrl = 'https://glow-widescreen-transport-aid.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
@@ -28,7 +27,6 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-          console.log(data)
           if(data?.discount_products)
           { 
             check_product_discount().then(isDiscounted => {
@@ -61,6 +59,7 @@ const trackImpressionsForDynamicElements = () => {
             const elementObserver = new IntersectionObserver((entries, observer) => {
               entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                  trackClicks(entry.target.id);
                   sendAnalyticsData(1, { element: entry.target.id, time: new Date().toISOString() });
                   observer.disconnect();
                 }
@@ -75,19 +74,18 @@ const trackImpressionsForDynamicElements = () => {
   observer.observe(document.body, { childList: true, subtree: true });
 };
 
-const trackClicks = () => {
-  document.body.addEventListener('click', function(event) {
-    const elementId = event.target.id;
-    if (apps.includes(elementId)) {
+const trackClicks = (elementId) => {
+  const elements = document.querySelectorAll('#'+elementId);
+  elements.forEach(function(element) {
+    element.addEventListener('click', function() {
       sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
-    }
-  });
+    });
+  }); 
 };
 trackImpressionsForDynamicElements(); 
 apps.forEach((app) => {
   let app_id = elementIdMap[app]
   fetch_request(apifullUrl, app_id);
-  trackClicks(app);
 });
 
 function sendAnalyticsData(activity, data) {
@@ -164,8 +162,6 @@ function get_cart_total(callback) {
 function startCountdown(countdownStartAt, countdownEndsAt, element) {
   const startTime = new Date(countdownStartAt);
   const endTime = new Date(countdownEndsAt);
-  console.log(startTime)
-  console.log(endTime)
   const currentTime = new Date();
   const timetotal = endTime - startTime;
   const timeleft = endTime - currentTime;
@@ -179,7 +175,6 @@ function progress(timeleft, timetotal, element) {
   element.querySelector('.bar').style.display = 'block';
   if (timeleft > 0) {
     setTimeout(function() {
-      console.log('Checking progress...');
       progress(timeleft - 1000, timetotal, element);
     }, 1000);
   }
