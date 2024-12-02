@@ -12,17 +12,16 @@ import sliderData from "../data/sliderData.json";
 import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
 
-
 export const loader = async ({ request }) => {
-  const {session} = await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
   const shop = session.shop;
   let apps = await db.app.findMany({
-    select:{
-      id:true,
+    select: {
+      id: true,
       name: true,
       image: true,
-      slug: true
-    }
+      slug: true,
+    },
   });
   let widgets = await db.widget.findMany({
     include: {
@@ -130,7 +129,7 @@ export default function Index() {
                   return (
                     <Link
                       className="list-item bb-anchorTag"
-                      to={"/apps/" + item.slug}
+                      to={`/apps/${item.slug}?appId=${item.id}`}
                     >
                       <div>
                         <ImageRenderer src={item?.image} />
