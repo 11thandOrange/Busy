@@ -16,56 +16,56 @@ import { getShopName } from "../../../../utils/function";
 import { useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }) {
-  const {session} = await authenticate.admin(request)
-    const shop = session.shop;
-    let cartNotice = await db.Cart_notice.findFirst({
-      where: {
-        shop: shop,
-      },
-    });
-  
-    if (!cartNotice) {
-      cartNotice = {};
-    }
-    return json(cartNotice);
+  const { session } = await authenticate.admin(request);
+  const shop = session.shop;
+  let cartNotice = await db.Cart_notice.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+
+  if (!cartNotice) {
+    cartNotice = {};
+  }
+  return json(cartNotice);
 }
 
 export async function action({ request }) {
   let cartNotice = await request.formData();
-    cartNotice = Object.fromEntries(cartNotice);
-    console.log('cartNotice', cartNotice);
-    const shop = await getShopName(request);
-    await db.Cart_notice.upsert({
-      where: { shop: shop },
-      update: {
-        backgroundColor: cartNotice.backgroundColor,
-        textColor: cartNotice.textColor,
-        primary_message: cartNotice.primary_message,
-        secondary_message: cartNotice.secondary_message,
-        showCountdown: Boolean(cartNotice.show_countdown),
-        countdown_timer: parseInt(cartNotice.countdown_timer),
-        fire_icon: Boolean(cartNotice.fire_icon),
-        general_setting: cartNotice.general_setting,
-        shop: shop,
-      },
-      create: {
-        backgroundColor: cartNotice.backgroundColor,
-        textColor: cartNotice.textColor,
-        primary_message: cartNotice.primary_message,
-        secondary_message: cartNotice.secondary_message,
-        showCountdown: Boolean(cartNotice.show_countdown),
-        countdown_timer: parseInt(cartNotice.countdown_timer),
-        fire_icon: Boolean(cartNotice.fire_icon),
-        general_setting: cartNotice.general_setting,
-        shop: shop,
-      },
-    });
-  
-    return json(cartNotice);
+  cartNotice = Object.fromEntries(cartNotice);
+  console.log("cartNotice", cartNotice);
+  const shop = await getShopName(request);
+  await db.Cart_notice.upsert({
+    where: { shop: shop },
+    update: {
+      backgroundColor: cartNotice.backgroundColor,
+      textColor: cartNotice.textColor,
+      primary_message: cartNotice.primary_message,
+      secondary_message: cartNotice.secondary_message,
+      showCountdown: Boolean(cartNotice.show_countdown),
+      countdown_timer: parseInt(cartNotice.countdown_timer),
+      fire_icon: Boolean(cartNotice.fire_icon),
+      general_setting: cartNotice.general_setting,
+      shop: shop,
+    },
+    create: {
+      backgroundColor: cartNotice.backgroundColor,
+      textColor: cartNotice.textColor,
+      primary_message: cartNotice.primary_message,
+      secondary_message: cartNotice.secondary_message,
+      showCountdown: Boolean(cartNotice.show_countdown),
+      countdown_timer: parseInt(cartNotice.countdown_timer),
+      fire_icon: Boolean(cartNotice.fire_icon),
+      general_setting: cartNotice.general_setting,
+      shop: shop,
+    },
+  });
+
+  return json(cartNotice);
 }
 
 const CartNotice = () => {
-    const cartNoticeData = useLoaderData();
+  const cartNoticeData = useLoaderData();
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -80,7 +80,7 @@ const CartNotice = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CustomizationCartNotice cartSettings={cartNoticeData}/>,
+      component: <CustomizationCartNotice cartSettings={cartNoticeData} />,
     },
   ];
 
@@ -99,10 +99,19 @@ const CartNotice = () => {
 
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
-        
         onCustomizeBtnClick={() => {
           console.log("On customize button click");
           setSelectedTab(1);
+        }}
+        headerContent={{
+          description: `See Your Cart at a Glance! 🛒
+Want to keep your shoppers in the know? Cart Notice shows a real-time update of how many items are in their cart, right when they need it! No more guessing – just a quick glance to see where they stand.
+`,
+          points: [
+            `🤝‍🧑 Instant updates – Display the number of items in the cart. `,
+            `🎨 Customizable look – Match your store's style. `,
+            `🚀 Boost conversions – Clear info = faster checkout.`,
+          ],
         }}
       >
         {tabs[selectedTab].component}
