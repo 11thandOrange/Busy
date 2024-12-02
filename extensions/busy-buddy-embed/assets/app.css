@@ -324,8 +324,9 @@
 #progressBar {
   width: 90%;
   margin: 10px auto;
-  height: 22px;
+  height: 15px;
   background-color: #B8C3C3;
+  border-radius: 10px;
 }
 #progressBar div {
   height: 100%;
@@ -333,6 +334,7 @@
   width: 0;
   background-color: #4B5863;
   box-sizing: border-box;
+  border-radius: 10px;
 }
 p{
   text-align: center
@@ -420,3 +422,69 @@ svg {
   text-align: left;
   display: block;
 }
+
+
+/* Moderns Countdown Timer */
+.ModernsCountdown {
+  display: flex;
+  /* align-items: center; */
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  color: #ff4e4e;
+}
+
+.ModernsCountdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: 0 10px; */
+}
+
+.ModernsCountdown-number {
+  font-size: 30px;
+  font-weight: bold;
+  /* color: #ff4e4e; */
+  /* background-color: #b0d6ff; */
+  /* padding: 10px 20px; */
+  border-radius: 5px;
+}
+
+.ModernsCountdown-label {
+  margin-top: 0px;
+  font-size: 14px;
+  color: #7f7f7f;
+}
+
+.ModernsCountdown-divider {
+  font-size: 17px;
+  color: #555555;
+  vertical-align: middle;
+  padding-block: 6px;
+  margin-right: 2px;
+}
+.ModernsCountdown-item{
+  font: 300 35px Roboto, sans-serif;
+  z-index: 3;
+  border-radius: 10%;
+  margin: .3% 2px .3% .3%;
+  padding: 0 4px;
+  width: auto !important;
+  background: #f7f7f7;
+}
+.ModernsCountdown-number{
+  font-size: 24px;
+  font-weight: 400;
+}
+.RIGHT {
+  .ModernsCountdown{
+    justify-content: right;
+    padding-left: 0 !important;
+  }
+}
+.CENTER {
+  .ModernsCountdown{
+    justify-content: center;
+  }
+}
+
+/* Moderns Countdown Timer */

@@ -368,8 +368,8 @@ export const getCartNotice = async (shop) => {
   if(cartNotice)
   {
     cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
-    htmlToInsert = `<div id="buddyBossCartNotice" class="di-flex" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop};margin-bottom:${cartNotice.general_setting.marginBottom};">`;
-    if(cartNotice.fire_icon)
+    htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop};margin-bottom:${cartNotice.general_setting.marginBottom};">`;
+    if(!(cartNotice.fire_icon))
     {
       htmlToInsert += '<div class="fireEmoji">🔥</div>'
     }
@@ -601,7 +601,7 @@ export const getShippingRule = async(shop)=>{
   return shipping_rule.data.shipping_zones;
 }
 export const getOrderCounter = async(shop)=>{
-  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?fulfillment_status=shipped`, 'GET');
+  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?status=any`, 'GET');
   if(order_count.success)
   {
     return order_count.data.count;

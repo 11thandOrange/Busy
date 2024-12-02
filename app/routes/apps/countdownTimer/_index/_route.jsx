@@ -2,7 +2,7 @@ import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import { authenticate } from "../../../../shopify.server";
 import db from '../../../../db.server'
-// import { json } from "@remix-run/node";
+import { json } from "@remix-run/node";
 // import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";
 import sliderData from "../../../../data/sliderData.json";
@@ -14,6 +14,7 @@ import sliderData from "../../../../data/sliderData.json";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import { COLOR_THEME } from "../../../../constants/announcementCustomizationConfig";
+import { check_app_active } from "../../../../utils/function";
 
 export async function loader({ request }) {
   const {session} = await authenticate.admin(request);

@@ -75,20 +75,13 @@ const trackImpressionsForDynamicElements = () => {
   observer.observe(document.body, { childList: true, subtree: true });
 };
 
-const trackClicks = (elementId) => {
-  const observer = new MutationObserver((mutationsList) => {
-    const element = document.getElementById(elementId);
-
-    if (element) {
-      observer.disconnect();
-
-      element.addEventListener('click', function() {
-        sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
-      });
+const trackClicks = () => {
+  document.body.addEventListener('click', function(event) {
+    const elementId = event.target.id;
+    if (apps.includes(elementId)) {
+      sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
     }
   });
-
-  observer.observe(document.body, { childList: true, subtree: true });
 };
 trackImpressionsForDynamicElements(); 
 apps.forEach((app) => {

@@ -13,6 +13,7 @@ import { authenticate } from "../../../../shopify.server";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
 import { useLoaderData } from "@remix-run/react";
+import { check_app_active } from "../../../../utils/function";
 
 export async function loader({ request }) {
   const {session} = await authenticate.admin(request)
@@ -66,7 +67,8 @@ export async function action({ request }) {
 }
 
 const CartNotice = () => {
-    const cartNoticeData = useLoaderData();
+    const cartNotice = useLoaderData();
+    const cartNoticeData = cartNotice.cartNotice;
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
