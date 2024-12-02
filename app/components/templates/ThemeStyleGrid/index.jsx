@@ -3,6 +3,7 @@ import "./style.css"; // Import the CSS file
 import { Text } from "@shopify/polaris";
 import { ThemeStyleGridType } from "../../../constants/announcementCustomizationConfig";
 import ImageRenderer from "../../atoms/ImageRenderer";
+import IMAGES from "../../../utils/Images";
 
 function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
   const [selectedIndex, setSelectedIndex] = useState(selectedTheme);
@@ -13,56 +14,51 @@ function ThemeStyleGrid({ onThemeSelected = () => {}, selectedTheme = 1 }) {
   const gridData = [
     {
       id: 1,
-      name: "Solid Colors",
+      name: "Solid Color",
       image:
         "https://www.solidbackgrounds.com/images/7680x4320/7680x4320-pastel-red-solid-color-background.jpg",
       type: ThemeStyleGridType.COLOR,
     },
     {
       id: 2,
-      name: "Shapes",
-      image: "https://appsolve.io/asset/apps/vitals/img/smart_bar/shapes.png",
+      name: "Abstract",
+      image: IMAGES.Abstract,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 3,
-      name: "Blue Shapes",
-      image:
-        "https://appsolve.io/asset/apps/vitals/img/smart_bar/blue-shapes.png",
+      name: "Christmas",
+      image: IMAGES.Christmas,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 4,
-      name: "Abstract ",
-      image: "https://appsolve.io/asset/apps/vitals/img/smart_bar/abstract.svg",
+      name: "Circles",
+      image: IMAGES.Circles,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 5,
-      name: "Winter",
-      image:
-        "https://appsolve.io/asset/apps/vitals/img/smart_bar/winter-mobile.svg",
+      name: "Holidays",
+      image: IMAGES.Holidays,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 6,
-      name: "Valentines Day",
-      image:
-        "https://appsolve.io/asset/apps/vitals/img/smart_bar/valentine-mobile.svg",
+      name: "Squares",
+      image: IMAGES.Squares,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 7,
-      name: "Hot Discount",
-      image:
-        "https://appsolve.io/asset/apps/vitals/img/smart_bar/hot-discounts-mobile.svg",
+      name: "Sunshine",
+      image: IMAGES.Sunshine,
       type: ThemeStyleGridType.IMAGE,
     },
     {
       id: 8,
-      name: "Halloween",
-      image:
-        "https://appsolve.io/asset/apps/vitals/img/smart_bar/halloween-mobile.svg",
+      name: "Watercolor",
+      image: IMAGES.Watercolor,
       type: ThemeStyleGridType.IMAGE,
     },
   ];

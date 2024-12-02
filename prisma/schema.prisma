@@ -71,10 +71,8 @@ model Widget {
   name                  String?
   description_title     String?
   description_content   String?
-  slug                  String?
   image                 String?
   categories            Category[]    @relation("WidgetCategories")
-  type                  Int           @default(1)
   Fav_widget            Fav_widget[]
   createdAt             DateTime      @default(now())
 }
@@ -122,11 +120,6 @@ model Merchant {
   @@unique([appId, shop])
 }
 
-model Type {
-  id              Int           @id @default(autoincrement())
-  content         String
-}
-
 model Announcement_bar {
   id                      Int               @id @default(autoincrement())
   shop                    String?
@@ -161,29 +154,17 @@ model Cart_notice {
   id                      Int             @id @default(autoincrement())
   primary_message         String?
   secondary_message       String?
-  show_countdown          Boolean         @default(false)
-  countdown_timer         Int?
-  fire_icon               Boolean         @default(false)
   general_setting         String
-  shop                    String            @unique
+  shop                    String?
   createdAt               DateTime        @default(now())
 }
 
-model countdown_timer_type{
-  id              Int         @id @default(autoincrement())
-  html            String
-  countdown_timerId               Int
-  countdown_timer                 countdown_timer         @relation(fields: [countdown_timerId], references: [id])
-  createdAt             DateTime            @default(now())
-}
-
-
 model countdown_timer {
   id                    Int                 @id @default(autoincrement())
+  html                  String?
   general_setting       String?
-  shop String           @unique
+  shop String?
   display_setting       String?
-  position                String?
-  countdown_timer_type         countdown_timer_type[] 
+  position String?
   createdAt             DateTime            @default(now())
 }
