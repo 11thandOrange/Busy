@@ -3,13 +3,15 @@ import "./style.css";
 
 const ModernsCountdown = ({ timeUnits, settingsState }) => {
   const { display } = settingsState;
-  const { digitsColor } = display;
+  const { digitsColor,gradientStartColor,gradientEndColor } = display;
 
   return (
-    <div className="ModernsCountdown" style={{ color: digitsColor }}>
+    <div className="ModernsCountdown" style={{
+      color: digitsColor,
+    }}>
       {timeUnits.map((unit, index) => (
         <React.Fragment key={unit.label}>
-          <div className="ModernsCountdown-item">
+          <div className="ModernsCountdown-item"  style={{ background: `linear-gradient(${gradientStartColor}, ${gradientEndColor})` }}>
             <span className="ModernsCountdown-number">{unit.value}</span>
           </div>
           {index < timeUnits.length - 1 && (

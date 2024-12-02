@@ -3,13 +3,13 @@ import "./style.css";
 
 const HexagonCountdown = ({ timeUnits, settingsState }) => {
   const { display } = settingsState;
-  const { digitsColor } = display;
+  const { digitsColor, borderColor } = display;
 
   return (
     <div className="HexagonCountdown" style={{ color: digitsColor }}>
       {timeUnits.map((unit) => (
         <div key={unit.label} className="HexagonCountdown-item">
-          <span className="HexagonCountdown-number">{unit.value}</span>
+          <span className="HexagonCountdown-number"><div className="hexagonContainer" style={{backgroundColor: borderColor}}></div>{unit.value}</span>
           <span className="hexaValue">{unit.label}</span>
         </div>
       ))}

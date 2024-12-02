@@ -44,7 +44,7 @@
       justify-content: center;
       align-items: center;
       font-size: 20px;
-      &::before{
+      .hexagonContainer{
         content: "";
         position: absolute;
         --b: 1px; /* adjust to control the border  */
@@ -59,7 +59,6 @@
           calc(var(--b)*sin(60deg)) calc(75% - var(--b)*cos(60deg)),
           calc(var(--b)*sin(60deg)) calc(25% + var(--b)*cos(60deg)),
           50% var(--b));
-        background: #000000;
       }
     }
   }

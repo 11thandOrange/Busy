@@ -40,20 +40,16 @@
   padding-block: 10px;
 }
 
-.Polaris-Frame-ContextualSaveBar {
-  background-color: var(--p-color-bg-fill-critical);
-}
-
 .Polaris-LegacyStack__Item .Polaris-Button--toneSuccess {
   background-color: white;
 }
 
-.Polaris-Badge--toneCritical {
+.dateContainerContent .Polaris-Badge--toneCritical {
   background-color: var(--p-color-text-critical);
   color: var(--p-color-bg-fill-critical-secondary);
 }
 
-.Polaris-Badge--toneSuccess {
+.dateContainerContent .Polaris-Badge--toneSuccess {
   background-color: var(--p-color-text-success);
   color:var(--p-color-bg-fill-success-secondary);
 }

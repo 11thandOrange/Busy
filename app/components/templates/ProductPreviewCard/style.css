@@ -171,7 +171,7 @@
 
 
 .product-preview-card-container{
-  background-color: #80808033;
+  background-color: hsla(0,0%,100%,.4);
   border-radius: 50px;
   padding: 10px;
   height: fit-content;
@@ -193,6 +193,7 @@
           margin: 0 auto 20px;
           border: 1px solid grey;
           background-color: transparent;
+          padding: 5px 10px;
       }
       .product-info{
           margin-bottom: 0;
@@ -257,7 +258,7 @@
           text-align: center;
           z-index: 1999999999;
           width: 100%;
-          box-shadow: rgba(0, 0, 0, .109804) 0 0 9px 1px;
+          box-shadow: rgba(0, 0, 0, .5) 0 0 9px 1px;
           min-height: 40px;
           display: flex;
           right: 0;
