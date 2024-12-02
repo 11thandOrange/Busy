@@ -14,11 +14,12 @@ import {
 import CustomColorPallete from "../../atoms/CustomColorPallete";
 import InputWithSelector from "../../atoms/InputWithSelector";
 import CustomTextField from "../../atoms/CustomTextField";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ManageDataChange from "../ManageDataChange";
+import ToastBar from "../../atoms/Toast";
 
   
-const CustomizationCartNotice = () => {
+const CustomizationCartNotice = ({cartSettings}) => {
   const fetcher = useFetcher();
 
   const INITIAL_STATE = {
@@ -35,27 +36,78 @@ const CustomizationCartNotice = () => {
     marginBottomUnit: 'px'
   }
 
-    const oldState = useRef(INITIAL_STATE)
+  const oldState = useRef(INITIAL_STATE)
 
-    const [cartNoticeCustomization, setCartNoticeCustomization] = useState(INITIAL_STATE);
+  const [cartNoticeCustomization, setCartNoticeCustomization] = useState(INITIAL_STATE);
+  const [showToast, setShowToast] = useState(false);
 
-    const handleCartNoticeCustomizationChange = (value, key) => {
-        setCartNoticeCustomization(prevState => ({
-            ...prevState,
-            [key] : value
-        }))
+  const handleCartNoticeCustomizationChange = (value, key) => {
+      setCartNoticeCustomization(prevState => ({
+          ...prevState,
+          [key] : value
+      }))
+  }
+  
+  const handleSaveSettingsData = () => {
+    fetcher.submit(
+      {
+        primary_message: cartNoticeCustomization?.primaryText,
+        secondary_message: cartNoticeCustomization?.secondaryText,
+        show_countdown: cartNoticeCustomization?.showCountdownTimer,
+        countdown_timer: cartNoticeCustomization?.countdownTimer,
+        fire_icon: cartNoticeCustomization?.hideTheFireIcon,
+        backgroundColor: cartNoticeCustomization?.backgroundColor,
+        textColor: cartNoticeCustomization?.textColor,
+        general_setting: JSON.stringify({
+          marginTop: cartNoticeCustomization?.marginTop,
+          marginTopUnit: cartNoticeCustomization?.marginTopUnit,
+          marginBottom: cartNoticeCustomization?.marginBottom,
+          marginBottomUnit: cartNoticeCustomization?.marginBottomUnit,
+        })
+      },
+      { method: "POST", action: "/apps/cartNotice" },
+    );
+  }
+
+  const handleDiscardChanges = () => {
+    setCartNoticeCustomization(oldState.current)
+  }
+
+  const onDismiss = () => {
+    setShowToast(false);
+  };
+
+  useEffect(() => {
+    let general_setting;
+    if (cartSettings && cartSettings?.general_setting) {
+      general_setting = JSON.parse(cartSettings.general_setting);
     }
-    
-    const handleSaveSettingsData = () => {
+    let data = {
+        primaryText: cartSettings?.primary_message,
+        secondaryText: cartSettings?.secondary_message,
+        showCountdownTimer: cartSettings?.showCountdown,
+        countdownTimer: cartSettings?.countdown_timer,
+        hideTheFireIcon: cartSettings?.fire_icon,
+        backgroundColor: cartSettings?.backgroundColor,
+        textColor: cartSettings?.textColor,
+        marginTop: general_setting?.marginTop,
+        marginTopUnit: general_setting?.marginTopUnit,
+        marginBottom: general_setting?.marginBottom,
+        marginBottomUnit: general_setting?.marginBottomUnit,        
+    };
+    setCartNoticeCustomization(data);
+    oldState.current = data;
+  }, [cartSettings]);
 
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data) {
+      setShowToast(true);
     }
-
-    const handleDiscardChanges = () => {
-      setCartNoticeCustomization(oldState.current)
-    }
+  }, [fetcher.state]);
 
   return (
     <Page>
+      <ToastBar onDismiss={onDismiss} show={showToast} message="Customization saved" />
       <ManageDataChange
         newState={cartNoticeCustomization}
         prevState={oldState.current}

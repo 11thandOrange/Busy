@@ -12,6 +12,8 @@ import { authenticate } from "../../../../shopify.server";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
+import { getShopName } from "../../../../utils/function";
+import { useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }) {
   const {session} = await authenticate.admin(request)
@@ -31,24 +33,29 @@ export async function loader({ request }) {
 export async function action({ request }) {
   let cartNotice = await request.formData();
     cartNotice = Object.fromEntries(cartNotice);
+    console.log('cartNotice', cartNotice);
     const shop = await getShopName(request);
     await db.Cart_notice.upsert({
       where: { shop: shop },
       update: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
         primary_message: cartNotice.primary_message,
         secondary_message: cartNotice.secondary_message,
-        show_countdown: cartNotice.show_countdown,
-        countdown_timer: cartNotice.countdown_timer,
-        fire_icon: cartNotice.fire_icon,
+        showCountdown: Boolean(cartNotice.show_countdown),
+        countdown_timer: parseInt(cartNotice.countdown_timer),
+        fire_icon: Boolean(cartNotice.fire_icon),
         general_setting: cartNotice.general_setting,
         shop: shop,
       },
       create: {
+        backgroundColor: cartNotice.backgroundColor,
+        textColor: cartNotice.textColor,
         primary_message: cartNotice.primary_message,
         secondary_message: cartNotice.secondary_message,
-        show_countdown: cartNotice.show_countdown,
-        countdown_timer: cartNotice.countdown_timer,
-        fire_icon: cartNotice.fire_icon,
+        showCountdown: Boolean(cartNotice.show_countdown),
+        countdown_timer: parseInt(cartNotice.countdown_timer),
+        fire_icon: Boolean(cartNotice.fire_icon),
         general_setting: cartNotice.general_setting,
         shop: shop,
       },
@@ -57,8 +64,8 @@ export async function action({ request }) {
     return json(cartNotice);
 }
 
-const route = () => {
-  //   const inActiveTabData = useLoaderData();
+const CartNotice = () => {
+    const cartNoticeData = useLoaderData();
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -73,7 +80,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CustomizationCartNotice/>,
+      component: <CustomizationCartNotice cartSettings={cartNoticeData}/>,
     },
   ];
 
@@ -104,4 +111,4 @@ const route = () => {
   );
 };
 
-export default route;
+export default CartNotice;
