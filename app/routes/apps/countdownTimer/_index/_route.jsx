@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import { authenticate } from "../../../../shopify.server";
-import db from '../../../../db.server'
+import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 // import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
 import Homepage from "../../../../components/templates/homepage";
@@ -18,7 +18,7 @@ import { check_app_active } from "../../../../utils/function";
 import { useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }) {
-  const {session} = await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
   const shop = session.shop;
   const url = new URL(request.url);
   const appId = parseInt(url.searchParams.get("appId"));
@@ -36,11 +36,15 @@ export async function loader({ request }) {
       shop: shop,
     },
   });
-  return json({countdownTimer, color_theme: setting?.color_theme, app_active: await check_app_active(appId, shop)});
+  return json({
+    countdownTimer,
+    color_theme: setting?.color_theme,
+    app_active: await check_app_active(appId, shop),
+  });
 }
 
 export async function action({ request }) {
-  const {session} = await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
   let countdownTimer = await request.formData();
   countdownTimer = Object.fromEntries(countdownTimer);
   const shop = session.shop;
@@ -48,7 +52,7 @@ export async function action({ request }) {
     where: { shop: shop },
     update: {
       general_setting: countdownTimer.settings,
-      display_setting: countdownTimer.display
+      display_setting: countdownTimer.display,
     },
     create: {
       general_setting: countdownTimer.settings,
@@ -61,12 +65,21 @@ export async function action({ request }) {
 }
 
 const route = () => {
-    const countdownTimer = useLoaderData();
-
+  const countdownTimerData = useLoaderData();
+  console.log("Countdown Timer Data", countdownTimerData);
+  const [customizationData, setCustomizationData] = useState(null);
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
-  const isAppActive = countdownTimer.app_active; //inActiveTabData.app_active;
+  const isAppActive = countdownTimerData.app_active; //inActiveTabData.app_active;
 
+  useEffect(() => {
+    const data = countdownTimerData.countdownTimer;
+    setCustomizationData({
+      id: data.id,
+      display: JSON.parse(data.display_setting),
+      settings: JSON.parse(data.general_setting),
+    });
+  }, [countdownTimerData]);
   const tabs = [
     {
       id: "Overview-1",
@@ -78,7 +91,8 @@ const route = () => {
       content: "Customization",
       component: (
         <CountDownTimerCustomization
-          colorTheme={COLOR_THEME.LIGHT}
+          colorTheme={countdownTimerData.color_theme}
+          initialData={customizationData}
         ></CountDownTimerCustomization>
       ),
     },

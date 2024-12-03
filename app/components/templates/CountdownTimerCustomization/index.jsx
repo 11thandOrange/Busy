@@ -20,15 +20,22 @@ import ToastBar from "../../atoms/Toast";
 const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
+  initialData,
 }) => {
+  
+
   const fetcher = useFetcher();
   const { showToast, onDismiss } = useToast(fetcher);
   const [settingsState, setSettingsState] = useState({
     ...CUSTOMIZATON_INITIAL_STATE,
   });
-  const prevSettingsState = useRef({
-    ...CUSTOMIZATON_INITIAL_STATE,
-  });
+  const prevSettingsState = useRef({});
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
+      prevSettingsState.current = initialData;
+    }
+  }, [initialData]);
   const handleOnSave = () => {
     fetcher.submit(
       {
