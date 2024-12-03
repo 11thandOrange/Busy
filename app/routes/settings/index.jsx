@@ -67,7 +67,7 @@ const Settings = () => {
   const settings = useLoaderData();
   return (
     <>
-        <GoBack/>
+        
         <GlobalSettings settings={settings}/>
     </>
   )
