@@ -1,3 +1,5 @@
+import { formatDateToCustomString } from "../utils/clientFunctions";
+
 export const COUNTDOWN_TIMER_STATE = {
   FIX_END_DATE: "FIX_END_DATE",
   EVERGREEN: "EVERGREEN",
@@ -33,12 +35,15 @@ export const TIMER_MARGIN_UNITS = {
 //     maxExpTime: { days: 0, hours: 0, minutes: 0 },
 //   },
 // };
+const now = new Date();
+const tomorrow = new Date(now);
+tomorrow.setDate(now.getDate() + 1);
 export const CUSTOMIZATON_INITIAL_STATE = {
   settings: {
     status: COUNTDOWN_TIMER_STATE.FIX_END_DATE,
 
-    countDownStartAt: "",
-    countDownEndsAt: "",
+    countDownStartAt: formatDateToCustomString(now),
+    countDownEndsAt: formatDateToCustomString(tomorrow),
     coolOffTimer: 0,
     minExpTime: { days: 0, hours: 0, minutes: 0 },
     maxExpTime: { days: 0, hours: 0, minutes: 0 },

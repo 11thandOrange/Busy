@@ -1,7 +1,9 @@
 .setting-section {
     display: flex;
 }
-
+.global-setting{
+    margin-top: 80px;
+}
 .setting-section .setting-left-section {
     width: 30%;
     margin-right: 25px;
