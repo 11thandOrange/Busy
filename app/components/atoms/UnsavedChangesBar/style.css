@@ -5,3 +5,14 @@
 .Polaris-Frame-ContextualSaveBar {
     background-color: var(--p-color-bg-fill-critical);
 }
+/* .unsaved-changes-bar .Polaris-Button:disabled, 
+.unsaved-changes-bar .Polaris-Button[disabled], 
+.unsaved-changes-bar .Polaris-Button--disabled{
+    background-color: #fff !important;
+    opacity: 1;
+    color: #00000049;
+} */
+
+.unsaved-changes-bar .Polaris-Text--headingMd{
+    color: #ffffff;
+}

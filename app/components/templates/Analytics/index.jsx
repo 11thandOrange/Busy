@@ -22,11 +22,21 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
     labels: [],
     datasets: [],
   });
-  const chartRef = useRef(null)
+  const chartRef = useRef(null);
 
   const tabs = [
-    { key: TABS_ENUM.IMPRESSIONS, label: "Impressions", color: "#e65d4a" },
-    { key: TABS_ENUM.CLICK, label: "Clicks", color: "#ffa857" },
+    {
+      key: TABS_ENUM.IMPRESSIONS,
+      label: "Impressions",
+      color: "#e65d4a",
+      percentageColor: "#ED8476",
+    },
+    {
+      key: TABS_ENUM.CLICK,
+      label: "Clicks",
+      color: "#ffa857",
+      percentageColor: "#d09c69",
+    },
   ];
 
   const handleSelect = (key) => {
@@ -75,14 +85,19 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
         datasets: data?.length
           ? data.map((item) => {
               const tabData = tabs.find((tab) => tab.key == item.activityId);
-              let gradient = '';
-              if(chartRef.current){
-                const ctx = chartRef.current.canvas.getContext('2d');
+              let gradient = "";
+              if (chartRef.current) {
+                const ctx = chartRef.current.canvas.getContext("2d");
                 if (ctx) {
                   // Create gradient dynamically based on canvas height
-                  gradient = ctx.createLinearGradient(0, 0, 0, chartRef.current.canvas.height);
-                  gradient.addColorStop(0, tabData.color + '80'); // Semi-transparent
-                  gradient.addColorStop(1, tabData.color + '00'); // Fully transparent
+                  gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    chartRef.current.canvas.height,
+                  );
+                  gradient.addColorStop(0, tabData.color + "80"); // Semi-transparent
+                  gradient.addColorStop(1, tabData.color + "00"); // Fully transparent
                 }
               }
 

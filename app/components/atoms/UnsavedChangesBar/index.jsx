@@ -11,7 +11,7 @@ const UnsavedChangesBar = ({
   fetcherState = FETCHER_STATE.IDLE,
 }) => {
   return (
-    <div>
+    <div className="unsaved-changes-bar">
       <Frame>
         <ContextualSaveBar
           message={message}

@@ -36,3 +36,21 @@
     color: #6d7175;
   }
   
+  .tabData{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer .tabDescription {
+    background: #d09c69;
+    display: flex;
+    width: fit-content;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer .tabDescription img{
+    width: 12px;
+    margin-right: 2px;
+}

@@ -38,6 +38,8 @@ function AnalyticsView({
   data,
   chartRef,
 }) {
+  console.log("tabs", tabs);
+
   return (
     <Card sectioned>
       <div className="tabsContainer">
@@ -56,21 +58,28 @@ function AnalyticsView({
             >
               <TextContainer>
                 <h3 className="tabLabel">{tab.label}</h3>
-                <p className="tabValue">{currentTab?.totalCount}</p>
-                {currentTab?.percentageChange ? (
-                  <p className="tabDescription">
-                    <img
-                      src={
-                        currentTab?.hasIncreased
-                          ? IMAGES.UpArrowWhite
-                          : IMAGES.DownArrowWhite
-                      }
-                    />{" "}
-                    {currentTab?.percentageChange}%
-                  </p>
-                ) : (
-                  ""
-                )}
+                <div className="tabData">
+                  <p className="tabValue">{currentTab?.totalCount}</p>
+                  {currentTab?.percentageChange ? (
+                    <p
+                      className="tabDescription"
+                      style={{
+                        backgroundColor: tab.percentageColor,
+                      }}
+                    >
+                      <img
+                        src={
+                          currentTab?.hasIncreased
+                            ? IMAGES.UpArrowWhite
+                            : IMAGES.DownArrowWhite
+                        }
+                      />{" "}
+                      {currentTab?.percentageChange}%
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </TextContainer>
             </div>
           );

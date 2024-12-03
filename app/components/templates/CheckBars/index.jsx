@@ -23,7 +23,12 @@ const barState = {
   INACTIVE: "critical",
 };
 
-function CheckBars({ barsData = [] }) {
+function CheckBars({
+  barsData = [],
+  pagination = false,
+  onPageNext = () => {},
+  onPagePrevious = () => {},
+}) {
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -129,6 +134,20 @@ function CheckBars({ barsData = [] }) {
           { title: `Showing ${barsData?.length} announcement bar(s)` },
         ]}
         promotedBulkActions={promotedBulkActions}
+        {...(pagination
+          ? {
+              pagination: {
+                hasNext: true,
+                hasPrevious: true,
+                onPrevious: () => {
+                  onPagePrevious();
+                },
+                onNext: () => {
+                  onPageNext();
+                },
+              },
+            }
+          : {})}
       >
         {rowMarkup}
       </IndexTable>

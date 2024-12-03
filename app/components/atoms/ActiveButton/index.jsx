@@ -3,29 +3,35 @@ import { useState, useCallback, useEffect } from "react";
 import "./activeButton.css";
 import { useSearchParams } from "react-router-dom";
 import { useFetcher } from "@remix-run/react";
+import useToast from "../../../hooks/useToast";
+import ToastBar from "../Toast";
 export default function ActiveButton({
   beforeActiveString = "Active",
   afterActivateString = "Activate App",
   deactivateString = "Deactivate App",
   isAppActive = false,
   handleAppActive = () => {},
+  temp = true, //Temporary
 }) {
   const fetcher = useFetcher();
   const [popoverActive, setPopoverActive] = useState(false);
   const [isActive, setIsActive] = useState(isAppActive);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
+  const { showToast, onDismiss } = useToast(fetcher);
   const handleActive = (isActive) => {
-    fetcher.submit(
-      {
-        isActive,
-        appId: id,
-      },
-      {
-        method: "POST",
-        action: "/app/activate",
-      },
-    );
+    if (temp) {
+      fetcher.submit(
+        {
+          isActive,
+          appId: id,
+        },
+        {
+          method: "POST",
+          action: "/app/activate",
+        },
+      );
+    }
   };
   useEffect(() => {
     setIsActive(isAppActive);
@@ -53,6 +59,11 @@ export default function ActiveButton({
 
   return (
     <div className="bb-sec-btn">
+      <ToastBar
+        onDismiss={onDismiss}
+        show={showToast}
+        message={isActive ? "App Activated" : "App Deactivated"}
+      />
       <Popover
         active={popoverActive}
         activator={activator}

@@ -51,4 +51,8 @@
     font-size: 16px;
     margin: 0;
   }
-  
+
+  .tick-icon, .tick-icon .Polaris-Icon  {
+    width: 22px;
+    height:22px;
+  }
