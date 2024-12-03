@@ -374,7 +374,12 @@ export const getCartNotice = async (shop) => {
       htmlToInsert += '<div class="fireEmoji">🔥</div>'
     }
     if (cartNotice.showCountdown) {
-      const countdownText = `<span class="busyBuddyCartReservedTimer" style="color: red;">${parseInt(cartNotice.countdown_timer) * 60}</span>`;
+      const countdownTimer = parseInt(cartNotice.countdown_timer)*60;
+      let minutes = Math.floor(countdownTimer / 60);
+      let remainingSeconds = countdownTimer % 60;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      remainingSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+      const countdownText = `<span class="busyBuddyCartReservedTimer" style="color: red;">${minutes}:${remainingSeconds}</span>`;
       cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
       cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
     }
@@ -401,7 +406,11 @@ export const getCartNotice = async (shop) => {
             const countdownInterval = setInterval(function() {
               if (countdownTime > 0) {
                 countdownTime--;
-                countdownElement.textContent = countdownTime;
+                  let minutes = Math.floor(countdownTime / 60);
+                  let remainingSeconds = countdownTime % 60;
+                  minutes = minutes < 10 ? '0' + minutes : minutes;
+                  remainingSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+                countdownElement.textContent = minutes+':'+remainingSeconds;
               } else {
                 clearInterval(countdownInterval);
               const noticeElements = document.querySelectorAll('#busyBuddyCartNotice');
@@ -442,8 +451,10 @@ export const getCountdownTimer = async (shop) => {
       countdownTimer.general_setting.countDownStartAt = new Date();
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
+    console.log('success')
     if (new Date(countdownTimer.general_setting.countDownStartAt) <= new Date() ) 
     {
+      console.log('check')
       const timeLeft = fetchTimeObject(new Date().getTime(), countdownTimer.general_setting.countDownEndsAt);
       countdownTimerHtml += `
         <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
@@ -453,6 +464,7 @@ export const getCountdownTimer = async (shop) => {
             ${countdownTimer.display_setting.title}
           </div>
       `;
+      console.log('check', countdownTimer.display_setting.theme)
     
       switch (countdownTimer.display_setting.theme) {
         case 'CLASSIC':
@@ -469,6 +481,7 @@ export const getCountdownTimer = async (shop) => {
           countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer);
           break;
         case 'MODERNS':
+          console.log('teset done ')
           countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer);
           break;
         case 'PROGRESS_BAR':
@@ -504,6 +517,7 @@ export const getCountdownTimer = async (shop) => {
        
           const form = document.querySelector('.product-form');
           if (form) {
+          console.log("${countdownTimer.display_setting.theme}")
             const htmlToInsert = \`<div class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
             form.insertAdjacentHTML('beforebegin', htmlToInsert);
             if("${countdownTimer.display_setting.theme}"=='PROGRESS_CIRCLES')
@@ -513,9 +527,10 @@ export const getCountdownTimer = async (shop) => {
               updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime());
             }, 1000);      
             }
-            else if("${countdownTimer.display_setting.theme}"=='PROGRESS_BAR')
+            else if("${countdownTimer.display_setting.theme}" == 'PROGRESS_BAR')
             {
              startCountdown("${countdownTimer.general_setting.countDownStartAt}", "${countdownTimer.general_setting.countDownEndsAt}", document.getElementById('progressBar'));
+              countdownTimerInterval = setInterval(updateCountdownNew, 1000);
             }
            
             else

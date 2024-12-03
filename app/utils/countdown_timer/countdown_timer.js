@@ -5,7 +5,7 @@ export function  getClassicCountdownTimer(timeLeft, countdownTimer)
     let countdownTimerHtml;
     countdownTimerHtml = `<div>
         <span style="color:${countdownTimer.display_setting?.digitsColor}">
-            ${timeLeft.days}days <span id="hours">${timeLeft.hours}</span>:<span id="minutes">${timeLeft.minutes}</span>:<span id="seconds">${timeLeft.seconds}</span>
+            <span id="days">${timeLeft.days}</span>d <span id="hours">${timeLeft.hours}</span>h <span id="minutes">${timeLeft.minutes}</span>m <span id="seconds">${timeLeft.seconds}</span>s
         </span>
     </div>`
     return countdownTimerHtml;
@@ -38,45 +38,45 @@ export const getHexagonCountdownTimer = (timeLeft, countdownTimer) =>
     return countdownTimerHtml
 }
 export const getProgressCircleCountdownTimer = (timeLeft, countdownTimer) =>
-{
-    let countdownTimerHtml;
-    countdownTimerHtml = `<div class="progress-container">
-    <div class="progress-wrapper">
-      <svg width="100" height="100" viewBox="0 0 200 200">
-    <circle class="circle-background" cx="100" cy="100" r="70"></circle>
-    <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
-</svg>
-      <div class="progress-text" id="days-text" style="color:${countdownTimer.display_setting.digitsColor};">0 days</div>
+  {
+      let countdownTimerHtml;
+      countdownTimerHtml = `<div class="progress-container">
+      <div class="progress-wrapper">
+        <svg width="100" height="100" viewBox="0 0 200 200">
+      <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+      <circle class="circle-progress" id="days-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+  </svg>
+        <div class="progress-text" id="days-text" style="color:${countdownTimer.display_setting.digitsColor};">0 days</div>
+      </div>
+  
+      <div class="progress-wrapper">
+         <svg width="100" height="100" viewBox="0 0 200 200">
+      <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+      <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+  </svg>
+        <div class="progress-text" id="hours-text" style="color:${countdownTimer.display_setting.digitsColor};">0 hours</div>
+      </div>
+  
+      <div class="progress-wrapper">
+         <svg width="100" height="100" viewBox="0 0 200 200">
+      <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+      <circle class="circle-progress" id="minutes-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+  </svg>
+        <div class="progress-text" id="minutes-text" style="color:${countdownTimer.display_setting.digitsColor};">0 minutes</div>
+      </div>
+  
+      <div class="progress-wrapper">
+        <svg width="100" height="100" viewBox="0 0 200 200">
+      <circle class="circle-background" cx="100" cy="100" r="70"></circle>
+      <circle class="circle-progress" id="seconds-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
+  </svg> ̰
+        <div class="progress-text" id="seconds-text" style="color:${countdownTimer.display_setting.digitsColor};">0 seconds</div>
+      </div>
     </div>
-
-    <div class="progress-wrapper">
-       <svg width="100" height="100" viewBox="0 0 200 200">
-    <circle class="circle-background" cx="100" cy="100" r="70"></circle>
-    <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
-</svg>
-      <div class="progress-text" id="hours-text" style="color:${countdownTimer.display_setting.digitsColor};">0 hours</div>
-    </div>
-
-    <div class="progress-wrapper">
-       <svg width="100" height="100" viewBox="0 0 200 200">
-    <circle class="circle-background" cx="100" cy="100" r="70"></circle>
-    <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
-</svg>
-      <div class="progress-text" id="minutes-text" style="color:${countdownTimer.display_setting.digitsColor};">0 minutes</div>
-    </div>
-
-    <div class="progress-wrapper">
-      <svg width="100" height="100" viewBox="0 0 200 200">
-    <circle class="circle-background" cx="100" cy="100" r="70"></circle>
-    <circle class="circle-progress" id="hours-progress" cx="100" cy="100" r="70" style="stroke:${countdownTimer.display_setting.borderColor};"></circle>
-</svg> ̰
-      <div class="progress-text" id="seconds-text" style="color:${countdownTimer.display_setting.digitsColor};">0 seconds</div>
-    </div>
-  </div>
-
-    `;
-    return countdownTimerHtml;
-}
+  
+      `;
+      return countdownTimerHtml;
+  }
 export const getCardCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
@@ -107,22 +107,22 @@ export const getModernCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
     countdownTimerHtml = `<div class="ModernsCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
-      <div class="ModernsCountdown-item">
+      <div class="ModernsCountdown-item" style="background: linear-gradient(${countdownTimer.display_setting.gradientStartColor}, ${countdownTimer.display_setting.gradientEndColor});">
         <span class="ModernsCountdown-number" id="days">${timeLeft.days}</span>
       
       </div>
       <span class="ModernsCountdown-divider">:</span>
-      <div class="ModernsCountdown-item">
+      <div class="ModernsCountdown-item"  style="background: linear-gradient(${countdownTimer.display_setting.gradientStartColor}, ${countdownTimer.display_setting.gradientEndColor});">
         <span class="ModernsCountdown-number" id="hours">${timeLeft.hours}</span>
         
       </div>
       <span class="ModernsCountdown-divider">:</span>
-      <div class="ModernsCountdown-item">
+      <div class="ModernsCountdown-item"  style="background: linear-gradient(${countdownTimer.display_setting.gradientStartColor}, ${countdownTimer.display_setting.gradientEndColor});">
         <span class="ModernsCountdown-number" id="minutes">${timeLeft.minutes}</span>
     
       </div>
       <span class="ModernsCountdown-divider">:</span>
-      <div class="ModernsCountdown-item">
+      <div class="ModernsCountdown-item"  style="background: linear-gradient(${countdownTimer.display_setting.gradientStartColor}, ${countdownTimer.display_setting.gradientEndColor});">
         <span class="ModernsCountdown-number" id="seconds">${timeLeft.seconds}</span>
        
       </div>
@@ -138,19 +138,19 @@ export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
     </div>
     <div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number" id="days">${timeLeft.days} <span class="innerTitle">days</span></span>
+          <span class="ProgressBarCountdown-number"><span id="days">${timeLeft.days}</span> <span class="innerTitle">days</span></span>
         </div>
         <span class="ProgressBarCountdown-divider">:</span>
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number" id="hours">${timeLeft.hours} <span class="innerTitle">hours</span></span>
+          <span class="ProgressBarCountdown-number"><span id="hours">${timeLeft.hours}</span> <span class="innerTitle">hours</span></span>
         </div>
         <span class="ProgressBarCountdown-divider">:</span>
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number" id="minutes">${timeLeft.minutes} <span class="innerTitle">minutes</span></span>
+          <span class="ProgressBarCountdown-number"><span id="minutes">${timeLeft.minutes}</span> <span class="innerTitle">minutes</span></span>
         </div>
         <span class="ProgressBarCountdown-divider">:</span>
         <div class="ProgressBarCountdown-item">
-          <span class="ProgressBarCountdown-number" id="seconds">${timeLeft.seconds} <span class="innerTitle">seconds</span></span>
+          <span class="ProgressBarCountdown-number"><span id="seconds">${timeLeft.seconds}</span> <span class="innerTitle">seconds</span></span>
         </div>
       </div>`
     return countdownTimerHtml
@@ -163,17 +163,17 @@ export const getDividerCountdownTimer = (timeLeft, countdownTimer) =>
         <span class="countdown-number" id="days">${timeLeft.days}</span>
         <span class="countdown-label">days</span>
       </div>
-      ${divider()}
+      ${divider(countdownTimer)}
       <div class="countdown-item">
         <span class="countdown-number" id="hours">${timeLeft.hours}</span>
         <span class="countdown-label">hours</span>
       </div>
-      ${divider()}
+      ${divider(countdownTimer)}
       <div class="countdown-item">
         <span class="countdown-number" id="minutes">${timeLeft.minutes}</span>
         <span class="countdown-label">minutes</span>
       </div>
-      ${divider()}
+      ${divider(countdownTimer)}
       <div class="countdown-item">
         <span class="countdown-number" id="seconds">${timeLeft.seconds}</span>
         <span class="countdown-label">seconds</span>
@@ -181,9 +181,9 @@ export const getDividerCountdownTimer = (timeLeft, countdownTimer) =>
     </div>`;
     return countdownTimerHtml;
 }
-function divider()
+function divider(countdownTimer)
 {
-    return `<span class="divider">
+    return `<span class="divider" style="background-color: ${countdownTimer.display_setting.borderColor };">
         /
       </span>`;
 }

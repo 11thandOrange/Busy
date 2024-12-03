@@ -433,7 +433,7 @@ p{
 /* Moderns Countdown Timer */
 .ModernsCountdown {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   font-family: Arial, sans-serif;
   font-size: 24px;
   color: #ff4e4e;
@@ -475,7 +475,6 @@ p{
   margin: .3% 2px .3% .3%;
   padding: 0 4px;
   width: auto !important;
-  background: #f7f7f7;
 }
 .ModernsCountdown-number{
   font-size: 24px;

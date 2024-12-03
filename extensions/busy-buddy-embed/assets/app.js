@@ -1,4 +1,4 @@
-const baseUrl = 'https://savage-mn-paul-fitted.trycloudflare.com';
+const baseUrl = 'https://app-ooo-side-ext.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -160,6 +160,7 @@ function get_cart_total(callback) {
     });
 }
 function startCountdown(countdownStartAt, countdownEndsAt, element) {
+  console.log('test')
   const startTime = new Date(countdownStartAt);
   const endTime = new Date(countdownEndsAt);
   const currentTime = new Date();

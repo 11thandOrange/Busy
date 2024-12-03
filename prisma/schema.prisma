@@ -72,6 +72,8 @@ model Widget {
   description_title     String?
   description_content   String?
   image                 String?
+  slug                  String?       @default("apps")
+  type                  Int           @default(1)
   categories            Category[]    @relation("WidgetCategories")
   Fav_widget            Fav_widget[]
   createdAt             DateTime      @default(now())
