@@ -10,22 +10,29 @@ const InputDatePicker = ({
   maxValues = { days: 24, hours: 24, minutes: 60 },
   maxLength = { days: 2, hours: 2, minutes: 2 },
 }) => {
-  const [date, setDate] = useState({ days: 0, hours: 0, minutes: 0 });
-  useEffect(() => {
-    setDate(initialValue);
-  }, [initialValue]);
+  const [date, setDate] = useState(initialValue);
+  // useEffect(() => {
+  //   setDate(initialValue);
+  // }, [initialValue]);
   const onDateChange = (key, value) => {
-    if (isNaN(value)) {
+    const sanitizedValue = parseInt(value.replace(/^0+/, "") || "0");
+
+    if (isNaN(sanitizedValue)) {
       value = 0;
-    } else if (value > maxValues[key]) {
+    } else if (sanitizedValue > maxValues[key]) {
       value = maxValues[key];
+    } else {
+      value = sanitizedValue;
     }
+
     setDate((prevState) => {
-      const updatedDate = { ...prevState, [key]: value };
-      return updatedDate;
+      return { ...prevState, [key]: value };
     });
-    onDatePicked({ ...date, [key]: value });
   };
+
+  useEffect(() => {
+    onDatePicked(date);
+  }, [date]);
 
   return (
     <div>
@@ -44,9 +51,9 @@ const InputDatePicker = ({
         <CustomTextField
           type="number"
           onValueChange={(value) => {
-            onDateChange("days", parseInt(value));
+            onDateChange("days", value);
           }}
-          value={date.days}
+          value={date.days.toString()}
           min={minValues.days}
           max={maxValues.days}
           maxLength={maxLength.days}
@@ -55,9 +62,9 @@ const InputDatePicker = ({
         <CustomTextField
           type="number"
           onValueChange={(value) => {
-            onDateChange("hours", parseInt(value));
+            onDateChange("hours", value);
           }}
-          value={date.hours}
+          value={date.hours.toString()}
           min={minValues.hours}
           max={maxValues.hours}
           maxLength={maxLength.hours}
@@ -66,9 +73,9 @@ const InputDatePicker = ({
         <CustomTextField
           type="number"
           onValueChange={(value) => {
-            onDateChange("minutes", parseInt(value));
+            onDateChange("minutes", value);
           }}
-          value={date.minutes}
+          value={date.minutes.toString()}
           min={minValues.minutes}
           max={maxValues.minutes}
           maxLength={maxLength.minutes}

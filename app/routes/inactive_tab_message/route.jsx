@@ -49,8 +49,7 @@ export async function action({ request }) {
 
 export default function InactiveTabMessagePage() {
   const inactive_tab_message = useLoaderData();
-  console.log("inactive_tab_message", inactive_tab_message);
-
+  
   const [formState, setFormState] = useState(inactive_tab_message);
 
   return (

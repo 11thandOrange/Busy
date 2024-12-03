@@ -33,7 +33,7 @@ import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmat
 import { useSettingsChanged } from "../../../hooks/useSettingsChanged";
 import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
-import GoBack from "../../atoms/GoBack";
+import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -48,6 +48,7 @@ const AnnouncementCustomization = ({
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
   const navigate = useNavigate();
+
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
@@ -155,20 +156,24 @@ const AnnouncementCustomization = ({
       // primaryAction={<ActiveButton></ActiveButton>}
       >
         <div className="customization-container">
+          <Toast
+            show={fetcher.state === "idle" && fetcher.data}
+            message="Settings saved"
+          />
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
             handleSaveChanges={() => {
               handleOnSave();
               if (!isLoading(fetcher.state)) {
-                navigate(-1);
+                navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
               }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              navigate(-1);
+              navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}

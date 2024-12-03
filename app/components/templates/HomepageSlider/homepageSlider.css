@@ -291,7 +291,7 @@
       }
     }
     .Polaris-Button--disclosure{
-      background-color: transparent;
+      background-color: white;
       color: #29845a;
       box-shadow: 0rem -0.0625rem 0rem 0rem #b5b5b5 inset,0rem 0rem 0rem 0.0625rem rgba(0,0,0,.1) inset,0rem 0.03125rem 0rem 0.09375rem #fff inset;
       svg{

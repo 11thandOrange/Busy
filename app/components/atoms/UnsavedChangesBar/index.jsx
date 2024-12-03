@@ -4,7 +4,7 @@ import { FETCHER_STATE } from "../../../utils/constants";
 import { isLoading } from "../../../utils/clientFunctions";
 import "./style.css";
 const UnsavedChangesBar = ({
-  message = "Unsaved changes",
+  message = "Save Or Discard Your Changes!",
   saveActionButtonClick = () => {},
   discardActionButtonClick = () => {},
   show = true,

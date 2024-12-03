@@ -12,7 +12,7 @@ export default function HomepageSlider({  sliderData = [] }) {
   return (
     <>
      
-      <Slider autoplay={true} navigation={true} autoplayDelay={1000} sliderData={sliderData}></Slider>
+      <Slider autoplay={false} navigation={true} autoplayDelay={1000} sliderData={sliderData}></Slider>
     </>
   );
 }

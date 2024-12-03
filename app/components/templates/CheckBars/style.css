@@ -1,36 +1,78 @@
-.Polaris-Frame{
-    min-height: unset !important;
+.Polaris-Frame {
+  min-height: unset !important;
 }
 
-.bb-announcement-wrapper .Polaris-InlineStack .Polaris-Button:not(button .Polaris-Button){
-    background-color: transparent;
-}
-.bb-announcement-wrapper .Polaris-InlineStack div{
-    height: auto !important;
+.bb-announcement-wrapper .Polaris-InlineStack .Polaris-Button:not(button .Polaris-Button) {
+  background-color: transparent;
 }
 
-.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer thead th{
-    background-color: transparent;
-    padding-block:14px;
-  }
-  .Polaris-LegacyCard .Polaris-Button--disclosure{
-    margin-top: 6px;
-  }
-  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td span.Polaris-Text--bodyMd{
-    font-size: 14px;
-    font-weight: 400;
-  }
-  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td p{
-    font-size: 13px;
-    color: #616161;
-
-  }
-  .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer span.Polaris-Text--numeric{
-    padding: 10px;
-    color: #616161;
-    font-weight: 550;
-  }
-  .Polaris-IndexTable__StickyTableHeader ~ .Polaris-IndexTable__BulkActionsWrapper {
-    padding-block: 10px;
+.bb-announcement-wrapper .Polaris-InlineStack div {
+  height: auto !important;
 }
- 
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer thead th {
+  background-color: transparent;
+  padding-block: 14px;
+}
+
+.Polaris-LegacyCard .Polaris-Button--disclosure {
+  margin-top: 6px;
+}
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td span.Polaris-Text--bodyMd {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer td p {
+  font-size: 13px;
+  color: #616161;
+
+}
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer span.Polaris-Text--numeric {
+  padding: 10px;
+  color: #616161;
+  font-weight: 550;
+}
+
+.Polaris-IndexTable__StickyTableHeader~.Polaris-IndexTable__BulkActionsWrapper {
+  padding-block: 10px;
+}
+
+.Polaris-LegacyStack__Item .Polaris-Button--toneSuccess {
+  background-color: white;
+}
+
+.dateContainerContent .Polaris-Badge--toneCritical {
+  background-color: var(--p-color-text-critical);
+  color: var(--p-color-bg-fill-critical-secondary);
+}
+
+.dateContainerContent .Polaris-Badge--toneSuccess {
+  background-color: var(--p-color-text-success);
+  color:var(--p-color-bg-fill-success-secondary);
+}
+
+.Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer span.Polaris-Text--numeric {
+  font-size: 11px;
+  padding: 0px 10px;
+  margin-top: 5px;
+}
+
+.dateContainerContent {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0px;
+}
+
+.dateContainer {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.dateContainer > span {
+  width: fit-content;
+  margin-left: auto;
+}

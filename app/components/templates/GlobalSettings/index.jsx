@@ -13,11 +13,11 @@ import SettingSection from "./SettingSection";
 import { useFetcher } from "@remix-run/react";
 import ManageDataChange from "../ManageDataChange";
 import Toast from "../../atoms/Toast";
+import useToast from "../../../hooks/useToast";
 
 const GlobalSettings = ({ settings = {} }) => {
   const fetcher = useFetcher();
-  const [showToast, setShowToast] = useState(false);
-
+  const { showToast, onDismiss } = useToast(fetcher);
   const oldSettingRef = useRef({
     language: "English",
     lazyLoadImages: false,
@@ -69,10 +69,6 @@ const GlobalSettings = ({ settings = {} }) => {
     setCustomization(oldSettingRef.current);
   };
 
-  const onDismiss = () => {
-    setShowToast(false);
-  };
-
   useEffect(() => {
     let globalCustomizations;
     if (settings && settings?.globalCustomizations) {
@@ -91,12 +87,6 @@ const GlobalSettings = ({ settings = {} }) => {
     setCustomization(data);
     oldSettingRef.current = data;
   }, [settings]);
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data) {
-      setShowToast(true);
-    }
-  }, [fetcher.state]);
 
   return (
     <Page>

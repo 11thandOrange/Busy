@@ -110,8 +110,6 @@ const PreviewCardTimer = ({ settingsState }) => {
     }
   }, [theme, settingsState, timeLeft]);
 
-
-
   return (
     <div
       style={{
@@ -124,10 +122,14 @@ const PreviewCardTimer = ({ settingsState }) => {
           : "align-row"
       }`}
     >
-      <div className="main-countdownt-title" style={{ color: titleColor }}>
-        {title}
-      </div>
-      {renderCountdown()}
+      {!isFinished && (
+        <>
+          <div className="main-countdownt-title" style={{ color: titleColor }}>
+            {title}
+          </div>
+          {renderCountdown()}
+        </>
+      )}
     </div>
   );
 };

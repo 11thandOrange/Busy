@@ -7,6 +7,8 @@ import ManageDataChange from "../../ManageDataChange";
 import { ROUTES } from "../../../../utils/constants";
 import SettingSection from "../../GlobalSettings/SettingSection";
 import CustomTextField from "../../../atoms/CustomTextField";
+import ToastBar from "../../../atoms/Toast";
+import useToast from "../../../../hooks/useToast";
 
 const InActiveTabSettings = ({ initialData }) => {
   const fetcher = useFetcher();
@@ -17,6 +19,8 @@ const InActiveTabSettings = ({ initialData }) => {
   const oldSettingRef = useRef({
     message: "",
   });
+
+  const { showToast, onDismiss } = useToast(fetcher);
   useEffect(() => {
     if (initialData) {
       const data = { message: initialData.message };
@@ -47,6 +51,11 @@ const InActiveTabSettings = ({ initialData }) => {
   return (
     <div>
       <Layout>
+        <ToastBar
+          onDismiss={onDismiss}
+          show={showToast}
+          message="Settings saved successfully"
+        />
         <ManageDataChange
           newState={settings}
           prevState={oldSettingRef.current}

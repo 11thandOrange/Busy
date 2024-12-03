@@ -17,6 +17,7 @@ import CustomTextField from "../../atoms/CustomTextField";
 import { useEffect, useRef, useState } from "react";
 import ManageDataChange from "../ManageDataChange";
 import ToastBar from "../../atoms/Toast";
+import "./style.css";
 
   
 const CustomizationCartNotice = ({cartSettings}) => {
@@ -106,7 +107,8 @@ const CustomizationCartNotice = ({cartSettings}) => {
   }, [fetcher.state]);
 
   return (
-    <Page>
+    <div className="cartNoticeContainer">
+ <Page>
       <ToastBar onDismiss={onDismiss} show={showToast} message="Customization saved" />
       <ManageDataChange
         newState={cartNoticeCustomization}
@@ -232,6 +234,8 @@ const CustomizationCartNotice = ({cartSettings}) => {
         </InlineGrid>
       </BlockStack>
     </Page>
+    </div>
+   
   )
 }
 
