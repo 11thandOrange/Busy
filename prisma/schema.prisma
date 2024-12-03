@@ -160,16 +160,14 @@ model Cart_notice {
   showCountdown           Boolean     @default(true)
   countdown_timer         Int             @default(1)
   general_setting         String
-  shop                    String?
+   shop                  String            @unique
   createdAt               DateTime        @default(now())
 }
 
 model countdown_timer {
   id                    Int                 @id @default(autoincrement())
-  html                  String?
   general_setting       String?
-  shop String?
   display_setting       String?
-  position String?
+  shop                  String            @unique
   createdAt             DateTime            @default(now())
 }

@@ -1,5 +1,4 @@
-console.log('Script Added ML3')
-const baseUrl = 'https://invited-kits-upload-ordinary.trycloudflare.com';
+const baseUrl = 'https://glow-widescreen-transport-aid.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -28,7 +27,6 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-          console.log(data)
           if(data?.discount_products)
           { 
             check_product_discount().then(isDiscounted => {
@@ -61,6 +59,7 @@ const trackImpressionsForDynamicElements = () => {
             const elementObserver = new IntersectionObserver((entries, observer) => {
               entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                  trackClicks(entry.target.id);
                   sendAnalyticsData(1, { element: entry.target.id, time: new Date().toISOString() });
                   observer.disconnect();
                 }
@@ -76,25 +75,17 @@ const trackImpressionsForDynamicElements = () => {
 };
 
 const trackClicks = (elementId) => {
-  const observer = new MutationObserver((mutationsList) => {
-    const element = document.getElementById(elementId);
-
-    if (element) {
-      observer.disconnect();
-
-      element.addEventListener('click', function() {
-        sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
-      });
-    }
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
+  const elements = document.querySelectorAll('#'+elementId);
+  elements.forEach(function(element) {
+    element.addEventListener('click', function() {
+      sendAnalyticsData(2, { element: elementId, time: new Date().toISOString() });
+    });
+  }); 
 };
 trackImpressionsForDynamicElements(); 
 apps.forEach((app) => {
   let app_id = elementIdMap[app]
   fetch_request(apifullUrl, app_id);
-  trackClicks(app);
 });
 
 function sendAnalyticsData(activity, data) {
@@ -127,7 +118,7 @@ function check_product_discount() {
   return fetch(`/products/${productHandle}.js`)
     .then(response => response.json())
     .then(data => {
-      return data.compare_at_price ? true : false;
+      return data.compare_at_price && (data.compare_at_price != data.price) ? true : false;
     })
     .catch(error => {
       console.error('Error fetching product data:', error);
@@ -168,3 +159,81 @@ function get_cart_total(callback) {
       callback(0);
     });
 }
+function startCountdown(countdownStartAt, countdownEndsAt, element) {
+  const startTime = new Date(countdownStartAt);
+  const endTime = new Date(countdownEndsAt);
+  const currentTime = new Date();
+  const timetotal = endTime - startTime;
+  const timeleft = endTime - currentTime;
+  progress(timeleft, timetotal, element);
+}
+
+function progress(timeleft, timetotal, element) {
+  var progressBarWidth = (timeleft * element.offsetWidth) / timetotal;
+  element.querySelector('.bar').style.transition = "width 1s linear";
+  element.querySelector('.bar').style.width = progressBarWidth + 'px';
+  element.querySelector('.bar').style.display = 'block';
+  if (timeleft > 0) {
+    setTimeout(function() {
+      progress(timeleft - 1000, timetotal, element);
+    }, 1000);
+  }
+  else
+  {
+    document.getElementById('busyBuddyCountdownTimer').remove();
+  }
+}
+
+const circleLength = 440;
+function updateProgress(countdownStart, countdownEnd) {
+  const daysProgress = document.getElementById('days-progress');
+  const hoursProgress = document.getElementById('hours-progress');
+  const minutesProgress = document.getElementById('minutes-progress');
+  const secondsProgress = document.getElementById('seconds-progress');
+
+  const daysText = document.getElementById('days-text');
+  const hoursText = document.getElementById('hours-text');
+  const minutesText = document.getElementById('minutes-text');
+  const secondsText = document.getElementById('seconds-text');
+  const totalDuration = countdownEnd - countdownStart;
+
+
+
+
+  const currentTime = Date.now();
+  const timeLeft = countdownEnd - currentTime;
+
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    updateCircle(daysProgress, daysText, 0, totalDuration / (1000 * 60 * 60 * 24));
+    updateCircle(hoursProgress, hoursText, 0, 24);
+    updateCircle(minutesProgress, minutesText, 0, 60);
+    updateCircle(secondsProgress, secondsText, 0, 60);
+    document.getElementById('busyBuddyCountdownTimer').remove();
+    return;
+  }
+
+  const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+  updateCircle(daysProgress, daysText, daysLeft, totalDuration / (1000 * 60 * 60 * 24), 'days');
+  updateCircle(hoursProgress, hoursText, hoursLeft, 24, 'hours');
+  updateCircle(minutesProgress, minutesText, minutesLeft, 60, 'minutes');
+  updateCircle(secondsProgress, secondsText, secondsLeft, 60, 'seconds');
+}
+
+function updateCircle(progressCircle, textElement, remainingTime, totalTime, title) {
+  const progress = (remainingTime / totalTime) * circleLength;
+  progressCircle.style.transition = 'none';
+  progressCircle.style.strokeDashoffset = circleLength - progress;
+  textElement.textContent = remainingTime+' '+title;
+  setTimeout(() => {
+    progressCircle.style.transition = 'stroke-dashoffset 1s ease';
+  }, 50);
+}
+
+
+
+

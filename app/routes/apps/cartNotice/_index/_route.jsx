@@ -12,12 +12,14 @@ import { authenticate } from "../../../../shopify.server";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
-import { getShopName } from "../../../../utils/function";
 import { useLoaderData } from "@remix-run/react";
+import { check_app_active } from "../../../../utils/function";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
   const shop = session.shop;
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get("appId"));
   let cartNotice = await db.Cart_notice.findFirst({
     where: {
       shop: shop,
@@ -27,14 +29,14 @@ export async function loader({ request }) {
   if (!cartNotice) {
     cartNotice = {};
   }
-  return json(cartNotice);
+  return json({ cartNotice, app_active: await check_app_active(appId, shop) });
 }
 
 export async function action({ request }) {
+  const { session } = await authenticate.admin(request);
   let cartNotice = await request.formData();
   cartNotice = Object.fromEntries(cartNotice);
-  console.log("cartNotice", cartNotice);
-  const shop = await getShopName(request);
+  const shop = session.shop;
   await db.Cart_notice.upsert({
     where: { shop: shop },
     update: {
@@ -65,11 +67,12 @@ export async function action({ request }) {
 }
 
 const CartNotice = () => {
-  const cartNoticeData = useLoaderData();
+  const cartNotice = useLoaderData();
+  const cartNoticeData = cartNotice.cartNotice;
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
-  const isAppActive = true; //inActiveTabData.app_active;
+  const isAppActive = cartNotice.app_active;
 
   const tabs = [
     {

@@ -319,7 +319,69 @@
 }
 /* Card Countdown */
 
+/* Progress Bar Countdown Timer */
 
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 15px;
+  background-color: #B8C3C3;
+  border-radius: 10px;
+}
+#progressBar div {
+  height: 100%;
+  text-align: center;
+  width: 0;
+  background-color: #4B5863;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+p{
+  text-align: center
+}
+/* Progress Bar Countdown Timer */
+
+
+/* Progress Circle Countdown Timer */
+.progress-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.progress-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+svg {
+  transform: rotate(-90deg); /* Rotate so we start from the top */
+}
+
+.circle-background {
+  fill: none;
+  stroke: #f0f0f0;
+  stroke-width: 5;
+}
+
+.circle-progress {
+  fill: none;
+  stroke: #4caf50; /* Green color */
+  stroke-width: 5;
+  stroke-dasharray: 440; /* Circumference of the circle */
+  stroke-dashoffset: 0; /* Initially no progress */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+/* Progress Circle Countdown Timer */
 
 /* Cart Notice */
 
@@ -360,3 +422,69 @@
   text-align: left;
   display: block;
 }
+
+
+/* Moderns Countdown Timer */
+.ModernsCountdown {
+  display: flex;
+  /* align-items: center; */
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  color: #ff4e4e;
+}
+
+.ModernsCountdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: 0 10px; */
+}
+
+.ModernsCountdown-number {
+  font-size: 30px;
+  font-weight: bold;
+  /* color: #ff4e4e; */
+  /* background-color: #b0d6ff; */
+  /* padding: 10px 20px; */
+  border-radius: 5px;
+}
+
+.ModernsCountdown-label {
+  margin-top: 0px;
+  font-size: 14px;
+  color: #7f7f7f;
+}
+
+.ModernsCountdown-divider {
+  font-size: 17px;
+  color: #555555;
+  vertical-align: middle;
+  padding-block: 6px;
+  margin-right: 2px;
+}
+.ModernsCountdown-item{
+  font: 300 35px Roboto, sans-serif;
+  z-index: 3;
+  border-radius: 10%;
+  margin: .3% 2px .3% .3%;
+  padding: 0 4px;
+  width: auto !important;
+  background: #f7f7f7;
+}
+.ModernsCountdown-number{
+  font-size: 24px;
+  font-weight: 400;
+}
+.RIGHT {
+  .ModernsCountdown{
+    justify-content: right;
+    padding-left: 0 !important;
+  }
+}
+.CENTER {
+  .ModernsCountdown{
+    justify-content: center;
+  }
+}
+
+/* Moderns Countdown Timer */
