@@ -17,6 +17,7 @@ import { checkError, updateState } from "../../../utils/clientFunctions";
 import { useFetcher } from "@remix-run/react";
 import useToast from "../../../hooks/useToast";
 import ToastBar from "../../atoms/Toast";
+import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
 const CountDownTimerCustomization = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
@@ -61,12 +62,14 @@ const CountDownTimerCustomization = ({
     }
   }, [settingsState.settings.status]);
   return (
-    <div className="customization-container">
-      <ToastBar
+    <>
+     <ToastBar
         onDismiss={onDismiss}
         show={showToast}
         message="Customization saved successfully"
       />
+    <div className="customization-container">
+     
       <ManageDataChange
         newState={settingsState}
         prevState={prevSettingsState.current}
@@ -103,6 +106,7 @@ const CountDownTimerCustomization = ({
         ></ProductPreviewCard>
       </div>
     </div>
+    </>
   );
 };
 
