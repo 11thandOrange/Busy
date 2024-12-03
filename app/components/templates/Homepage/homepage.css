@@ -41,3 +41,13 @@
     max-width: 475px;
     width: 100%;
 }
+
+.bb-tabs-content .bb-swiper-slider {
+    background-color: white;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.bb-tabs-content .bb-swiper-slider::before {
+    display: none;
+}
