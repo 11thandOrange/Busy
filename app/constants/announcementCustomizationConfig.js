@@ -1,3 +1,5 @@
+import { formatDateToCustomString } from "../utils/clientFunctions";
+
 export const ANNOUNCEMENT_BAR_TYPES = {
   TEXT: 1,
   COUNTDOWN_TIMER: 2,
@@ -66,6 +68,9 @@ export const SETTINGS_INITIAL_STATE = {
     specialColor: "#38619a",
   },
 };
+const now = new Date();
+const tomorrow = new Date(now);
+tomorrow.setDate(now.getDate() + 1);
 export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
   [ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE]: {
     generalSettings: {
@@ -80,8 +85,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
 
   [ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER]: {
     generalSettings: {
-      countDownStartAt: "",
-      countDownEndsAt: "",
+      countDownStartAt: formatDateToCustomString(now),
+      countDownEndsAt: formatDateToCustomString(tomorrow),
       message: "Offer ends in #countdown_timer#.",
     },
   },
