@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./style.css";
 
 const LinearProgressBar = ({ progress, color }) => {
-  console.log("progress value", progress);
+ 
 
   const normalizedProgress = Math.max(0, Math.min(progress, 100));
 

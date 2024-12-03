@@ -66,7 +66,7 @@ export async function action({ request }) {
 
 const route = () => {
   const countdownTimerData = useLoaderData();
-  console.log("Countdown Timer Data", countdownTimerData);
+
   const [customizationData, setCustomizationData] = useState(null);
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
