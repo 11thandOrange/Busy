@@ -1,5 +1,6 @@
 import { check_app_active, getAnnouncementBar, getCartNotice, getCountdownTimer, getInactiveTabMessage } from "../utils/function";
 import { json } from "@remix-run/node";
+import { cors } from "remix-utils/cors";
 
 
 export const loader = async ({ request }) => {
@@ -10,7 +11,7 @@ export const loader = async ({ request }) => {
   //  Check App is Active Or Not
   if(!(await check_app_active(appId, shop)))
   {
-    return json(response)
+    return cors(request, json(response))
   }
   if(appId==1)
   {
@@ -28,5 +29,6 @@ export const loader = async ({ request }) => {
   {
     response = await getCountdownTimer(shop)
   }    
-  return json(response);  
+  console.log(response)
+  return cors(request, json(response));  
 }

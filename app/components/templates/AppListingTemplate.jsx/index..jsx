@@ -21,7 +21,11 @@ const AppListingTemplate = ({componentToRender = () => {}, tabs = [], list = [],
       let newSelectedApps = [];
       if (selectedId === CATEGORIES_ENUM.all) {
         newSelectedApps = [...list];
-      } else {
+      }else if(selectedId === CATEGORIES_ENUM.myApps){
+        newSelectedApps = list?.filter((item)=>( item.isInstalled))
+      } 
+      
+      else {
         newSelectedApps = list?.filter((item) =>
           item.categoryId.includes(selectedId)
         );

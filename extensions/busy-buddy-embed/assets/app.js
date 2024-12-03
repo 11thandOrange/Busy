@@ -1,4 +1,4 @@
-const baseUrl = 'https://app-ooo-side-ext.trycloudflare.com';
+const baseUrl = 'https://busybuddy.projectlabs.in';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -10,7 +10,6 @@ const elementIdMap = {
   'busyBuddyCountdownTimer': 4,
 };
 
-fetch_request(apifullUrl)
 
 function fetch_request(url, app)
 {
@@ -27,6 +26,7 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
+            console.log(data)
           if(data?.discount_products)
           { 
             check_product_discount().then(isDiscounted => {

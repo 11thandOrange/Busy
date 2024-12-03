@@ -24,7 +24,9 @@ const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
           <button
             className="customize-btn"
             onClick={() => {
-              navigate(`/apps/${widget.slug}/${widget.type}`);
+              console.log("here is it ",`/apps/${widget.slug}`);
+              
+              navigate(`/apps/${widget.slug}`);
             }}
           >
             Customize

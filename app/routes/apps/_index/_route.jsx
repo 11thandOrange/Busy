@@ -92,6 +92,8 @@ function TabsInsideOfACard() {
     setTabs(
       apps.categories.filter((item) => item.id != CATEGORIES_ENUM.favorites),
     );
+    
+    
     setAppsList(apps.apps);
   }, []);
 

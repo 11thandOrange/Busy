@@ -156,7 +156,7 @@ export const getEventTypes = async (appId) => {
 
 export const getAnnouncementBar = async (shop) => {
   let script = '';
-  const announcement_bar = await prisma.announcement_bar.findFirst({
+  const announcement_bar = await db.announcement_bar.findFirst({
     where: {
       shop: shop,
       status: true
@@ -441,7 +441,7 @@ export const getCountdownTimer = async (shop) => {
       display_setting: true
     },
   });
-
+console.log('test', countdownTimer)
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
     countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
@@ -451,6 +451,7 @@ export const getCountdownTimer = async (shop) => {
       countdownTimer.general_setting.countDownStartAt = new Date();
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
+    console.log(countdownTimer)
     console.log('success')
     if (new Date(countdownTimer.general_setting.countDownStartAt) <= new Date() ) 
     {

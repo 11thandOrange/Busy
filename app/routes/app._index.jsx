@@ -20,7 +20,7 @@ export const loader = async ({ request }) => {
       id: true,
       name: true,
       image: true,
-      slug: true,
+      slug: true
     },
   });
   let widgets = await db.widget.findMany({
@@ -41,6 +41,8 @@ export const loader = async ({ request }) => {
       description_title: widget.description_title,
       description_content: widget.description_content,
       image: widget.image,
+      slug: widget.slug,
+      type: widget.type,
       isFavorite,
     };
   });

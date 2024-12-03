@@ -134,7 +134,7 @@ export const  getProgressBarCountdownTimer = (timeLeft, countdownTimer) =>
     let countdownTimerHtml;
     countdownTimerHtml = `
     <div id="progressBar">
-      <div class="bar"></div>
+      <div class="bar" style="background-color:${countdownTimer.display_setting.backgroundColor}"></div>
     </div>
     <div class="ProgressBarCountdown" style="color: ${countdownTimer.display_setting.digitsColor };">
         <div class="ProgressBarCountdown-item">

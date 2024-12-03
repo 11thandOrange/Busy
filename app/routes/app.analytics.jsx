@@ -2,6 +2,7 @@ import { cors } from 'remix-utils/cors';
 import db from '../db.server';
 import { getEventTypes } from '../utils/function';
 import { json } from '@remix-run/node';
+
 export async function loader({ request }) {
   try {
     const url = new URL(request.url);
