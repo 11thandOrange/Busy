@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://terminology-undefined-ideal-dam.trycloudflare.com"
+application_url = "https://development-bathroom-idle-wife.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://terminology-undefined-ideal-dam.trycloudflare.com/auth/callback",
-  "https://terminology-undefined-ideal-dam.trycloudflare.com/auth/shopify/callback",
-  "https://terminology-undefined-ideal-dam.trycloudflare.com/api/auth/callback"
+  "https://development-bathroom-idle-wife.trycloudflare.com/auth/callback",
+  "https://development-bathroom-idle-wife.trycloudflare.com/auth/shopify/callback",
+  "https://development-bathroom-idle-wife.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

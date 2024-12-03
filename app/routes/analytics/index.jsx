@@ -1,19 +1,19 @@
-import React from 'react'
-import Analytics from '../../components/templates/Analytics'
+import React from "react";
+import Analytics from "../../components/templates/Analytics";
 import db from "../../db.server";
-import { cors } from 'remix-utils/cors';
-import { useLoaderData } from '@remix-run/react';
-import { getEventTypes } from '../../utils/function';
-import { authenticate } from '../../shopify.server';
-import GoBack from '../../components/atoms/GoBack';
+import { cors } from "remix-utils/cors";
+import { useLoaderData } from "@remix-run/react";
+import { getEventTypes } from "../../utils/function";
+import { authenticate } from "../../shopify.server";
+import GoBack from "../../components/atoms/GoBack";
 
 export async function loader({ request }) {
   try {
     const { session } = await authenticate.admin(request);
     const url = new URL(request.url);
-    const appId = parseInt(url.searchParams.get('appId'));
-    const fromDateString = url.searchParams.get('fromDate');
-    const toDateString = url.searchParams.get('toDate');
+    const appId = parseInt(url.searchParams.get("appId"));
+    const fromDateString = url.searchParams.get("fromDate");
+    const toDateString = url.searchParams.get("toDate");
     const shop = session.shop;
 
     let apps = await db.app.findMany({
@@ -21,9 +21,9 @@ export async function loader({ request }) {
         Merchant: true,
         categories: {
           select: {
-            id: true
-          }
-        }
+            id: true,
+          },
+        },
       },
     });
 
@@ -35,32 +35,40 @@ export async function loader({ request }) {
     });
 
     if (!appId || !fromDateString || !toDateString) {
-      return cors(request, { error: 'Missing required query parameters', apps }, { status: 400 });
+      return cors(
+        request,
+        { error: "Missing required query parameters", apps },
+        { status: 400 },
+      );
     }
 
     const fromDate = new Date(fromDateString);
     const toDate = new Date(toDateString);
 
     if (isNaN(fromDate) || isNaN(toDate)) {
-      return cors(request, { error: 'Invalid date format', apps }, { status: 400 });
+      return cors(
+        request,
+        { error: "Invalid date format", apps },
+        { status: 400 },
+      );
     }
 
     const activityIds = await getEventTypes(appId);
 
     const counts = await db.analytics.groupBy({
-      by: ['activityId', 'createdAt'],
+      by: ["activityId", "createdAt"],
       where: {
         appId: appId,
         shop: shop,
         activityId: { in: activityIds },
         createdAt: {
           gte: new Date(fromDate.setHours(0, 0, 0, 0)),
-          lte: new Date(toDate.setHours(23, 59, 59, 999))
-        }
+          lte: new Date(toDate.setHours(23, 59, 59, 999)),
+        },
       },
       _count: {
-        id: true
-      }
+        id: true,
+      },
     });
 
     const totalCountsByActivity = counts.reduce((acc, record) => {
@@ -91,8 +99,7 @@ export async function loader({ request }) {
         if (record.activityId === activityId) {
           if (recordDate === lastDay.toLocaleDateString()) {
             lastDayCount += record._count.id;
-          }
-          else if (recordDate === secondToLastDay.toLocaleDateString()) {
+          } else if (recordDate === secondToLastDay.toLocaleDateString()) {
             secondToLastDayCount += record._count.id;
           }
         }
@@ -100,7 +107,8 @@ export async function loader({ request }) {
 
       let percentageChange = null;
       if (secondToLastDayCount > 0) {
-        percentageChange = ((lastDayCount - secondToLastDayCount) / secondToLastDayCount) * 100;
+        percentageChange =
+          ((lastDayCount - secondToLastDayCount) / secondToLastDayCount) * 100;
         percentageChange = percentageChange.toFixed(2);
       } else if (lastDayCount > 0) {
         percentageChange = 100;
@@ -113,32 +121,31 @@ export async function loader({ request }) {
         activityData: [
           {
             date: lastDay.toLocaleDateString(),
-            count: lastDayCount
+            count: lastDayCount,
           },
           {
             date: secondToLastDay.toLocaleDateString(),
-            count: secondToLastDayCount
-          }
+            count: secondToLastDayCount,
+          },
         ],
-        isIncremented: (percentageChange > 0 ? true:false),
-        percentageChange: (Math.abs(percentageChange) || 0) +'%',
-        totalCount: totalCountsByActivity[activityId] || 0
+        isIncremented: percentageChange > 0 ? true : false,
+        percentageChange: Math.abs(percentageChange) || 0,
+        totalCount: totalCountsByActivity[activityId] || 0,
       };
     });
 
-
     return cors(request, { analytics: formattedCounts, apps });
-
   } catch (error) {
-    console.error('Error occurred:', error);
-    return cors(request, { error: 'An error occurred while processing your request' }, { status: 500 });
+    console.error("Error occurred:", error);
+    return cors(
+      request,
+      { error: "An error occurred while processing your request" },
+      { status: 500 },
+    );
   }
 }
 
-
-
-
-export const action = async ({ request }) => { 
+export const action = async ({ request }) => {
   let analytics = await request.json();
   const activityId = analytics.activity;
   const pageUrl = analytics.pageUrl;
@@ -150,22 +157,22 @@ export const action = async ({ request }) => {
       activityId,
       pageUrl,
       appId,
-      shop
-    }
+      shop,
+    },
   });
   response = json({ message: "Analytics", success: true });
-  return cors(request, response);  
+  return cors(request, response);
 };
 const GlobalAnalytics = () => {
   const apps = useLoaderData();
-  console.log('analyticsnew', apps)
+  console.log("analyticsnew", apps);
 
   return (
-   <>
-    <GoBack/>
-    <Analytics apps={apps.apps} showAppSelection={true}/>
-   </>
-  )
-}
+    <>
+      <GoBack />
+      <Analytics apps={apps.apps} showAppSelection={true} />
+    </>
+  );
+};
 
-export default GlobalAnalytics
+export default GlobalAnalytics;
