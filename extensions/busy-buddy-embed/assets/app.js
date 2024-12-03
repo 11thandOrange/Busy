@@ -1,4 +1,4 @@
-const baseUrl = 'https://glow-widescreen-transport-aid.trycloudflare.com';
+const baseUrl = 'https://savage-mn-paul-fitted.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;

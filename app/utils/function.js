@@ -368,17 +368,19 @@ export const getCartNotice = async (shop) => {
   if(cartNotice)
   {
     cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
-    htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop};margin-bottom:${cartNotice.general_setting.marginBottom};">`;
+    htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop}${cartNotice.general_setting.marginTopUnit};margin-bottom:${cartNotice.general_setting.marginBottom}${cartNotice.general_setting.marginBottomUnit};">`;
     if(!(cartNotice.fire_icon))
     {
       htmlToInsert += '<div class="fireEmoji">🔥</div>'
     }
+    if (cartNotice.showCountdown) {
+      const countdownText = `<span class="busyBuddyCartReservedTimer" style="color: red;">${parseInt(cartNotice.countdown_timer) * 60}</span>`;
+      cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
+      cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
+    }
     htmlToInsert += `<div class="cart-reserved-text-box"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
     <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
-    if(cartNotice.showCountdown)
-    {
-      htmlToInsert += `<span class="busyBuddyCartReservedTimer" style="color: red;">${parseInt(cartNotice.countdown_timer)*60}</span>`
-    }
+   
       htmlToInsert += `</span></div></div>`;
   }
   

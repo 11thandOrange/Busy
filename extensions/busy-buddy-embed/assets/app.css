@@ -177,7 +177,7 @@
 }
 .ProgressBarCountdown {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   font-family: Arial, sans-serif;
   font-size: 24px;
   color: #ff4e4e;
@@ -214,7 +214,8 @@
   margin-block: 10px ;
 }
 .ProgressBarCountdown-number{
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 20px;
   font-weight: 300;
 }
 .Polaris-ProgressBar--toneHighlight{
@@ -322,9 +323,9 @@
 /* Progress Bar Countdown Timer */
 
 #progressBar {
-  width: 90%;
+  width: 100%;
   margin: 10px auto;
-  height: 15px;
+  height: 10px;
   background-color: #B8C3C3;
   border-radius: 10px;
 }
@@ -346,18 +347,21 @@ p{
 .progress-container {
   display: flex;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top: 5px;
+}
+
+.main-countdown-title {
+  margin-top:30px;
 }
 
 .progress-wrapper {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: auto;
+  max-height: 110px;
+  height: 100%;
 }
 
-svg {
-  transform: rotate(-90deg); /* Rotate so we start from the top */
-}
+
 
 .circle-background {
   fill: none;
@@ -375,11 +379,13 @@ svg {
 
 .progress-text {
   position: absolute;
-  top: 50%;
+  top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 24px;
+  font-size: 14px;
+  line-height: 14px;
   font-weight: bold;
+  text-align: center;
 }
 /* Progress Circle Countdown Timer */
 
@@ -488,3 +494,14 @@ svg {
 }
 
 /* Moderns Countdown Timer */
+
+
+
+/* Main Product div CSS */
+.product--large:not(.product--no-media) .product__media-wrapper {
+  max-width:60% !important;
+}
+
+.product--large:not(.product--no-media) .product__info-wrapper {
+  max-width:40% !important;
+}
