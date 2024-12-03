@@ -29,7 +29,7 @@ export async function loader({ request }) {
   });
 
   if (!countdownTimer) {
-    countdownTimer = {};
+    countdownTimer = null;
   }
   let setting = await db.setting.findFirst({
     where: {
@@ -74,11 +74,14 @@ const route = () => {
 
   useEffect(() => {
     const data = countdownTimerData.countdownTimer;
-    setCustomizationData({
-      id: data.id,
-      display: JSON.parse(data.display_setting),
-      settings: JSON.parse(data.general_setting),
-    });
+
+    if (data) {
+      setCustomizationData({
+        id: data.id,
+        display: JSON.parse(data.display_setting),
+        settings: JSON.parse(data.general_setting),
+      });
+    }
   }, [countdownTimerData]);
   const tabs = [
     {
