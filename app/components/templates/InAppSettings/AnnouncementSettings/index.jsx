@@ -9,7 +9,7 @@ import SettingSection from "../../GlobalSettings/SettingSection";
 import ToastBar from "../../../atoms/Toast";
 import { isLoading } from "../../../../utils/clientFunctions";
 import useToast from "../../../../hooks/useToast";
-
+import "./style.css"
 const AnnouncementSettings = ({ initialData }) => {
   const fetcher = useFetcher();
   const { showToast, onDismiss } = useToast(fetcher);

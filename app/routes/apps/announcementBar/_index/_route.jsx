@@ -211,7 +211,18 @@ const route = () => {
     {
       id: "Announcement-bars-1",
       content: "Create Announcement Bar",
-      component: <CheckBars barsData={announcementBarsData} />,
+      component: (
+        <CheckBars
+          barsData={announcementBarsData}
+          pagination={false}
+          onPageNext={() => {
+            console.log("next");
+          }}
+          onPagePrevious={() => {
+            console.log("previous");
+          }}
+        />
+      ),
     },
     {
       id: "Settings-1",

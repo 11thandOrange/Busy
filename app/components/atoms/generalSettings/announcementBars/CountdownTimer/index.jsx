@@ -23,7 +23,7 @@ const CountdownTimerSettings = ({
       ),
     );
   }, [settingsState.generalSettings.countDownEndsAt]);
-  console.log("CountdownTimerSettings", error);
+
 
   return (
     <div className="countdown-group">

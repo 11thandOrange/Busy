@@ -166,6 +166,8 @@ const AnnouncementCustomization = ({
             handleSaveChanges={() => {
               handleOnSave();
               if (!isLoading(fetcher.state)) {
+             
+                
                 navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
               }
             }}

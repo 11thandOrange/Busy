@@ -40,18 +40,18 @@
   padding-block: 10px;
 }
 
-.Polaris-LegacyStack__Item .Polaris-Button--toneSuccess {
+/* .Polaris-LegacyStack__Item .Polaris-Button--toneSuccess {
   background-color: white;
-}
+} */
 
 .dateContainerContent .Polaris-Badge--toneCritical {
   background-color: var(--p-color-text-critical);
-  color: var(--p-color-bg-fill-critical-secondary);
+  color: #ffffff;
 }
 
 .dateContainerContent .Polaris-Badge--toneSuccess {
   background-color: var(--p-color-text-success);
-  color:var(--p-color-bg-fill-success-secondary);
+  color:#ffffff;
 }
 
 .Polaris-LegacyCard .Polaris-IndexTable-ScrollContainer span.Polaris-Text--numeric {

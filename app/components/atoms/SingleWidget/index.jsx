@@ -14,6 +14,7 @@ const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
         <ActiveButton
           afterActivateString="Activate Widget"
           deactivateString="Deactivate Widget"
+          temp={false}
         />
       </div>
       <div className="content-wrapper">

@@ -208,7 +208,7 @@ const CustomizationCartNotice = ({cartSettings}) => {
                     inputValue={cartNoticeCustomization?.marginTop}
                     unitValue={cartNoticeCustomization?.marginTopUnit}
                     onValueChange={(value, unit) => {
-                        console.log(value, unit,"unit test")
+                      
                         setCartNoticeCustomization(prevState => ({
                             ...prevState,
                             marginTop: value,
