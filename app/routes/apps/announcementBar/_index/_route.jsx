@@ -137,6 +137,8 @@ export async function action({ request }) {
         },
       });
 
+      response = json({ message: "Announcement Bar Added", announcement_bar });
+      return response;
       response = {
         message: "Announcement Bar Added",
         success: true,

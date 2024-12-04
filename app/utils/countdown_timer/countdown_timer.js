@@ -13,7 +13,7 @@ export function  getClassicCountdownTimer(timeLeft, countdownTimer)
 export const getHexagonCountdownTimer = (timeLeft, countdownTimer) =>
 {
     let countdownTimerHtml;
-    countdownTimerHtml = `<div class="HexagonCountdown" style="color:${countdownTimer.display_setting?.digitsColor}">
+    countdownTimerHtml = `<div class="HexagonCountdown" style="color:${countdownTimer.display_setting?.digitsColor};border-color:${countdownTimer.display_setting?.borderColor};">
         <div class="HexagonCountdown-item">
         
         <span class="HexagonCountdown-number" id="days"> ${timeLeft.days}</span>

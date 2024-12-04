@@ -20,10 +20,11 @@ export default function ActiveButton({
   const id = searchParams.get("appId");
   const { showToast, onDismiss } = useToast(fetcher);
   const handleActive = (isActive) => {
+    console.log(isActive)
     if (temp) {
       fetcher.submit(
         {
-          isActive,
+          isActive:isActive==true?'true':'false',
           appId: id,
         },
         {
@@ -31,11 +32,15 @@ export default function ActiveButton({
           action: "/app/activate",
         },
       );
+      console.log(fetcher)
     }
   };
   useEffect(() => {
     setIsActive(isAppActive);
   }, [isAppActive]);
+  useEffect(()=>{
+    console.log(fetcher.data)
+  }, [fetcher])
   const togglePopoverActive = useCallback(() => {
     setPopoverActive((popoverActive) => !popoverActive);
   }, []);
