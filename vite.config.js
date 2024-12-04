@@ -55,6 +55,9 @@ export default defineConfig({
         v2_normalizeFormMethod: true,
         v2_routeConvention: true,
       },
+      serverDependenciesToBundle: [
+        /^remix-utils.*/,
+      ]
     }),
     tsconfigPaths(),
   ],

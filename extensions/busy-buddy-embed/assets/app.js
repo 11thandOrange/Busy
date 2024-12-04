@@ -13,7 +13,7 @@ const elementIdMap = {
 
 function fetch_request(url, app)
 {
-    fetch(url+'?appId='+app+'&shop='+shopDomain, {
+    fetch(url+'?appId='+app+'&shop='+shopDomain+'&timezone='+Intl.DateTimeFormat().resolvedOptions().timeZone, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ function sendAnalyticsData(activity, data) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ activity, data, pageUrl: window.location.href, shop:shopDomain, data })
+    body: JSON.stringify({ activity, data, pageUrl: window.location.href, shop:shopDomain })
   });
 }
 function get_product_id()

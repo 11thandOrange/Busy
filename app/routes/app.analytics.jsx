@@ -4,7 +4,14 @@ import { getEventTypes } from '../utils/function';
 import { json } from '@remix-run/node';
 
 export async function loader({ request }) {
+  if (request.method === "OPTIONS") {
+    const response = json({
+      status: 200,
+    });
+    return await cors(request, response);
+  }
   try {
+    
     const url = new URL(request.url);
     const appId = parseInt(url.searchParams.get('appId'));
     const shop = url.searchParams.get('shop');
@@ -37,6 +44,9 @@ export async function loader({ request }) {
       },
       _count: {
         id: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
 
@@ -46,10 +56,10 @@ export async function loader({ request }) {
         if (record.activityId === activityId) {
           const activityDate = new Date(record.createdAt).toLocaleDateString();
           const existingEntry = activityData.find(entry => entry.date === activityDate);
-          
+
           if (existingEntry) {
             existingEntry.count += record._count.id;
-          } 
+          }
           else {
             activityData.push({
               date: activityDate,
@@ -74,7 +84,13 @@ export async function loader({ request }) {
   }
 }
 
-export const action = async ({ request }) => { 
+export const action = async ({ request }) => {
+  if (request.method === "OPTIONS") {
+    const response = json({
+      status: 200,
+    });
+    return await cors(request, response);
+  }
   let response;
   let analytics = await request.json();
   const activityId = analytics.activity;
@@ -91,5 +107,5 @@ export const action = async ({ request }) => {
     }
   });
   response = json({ message: "Analytics", success: true });
-  return cors(request, response);  
+  return cors(request, response, { methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"] });
 };

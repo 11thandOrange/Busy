@@ -8,6 +8,7 @@ export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const appId = parseInt(url.searchParams.get('appId'));
   const shop = url.searchParams.get('shop');
+  const timezone = url.searchParams.get('timezone');
   //  Check App is Active Or Not
   if(!(await check_app_active(appId, shop)))
   {
@@ -15,7 +16,7 @@ export const loader = async ({ request }) => {
   }
   if(appId==1)
   {
-    response = await getAnnouncementBar(shop);    
+    response = await getAnnouncementBar(shop, timezone);    
   }
   else if(appId == 2)
   {

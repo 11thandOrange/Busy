@@ -1,4 +1,5 @@
 import db from "../db.server";
+import { DateTime } from "luxon";
 import {
   authenticate,
   STARTER_MONTHLY_PLAN,
@@ -154,8 +155,9 @@ export const getEventTypes = async (appId) => {
   return activityIds;
 };
 
-export const getAnnouncementBar = async (shop) => {
+export const getAnnouncementBar = async (shop, timezone) => {
   let script = '';
+  let current_timezone_time = get_current_time(timezone);
   const announcement_bar = await db.announcement_bar.findFirst({
     where: {
       shop: shop,
@@ -217,7 +219,7 @@ export const getAnnouncementBar = async (shop) => {
     }
 
     if (announcement_bar.type == 2) { 
-      const currentTime = new Date().getTime();
+      const currentTime = new Date(current_timezone_time).getTime();
       const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
@@ -225,6 +227,7 @@ export const getAnnouncementBar = async (shop) => {
 
         function updateCountdown() {
           const now = new Date().getTime();
+          console.log(now)
           let difference = getTimeDifference(now, ${endTime});
           
           let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
@@ -383,7 +386,7 @@ export const getCartNotice = async (shop) => {
       cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
       cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
     }
-    htmlToInsert += `<div class="cart-reserved-text-box"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
+    htmlToInsert += `<div class="cart-reserved-text-box" style="margin-left:20px;"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
     <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
    
       htmlToInsert += `</span></div></div>`;
@@ -634,4 +637,9 @@ export const addScriptTag = async(shop)=>{
       src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
     },
   }));
+}
+function get_current_time(timezone)
+{
+  const currentTime = DateTime.now().setZone(timezone).toISO();
+  return currentTime;
 }
