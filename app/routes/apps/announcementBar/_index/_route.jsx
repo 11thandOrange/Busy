@@ -137,8 +137,12 @@ export async function action({ request }) {
         },
       });
 
-      response = json({ message: "Announcement Bar Added", announcement_bar });
-      return cors(request, response);
+      response = {
+        message: "Announcement Bar Added",
+        success: true,
+        announcement_bar,
+      };
+      return json( response);
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
         where: { shop: shop },
@@ -151,7 +155,7 @@ export async function action({ request }) {
           shop: shop,
         },
       });
-      return cors(request, json({ success: true }));
+      return json(request, json({ success: true }));
     case "UPDATE":
       await db.Announcement_bar.update({
         where: {
@@ -166,8 +170,8 @@ export async function action({ request }) {
           type,
         },
       });
-      response = json({ message: "Announcement Bar Updated" });
-      return cors(request, response);
+      response = { message: "Announcement Bar Updated", success: true };
+      return json( response);
     case "DELETE":
       console.log(data.announcement_bar_id, "TEst");
       await db.Announcement_bar.deleteMany({
@@ -180,8 +184,8 @@ export async function action({ request }) {
           shop: shop,
         },
       });
-      response = json({ success: true });
-      return cors(request, response);
+      response = { success: true };
+      return json( response);
     default:
       return new Response("Method Not Allowed", { status: 405 });
   }
@@ -214,7 +218,7 @@ const route = () => {
       component: (
         <CheckBars
           barsData={announcementBarsData}
-          pagination={false}
+          pagination={true}
           onPageNext={() => {
             console.log("next");
           }}

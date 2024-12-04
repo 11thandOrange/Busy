@@ -11,24 +11,25 @@ const Customization = () => {
   const fetcher = useFetcher();
   const [fetchQuery] = useSearchParams();
   const [customizationData, setCustomizationData] = useState(null);
-  const [colorTheme, setColorTheme] = useState('light');
+  const [colorTheme, setColorTheme] = useState("light");
 
   const barId = fetchQuery.get("id");
   useEffect(() => {
     if (barId) {
-      console.log(barId, 'test')
+      console.log(barId, "test");
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW + "?id=" + barId);
+    } else {
+      fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW);
     }
   }, [barId]);
 
   useEffect(() => {
     if (fetcher.data) {
+      console.log(fetcher.data, "fetcher");
       const data = fetcher.data.announcement_customization;
-    
-      
-      
-      setColorTheme(fetcher.data.color_theme)
 
+      setColorTheme(fetcher.data.color_theme);
+      if(data){
       setCustomizationData({
         id: data.id,
         status: Number(data.status).toString(),
@@ -37,19 +38,19 @@ const Customization = () => {
         themeSettings: JSON.parse(data.theme_setting),
         generalSettings: JSON.parse(data.general_setting),
       });
-    }
+    }}
   }, [fetcher.data]);
 
   return (
     <div>
       {isLoading(fetcher.state) ? (
-        <Spinner/>
+        <Spinner />
       ) : (
         <AnnouncementCustomization
           announcementBarType={Number(AnnouncementBarType)}
           backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
           initialData={customizationData}
-          colorTheme = {colorTheme}
+          colorTheme={colorTheme}
         />
       )}
     </div>

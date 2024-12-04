@@ -6,7 +6,7 @@ import {
   Badge,
 } from "@shopify/polaris";
 import "./style.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PopoverContent from "../PopoverContent";
 import { announcementPopoverData } from "../../../constants/announcementCustomizationConfig";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
@@ -33,9 +33,21 @@ function CheckBars({
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { showToast, onDismiss } = useToast(fetcher);
+  const [bars, setBars] = useState([]);
   const resourceName = {
     singular: "announcement bar",
     plural: "announcement bars",
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Default number of items per page
+
+  // Derived pagination controls
+  const hasNext = currentPage * itemsPerPage < barsData?.length;
+  const hasPrevious = currentPage > 1;
+  const handleNextPage = () => {
+    if (hasNext) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const {
@@ -43,7 +55,22 @@ function CheckBars({
     allResourcesSelected,
     handleSelectionChange,
     clearSelection,
-  } = useIndexResourceState(barsData);
+  } = useIndexResourceState(bars);
+  useEffect(() => {
+    const barsDataNew = barsData?.slice(
+      (currentPage - 1) * itemsPerPage,
+      (currentPage - 1) * itemsPerPage + itemsPerPage,
+    );
+    console.log("bars data is here", barsData);
+
+    setBars(barsDataNew);
+  }, [currentPage, barsData]);
+
+  const handlePreviousPage = () => {
+    if (hasPrevious) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
   const promotedBulkActions = [
     {
@@ -56,7 +83,7 @@ function CheckBars({
     navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${selectedType}`);
   };
 
-  const rowMarkup = barsData?.map(
+  const rowMarkup = bars?.map(
     ({ id, name, createdAt, status, general_setting, type }, index) => (
       <IndexTable.Row
         id={id}
@@ -98,6 +125,7 @@ function CheckBars({
       { method: "DELETE", action: ROUTES.ANNOUNCEMENT_OVERVIEW },
     );
     setConfirmDelete(false);
+    setCurrentPage(1);
     clearSelection();
   };
 
@@ -110,7 +138,7 @@ function CheckBars({
       />
       <IndexTable
         resourceName={resourceName}
-        itemCount={barsData?.length}
+        itemCount={bars?.length}
         selectedItemsCount={selectedResources.length}
         emptyState={
           <div className="bb-announcement-wrapper">
@@ -130,21 +158,21 @@ function CheckBars({
         }
         selectable={true}
         onSelectionChange={handleSelectionChange}
-        headings={[
-          { title: `Showing ${barsData?.length} announcement bar(s)` },
-        ]}
+        headings={[{ title: `Showing ${bars?.length} announcement bar(s)` }]}
         promotedBulkActions={promotedBulkActions}
         {...(pagination
           ? {
               pagination: {
-                hasNext: true,
-                hasPrevious: true,
-                onPrevious: () => {
-                  onPagePrevious();
-                },
-                onNext: () => {
-                  onPageNext();
-                },
+                hasNext: hasNext,
+                hasPrevious: hasPrevious,
+                onPrevious: handlePreviousPage,
+                onNext: handleNextPage,
+                label: bars?.length
+                  ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+                      currentPage * itemsPerPage,
+                      bars?.length,
+                    )} of ${bars?.length} items`
+                  : "0-0 of 0 items",
               },
             }
           : {})}
@@ -152,7 +180,7 @@ function CheckBars({
         {rowMarkup}
       </IndexTable>
       <div style={{ position: "absolute", top: "4px", right: "10px" }}>
-        {barsData?.length > 0 && (
+        {bars?.length > 0 && (
           <PopoverContent
             options={announcementPopoverData}
             heading="Create"
