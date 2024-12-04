@@ -5,6 +5,7 @@ import { cors } from "remix-utils/cors";
 
 export const loader = async ({ request }) => {
   let response = {};
+  console.log('hello', request)
   const url = new URL(request.url);
   const appId = parseInt(url.searchParams.get('appId'));
   const shop = url.searchParams.get('shop');

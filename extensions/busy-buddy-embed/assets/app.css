@@ -504,3 +504,11 @@ p{
 .product--large:not(.product--no-media) .product__info-wrapper {
   max-width:40% !important;
 }
+.CENTER{
+  text-align: center;
+  justify-content: center;
+}
+.RIGHT {
+    justify-content: right;
+    padding-left: 0 !important;
+}

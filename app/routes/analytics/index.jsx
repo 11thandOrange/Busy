@@ -16,6 +16,7 @@ export async function loader({ request }) {
     const toDateString = url.searchParams.get("toDate");
     const shop = session.shop;
 
+    // Fetch apps from the database
     let apps = await db.app.findMany({
       include: {
         Merchant: true,
@@ -34,6 +35,7 @@ export async function loader({ request }) {
       };
     });
 
+    // Check if required query parameters are provided
     if (!appId || !fromDateString || !toDateString) {
       return cors(
         request,
@@ -42,9 +44,11 @@ export async function loader({ request }) {
       );
     }
 
+    // Parse the fromDate and toDate from the query string
     const fromDate = new Date(fromDateString);
     const toDate = new Date(toDateString);
 
+    // Validate the dates
     if (isNaN(fromDate) || isNaN(toDate)) {
       return cors(
         request,
@@ -53,8 +57,10 @@ export async function loader({ request }) {
       );
     }
 
+    // Fetch the activity IDs based on appId
     const activityIds = await getEventTypes(appId);
 
+    // Fetch the counts from the database
     const counts = await db.analytics.groupBy({
       by: ["activityId", "createdAt"],
       where: {
@@ -66,11 +72,15 @@ export async function loader({ request }) {
           lte: new Date(toDate.setHours(23, 59, 59, 999)),
         },
       },
+      orderBy:{
+        createdAt:'asc',
+      },
       _count: {
         id: true,
       },
     });
 
+    // Calculate total counts by activityId
     const totalCountsByActivity = counts.reduce((acc, record) => {
       const activityId = record.activityId;
       const count = record._count.id;
@@ -84,6 +94,8 @@ export async function loader({ request }) {
       return acc;
     }, {});
 
+ 
+    // Format counts and calculate the required data
     const formattedCounts = activityIds.map((activityId) => {
       const lastDay = new Date(toDate);
       lastDay.setHours(0, 0, 0, 0);
@@ -134,6 +146,9 @@ export async function loader({ request }) {
       };
     });
 
+    formattedCounts.forEach((entry) => {
+      entry.activityData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    });
     return cors(request, { analytics: formattedCounts, apps });
   } catch (error) {
     console.error("Error occurred:", error);
@@ -145,8 +160,10 @@ export async function loader({ request }) {
   }
 }
 
+
 export const action = async ({ request }) => {
   let analytics = await request.json();
+  console.log(analytics)
   const activityId = analytics.activity;
   const pageUrl = analytics.pageUrl;
   const shop = analytics.shop;

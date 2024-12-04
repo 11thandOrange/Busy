@@ -26,7 +26,7 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-            console.log(data)
+          console.log(data)
           if(data?.discount_products)
           { 
             check_product_discount().then(isDiscounted => {
@@ -127,6 +127,18 @@ function check_product_discount() {
 }
 
 function getTimeDifference(startAt, endsAt) {
+  const offset = (5 * 60 + 30) * 60 * 1000;
+  endsAt -= offset;
+  const difference = endsAt - startAt;
+  
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  return { days, hours, minutes, seconds, difference };
+}
+function getCountTimeDifference(startAt, endsAt) {
   const difference = endsAt - startAt;
   
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));

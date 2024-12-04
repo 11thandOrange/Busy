@@ -115,26 +115,16 @@ export const createEvent = async (data) => {
     },
   });
 };
-export function getTimeDifference(startTime, endTime) {
-  const start = new Date(startTime);
-  const end = new Date(endTime);
-
-  const differenceInMilliseconds = end - start;
-
-  const days = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-  );
-  const minutes = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60),
-  );
-  const seconds = Math.floor((differenceInMilliseconds % (1000 * 60)) / 1000);
+export function getTimeDifference(startTime, endTime, timezone) {
+  const start = DateTime.fromISO(startTime, { zone: timezone });
+  const end = DateTime.fromISO(endTime, { zone: timezone });
+  const diff = end.diff(start, ['days', 'hours', 'minutes', 'seconds']);
 
   return {
-    days: days,
-    hours: hours,
-    minutes: minutes,
-    seconds: seconds,
+    days: diff.days,
+    hours: diff.hours,
+    minutes: diff.minutes,
+    seconds: diff.seconds
   };
 }
 export const getEventTypes = async (appId) => {
@@ -227,9 +217,9 @@ export const getAnnouncementBar = async (shop, timezone) => {
 
         function updateCountdown() {
           const now = new Date().getTime();
-          console.log(now)
+          console.log(new Date())
+          console.log("${new Date(announcement_bar.general_setting.countDownEndsAt)}")
           let difference = getTimeDifference(now, ${endTime});
-          
           let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
 
@@ -434,7 +424,7 @@ export const getCartNotice = async (shop) => {
 export const getCountdownTimer = async (shop) => {
   let countdownTimerHtml = '';
   let script;
-
+ 
   let countdownTimer = await db.countdown_timer.findFirst({
     where: {
       shop: shop,
@@ -444,21 +434,19 @@ export const getCountdownTimer = async (shop) => {
       display_setting: true
     },
   });
-console.log('test', countdownTimer)
   if (countdownTimer) {
     countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
     countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
     if(countdownTimer.general_setting.status == 'EVERGREEN')
     {
       const randomTimeObject = pickRandomTime(countdownTimer.general_setting.minExpTime, countdownTimer.general_setting.maxExpTime);
-      countdownTimer.general_setting.countDownStartAt = new Date();
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
+    countdownTimer.general_setting.countDownStartAt = new Date();
     console.log(countdownTimer)
-    console.log('success')
+    console.log('success', new Date())
     if (new Date(countdownTimer.general_setting.countDownStartAt) <= new Date() ) 
     {
-      console.log('check')
       const timeLeft = fetchTimeObject(new Date().getTime(), countdownTimer.general_setting.countDownEndsAt);
       countdownTimerHtml += `
         <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
@@ -505,7 +493,7 @@ console.log('test', countdownTimer)
         function updateCountdownNew() {
           const now = new Date().getTime();
           const endTime = ${new Date(countdownTimer.general_setting.countDownEndsAt).getTime()};
-          const difference = getTimeDifference(now, endTime);
+          const difference = getCountTimeDifference(now, endTime);
           document.getElementById('seconds').textContent = difference.seconds;
           document.getElementById('minutes').textContent = difference.minutes;
           document.getElementById('hours').textContent = difference.hours;

@@ -25,13 +25,13 @@ import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
-
   let announcement_bars,
     announcement_bar_setting,
     app_active,
     announcement_bars_customization;
   const shop = session.shop;
   const url = new URL(request.url);
+
   let setting = await db.setting.findFirst({
     where: {
       shop: shop,

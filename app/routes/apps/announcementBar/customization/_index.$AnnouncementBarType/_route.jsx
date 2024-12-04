@@ -16,6 +16,7 @@ const Customization = () => {
   const barId = fetchQuery.get("id");
   useEffect(() => {
     if (barId) {
+      console.log(barId, 'test')
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW + "?id=" + barId);
     }
   }, [barId]);

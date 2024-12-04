@@ -42,7 +42,7 @@ export const ROUTES = {
   COUNTDOWN_TIMER: "/countdownTimer",
   ROUTE_TEST: "/RouteTest",
   ANNOUNCEMENT_CUSTOMIZATION_ROOT: "/apps/announcementBar/customization/",
-  ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar/",
+  ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar",
   INACTIVE_TAB: "/apps/inactiveTabMessage",
   ANALYTICS: "/analytics",
 };

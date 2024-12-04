@@ -44,9 +44,6 @@ export async function loader({ request }) {
       },
       _count: {
         id: true
-      },
-      orderBy: {
-        createdAt: 'desc'
       }
     });
 
@@ -69,7 +66,7 @@ export async function loader({ request }) {
         }
       });
 
-      activityData.sort((a, b) => new Date(a.date) - new Date(b.date));
+      activityData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       return {
         activityId,

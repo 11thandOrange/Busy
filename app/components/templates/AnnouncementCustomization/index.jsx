@@ -168,14 +168,14 @@ const AnnouncementCustomization = ({
               if (!isLoading(fetcher.state)) {
              
                 
-                navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
+                navigate(-1);
               }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              navigate(ROUTES.ANNOUNCEMENT_OVERVIEW);
+              navigate(-1);
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}
