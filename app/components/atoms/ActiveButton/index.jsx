@@ -20,6 +20,7 @@ export default function ActiveButton({
   const id = searchParams.get("appId");
   const { showToast, onDismiss } = useToast(fetcher);
   const handleActive = (isActive) => {
+    console.log(isActive)
     if (temp) {
       fetcher.submit(
         {

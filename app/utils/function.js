@@ -50,7 +50,7 @@ export const check_app_active = async (appId, shop) => {
   }
 };
 
-export const check_subscription = async () => {
+export const check_subscription = async (request) => {
   const { billing, session } = await authenticate.admin(request);
   const billingCheck = await billing.check({
     plans: [STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN],
@@ -252,7 +252,7 @@ export const getAnnouncementBar = async (shop, timezone) => {
                         }
                         else if(price != 0 && price < shipping_price)
                         {
-                          let difference = price - shipping_price
+                          let difference = Math.abs(price - shipping_price)
                           let message_content = "${announcement_bar.general_setting.progressMessage}"
                           messageDiv.textContent = message_content.replace('#amount#', difference);
                         }
@@ -554,18 +554,19 @@ export const check_enable_button = async (shop) => {
   }
 };
 
-export const can_active = async (shop) => {
+export const can_active = async (request, shop) => {
   try {
+    console.log('check me')
     const setting = await db.merchant.findMany({
       where: {
         shop: shop,
         enabled: true,
-      },
-      _count: {
-        id: true
       }
     });
-    let hasSubscription = check_subscription();
+    console.log(setting)
+    console.log('hellow')
+    let hasSubscription =  check_subscription(request);
+    console.log(await hasSubscription, 'new')
     if(!((await hasSubscription).hasSubscription))
     {
       return setting.count <= 1;

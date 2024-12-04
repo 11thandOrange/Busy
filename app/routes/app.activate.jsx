@@ -1,5 +1,8 @@
 import db from '../db.server'
 import { authenticate } from '../shopify.server';
+import { check_subscription as check_app_subscription} from '../utils/function';
+import { cors } from 'remix-utils/cors';
+import { json } from '@remix-run/node';
  
   export const action = async ({ request }) => {
     const {session} = await authenticate.admin(request)
@@ -8,7 +11,20 @@ import { authenticate } from '../shopify.server';
     data = Object.fromEntries(data);
     const appId = parseInt(data.appId);
     const enable = JSON.parse(data.isActive);
-
+    if(enable)
+    {
+      const check_subscription = await check_app_subscription(request);
+      const apps =  await db.merchant.findMany({
+          where: {
+            shop: shop,
+            enabled: true,
+          }
+        });
+      if(!check_subscription.hasSubscription && apps.length == 1)
+      {
+        return cors(request, json({"message":"Upgrade Plan", "success":false}))
+      }
+    }
     try {
       const existingMerchant = await db.merchant.findFirst({
         where: {
@@ -16,7 +32,7 @@ import { authenticate } from '../shopify.server';
           shop: shop,
         },
       });
-  
+    
       if (existingMerchant) {
         console.log(appId)
         console.log(enable)
@@ -28,7 +44,7 @@ import { authenticate } from '../shopify.server';
             enabled: enable,
           },
         });
-        return updatedApp;
+        return cors(json({"success":true, updatedApp}));
       } else {
         const newMerchant = await db.merchant.create({
           data: {
@@ -37,7 +53,7 @@ import { authenticate } from '../shopify.server';
             enabled: enable,
           },
         });
-        return newMerchant;
+        return cors(json({"success": true, newMerchant}));
       }
     } catch (error) {
       throw new Error("Failed to update or create merchant");
