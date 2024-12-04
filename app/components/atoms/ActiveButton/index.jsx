@@ -24,7 +24,7 @@ export default function ActiveButton({
     if (temp) {
       fetcher.submit(
         {
-          isActive,
+          isActive:isActive==true?'true':'false',
           appId: id,
         },
         {
@@ -32,11 +32,15 @@ export default function ActiveButton({
           action: "/app/activate",
         },
       );
+      console.log(fetcher)
     }
   };
   useEffect(() => {
     setIsActive(isAppActive);
   }, [isAppActive]);
+  useEffect(()=>{
+    console.log(fetcher.data)
+  }, [fetcher])
   const togglePopoverActive = useCallback(() => {
     setPopoverActive((popoverActive) => !popoverActive);
   }, []);

@@ -22,7 +22,7 @@ import { json } from '@remix-run/node';
         });
       if(!check_subscription.hasSubscription && apps.length == 1)
       {
-        return cors(request, json({"message":"Upgrade Plan", "success":false}))
+        return  json({"message":"Upgrade Plan", "success":false})
       }
     }
     try {
@@ -44,7 +44,7 @@ import { json } from '@remix-run/node';
             enabled: enable,
           },
         });
-        return cors(json({"success":true, updatedApp}));
+        return (json({"success":true, updatedApp}));
       } else {
         const newMerchant = await db.merchant.create({
           data: {
@@ -53,7 +53,7 @@ import { json } from '@remix-run/node';
             enabled: enable,
           },
         });
-        return cors(json({"success": true, newMerchant}));
+        return (json({"success": true, newMerchant}));
       }
     } catch (error) {
       throw new Error("Failed to update or create merchant");

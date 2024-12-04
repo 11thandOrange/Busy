@@ -146,6 +146,9 @@ const AnnouncementCustomization = ({
       prevSettingsState.current = settingsState;
     }
   };
+  useEffect(()=>{
+    console.log(fetcher.data)
+  }, [fetcher])
 
   return (
     <div>
