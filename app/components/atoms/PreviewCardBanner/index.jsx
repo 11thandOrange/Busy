@@ -105,6 +105,7 @@ const PreviewCardBanner = ({ settingsState, announcementBarType }) => {
             className="email-input"
             onChange={(e) => setEmailValue(e.target.value)}
             value={emailValue}
+            readOnly
           />
           <button
             className="banner-button"
