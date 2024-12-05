@@ -20,7 +20,7 @@ export const action = async ({ request }) => {
         enabled: true,
       },
     });
-    console.log(check_subscription);
+
     if (!check_subscription.hasSubscription && apps.length == 1) {
       return json({ message: "Upgrade Plan", success: false });
     }
@@ -44,7 +44,7 @@ export const action = async ({ request }) => {
           enabled: enable,
         },
       });
-      return json({ success: true, updatedApp });
+      return json({ success: true, updatedApp, isActive: enable });
     } else {
       const newMerchant = await db.merchant.create({
         data: {
@@ -53,7 +53,7 @@ export const action = async ({ request }) => {
           enabled: enable,
         },
       });
-      return json({ success: true, newMerchant });
+      return json({ success: true, newMerchant, isActive: enable });
     }
   } catch (error) {
     throw new Error("Failed to update or create merchant");
