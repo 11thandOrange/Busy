@@ -137,7 +137,7 @@ export async function action({ request }) {
         },
       });
 
-      response = json({ message: "Announcement Bar Added", announcement_bar });
+      response = json({ message: "Announcement Bar Added", success: true, announcement_bar });
       return response;
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
@@ -166,7 +166,7 @@ export async function action({ request }) {
           type,
         },
       });
-      response = json({ message: "Announcement Bar Updated" });
+      response = json({ message: "Announcement Bar Updated" , success:true});
       return response;
     case "DELETE":
       console.log(data.announcement_bar_id, "TEst");
@@ -214,7 +214,7 @@ const route = () => {
       component: (
         <CheckBars
           barsData={announcementBarsData}
-          pagination={false}
+          pagination={true}
           onPageNext={() => {
             console.log("next");
           }}

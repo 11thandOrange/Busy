@@ -6,7 +6,7 @@ import {
   updateState,
 } from "../../../utils/clientFunctions";
 import { InlineError } from "@shopify/polaris";
-import "./style.css"
+import "./style.css";
 const EvergreenDatePicker = ({
   setSettingsState,
   settingsState,
@@ -34,7 +34,13 @@ const EvergreenDatePicker = ({
         helpText={
           "Once the cool off period expires, the countdown timer will be shown again (individually for each customer on each product page)."
         }
+        onValueChange={(value) => {
+          setSettingsState((prevState) =>
+            updateState("settings.coolOffTimer", value, prevState),
+          );
+        }}
         min={0}
+        value={settingsState.settings.coolOffTimer}
       ></CustomTextField>
       <InputDatePicker
         heading={"Minimum expiration deadline"}

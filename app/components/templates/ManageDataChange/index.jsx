@@ -12,6 +12,7 @@ const ManageDataChange = ({
   handleDiscardChanges,
   fetcherState = FETCHER_STATE.IDLE,
   isError = false,
+  showDiscardPopup = false,
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
@@ -35,7 +36,7 @@ const ManageDataChange = ({
       />
 
       <DiscardChangesConfirmationPopup
-        active={onDiscardChanges}
+        active={onDiscardChanges || showDiscardPopup}
         toggleModal={() => setOnDiscardChanges(false)}
         primaryActionClick={() => {
           setOnDiscardChanges(false);
