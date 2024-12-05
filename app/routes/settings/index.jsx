@@ -14,7 +14,7 @@ import { json } from "@remix-run/node";
         shop:shop
       }
     });
-    console.log(setting, "settinge test")
+  
     if(setting?.global_customizations){
       setting.global_customizations = setting?.global_customizations ? JSON.parse(setting?.global_customizations) : JSON.stringify({})
     }

@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
   data = Object.fromEntries(data);
   const appId = parseInt(data.appId);
   const enable = JSON.parse(data.isActive);
-  console.log(enable);
+ 
   if (enable) {
     const check_subscription = await check_app_subscription(request);
     const apps = await db.merchant.findMany({

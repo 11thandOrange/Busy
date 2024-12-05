@@ -35,8 +35,8 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-import useRouteBlocker from "../../../hooks/useRouteBlocker";
-import CustomSpinner from "../../atoms/Spinner";
+
+
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },

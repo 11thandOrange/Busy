@@ -16,7 +16,7 @@ const Customization = () => {
   const barId = fetchQuery.get("id");
   useEffect(() => {
     if (barId) {
-      console.log(barId, "test");
+     
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW + "?id=" + barId);
     } else {
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW);
@@ -25,7 +25,7 @@ const Customization = () => {
 
   useEffect(() => {
     if (fetcher.data) {
-      console.log(fetcher.data, "fetcher");
+    
       const data = fetcher.data.announcement_customization;
 
       setColorTheme(fetcher.data.color_theme);

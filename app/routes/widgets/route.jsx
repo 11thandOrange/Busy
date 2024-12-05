@@ -59,7 +59,7 @@ export const action = async ({ request }) => {
 function TabsInsideOfACard() {
   const fetcher = useFetcher();
   const widgets_data = useLoaderData();
-  console.log('test', widgets_data)
+
   const [widgets, setWidgets] = useState(null);
   const [tabs, setTabs] = useState([]);
 

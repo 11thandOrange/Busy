@@ -112,12 +112,11 @@ const route = () => {
         selectedType={selectedType}
         setSelectedType={(type) => {
           setSelectedType(type);
-          console.log("Selected Type", type);
-
+     
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
         onCustomizeBtnClick={() => {
-          console.log("On customize button click");
+         
           setSelectedTab(1);
         }}
         headerContent={{

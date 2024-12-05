@@ -163,7 +163,7 @@ export async function loader({ request }) {
 
 export const action = async ({ request }) => {
   let analytics = await request.json();
-  console.log(analytics)
+
   const activityId = analytics.activity;
   const pageUrl = analytics.pageUrl;
   const shop = analytics.shop;
@@ -182,7 +182,7 @@ export const action = async ({ request }) => {
 };
 const GlobalAnalytics = () => {
   const apps = useLoaderData();
-  console.log("analyticsnew", apps);
+ 
 
   return (
     <>

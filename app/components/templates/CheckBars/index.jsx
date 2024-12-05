@@ -61,7 +61,7 @@ function CheckBars({
       (currentPage - 1) * itemsPerPage,
       (currentPage - 1) * itemsPerPage + itemsPerPage,
     );
-    console.log("bars data is here", barsData);
+   
 
     setBars(barsDataNew);
   }, [currentPage, barsData]);

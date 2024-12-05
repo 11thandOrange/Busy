@@ -32,7 +32,7 @@ const Plans = () => {
   useEffect(() => {
     if (subscription && subscription?.plan) {
       setPlanData((prevPlanData) => {
-        console.log(prevPlanData);
+       
         const updatedPlans = prevPlanData.map((plan) => {
           if (plan.title === subscription.plan) {
             return {
