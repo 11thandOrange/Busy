@@ -62,23 +62,29 @@ export default function ActiveButton({
   };
 
   const activator = (
-    <Button
-      onClick={onActiveClick}
-      className="active"
-      disclosure={isActive}
-      loading={isLoading(fetcher.state)}
-    >
-      {isLoading(fetcher.state)
-        ? ""
-        : isActive
-          ? beforeActiveString
-          : afterActivateString}
-    </Button>
+    <div className="activBtn">
+      <Button
+        onClick={onActiveClick}
+        disclosure={isActive}
+        loading={isLoading(fetcher.state)}
+      >
+        {isLoading(fetcher.state)
+          ? ""
+          : isActive
+            ? beforeActiveString
+            : afterActivateString}
+      </Button>
+    </div>
   );
 
   return (
     <div className="bb-sec-btn">
-      <ToastBar onDismiss={onDismiss} show={showToast} message={toastMessage} />
+      <ToastBar
+        onDismiss={onDismiss}
+        show={showToast}
+        message={toastMessage}
+        isError={!fetcher?.data?.success}
+      />
       <Popover
         active={popoverActive}
         activator={activator}

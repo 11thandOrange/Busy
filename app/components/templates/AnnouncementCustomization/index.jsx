@@ -51,7 +51,6 @@ const AnnouncementCustomization = ({
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
   const navigate = useNavigate();
-
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({

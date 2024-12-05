@@ -22,7 +22,7 @@ export const action = async ({ request }) => {
     });
 
     if (!check_subscription.hasSubscription && apps.length == 1) {
-      return json({ message: "Upgrade Your Plan", success: false });
+      return json({ message: "Please upgrade your plan to activate more apps", success: false });
     }
   }
   try {
