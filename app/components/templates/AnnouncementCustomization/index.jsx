@@ -36,6 +36,7 @@ import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
 import useRouteBlocker from "../../../hooks/useRouteBlocker";
+import CustomSpinner from "../../atoms/Spinner";
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -104,10 +105,11 @@ const AnnouncementCustomization = ({
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
 
-
+  const [showLoader, setShowLoader] = useState(true);
   useEffect(() => {
     if (initialData) {
       setSettingsState(initialData);
+      setShowLoader(false);
       prevSettingsState.current = initialData;
     }
   }, [initialData]);
@@ -150,30 +152,28 @@ const AnnouncementCustomization = ({
     }
   };
   useEffect(() => {
-    console.log("Data", fetcher.data);
+    if (!isLoading(fetcher.state) && fetcher.data) {
+      navigate(-1);
+    }
   }, [fetcher]);
 
   return (
     <div>
-      {/* <GoBack heading={header}/> */}
       <Page
       // backAction={{ content: "Settings", url: backActionRoute }}
       // title={header}
       // primaryAction={<ActiveButton></ActiveButton>}
       >
+        <Toast
+          show={!isLoading(fetcher.state) && fetcher.data}
+          message="Settings saved"
+        />
         <div className="customization-container">
-          <Toast
-            show={fetcher.state === "idle" && fetcher.data}
-            message="Settings saved"
-          />
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
             handleSaveChanges={() => {
               handleOnSave();
-              if (!isLoading(fetcher.state)) {
-                navigate(-1);
-              }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {

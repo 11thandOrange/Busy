@@ -160,7 +160,7 @@ function CheckBars({
         onSelectionChange={handleSelectionChange}
         headings={[{ title: `Showing ${bars?.length} announcement bar(s)` }]}
         promotedBulkActions={promotedBulkActions}
-        {...(pagination
+        {...(pagination && barsData?.length > 0
           ? {
               pagination: {
                 hasNext: hasNext,

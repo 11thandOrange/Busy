@@ -29,30 +29,27 @@ const Customization = () => {
       const data = fetcher.data.announcement_customization;
 
       setColorTheme(fetcher.data.color_theme);
-      if(data){
-      setCustomizationData({
-        id: data.id,
-        status: Number(data.status).toString(),
-        name: data.name,
-        themeStyle: JSON.parse(data.theme_style),
-        themeSettings: JSON.parse(data.theme_setting),
-        generalSettings: JSON.parse(data.general_setting),
-      });
-    }}
+      if (data) {
+        setCustomizationData({
+          id: data.id,
+          status: Number(data.status).toString(),
+          name: data.name,
+          themeStyle: JSON.parse(data.theme_style),
+          themeSettings: JSON.parse(data.theme_setting),
+          generalSettings: JSON.parse(data.general_setting),
+        });
+      }
+    }
   }, [fetcher.data]);
 
   return (
     <div>
-      {isLoading(fetcher.state) ? (
-        <Spinner />
-      ) : (
-        <AnnouncementCustomization
-          announcementBarType={Number(AnnouncementBarType)}
-          backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
-          initialData={customizationData}
-          colorTheme={colorTheme}
-        />
-      )}
+      <AnnouncementCustomization
+        announcementBarType={Number(AnnouncementBarType)}
+        backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
+        initialData={customizationData}
+        colorTheme={colorTheme}
+      />
     </div>
   );
 };
