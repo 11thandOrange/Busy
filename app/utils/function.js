@@ -456,9 +456,10 @@ export const getCountdownTimer = async (shop, timezone) => {
       countdownTimer.general_setting.countDownStartAt = get_local_date(timezone);
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
-    if (new Date(countdownTimer.general_setting.countDownStartAt).getTime() <= get_local_time(timezone) ) 
-    {
-      const timeLeft = fetchTimeObject(get_local_date(timezone), countdownTimer.general_setting.countDownEndsAt);
+  
+
+      console.log(new Date(countdownTimer.general_setting.countDownEndsAt).getTime(), 'end time')
+      const timeLeft = getTimeerDifference(get_local_time(timezone), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
       countdownTimerHtml += `
         <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
           class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
@@ -524,8 +525,8 @@ export const getCountdownTimer = async (shop, timezone) => {
             form.insertAdjacentHTML('beforebegin', htmlToInsert);
             if("${countdownTimer.display_setting.theme}"=='PROGRESS_CIRCLES')
             {
-             updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime())
-            const timerInterval = setInterval(() => {
+              updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime())
+              const timerInterval = setInterval(() => {
               updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime());
             }, 1000);      
             }
@@ -544,7 +545,7 @@ export const getCountdownTimer = async (shop, timezone) => {
         })();
       `;
     }
-  }
+  
 
   return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts };
 };
@@ -634,23 +635,39 @@ export const addScriptTag = async(shop)=>{
   }));
 }
 function formatDate(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  const hh = String(date.getHours()).padStart(2, '0');
-  const min = String(date.getMinutes()).padStart(2, '0');
+  const yyyy = date.getUTCFullYear();
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0'); 
+  const dd = String(date.getUTCDate()).padStart(2, '0'); 
+  const hh = String(date.getUTCHours()).padStart(2, '0');
+  const min = String(date.getUTCMinutes()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }
 function get_local_time(timezone)
 {
- 
-  let localTime = new Date().toLocaleString("en-US", { timeZone: timezone });
-  let tokyoDate = new Date(localTime).getTime();
-  return tokyoDate;
 
+  let localDate = new Date(); 
+  const year = localDate.getUTCFullYear();  // Get the UTC year
+  const month = localDate.getUTCMonth();  // Get the UTC month
+  const day = localDate.getUTCDate();  // Get the UTC day
+  const hours = localDate.getUTCHours();  // Get the UTC hours
+  const minutes = localDate.getUTCMinutes();  // Get the UTC minutes
+  const seconds = localDate.getUTCSeconds();  // Get the UTC seconds
+  const milliseconds = localDate.getUTCMilliseconds(); 
+
+  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
 }
 function get_local_date(timezone)
 {
-  let localTime = new Date().toLocaleString("en-US", { timeZone: timezone });
+  let localTime = new Date();
   return formatDate(new Date(localTime))
+}
+function getTimeerDifference(startAt, endsAt) {
+  let difference = endsAt - startAt;
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  return { days:0, hours:0, minutes:0, seconds:0, difference:0 };
 }

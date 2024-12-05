@@ -35,7 +35,8 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-import usePrompt from "../../../hooks/usePrompt";
+import useRouteBlocker from "../../../hooks/useRouteBlocker";
+
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
   { label: "Inactive", value: STATUS.INACTIVE },
@@ -102,7 +103,7 @@ const AnnouncementCustomization = ({
         break;
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
-  const blocker = usePrompt();
+
 
   useEffect(() => {
     if (initialData) {
@@ -149,7 +150,7 @@ const AnnouncementCustomization = ({
     }
   };
   useEffect(() => {
-    console.log("Data", fetcher.data);
+    console.log("Fetcher Data", fetcher.data);
   }, [fetcher]);
 
   return (
@@ -171,14 +172,14 @@ const AnnouncementCustomization = ({
             handleSaveChanges={() => {
               handleOnSave();
               if (!isLoading(fetcher.state)) {
-                navigate(-1);
+                // navigate(-1);
               }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              navigate(-1);
+              // navigate(-1);
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}

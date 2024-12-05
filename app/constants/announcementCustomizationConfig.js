@@ -78,8 +78,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
       buttonText: "Get Code",
       buttonColor: "#9a3859",
       buttonTextColor: "#ffffff",
-      couponText: "",
-      coupon: "",
+      couponText: "Now you can get 15% off at checkout with Coupon #coupon#",
+      coupon: "FIRST15OFF",
     },
   },
 

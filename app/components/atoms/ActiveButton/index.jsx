@@ -5,13 +5,14 @@ import { useSearchParams } from "react-router-dom";
 import { useFetcher } from "@remix-run/react";
 import useToast from "../../../hooks/useToast";
 import ToastBar from "../Toast";
+import { isLoading } from "../../../utils/clientFunctions";
+
 export default function ActiveButton({
   beforeActiveString = "Active",
   afterActivateString = "Activate App",
   deactivateString = "Deactivate App",
   isAppActive = false,
-  handleAppActive = () => {},
-  temp = true, //Temporary
+  temp = true,
 }) {
   const fetcher = useFetcher();
   const [popoverActive, setPopoverActive] = useState(false);
@@ -19,56 +20,65 @@ export default function ActiveButton({
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const { showToast, onDismiss } = useToast(fetcher);
-  const handleActive = (isActive) => {
-    console.log(isActive)
+  const [toastMessage, setToastMessage] = useState("");
+
+  const handleActive = (activeState) => {
     if (temp) {
       fetcher.submit(
-        {
-          isActive:isActive==true?'true':'false',
-          appId: id,
-        },
-        {
-          method: "POST",
-          action: "/app/activate",
-        },
+        { isActive: activeState ? "true" : "false", appId: id },
+        { method: "POST", action: "/app/activate" },
       );
-      console.log(fetcher)
-    }
-  };
-  useEffect(() => {
-    setIsActive(isAppActive);
-  }, [isAppActive]);
-  useEffect(()=>{
-    console.log(fetcher.data)
-  }, [fetcher])
-  const togglePopoverActive = useCallback(() => {
-    setPopoverActive((popoverActive) => !popoverActive);
-  }, []);
-  const toggleIsActive = useCallback(() => {
-    handleActive(!isActive);
-    setIsActive((isActive) => !isActive);
-  }, []);
-  const onActiveClick = () => {
-    if (!isActive) {
-      toggleIsActive();
-    } else {
-      togglePopoverActive();
     }
   };
 
+  useEffect(() => {
+    setIsActive(isAppActive);
+  }, [isAppActive]);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data) {
+      if (fetcher.data.success) {
+        setIsActive(fetcher.data.isActive);
+        setToastMessage(
+          fetcher.data.isActive ? "App Activated" : "App Deactivated",
+        );
+      } else {
+        setToastMessage(fetcher.data.message);
+      }
+    }
+  }, [fetcher]);
+
+  const togglePopoverActive = useCallback(() => {
+    setPopoverActive((prev) => !prev);
+  }, []);
+
+  const toggleIsActive = useCallback(() => {
+    handleActive(!isActive);
+  }, [isActive]);
+
+  const onActiveClick = () => {
+    if (!isActive) toggleIsActive();
+    else togglePopoverActive();
+  };
+
   const activator = (
-    <Button onClick={onActiveClick} className="active" disclosure={isActive}>
-      {isActive ? beforeActiveString : afterActivateString}
+    <Button
+      onClick={onActiveClick}
+      className="active"
+      disclosure={isActive}
+      loading={isLoading(fetcher.state)}
+    >
+      {isLoading(fetcher.state)
+        ? ""
+        : isActive
+          ? beforeActiveString
+          : afterActivateString}
     </Button>
   );
 
   return (
     <div className="bb-sec-btn">
-      <ToastBar
-        onDismiss={onDismiss}
-        show={showToast}
-        message={isActive ? "App Activated" : "App Deactivated"}
-      />
+      <ToastBar onDismiss={onDismiss} show={showToast} message={toastMessage} />
       <Popover
         active={popoverActive}
         activator={activator}
@@ -80,8 +90,6 @@ export default function ActiveButton({
             actionRole="menuitem"
             items={[{ content: deactivateString }]}
             onActionAnyItem={() => {
-              //When we click on deactivate, we set isActive to false and close the popover
-
               toggleIsActive();
               togglePopoverActive();
             }}

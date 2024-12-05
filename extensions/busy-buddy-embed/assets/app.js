@@ -19,8 +19,6 @@ const minutes = String(now.getMinutes()).padStart(2, '0');
 const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 
-
-
 function fetch_request(url, app)
 {
     fetch(url+'?appId='+app+'&shop='+shopDomain+'&timezone='+Intl.DateTimeFormat().resolvedOptions().timeZone, {
@@ -312,12 +310,19 @@ function formatDate(date) {
 function get_local_time()
 {
  
-let localTime = new Date();
-let tokyoDate = new Date(localTime).getTime();
-console.log(tokyoDate,'currentTime')
-return tokyoDate;
+  let localDate = new Date();
+  const year = localDate.getFullYear();
+  const month = localDate.getMonth();
+  const day = localDate.getDate();
+  const hours = localDate.getHours();
+  const minutes = localDate.getMinutes();
+  const seconds = localDate.getSeconds();
+  const milliseconds = localDate.getMilliseconds();
+
+  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
 
 }
+
 // let tokyoFormattedTime = formatDate(tokyoDate);
 // console.log("Current Time in Tokyo: " + tokyoFormattedTime);
 
