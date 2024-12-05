@@ -68,7 +68,11 @@ export default function ActiveButton({
       disclosure={isActive}
       loading={isLoading(fetcher.state)}
     >
-      {isActive ? beforeActiveString : afterActivateString}
+      {isLoading(fetcher.state)
+        ? ""
+        : isActive
+          ? beforeActiveString
+          : afterActivateString}
     </Button>
   );
 
