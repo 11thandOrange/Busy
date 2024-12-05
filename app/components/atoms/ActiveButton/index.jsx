@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { useFetcher } from "@remix-run/react";
 import useToast from "../../../hooks/useToast";
 import ToastBar from "../Toast";
+import { isLoading } from "../../../utils/clientFunctions";
 export default function ActiveButton({
   beforeActiveString = "Active",
   afterActivateString = "Activate App",
@@ -20,11 +21,11 @@ export default function ActiveButton({
   const id = searchParams.get("appId");
   const { showToast, onDismiss } = useToast(fetcher);
   const handleActive = (isActive) => {
-    console.log(isActive)
+    console.log(isActive);
     if (temp) {
       fetcher.submit(
         {
-          isActive:isActive==true?'true':'false',
+          isActive: isActive == true ? "true" : "false",
           appId: id,
         },
         {
@@ -32,22 +33,22 @@ export default function ActiveButton({
           action: "/app/activate",
         },
       );
-      console.log(fetcher)
+      console.log(fetcher);
     }
   };
   useEffect(() => {
     setIsActive(isAppActive);
   }, [isAppActive]);
-  useEffect(()=>{
-    console.log(fetcher.data)
-  }, [fetcher])
+  useEffect(() => {
+    console.log(fetcher.data);
+  }, [fetcher]);
   const togglePopoverActive = useCallback(() => {
     setPopoverActive((popoverActive) => !popoverActive);
   }, []);
   const toggleIsActive = useCallback(() => {
     handleActive(!isActive);
     setIsActive((isActive) => !isActive);
-  }, []);
+  }, [isActive]);
   const onActiveClick = () => {
     if (!isActive) {
       toggleIsActive();
@@ -57,8 +58,17 @@ export default function ActiveButton({
   };
 
   const activator = (
-    <Button onClick={onActiveClick} className="active" disclosure={isActive}>
-      {isActive ? beforeActiveString : afterActivateString}
+    <Button
+      onClick={onActiveClick}
+      className="active"
+      disclosure={isActive}
+      loading={isLoading(fetcher.state)}
+    >
+      {isLoading(fetcher.state)
+        ? ""
+        : isActive
+          ? beforeActiveString
+          : afterActivateString}
     </Button>
   );
 

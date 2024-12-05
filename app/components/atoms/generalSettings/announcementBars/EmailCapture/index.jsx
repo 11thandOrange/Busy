@@ -45,20 +45,29 @@ const EmailCaptureSettings = ({ setSettingsState, settingsState }) => {
         initialColor={settingsState.generalSettings.buttonTextColor}
       ></CustomColorPallete>
       <CustomTextField
-        value={"Now you can get 15% off at checkout with Coupon #coupon#"}
+        value={settingsState.generalSettings.couponText}
         type="text"
         helpText={
           "Please keep the #coupon# variable. It will be replaced with the code from the Coupon field below."
         }
-        label="Coupon Text
-"
+        label="Coupon Text"
+        onValueChange={(value) => {
+          setSettingsState((prevState) =>
+            updateState("generalSettings.couponText", value, prevState),
+          );
+        }}
       ></CustomTextField>
       <CustomTextField
-        value={"FIRST15OFF"}
+        value={settingsState.generalSettings.coupon}
         type="text"
         helpText={`Make sure it's configured in your Shopify admin > Discounts.`}
         label="Coupon
 "
+        onValueChange={(value) => {
+          setSettingsState((prevState) =>
+            updateState("generalSettings.coupon", value, prevState),
+          );
+        }}
       ></CustomTextField>
     </div>
   );

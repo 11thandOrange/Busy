@@ -33,12 +33,12 @@ export const announcementPopoverData = [
       "Build trust by letting your customers know how many orders your store has shipped.",
     type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
   },
-  // {
-  //   id: 5,
-  //   header: "Email Capture",
-  //   description: "Capture Leads to grow your business",
-  //   type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
-  // },
+  {
+    id: 5,
+    header: "Email Capture",
+    description: "Capture Leads to grow your business",
+    type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
+  },
 ];
 export const STATUS = {
   ACTIVE: "1",
@@ -78,8 +78,8 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
       buttonText: "Get Code",
       buttonColor: "#9a3859",
       buttonTextColor: "#ffffff",
-      couponText: "",
-      coupon: "",
+      couponText: "Now you can get 15% off at checkout with Coupon #coupon#",
+      coupon: "FIRST15OFF",
     },
   },
 

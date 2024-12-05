@@ -171,7 +171,7 @@ function CheckBars({
                   ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
                       currentPage * itemsPerPage,
                       bars?.length,
-                    )} of ${bars?.length} items`
+                    )} of ${barsData?.length} items`
                   : "0-0 of 0 items",
               },
             }

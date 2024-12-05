@@ -35,7 +35,8 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-import usePrompt from "../../../hooks/usePrompt";
+import useRouteBlocker from "../../../hooks/useRouteBlocker";
+
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
   { label: "Inactive", value: STATUS.INACTIVE },
@@ -102,7 +103,7 @@ const AnnouncementCustomization = ({
         break;
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
-  const blocker = usePrompt();
+
 
   useEffect(() => {
     if (initialData) {
