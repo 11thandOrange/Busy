@@ -3,7 +3,7 @@
 client_id = "8818a8f8aff443b82115ba6173479de5"
 name = "busybuddychicmic"
 handle = "busybuddychicmic"
-application_url = "https://police-pb-continue-setup.trycloudflare.com"
+application_url = "https://book-disturbed-doll-switches.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://police-pb-continue-setup.trycloudflare.com/auth/callback",
-  "https://police-pb-continue-setup.trycloudflare.com/auth/shopify/callback",
-  "https://police-pb-continue-setup.trycloudflare.com/api/auth/callback"
+  "https://book-disturbed-doll-switches.trycloudflare.com/auth/callback",
+  "https://book-disturbed-doll-switches.trycloudflare.com/auth/shopify/callback",
+  "https://book-disturbed-doll-switches.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

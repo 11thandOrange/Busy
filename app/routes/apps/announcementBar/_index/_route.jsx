@@ -137,14 +137,8 @@ export async function action({ request }) {
         },
       });
 
-      response = json({ message: "Announcement Bar Added", announcement_bar });
+      response = json({ message: "Announcement Bar Added", success: true, announcement_bar });
       return response;
-      response = {
-        message: "Announcement Bar Added",
-        success: true,
-        announcement_bar,
-      };
-      return json( response);
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
         where: { shop: shop },
@@ -157,7 +151,7 @@ export async function action({ request }) {
           shop: shop,
         },
       });
-      return json(request, json({ success: true }));
+      return  json({ success: true });
     case "UPDATE":
       await db.Announcement_bar.update({
         where: {
@@ -172,8 +166,8 @@ export async function action({ request }) {
           type,
         },
       });
-      response = { message: "Announcement Bar Updated", success: true };
-      return json( response);
+      response = json({ message: "Announcement Bar Updated" , success:true});
+      return response;
     case "DELETE":
       console.log(data.announcement_bar_id, "TEst");
       await db.Announcement_bar.deleteMany({
@@ -186,8 +180,8 @@ export async function action({ request }) {
           shop: shop,
         },
       });
-      response = { success: true };
-      return json( response);
+      response = json({ success: true });
+      return  response;
     default:
       return new Response("Method Not Allowed", { status: 405 });
   }

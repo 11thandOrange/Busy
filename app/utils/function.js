@@ -147,7 +147,6 @@ export const getEventTypes = async (appId) => {
 
 export const getAnnouncementBar = async (shop, timezone) => {
   let script = '';
-  let current_timezone_time = get_current_time(timezone);
   const announcement_bar = await db.announcement_bar.findFirst({
     where: {
       shop: shop,
@@ -209,16 +208,12 @@ export const getAnnouncementBar = async (shop, timezone) => {
     }
 
     if (announcement_bar.type == 2) { 
-      const currentTime = new Date(current_timezone_time).getTime();
       const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
 
       script += `
         let countdownInterval;
-
         function updateCountdown() {
-          const now = new Date().getTime();
-          console.log(new Date())
-          console.log("${new Date(announcement_bar.general_setting.countDownEndsAt)}")
+          const now = get_local_time();
           let difference = getTimeDifference(now, ${endTime});
           let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
@@ -270,6 +265,24 @@ export const getAnnouncementBar = async (shop, timezone) => {
       script += `
       messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
     }
+    if (announcement_bar.type == 5) {
+      script += `
+        messageDiv.innerHTML = \`
+          <div id="busyBuddySmartBarContainer" style="font-family: inherit;display:flex;justify-content:center;gap:10px;">
+            <div id="busyBuddySmartBarContainerMessage">${announcement_bar.general_setting.message}</div>
+            <form id="busyBuddySmartBarForm" style="display:flex;gap:10px;">
+              <input type="text" id="busyBuddySmartBarInput" aria-label="Email address" class="bundle-input-email">
+              <input type="button" class="bundle-btn-email" id="busyBuddySmartBarButton" style="
+                background-color: ${announcement_bar.general_setting.buttonColor};
+                color: ${announcement_bar.general_setting.buttonTextColor};
+                border: 1px solid #dc0a0a;" value="${announcement_bar.general_setting.buttonText}">
+            </form>
+            <div class="bundle-invalid-email" style="color:red;"></div>                
+          </div>
+        \`;
+      `;
+    }
+    
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
                   announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
@@ -421,7 +434,7 @@ export const getCartNotice = async (shop) => {
   return { script };
 };
 
-export const getCountdownTimer = async (shop) => {
+export const getCountdownTimer = async (shop, timezone) => {
   let countdownTimerHtml = '';
   let script;
  
@@ -440,14 +453,13 @@ export const getCountdownTimer = async (shop) => {
     if(countdownTimer.general_setting.status == 'EVERGREEN')
     {
       const randomTimeObject = pickRandomTime(countdownTimer.general_setting.minExpTime, countdownTimer.general_setting.maxExpTime);
+      countdownTimer.general_setting.countDownStartAt = get_local_date(timezone);
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
-    countdownTimer.general_setting.countDownStartAt = new Date();
-    console.log(countdownTimer)
-    console.log('success', new Date())
-    if (new Date(countdownTimer.general_setting.countDownStartAt) <= new Date() ) 
-    {
-      const timeLeft = fetchTimeObject(new Date().getTime(), countdownTimer.general_setting.countDownEndsAt);
+  
+
+      console.log(new Date(countdownTimer.general_setting.countDownEndsAt).getTime(), 'end time')
+      const timeLeft = getTimeerDifference(get_local_time(timezone), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
       countdownTimerHtml += `
         <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
           class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
@@ -491,7 +503,7 @@ export const getCountdownTimer = async (shop) => {
       script = `
         let countdownTimerInterval;
         function updateCountdownNew() {
-          const now = new Date().getTime();
+          const now = get_local_time();
           const endTime = ${new Date(countdownTimer.general_setting.countDownEndsAt).getTime()};
           const difference = getCountTimeDifference(now, endTime);
           document.getElementById('seconds').textContent = difference.seconds;
@@ -509,13 +521,12 @@ export const getCountdownTimer = async (shop) => {
        
           const form = document.querySelector('.product-form');
           if (form) {
-          console.log("${countdownTimer.display_setting.theme}")
             const htmlToInsert = \`<div class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
             form.insertAdjacentHTML('beforebegin', htmlToInsert);
             if("${countdownTimer.display_setting.theme}"=='PROGRESS_CIRCLES')
             {
-             updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime())
-            const timerInterval = setInterval(() => {
+              updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime())
+              const timerInterval = setInterval(() => {
               updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime());
             }, 1000);      
             }
@@ -534,7 +545,7 @@ export const getCountdownTimer = async (shop) => {
         })();
       `;
     }
-  }
+  
 
   return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts };
 };
@@ -556,17 +567,13 @@ export const check_enable_button = async (shop) => {
 
 export const can_active = async (request, shop) => {
   try {
-    console.log('check me')
     const setting = await db.merchant.findMany({
       where: {
         shop: shop,
         enabled: true,
       }
     });
-    console.log(setting)
-    console.log('hellow')
     let hasSubscription =  check_subscription(request);
-    console.log(await hasSubscription, 'new')
     if(!((await hasSubscription).hasSubscription))
     {
       return setting.count <= 1;
@@ -627,8 +634,40 @@ export const addScriptTag = async(shop)=>{
     },
   }));
 }
-function get_current_time(timezone)
+function formatDate(date) {
+  const yyyy = date.getUTCFullYear();
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0'); 
+  const dd = String(date.getUTCDate()).padStart(2, '0'); 
+  const hh = String(date.getUTCHours()).padStart(2, '0');
+  const min = String(date.getUTCMinutes()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
+function get_local_time(timezone)
 {
-  const currentTime = DateTime.now().setZone(timezone).toISO();
-  return currentTime;
+
+  let localDate = new Date(); 
+  const year = localDate.getUTCFullYear();  // Get the UTC year
+  const month = localDate.getUTCMonth();  // Get the UTC month
+  const day = localDate.getUTCDate();  // Get the UTC day
+  const hours = localDate.getUTCHours();  // Get the UTC hours
+  const minutes = localDate.getUTCMinutes();  // Get the UTC minutes
+  const seconds = localDate.getUTCSeconds();  // Get the UTC seconds
+  const milliseconds = localDate.getUTCMilliseconds(); 
+
+  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
+}
+function get_local_date(timezone)
+{
+  let localTime = new Date();
+  return formatDate(new Date(localTime))
+}
+function getTimeerDifference(startAt, endsAt) {
+  let difference = endsAt - startAt;
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  return { days:0, hours:0, minutes:0, seconds:0, difference:0 };
 }

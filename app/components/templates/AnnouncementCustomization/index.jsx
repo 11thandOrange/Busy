@@ -178,7 +178,7 @@ const AnnouncementCustomization = ({
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              navigate(-1);
+              // navigate(-1);
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}

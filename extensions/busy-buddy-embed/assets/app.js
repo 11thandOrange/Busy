@@ -1,4 +1,4 @@
-const baseUrl = 'https://busybuddy.projectlabs.in';
+const baseUrl = 'https://ordered-den-scottish-incredible.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -9,6 +9,14 @@ const elementIdMap = {
   'busyBuddyCartNotice': 3,
   'busyBuddyCountdownTimer': 4,
 };
+
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 
 function fetch_request(url, app)
@@ -127,10 +135,7 @@ function check_product_discount() {
 }
 
 function getTimeDifference(startAt, endsAt) {
-  const offset = (5 * 60 + 30) * 60 * 1000;
-  endsAt -= offset;
   const difference = endsAt - startAt;
-  
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
   const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
@@ -250,3 +255,78 @@ function updateCircle(progressCircle, textElement, remainingTime, totalTime, tit
 
 
 
+// Add the event listener to a parent element (like document.body or a static container)
+document.body.addEventListener('click', function(event) {
+  // Check if the clicked element is the button you want
+  if (event.target && event.target.id === 'busyBuddySmartBarButton') {
+    console.log('click');
+    
+    const emailInput = document.getElementById('busyBuddySmartBarInput');
+    const email = emailInput.value;
+    
+    // Validate the email
+    if (validateEmail(email)) {
+      const formData = {
+        email: email,
+        shop:window.location.host
+      };
+
+      // Send the data to the backend using fetch
+      fetch(baseUrl + '/app/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('busyBuddySmartBarContainer').innerHTML = data.message
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    } else {
+      document.querySelector('.bundle-invalid-email').textContent = 'Please enter a valid email address.';
+    }
+  }
+});
+
+
+// Basic email validation function
+function validateEmail(email) {
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return regex.test(email);
+}
+function formatDate(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
+function get_local_time()
+{
+ 
+  let localDate = new Date();
+  const year = localDate.getFullYear();
+  const month = localDate.getMonth();
+  const day = localDate.getDate();
+  const hours = localDate.getHours();
+  const minutes = localDate.getMinutes();
+  const seconds = localDate.getSeconds();
+  const milliseconds = localDate.getMilliseconds();
+
+  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
+
+}
+
+// let tokyoFormattedTime = formatDate(tokyoDate);
+// console.log("Current Time in Tokyo: " + tokyoFormattedTime);
+
+// let londonTime = new Date(tokyoDate).toLocaleString("en-US", { timeZone: "Europe/London" });
+// let londonDate = new Date(londonTime);
+// let londonFormattedTime = formatDate(londonDate);
+// console.log("Corresponding Time in London: " + londonFormattedTime);
