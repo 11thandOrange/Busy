@@ -17,6 +17,8 @@ body:has(.emoji-previewbx) .Polaris-ShadowBevel {
     width: 100% !important;
     overflow: visible !important;
     min-width: unset !important;
+    position: relative;
+    z-index: 9;
 }
 
 body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-Box {
@@ -77,7 +79,7 @@ body:has(.emoji-previewbx) .Polaris-InlineGrid {
 }
 
 body:has(.emoji-previewbx) .bb-tabs-content .Polaris-Page{
-    min-height: 50rem !important;
+    min-height: 58rem !important;
 }
 
 body:has(.cart-emoji) .emoji-previewbx{
