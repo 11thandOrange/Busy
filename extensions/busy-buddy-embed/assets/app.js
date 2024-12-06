@@ -1,4 +1,4 @@
-const baseUrl = 'https://ordered-den-scottish-incredible.trycloudflare.com';
+const baseUrl = 'https://romance-refresh-rebate-closest.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;

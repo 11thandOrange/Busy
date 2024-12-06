@@ -27,7 +27,7 @@ model Session {
 
 model Activity {
   id          Int           @id @default(autoincrement())
-  content     String?
+  content     String
   color       String?
   apps        App[]         @relation("AppActivities")
   Analytics   Analytics[]
@@ -159,10 +159,11 @@ model Cart_notice {
   backgroundColor         String?         @default("#fff5cd")
   textColor               String?          @default("#222222")
   fire_icon               Boolean         @default(false)
-  showCountdown           Boolean     @default(true)
+  emojiToAdd              String?              @default("🔥")
+  showCountdown           Boolean         @default(true)
   countdown_timer         Int             @default(1)
   general_setting         String
-   shop                  String            @unique
+  shop                  String            @unique
   createdAt               DateTime        @default(now())
 }
 
