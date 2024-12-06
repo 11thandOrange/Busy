@@ -8,6 +8,22 @@ import { formatDate } from "../../../utils/clientFunctions";
 import { TABS_ENUM } from "../../../utils/constants";
 import DateRangeButton from "../../atoms/DateRangePicker/Index";
 
+function getFormattedDates(startDate, endDate) {
+  const formattedDates = [];
+  const currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const year = currentDate.getFullYear();
+
+    formattedDates.push(`${month}/${day}/${year}`);
+    currentDate.setDate(currentDate.getDate() + 1); // Increment by one day
+  }
+
+  return formattedDates;
+}
+
 const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
   const fetcher = useFetcher();
   const [selected, setSelected] = useState(apps?.[0]?.id);
@@ -81,7 +97,7 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
         }),
       );
       setChartData({
-        labels: labels,
+        labels: getFormattedDates(selectedDates.start, selectedDates.end),
         datasets: data?.length
           ? data.map((item) => {
               const tabData = tabs.find((tab) => tab.key == item.activityId);
@@ -100,13 +116,14 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
                   gradient.addColorStop(1, tabData.color + "00"); // Fully transparent
                 }
               }
-
               return {
                 label: tabData.label,
-                data: item.activityData.map((data) => ({
-                  x: data.date,
-                  y: data.count,
-                })),
+                data: getFormattedDates(selectedDates.start, selectedDates.end)?.map(data => {
+                  return {
+                    x: data,
+                    y: item.activityData.find((activity) => activity.date === data)?.count || 0,
+                  }
+                }),
                 borderColor: tabData.color,
                 pointBackgroundColor: tabData.color,
                 fill: true,

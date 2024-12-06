@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import ManageDataChange from "../ManageDataChange";
 import ToastBar from "../../atoms/Toast";
 import "./style.css";
+import CustomEmojiPicker from "../../atoms/CustomEmojiPicker";
 
   
 const CustomizationCartNotice = ({cartSettings}) => {
@@ -30,7 +31,8 @@ const CustomizationCartNotice = ({cartSettings}) => {
     secondaryText: '',
     showCountdownTimer: false,
     countdownTimer: 0,
-    hideTheFireIcon: false,
+    addAnEmoji: false,
+    emojiToAdd: '🔥',
     marginTop: 0,
     marginTopUnit: 'px',
     marginBottom: 0,
@@ -56,7 +58,7 @@ const CustomizationCartNotice = ({cartSettings}) => {
         secondary_message: cartNoticeCustomization?.secondaryText,
         show_countdown: cartNoticeCustomization?.showCountdownTimer,
         countdown_timer: cartNoticeCustomization?.countdownTimer,
-        fire_icon: cartNoticeCustomization?.hideTheFireIcon,
+        emojiToAdd: cartNoticeCustomization?.addAnEmoji ? cartNoticeCustomization?.emojiToAdd : null,
         backgroundColor: cartNoticeCustomization?.backgroundColor,
         textColor: cartNoticeCustomization?.textColor,
         general_setting: JSON.stringify({
@@ -88,7 +90,8 @@ const CustomizationCartNotice = ({cartSettings}) => {
         secondaryText: cartSettings?.secondary_message,
         showCountdownTimer: cartSettings?.showCountdown,
         countdownTimer: cartSettings?.countdown_timer,
-        hideTheFireIcon: cartSettings?.fire_icon,
+        addAnEmoji: !!cartSettings?.emojiToAdd,
+        emojiToAdd: cartSettings?.emojiToAdd,
         backgroundColor: cartSettings?.backgroundColor,
         textColor: cartSettings?.textColor,
         marginTop: general_setting?.marginTop,
@@ -108,7 +111,7 @@ const CustomizationCartNotice = ({cartSettings}) => {
 
   return (
     <div className="cartNoticeContainer">
- <Page>
+    <Page>
       <ToastBar onDismiss={onDismiss} show={showToast} message="Customization saved" />
       <ManageDataChange
         newState={cartNoticeCustomization}
@@ -193,12 +196,15 @@ const CustomizationCartNotice = ({cartSettings}) => {
                         min={0}
                     /> : null}
                     <Checkbox
-                        label="Hide the fire icon"
-                        checked={cartNoticeCustomization?.hideTheFireIcon}
+                        label="Add an Emoji"
+                        checked={cartNoticeCustomization?.addAnEmoji}
                         onChange={(value) => {
-                            handleCartNoticeCustomizationChange(value, 'hideTheFireIcon')
+                            handleCartNoticeCustomizationChange(value, 'addAnEmoji')
                         }}
                     />
+                    {cartNoticeCustomization?.addAnEmoji ? <CustomEmojiPicker label={cartNoticeCustomization.emojiToAdd} onEmojiClick={(data) => {
+                      handleCartNoticeCustomizationChange(data.emoji, 'emojiToAdd')
+                    }}/> : null}
                 </div>
                 <div className="input-selector-container">
                 <span>Margin</span>
