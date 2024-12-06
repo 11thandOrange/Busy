@@ -21,7 +21,7 @@ import "./style.css";
 import CustomEmojiPicker from "../../atoms/CustomEmojiPicker";
 import CartNoticePreview from "../../atoms/CartNoticePreview";
 
-const CustomizationCartNotice = ({ cartSettings }) => {
+const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
   const fetcher = useFetcher();
 
   const INITIAL_STATE = {
@@ -262,7 +262,7 @@ const CustomizationCartNotice = ({ cartSettings }) => {
                 />
               </div>
             </Card>
-            <CartNoticePreview cartNoticeCustomization={cartNoticeCustomization}></CartNoticePreview>
+            <CartNoticePreview cartNoticeCustomization={cartNoticeCustomization} colorTheme={colorTheme}></CartNoticePreview>
           </InlineGrid>
         </BlockStack>
       </Page>

@@ -29,7 +29,16 @@ export async function loader({ request }) {
   if (!cartNotice) {
     cartNotice = {};
   }
-  return json({ cartNotice, app_active: await check_app_active(appId, shop) });
+  let setting = await db.setting.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+  return json({
+    cartNotice,
+    app_active: await check_app_active(appId, shop),
+    color_theme: setting?.color_theme,
+  });
 }
 
 export async function action({ request }) {
@@ -83,7 +92,7 @@ const CartNotice = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CustomizationCartNotice cartSettings={cartNoticeData} />,
+      component: <CustomizationCartNotice cartSettings={cartNoticeData} colorTheme={cartNotice.color_theme} />,
     },
   ];
 
