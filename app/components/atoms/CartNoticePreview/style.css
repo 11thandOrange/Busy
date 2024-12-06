@@ -48,7 +48,7 @@ body:has(.emoji-previewbx) .Polaris-InlineGrid {
 .emoji-previewbx {
     width: 100%;
     display: flex;
-    padding: 10px;
+    padding: 0px;
     align-items: center;
 }
 
@@ -65,9 +65,24 @@ body:has(.emoji-previewbx) .Polaris-InlineGrid {
     font-size: 13px;
     line-height: 18px;
 }
-
 .cart-emoji {
     width: fit-content;
     font-size: 20px;
-    margin: 0 10px 0 0;
+    margin:10px 0px 10px 0;
+}
+
+.addanemjoibx {
+    display: flex;
+    gap: 15px;
+}
+
+body:has(.emoji-previewbx) .bb-tabs-content .Polaris-Page{
+    min-height: 50rem !important;
+}
+
+body:has(.cart-emoji) .emoji-previewbx{
+    padding: 0 0 0 10px;
+}
+.emoji-previewbx .show-padding{
+    padding: 10px;
 }

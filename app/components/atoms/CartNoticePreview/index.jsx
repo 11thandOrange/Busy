@@ -5,8 +5,6 @@ import ImageRenderer from "../ImageRenderer";
 import IMAGES from "../../../utils/Images";
 import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
 const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
-  console.log("colorTheme",colorTheme);
-  
   return (
     <div className="product-preview-card-container">
       <div
@@ -36,7 +34,9 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
                 {cartNoticeCustomization.emojiToAdd}
               </div>
             )}
-            <div className="text-container">
+            <div
+              className={`${cartNoticeCustomization.primaryText || cartNoticeCustomization.secondaryText ? "show-padding" : ""} text-container`}
+            >
               <p className="primary-text">
                 {cartNoticeCustomization.primaryText}
               </p>

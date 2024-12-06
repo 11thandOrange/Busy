@@ -213,6 +213,7 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
                     min={0}
                   />
                 ) : null}
+                <div className="addanemjoibx">
                 <Checkbox
                   label="Add an Emoji"
                   checked={cartNoticeCustomization?.addAnEmoji}
@@ -231,6 +232,7 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
                     }}
                   />
                 ) : null}
+                </div>
               </div>
               <div className="input-selector-container">
                 <span>Margin</span>
