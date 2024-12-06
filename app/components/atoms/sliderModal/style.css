@@ -1,0 +1,25 @@
+/* Slider Modal Styling  */
+
+
+body:has(.slider-modal) .Polaris-Modal-Dialog__Modal{
+    width: 80%;
+    max-width: 800px;
+}
+
+body:has(.slider-modal) .Polaris-Modal-Dialog__Modal video,
+body:has(.slider-modal) .Polaris-Modal-Dialog__Modal img{
+    width: 100%;
+}
+
+body:has(.slider-modal) .Polaris-Modal-Dialog__Modal .Polaris-Button__Icon{
+    background: rgba(255, 255, 255, 1);
+    position: relative;
+    top: 0px;
+    right: 0px;
+    border-radius: 2px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+body:has(.slider-modal) .Polaris-Backdrop{
+    pointer-events: none;
+}

@@ -76,34 +76,39 @@ export default function AppActiveButton({
   );
 
   return (
-    <div className="bb-sec-btn">
+    <>
+      {" "}
       <ToastBar
         onDismiss={onDismiss}
         show={showToast}
         message={toastMessage}
         isError={!fetcher?.data?.success}
       />
-      <Popover
-        active={popoverActive}
-        activator={activator}
-        autofocusTarget="first-node"
-        onClose={togglePopoverActive}
-      >
-        <div className="bb-deactive-app-btn">
-          <div>
-            <p>Are you sure ?</p>
-            <ActionList
-              actionRole="menuitem"
-              items={[{ content: deactivateString }]}
-              onActionAnyItem={() => {
-                toggleIsActive();
-                togglePopoverActive();
-              }}
-            />
+      <div className="app-active-btn">
+        <Popover
+          active={popoverActive}
+          activator={activator}
+          autofocusTarget="first-node"
+          onClose={togglePopoverActive}
+        >
+          <div className="app-active-popup">
+            <div className="app-active-confirmation">
+              <p>Are you sure ?</p>
+              <ActionList
+                actionRole="menuitem"
+                items={[{ content: deactivateString }]}
+                onActionAnyItem={() => {
+                  toggleIsActive();
+                  togglePopoverActive();
+                }}
+              />
+            </div>
+            <div className="app-active-confirmation-info">
+              <p>{`${appName} will be unavailable to customers`}</p>
+            </div>
           </div>
-          <p>{`${appName} will be unavailable to customers`}</p>
-        </div>
-      </Popover>
-    </div>
+        </Popover>
+      </div>
+    </>
   );
 }

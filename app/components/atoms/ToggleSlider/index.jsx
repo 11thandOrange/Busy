@@ -9,12 +9,8 @@ export default function ToggleSlider({ isActive, onClick, isLoading }) {
       }`}
       onClick={!isLoading ? onClick : undefined}
     >
-      <span className="label">
-        {isLoading ? "Loading..." : isActive ? "Active" : "Inactive"}
-      </span>
-      <div className="slider">
-        {isLoading ? <div className="loader"></div> : null}
-      </div>
+      <span className="label">{isActive ? "Active" : "Inactive"}</span>
+      <div className="slider"></div>
     </div>
   );
 }
