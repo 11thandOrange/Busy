@@ -155,7 +155,7 @@
 }
 
 .Polaris-Box, .head-searchbar{
-    padding: 0px;
+    /* padding: 0px; */
 }
 .Polaris-LegacyCard__Section .Polaris-Box{
     padding: 15px 20px;
