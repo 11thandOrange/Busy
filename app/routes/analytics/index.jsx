@@ -7,6 +7,14 @@ import { getEventTypes } from "../../utils/function";
 import { authenticate } from "../../shopify.server";
 import GoBack from "../../components/atoms/GoBack";
 
+function formatDate(date) {
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}
+
 export async function loader({ request }) {
   try {
     const { session } = await authenticate.admin(request);
@@ -16,7 +24,6 @@ export async function loader({ request }) {
     const toDateString = url.searchParams.get("toDate");
     const shop = session.shop;
 
-    // Fetch apps from the database
     let apps = await db.app.findMany({
       include: {
         Merchant: true,
@@ -35,7 +42,6 @@ export async function loader({ request }) {
       };
     });
 
-    // Check if required query parameters are provided
     if (!appId || !fromDateString || !toDateString) {
       return cors(
         request,
@@ -44,11 +50,9 @@ export async function loader({ request }) {
       );
     }
 
-    // Parse the fromDate and toDate from the query string
     const fromDate = new Date(fromDateString);
     const toDate = new Date(toDateString);
 
-    // Validate the dates
     if (isNaN(fromDate) || isNaN(toDate)) {
       return cors(
         request,
@@ -57,10 +61,8 @@ export async function loader({ request }) {
       );
     }
 
-    // Fetch the activity IDs based on appId
     const activityIds = await getEventTypes(appId);
 
-    // Fetch the counts from the database
     const counts = await db.analytics.groupBy({
       by: ["activityId", "createdAt"],
       where: {
@@ -80,31 +82,27 @@ export async function loader({ request }) {
       },
     });
 
-    // Aggregate counts by day
     const analyticsData = activityIds.map((activityId) => {
       const dailyCounts = {};
 
-      // Initialize dailyCounts for all days in the range
       for (
         let date = new Date(fromDate);
         date <= toDate;
         date.setDate(date.getDate() + 1)
       ) {
-        const formattedDate = date.toLocaleDateString();
+        const formattedDate = formatDate(date);
         dailyCounts[formattedDate] = 0;
       }
 
-      // Populate counts from the database
       counts.forEach((record) => {
         if (record.activityId === activityId) {
-          const recordDate = new Date(record.createdAt).toLocaleDateString();
+          const recordDate = formatDate(new Date(record.createdAt));
           if (dailyCounts[recordDate] !== undefined) {
             dailyCounts[recordDate] += record._count.id;
           }
         }
       });
 
-      // Format results and calculate percentage changes for just yesterday and today
       const formattedDailyCounts = Object.entries(dailyCounts).map(
         ([date, count]) => ({ date, count })
       );
