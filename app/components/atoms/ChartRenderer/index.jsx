@@ -41,6 +41,10 @@ const ChartRenderer = ({ data, basicOptions, chartRef }) => {
           display: true,
           text: '',
         },
+        ticks: {
+          beginAtZero: true, // Ensure the axis starts at 0
+        },
+        min: 0,
       },
     },
   };

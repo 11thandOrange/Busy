@@ -97,7 +97,7 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
         }),
       );
       setChartData({
-        labels: getFormattedDates(selectedDates.start, selectedDates.end),
+        labels: labels,
         datasets: data?.length
           ? data.map((item) => {
               const tabData = tabs.find((tab) => tab.key == item.activityId);
@@ -118,12 +118,10 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
               }
               return {
                 label: tabData.label,
-                data: getFormattedDates(selectedDates.start, selectedDates.end)?.map(data => {
-                  return {
-                    x: data,
-                    y: item.activityData.find((activity) => activity.date === data)?.count || 0,
-                  }
-                }),
+                data: item.activityData.map((data) => ({
+                  x: data.date,
+                  y: data.count,
+                })),
                 borderColor: tabData.color,
                 pointBackgroundColor: tabData.color,
                 fill: true,

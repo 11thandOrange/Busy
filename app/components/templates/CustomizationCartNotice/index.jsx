@@ -86,18 +86,18 @@ const CustomizationCartNotice = ({cartSettings}) => {
       general_setting = JSON.parse(cartSettings.general_setting);
     }
     let data = {
-        primaryText: cartSettings?.primary_message,
-        secondaryText: cartSettings?.secondary_message,
-        showCountdownTimer: cartSettings?.showCountdown,
-        countdownTimer: cartSettings?.countdown_timer,
-        addAnEmoji: !!cartSettings?.emojiToAdd,
-        emojiToAdd: cartSettings?.emojiToAdd,
-        backgroundColor: cartSettings?.backgroundColor,
-        textColor: cartSettings?.textColor,
-        marginTop: general_setting?.marginTop,
-        marginTopUnit: general_setting?.marginTopUnit,
-        marginBottom: general_setting?.marginBottom,
-        marginBottomUnit: general_setting?.marginBottomUnit,        
+        primaryText: cartSettings?.primary_message || INITIAL_STATE.primaryText,
+        secondaryText: cartSettings?.secondary_message || INITIAL_STATE.secondaryText,
+        showCountdownTimer: cartSettings?.showCountdown || INITIAL_STATE.showCountdownTimer,
+        countdownTimer: cartSettings?.countdown_timer || INITIAL_STATE.countdownTimer,
+        addAnEmoji: !!cartSettings?.emojiToAdd || INITIAL_STATE.addAnEmoji,
+        emojiToAdd: cartSettings?.emojiToAdd || INITIAL_STATE.emojiToAdd,
+        backgroundColor: cartSettings?.backgroundColor || INITIAL_STATE.backgroundColor,
+        textColor: cartSettings?.textColor || INITIAL_STATE.textColor,
+        marginTop: general_setting?.marginTop || INITIAL_STATE.marginTop,
+        marginTopUnit: general_setting?.marginTopUnit || INITIAL_STATE.marginTopUnit,
+        marginBottom: general_setting?.marginBottom || INITIAL_STATE.marginBottom,
+        marginBottomUnit: general_setting?.marginBottomUnit || INITIAL_STATE.marginTopUnit,        
     };
     setCartNoticeCustomization(data);
     oldState.current = data;
