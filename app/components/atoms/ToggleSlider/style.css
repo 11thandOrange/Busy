@@ -72,14 +72,14 @@
 
 
 .app-active-btn {
-  width: 110px;
+  width: 115px;
   display: flex; 
   overflow: hidden;
 }
 
 .app-active-btn .activBtn .toggle-slider {
   display: flex;
-  width: 110px;
+  width: 115px;
   overflow: hidden;
   border-radius: 10px;
   height: 35px;
@@ -97,7 +97,7 @@
   margin: 0px 0px 0px 52px;
 } 
 .app-active-btn .activBtn .toggle-slider.active .slider {
-  transform: translateX(62px);
+  transform: translateX(67px);
   border-radius: 7px;
   width: 40px;
   height: 25px;
