@@ -76,7 +76,7 @@ export default function AppActiveButton({
   );
 
   return (
-    <div className="bb-sec-btn">
+    <div className="app-active-btn">
       <ToastBar
         onDismiss={onDismiss}
         show={showToast}
@@ -89,8 +89,8 @@ export default function AppActiveButton({
         autofocusTarget="first-node"
         onClose={togglePopoverActive}
       >
-        <div className="bb-deactive-app-btn">
-          <div>
+        <div className="app-active-popup">
+          <div className="app-active-confirmation">
             <p>Are you sure ?</p>
             <ActionList
               actionRole="menuitem"
@@ -101,7 +101,9 @@ export default function AppActiveButton({
               }}
             />
           </div>
-          <p>{`${appName} will be unavailable to customers`}</p>
+          <div className="app-active-confirmation-info">
+              <p>{`${appName} will be unavailable to customers`}</p>
+          </div>
         </div>
       </Popover>
     </div>

@@ -1,0 +1,29 @@
+.app-active-popup {
+    padding: 10px 15px 0px 15px;
+}
+ 
+.app-active-confirmation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-active-confirmation .Polaris-ActionList__Item {
+    background: #8E1F0A;
+    border-radius: 8px;
+    color: #fff;
+    line-height: 20px;
+    margin: 0px;
+    padding: 0px 10px;
+}
+
+.app-active-confirmation-info {
+    padding: 10px 0 0 0;
+}
+
+.app-active-confirmation-info p {
+    font-size: 13px;
+}
+.app-active-confirmation p {
+    font-size: 14px;
+}
