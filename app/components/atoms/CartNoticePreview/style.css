@@ -4,9 +4,29 @@
     display: flex;
 } */
 
-body:has(.emoji-previewbx) .url-bar {
+body:has(.emoji-previewbx) .url-bar{
     position: static;
     margin: 0 auto !important;
+}
+body:has(.emoji-previewbx) .product-preview-card{
+    min-width: 100%;
+}
+
+body:has(.emoji-previewbx) .Polaris-ShadowBevel {
+    width: 100% !important;
+    min-width: unset !important;
+}
+/* body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-BlockStack {
+    display: flex;
+    flex-direction: column;
+} */
+body:has(.emoji-previewbx) .cartNoticeContainer .color-input {
+    width: 100%;
+}
+body:has(.emoji-previewbx) .Polaris-InlineGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50% !important;
 }
 
 .emoji-previewout {
