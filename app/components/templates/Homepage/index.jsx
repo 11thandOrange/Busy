@@ -5,6 +5,7 @@ import { useState, useCallback } from "react";
 import "./homepage.css";
 import ActiveButton from "../../atoms/ActiveButton";
 import HomepageDetails from "../../atoms/HomepageDetails";
+import AppActiveButton from "../../atoms/AppActiveButton";
 
 function Homepage({
   children,
@@ -34,7 +35,12 @@ function Homepage({
       <Page
         backAction={{ content: "Settings", url: "/apps" }}
         title={header}
-        primaryAction={<ActiveButton isAppActive={isAppActive}></ActiveButton>}
+        primaryAction={
+          <AppActiveButton
+            isAppActive={isAppActive}
+            appName={header}
+          ></AppActiveButton>
+        }
       >
         <HomepageDetails
           selectedType={selectedType}

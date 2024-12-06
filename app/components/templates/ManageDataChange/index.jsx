@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { hasChanges } from "../../../utils/clientFunctions";
 import DiscardChangesConfirmationPopup from "../../atoms/DiscardChangesConfirmationPopup";
 import UnsavedChangesBar from "../../atoms/UnsavedChangesBar";
-import { useFetcher } from "@remix-run/react";
 import { FETCHER_STATE } from "../../../utils/constants";
 
 const ManageDataChange = ({
@@ -13,6 +12,7 @@ const ManageDataChange = ({
   fetcherState = FETCHER_STATE.IDLE,
   isError = false,
   showDiscardPopup = false,
+  showBarInitially = false,
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
@@ -20,20 +20,25 @@ const ManageDataChange = ({
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
- 
+
+
+  const shouldShowBar = showBarInitially || (hasChanged && !isError);
 
   return (
     <>
-      <UnsavedChangesBar
-        saveActionButtonClick={() => {
-          handleSaveChanges();
-        }}
-        discardActionButtonClick={() => {
-          setOnDiscardChanges(true);
-        }}
-        show={hasChanged && !isError}
-        fetcherState={fetcherState}
-      />
+      {shouldShowBar && (
+        <UnsavedChangesBar
+          saveActionButtonClick={() => {
+            handleSaveChanges();
+          }}
+          discardActionButtonClick={() => {
+            setOnDiscardChanges(true);
+          }}
+          
+          show={showBarInitially ? hasChanged && !isError : true}
+          fetcherState={fetcherState}
+        />
+      )}
 
       <DiscardChangesConfirmationPopup
         active={onDiscardChanges || showDiscardPopup}

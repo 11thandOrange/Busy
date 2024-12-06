@@ -11,11 +11,11 @@ const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
     <div className="card" key={widget.id}>
       <ImageRenderer src={widget.image} alt="Product Review" />
       <div className="card-btn">
-        <ActiveButton
+        {/* <ActiveButton
           afterActivateString="Activate Widget"
           deactivateString="Deactivate Widget"
           temp={false}
-        />
+        /> */}
       </div>
       <div className="content-wrapper">
         <h3>{widget.name}</h3>

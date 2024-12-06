@@ -11,7 +11,7 @@ import Sunshine from "../assets/themes/Sunshine.svg";
 import Watercolor from "../assets/themes/Watercolor.svg";
 import DownArrowWhite from '../assets/icons/down_arrow_white.svg';
 import UpArrowWhite from '../assets/icons/up_arrow_white.svg';
-
+import shoeDiscount from "../assets/icons/shoe_discount.svg"
 const IMAGES = {
   HeartIcon,
   FilledHeartIcon,
@@ -26,6 +26,7 @@ const IMAGES = {
   Squares,
   Sunshine,
   Watercolor,
+  shoeDiscount
 };
 
 export default IMAGES;
