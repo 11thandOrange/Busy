@@ -57,10 +57,15 @@ function AnalyticsView({
               }}
             >
               <TextContainer>
-                <h3 className="tabLabel">{tab.label}</h3>
                 <div className="tabData">
-                  <p className="tabValue">{currentTab?.totalCount}</p>
-                  {currentTab?.percentageChange ? (
+                  <div className="value-left">
+                    <p className="tabValue">{currentTab?.totalCount}</p>
+                    <h3 className="tabLabel">{tab.label}</h3>
+                  </div>
+                  <div className="value-left">
+
+                  
+                  {true ? (
                     <p
                       className="tabDescription"
                       style={{
@@ -79,6 +84,7 @@ function AnalyticsView({
                   ) : (
                     ""
                   )}
+                  </div>
                 </div>
               </TextContainer>
             </div>
