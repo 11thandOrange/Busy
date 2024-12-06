@@ -34,11 +34,9 @@ const CartNoticePreview = ({ cartNoticeCustomization }) => {
       {cartNoticeCustomization.addAnEmoji && (
         <div className="cart-emoji">{cartNoticeCustomization.emojiToAdd}</div>
       )}
-      <div className="text-container">
+      <div className={`${cartNoticeCustomization.primaryText || cartNoticeCustomization.secondaryText ? 'show-padding' : ''  } text-container`}>
         <p className="primary-text">{cartNoticeCustomization.primaryText}</p>
-        <p className="secondary-text">
-          {cartNoticeCustomization.secondaryText}
-        </p>
+        <p className="secondary-text">{cartNoticeCustomization.secondaryText}</p>
       </div>
     </div>
     </div>
