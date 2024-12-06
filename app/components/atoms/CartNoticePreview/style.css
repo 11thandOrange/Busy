@@ -14,7 +14,12 @@ body:has(.emoji-previewbx) .product-preview-card{
 
 body:has(.emoji-previewbx) .Polaris-ShadowBevel {
     width: 100% !important;
+    overflow: visible !important;
     min-width: unset !important;
+}
+body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-Box{
+    overflow: visible;
+    border-radius: 10px;
 }
 /* body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-BlockStack {
     display: flex;
@@ -52,7 +57,7 @@ body:has(.emoji-previewbx) .Polaris-InlineGrid {
 
 .emoji-previewbx p.secondary-text {
     font-weight: 600;
-    margin-top: 7px;
+    margin-top: 0px;
     font-size: 13px;
 }
 
