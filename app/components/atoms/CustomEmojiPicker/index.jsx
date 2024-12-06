@@ -39,13 +39,13 @@ const CustomEmojiPicker = ({ label = '🔥', onEmojiClick = () => {}, onPickerCl
   }, [isPickerVisible]);
 
   return (
-    <div ref={pickerRef}>
+    <div  className='pick-emojimain' ref={pickerRef}>
       {/* Button to toggle the Emoji Picker */}
       <button onClick={togglePicker}>{label}</button>
 
       {/* Emoji Picker */}
       {isPickerVisible && (
-        <div>
+        <div className='pick-emoji'>
           <EmojiPicker onEmojiClick={handleEmojiClick} />
         </div>
       )}

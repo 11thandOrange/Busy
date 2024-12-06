@@ -1,0 +1,13 @@
+.pick-emojimain button {
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+}
+.pick-emojimain {
+    position: relative;
+}
+
+.pick-emoji {
+    position: absolute;
+    z-index: 99999;
+}
