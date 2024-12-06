@@ -63,7 +63,7 @@ const InActiveTabSettings = ({ initialData }) => {
           handleDiscardChanges={handleDiscardChanges}
           fetcherState={fetcher.state}
         />
-        <SettingSection heading={"Settings"}>
+        <SettingSection heading={"Inactive Tab Message"}>
           <CustomTextField
             helpText={
               "The message that will show in the browser tab's title when the visitor changes to another tab."

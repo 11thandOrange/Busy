@@ -13,6 +13,7 @@ import {
   ANNOUNCEMENT_BAR_INITIAL_STATE,
   ANNOUNCEMENT_BAR_TYPES,
   ANNOUNCEMENT_BARS_ERROR_STATE,
+  ANNOUNCEMENT_BARS_TABS,
   COLOR_THEME,
   SETTINGS_INITIAL_STATE,
   STATUS,
@@ -35,8 +36,6 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-
-
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -152,10 +151,15 @@ const AnnouncementCustomization = ({
   };
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
-      navigate(-1);
+      goback();
     }
   }, [fetcher]);
 
+  const goback = () => {
+    navigate(-1, {
+      state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
+    });
+  };
   return (
     <div>
       <Page
@@ -178,10 +182,11 @@ const AnnouncementCustomization = ({
               if (Object.keys(prevSettingsState.current).length > 0) {
                 setSettingsState(prevSettingsState.current);
               }
-              // navigate(-1);
+              goback();
             }}
             fetcherState={fetcher.state}
             isError={checkError(error)}
+            showBarInitially={true}
           />
           <div className="customization-left-section">
             <Card>

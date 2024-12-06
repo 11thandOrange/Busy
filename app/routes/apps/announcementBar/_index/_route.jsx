@@ -95,7 +95,6 @@ export async function action({ request }) {
 
   data = Object.fromEntries(data);
 
-
   const _action = data._action;
   if (_action == "EDIT" || _action == "UPDATE") {
     id = parseInt(data.id);
@@ -137,7 +136,11 @@ export async function action({ request }) {
         },
       });
 
-      response = json({ message: "Announcement Bar Added", success: true, announcement_bar });
+      response = json({
+        message: "Announcement Bar Added",
+        success: true,
+        announcement_bar,
+      });
       return response;
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
@@ -151,7 +154,7 @@ export async function action({ request }) {
           shop: shop,
         },
       });
-      return  json({ success: true });
+      return json({ success: true });
     case "UPDATE":
       await db.Announcement_bar.update({
         where: {
@@ -166,7 +169,7 @@ export async function action({ request }) {
           type,
         },
       });
-      response = json({ message: "Announcement Bar Updated" , success:true});
+      response = json({ message: "Announcement Bar Updated", success: true });
       return response;
     case "DELETE":
       console.log(data.announcement_bar_id, "TEst");
@@ -181,7 +184,7 @@ export async function action({ request }) {
         },
       });
       response = json({ success: true });
-      return  response;
+      return response;
     default:
       return new Response("Method Not Allowed", { status: 405 });
   }
@@ -197,6 +200,7 @@ const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
   const tabs = [
     {
       id: "Overview-1",
@@ -210,7 +214,7 @@ const route = () => {
     },
     {
       id: "Announcement-bars-1",
-      content: "Create Announcement Bar",
+      content: "Announcement Bars",
       component: (
         <CheckBars
           barsData={announcementBarsData}
@@ -239,12 +243,14 @@ const route = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   // Set default tab to Announcement Bars tab if there are are announcement bars present
-  //   if (announcementBarsData && announcementBarsData.length > 0) {
-  //     setSelectedTab(ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR);
-  //   }
-  // }, [announcementBarsData]);
+  useEffect(() => {
+    // Set default tab to Announcement Bars tab if there are are announcement bars present
+    console.log("Location is here", location);
+
+    if (location.state && location.state.tabToOpen) {
+      setSelectedTab(location.state.tabToOpen);
+    }
+  }, []);
 
   return (
     <>

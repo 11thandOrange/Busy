@@ -16,3 +16,7 @@
 .unsaved-changes-bar .Polaris-Text--headingMd{
     color: #ffffff;
 }
+
+.unsaved-changes-bar .Polaris-Icon__Svg{
+    display: none;
+}
