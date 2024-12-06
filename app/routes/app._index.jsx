@@ -134,9 +134,9 @@ export default function Index() {
                       to={`/apps/${item.slug}?appId=${item.id}`}
                       key={item.id}
                     >
-                      <div>
-                        <ImageRenderer src={item?.image} />
-                        <span>{item.name}</span>
+                      <div className="app-databx">
+                        <div className="appimagebx"><ImageRenderer src={item?.image} /></div>
+                        <div className="apptextebx"><span>{item.name}</span></div>
                       </div>
                     </Link>
                   );
