@@ -159,6 +159,7 @@ model Cart_notice {
   backgroundColor         String?         @default("#fff5cd")
   textColor               String?          @default("#222222")
   fire_icon               Boolean         @default(false)
+   hideTheFireIcon         String?         @default("🔥")
   showCountdown           Boolean     @default(true)
   countdown_timer         Int             @default(1)
   general_setting         String

@@ -72,84 +72,65 @@ export async function loader({ request }) {
           lte: new Date(toDate.setHours(23, 59, 59, 999)),
         },
       },
-      orderBy:{
-        createdAt:'asc',
+      orderBy: {
+        createdAt: "asc",
       },
       _count: {
         id: true,
       },
     });
 
-    // Calculate total counts by activityId
-    const totalCountsByActivity = counts.reduce((acc, record) => {
-      const activityId = record.activityId;
-      const count = record._count.id;
+    // Aggregate counts by day
+    const analyticsData = activityIds.map((activityId) => {
+      const dailyCounts = {};
 
-      if (acc[activityId]) {
-        acc[activityId] += count;
-      } else {
-        acc[activityId] = count;
+      // Initialize dailyCounts for all days in the range
+      for (
+        let date = new Date(fromDate);
+        date <= toDate;
+        date.setDate(date.getDate() + 1)
+      ) {
+        const formattedDate = date.toLocaleDateString();
+        dailyCounts[formattedDate] = 0;
       }
 
-      return acc;
-    }, {});
-
- 
-    // Format counts and calculate the required data
-    const formattedCounts = activityIds.map((activityId) => {
-      const lastDay = new Date(toDate);
-      lastDay.setHours(0, 0, 0, 0);
-
-      const secondToLastDay = new Date(lastDay);
-      secondToLastDay.setDate(lastDay.getDate() - 1);
-
-      let lastDayCount = 0;
-      let secondToLastDayCount = 0;
-
+      // Populate counts from the database
       counts.forEach((record) => {
-        const recordDate = new Date(record.createdAt).toLocaleDateString();
         if (record.activityId === activityId) {
-          if (recordDate === lastDay.toLocaleDateString()) {
-            lastDayCount += record._count.id;
-          } else if (recordDate === secondToLastDay.toLocaleDateString()) {
-            secondToLastDayCount += record._count.id;
+          const recordDate = new Date(record.createdAt).toLocaleDateString();
+          if (dailyCounts[recordDate] !== undefined) {
+            dailyCounts[recordDate] += record._count.id;
           }
         }
       });
 
-      let percentageChange = null;
-      if (secondToLastDayCount > 0) {
-        percentageChange =
-          ((lastDayCount - secondToLastDayCount) / secondToLastDayCount) * 100;
-        percentageChange = percentageChange.toFixed(2);
-      } else if (lastDayCount > 0) {
-        percentageChange = 100;
-      } else {
-        percentageChange = 0;
+      // Format results and calculate percentage changes for just yesterday and today
+      const formattedDailyCounts = Object.entries(dailyCounts).map(
+        ([date, count]) => ({ date, count })
+      );
+
+      let percentageChange = 0;
+      if (formattedDailyCounts.length >= 2) {
+        const yesterday = formattedDailyCounts[formattedDailyCounts.length - 2];
+        const today = formattedDailyCounts[formattedDailyCounts.length - 1];
+
+        if (yesterday.count > 0) {
+          percentageChange = ((today.count - yesterday.count) / yesterday.count) * 100;
+        } else {
+          percentageChange = today.count > 0 ? 100 : 0;
+        }
       }
 
       return {
         activityId,
-        activityData: [
-          {
-            date: lastDay.toLocaleDateString(),
-            count: lastDayCount,
-          },
-          {
-            date: secondToLastDay.toLocaleDateString(),
-            count: secondToLastDayCount,
-          },
-        ],
-        isIncremented: percentageChange > 0 ? true : false,
-        percentageChange: Math.abs(percentageChange) || 0,
-        totalCount: totalCountsByActivity[activityId] || 0,
+        activityData: formattedDailyCounts,
+        isIncremented: percentageChange.toFixed(2) > 0 ? true : false,
+        percentageChange: Math.abs(percentageChange.toFixed(2)),
+        totalCount: formattedDailyCounts.reduce((sum, entry) => sum + entry.count, 0),
       };
     });
 
-    formattedCounts.forEach((entry) => {
-      entry.activityData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    });
-    return cors(request, { analytics: formattedCounts, apps });
+    return cors(request, { analytics: analyticsData, apps });
   } catch (error) {
     console.error("Error occurred:", error);
     return cors(
@@ -159,6 +140,7 @@ export async function loader({ request }) {
     );
   }
 }
+
 
 
 export const action = async ({ request }) => {

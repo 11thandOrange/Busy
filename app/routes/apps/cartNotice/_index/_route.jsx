@@ -46,7 +46,7 @@ export async function action({ request }) {
       secondary_message: cartNotice.secondary_message,
       showCountdown: JSON.parse(cartNotice.show_countdown),
       countdown_timer: parseInt(cartNotice.countdown_timer),
-      fire_icon: JSON.parse(cartNotice.fire_icon),
+      hideTheFireIcon: cartNotice.hideTheFireIcon,
       general_setting: cartNotice.general_setting,
       shop: shop,
     },

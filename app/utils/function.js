@@ -375,10 +375,7 @@ export const getCartNotice = async (shop) => {
   {
     cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
     htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop}${cartNotice.general_setting.marginTopUnit};margin-bottom:${cartNotice.general_setting.marginBottom}${cartNotice.general_setting.marginBottomUnit};">`;
-    if(!(cartNotice.fire_icon))
-    {
-      htmlToInsert += '<div class="fireEmoji">🔥</div>'
-    }
+    htmlToInsert += `<div class="fireEmoji">${cartNotice.hideTheFireIcon}</div>`
     if (cartNotice.showCountdown) {
       const countdownTimer = parseInt(cartNotice.countdown_timer)*60;
       let minutes = Math.floor(countdownTimer / 60);
