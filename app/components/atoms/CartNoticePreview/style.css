@@ -1,5 +1,90 @@
-.cart-notice-preview-container{
+/* .cart-notice-preview-container{
     width :600px;
     height:100px;
     display: flex;
+} */
+
+body:has(.emoji-previewbx) .url-bar {
+    position: static;
+    margin: 0 auto !important;
+}
+
+body:has(.emoji-previewbx) .product-preview-card {
+    min-width: 100%;
+}
+
+body:has(.emoji-previewbx) .Polaris-ShadowBevel {
+    width: 100% !important;
+    overflow: visible !important;
+    min-width: unset !important;
+    position: relative;
+    z-index: 9;
+}
+
+body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-Box {
+    overflow: visible;
+    border-radius: 10px;
+}
+
+/* body:has(.emoji-previewbx) .cartNoticeContainer .Polaris-BlockStack {
+    display: flex;
+    flex-direction: column;
+} */
+body:has(.emoji-previewbx) .product-preview-card{
+    min-height: unset;
+}
+body:has(.emoji-previewbx) .cartNoticeContainer .color-input {
+    width: 100%;
+}
+
+body:has(.emoji-previewbx) .Polaris-InlineGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50% !important;
+}
+
+.emoji-previewout {
+    width: 100%;
+}
+
+.emoji-previewbx {
+    width: 100%;
+    display: flex;
+    padding: 0px;
+    align-items: center;
+}
+
+.emoji-previewbx p.secondary-text {
+    font-weight: 600;
+    margin-top: 0px;
+    font-size: 13px;
+}
+
+.emoji-previewbx p {
+    word-wrap: break-word;
+    word-break: break-all;
+    max-width: 100%;
+    font-size: 13px;
+    line-height: 18px;
+}
+.cart-emoji {
+    width: fit-content;
+    font-size: 20px;
+    margin:10px 0px 10px 0;
+}
+
+.addanemjoibx {
+    display: flex;
+    gap: 15px;
+}
+
+body:has(.emoji-previewbx) .bb-tabs-content .Polaris-Page{
+    min-height: 58rem !important;
+}
+
+body:has(.cart-emoji) .emoji-previewbx{
+    padding: 0 0 0 10px;
+}
+.emoji-previewbx .show-padding{
+    padding: 10px;
 }

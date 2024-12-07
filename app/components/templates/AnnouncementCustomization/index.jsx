@@ -156,7 +156,7 @@ const AnnouncementCustomization = ({
   }, [fetcher]);
 
   const goback = () => {
-    navigate(-1, {
+    navigate('/apps/announcementBar?appId=1', {
       state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
     });
   };

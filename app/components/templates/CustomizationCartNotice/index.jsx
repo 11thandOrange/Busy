@@ -21,7 +21,7 @@ import "./style.css";
 import CustomEmojiPicker from "../../atoms/CustomEmojiPicker";
 import CartNoticePreview from "../../atoms/CartNoticePreview";
 
-const CustomizationCartNotice = ({ cartSettings }) => {
+const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
   const fetcher = useFetcher();
 
   const INITIAL_STATE = {
@@ -213,6 +213,7 @@ const CustomizationCartNotice = ({ cartSettings }) => {
                     min={0}
                   />
                 ) : null}
+                <div className="addanemjoibx">
                 <Checkbox
                   label="Add an Emoji"
                   checked={cartNoticeCustomization?.addAnEmoji}
@@ -231,6 +232,7 @@ const CustomizationCartNotice = ({ cartSettings }) => {
                     }}
                   />
                 ) : null}
+                </div>
               </div>
               <div className="input-selector-container">
                 <span>Margin</span>
@@ -262,7 +264,7 @@ const CustomizationCartNotice = ({ cartSettings }) => {
                 />
               </div>
             </Card>
-            <CartNoticePreview cartNoticeCustomization={cartNoticeCustomization}></CartNoticePreview>
+            <CartNoticePreview cartNoticeCustomization={cartNoticeCustomization} colorTheme={colorTheme}></CartNoticePreview>
           </InlineGrid>
         </BlockStack>
       </Page>
