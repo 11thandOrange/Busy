@@ -11,11 +11,11 @@ import Sunshine from "../assets/themes/Sunshine.svg";
 import Watercolor from "../assets/themes/Watercolor.svg";
 import DownArrowWhite from '../assets/icons/down_arrow_white.svg';
 import UpArrowWhite from '../assets/icons/up_arrow_white.svg';
-import shoeDiscount from "../assets/icons/shoe_discount.svg"
+import shoeDiscount from "../assets/icons/shoe_discount.svg";
 
-import announcement_bar from "../assets/images/Coming Soon Banner.gif"
-import cart_notice from "../assets/images/Cart Number.gif"
-import countdown_timer from "../assets/images/15 DAY LEFT.gif"
+import announcement_bar from "../assets/images/Coming Soon Banner.gif";
+import cart_notice from "../assets/images/Cart Number.gif";
+import countdown_timer from "../assets/images/15 DAY LEFT.gif";
 
 const IMAGES = {
   HeartIcon,

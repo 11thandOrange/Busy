@@ -34,7 +34,6 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-          console.log(data)
           if(data?.discount_products)
           { 
             check_product_discount().then(isDiscounted => {
@@ -177,7 +176,6 @@ function get_cart_total(callback) {
     });
 }
 function startCountdown(countdownStartAt, countdownEndsAt, element) {
-  console.log('test')
   const startTime = new Date(countdownStartAt);
   const endTime = new Date(countdownEndsAt);
   const currentTime = new Date();
@@ -259,7 +257,6 @@ function updateCircle(progressCircle, textElement, remainingTime, totalTime, tit
 document.body.addEventListener('click', function(event) {
   // Check if the clicked element is the button you want
   if (event.target && event.target.id === 'busyBuddySmartBarButton') {
-    console.log('click');
     
     const emailInput = document.getElementById('busyBuddySmartBarInput');
     const email = emailInput.value;
@@ -282,7 +279,6 @@ document.body.addEventListener('click', function(event) {
       .then(response => response.json())
       .then(data => {
         document.getElementById('busyBuddySmartBarContainer').innerHTML = data.message
-        console.log('Success:', data);
       })
       .catch((error) => {
         console.error('Error:', error);

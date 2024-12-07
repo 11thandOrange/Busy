@@ -458,7 +458,7 @@ export const getCountdownTimer = async (shop, timezone) => {
       console.log(new Date(countdownTimer.general_setting.countDownEndsAt).getTime(), 'end time')
       const timeLeft = getTimeerDifference(get_local_time(timezone), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
       countdownTimerHtml += `
-        <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
+        <div style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
           class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
           countdownTimer.display_setting.theme !== 1 ? "align-column" : "align-row"}">
           <div class="main-countdown-title" style="color:${countdownTimer.display_setting.titleColor};">
@@ -518,7 +518,7 @@ export const getCountdownTimer = async (shop, timezone) => {
        
           const form = document.querySelector('.product-form');
           if (form) {
-            const htmlToInsert = \`<div class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
+            const htmlToInsert = \`<div id="busyBuddyCountdownTimer" class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
             form.insertAdjacentHTML('beforebegin', htmlToInsert);
             if("${countdownTimer.display_setting.theme}"=='PROGRESS_CIRCLES')
             {

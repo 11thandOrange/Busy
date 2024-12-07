@@ -154,9 +154,6 @@
     border-bottom: none;
 }
 
-.Polaris-Box, .head-searchbar{
-    /* padding: 0px; */
-}
 .Polaris-LegacyCard__Section .Polaris-Box{
     padding: 15px 20px;
 }
@@ -183,5 +180,5 @@
 }
 
 .value-left p {
-    margin: 0px !important;!i;!;
+    margin: 0px !important;
 }
