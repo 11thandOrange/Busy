@@ -35,7 +35,8 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-import useRouteBlocker from "../../../hooks/useRouteBlocker";
+
+
 
 const options = [
   { label: "Active", value: STATUS.ACTIVE },
@@ -50,7 +51,6 @@ const AnnouncementCustomization = ({
   colorTheme = COLOR_THEME.LIGHT,
 }) => {
   const navigate = useNavigate();
-
   const fetcher = useFetcher();
   const generalSettings = ANNOUNCEMENT_BAR_INITIAL_STATE[announcementBarType];
   const [settingsState, setSettingsState] = useState({
@@ -104,10 +104,11 @@ const AnnouncementCustomization = ({
     }
   }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
 
-
+  const [showLoader, setShowLoader] = useState(true);
   useEffect(() => {
     if (initialData) {
       setSettingsState(initialData);
+      setShowLoader(false);
       prevSettingsState.current = initialData;
     }
   }, [initialData]);
@@ -150,30 +151,28 @@ const AnnouncementCustomization = ({
     }
   };
   useEffect(() => {
-    console.log("Fetcher Data", fetcher.data);
+    if (!isLoading(fetcher.state) && fetcher.data) {
+      navigate(-1);
+    }
   }, [fetcher]);
 
   return (
     <div>
-      {/* <GoBack heading={header}/> */}
       <Page
       // backAction={{ content: "Settings", url: backActionRoute }}
       // title={header}
       // primaryAction={<ActiveButton></ActiveButton>}
       >
+        <Toast
+          show={!isLoading(fetcher.state) && fetcher.data}
+          message="Settings saved"
+        />
         <div className="customization-container">
-          <Toast
-            show={fetcher.state === "idle" && fetcher.data}
-            message="Settings saved"
-          />
           <ManageDataChange
             newState={settingsState}
             prevState={prevSettingsState.current}
             handleSaveChanges={() => {
               handleOnSave();
-              if (!isLoading(fetcher.state)) {
-                // navigate(-1);
-              }
             }}
             handleDiscardChanges={() => {
               if (Object.keys(prevSettingsState.current).length > 0) {

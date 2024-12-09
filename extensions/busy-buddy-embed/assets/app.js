@@ -1,4 +1,4 @@
-const baseUrl = 'https://ordered-den-scottish-incredible.trycloudflare.com';
+const baseUrl = 'https://busybuddy.projectlabs.in';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -330,3 +330,4 @@ function get_local_time()
 // let londonDate = new Date(londonTime);
 // let londonFormattedTime = formatDate(londonDate);
 // console.log("Corresponding Time in London: " + londonFormattedTime);
+

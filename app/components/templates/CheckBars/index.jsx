@@ -61,7 +61,7 @@ function CheckBars({
       (currentPage - 1) * itemsPerPage,
       (currentPage - 1) * itemsPerPage + itemsPerPage,
     );
-    console.log("bars data is here", barsData);
+   
 
     setBars(barsDataNew);
   }, [currentPage, barsData]);
@@ -160,7 +160,7 @@ function CheckBars({
         onSelectionChange={handleSelectionChange}
         headings={[{ title: `Showing ${bars?.length} announcement bar(s)` }]}
         promotedBulkActions={promotedBulkActions}
-        {...(pagination
+        {...(pagination && barsData?.length > 0
           ? {
               pagination: {
                 hasNext: hasNext,
@@ -170,7 +170,7 @@ function CheckBars({
                 label: bars?.length
                   ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
                       currentPage * itemsPerPage,
-                      bars?.length,
+                      barsData?.length,
                     )} of ${barsData?.length} items`
                   : "0-0 of 0 items",
               },

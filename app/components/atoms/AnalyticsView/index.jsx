@@ -38,7 +38,7 @@ function AnalyticsView({
   data,
   chartRef,
 }) {
-  console.log("tabs", tabs);
+  
 
   return (
     <Card sectioned>

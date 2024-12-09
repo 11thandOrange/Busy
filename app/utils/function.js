@@ -456,10 +456,13 @@ export const getCountdownTimer = async (shop, timezone) => {
       countdownTimer.general_setting.countDownStartAt = get_local_date(timezone);
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
-  
+    console.log(get_local_time(timezone), 'localTime');
+    console.log(new Date(countdownTimer.general_setting.countDownStartAt).getTime(), 'countdown Start Time')
+    if (get_utc_time(countdownTimer.general_setting.countDownStartAt) <= get_local_time() ) 
+    {
 
       console.log(new Date(countdownTimer.general_setting.countDownEndsAt).getTime(), 'end time')
-      const timeLeft = getTimeerDifference(get_local_time(timezone), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
+      const timeLeft = getTimeerDifference(get_local_time(), get_utc_time(countdownTimer.general_setting.countDownEndsAt));
       countdownTimerHtml += `
         <div id="busyBuddyCountdownTimer" style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
           class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
@@ -468,8 +471,7 @@ export const getCountdownTimer = async (shop, timezone) => {
             ${countdownTimer.display_setting.title}
           </div>
       `;
-      console.log('check', countdownTimer.display_setting.theme)
-    
+      
       switch (countdownTimer.display_setting.theme) {
         case 'CLASSIC':
           countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer);
@@ -545,7 +547,7 @@ export const getCountdownTimer = async (shop, timezone) => {
         })();
       `;
     }
-  
+  }
 
   return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts };
 };
@@ -645,23 +647,14 @@ function formatDate(date) {
 function get_local_time(timezone)
 {
 
-  let localDate = new Date(); 
-  const year = localDate.getUTCFullYear();  // Get the UTC year
-  const month = localDate.getUTCMonth();  // Get the UTC month
-  const day = localDate.getUTCDate();  // Get the UTC day
-  const hours = localDate.getUTCHours();  // Get the UTC hours
-  const minutes = localDate.getUTCMinutes();  // Get the UTC minutes
-  const seconds = localDate.getUTCSeconds();  // Get the UTC seconds
-  const milliseconds = localDate.getUTCMilliseconds(); 
-
-  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
+  return Date.now();
 }
-function get_local_date(timezone)
+function get_local_date()
 {
   let localTime = new Date();
   return formatDate(new Date(localTime))
 }
-function getTimeerDifference(startAt, endsAt) {
+function getTimeerDifference(startAt, endsAt, type) {
   let difference = endsAt - startAt;
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -669,5 +662,11 @@ function getTimeerDifference(startAt, endsAt) {
   const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-  return { days:0, hours:0, minutes:0, seconds:0, difference:0 };
+  return { days, hours, minutes, seconds, difference };
+}
+function get_utc_time(dateString)
+{
+const date = new Date(dateString);
+const timestamp = date.getTime();
+return timestamp
 }

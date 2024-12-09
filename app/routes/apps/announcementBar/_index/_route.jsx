@@ -94,7 +94,7 @@ export async function action({ request }) {
     enable_close_button;
 
   data = Object.fromEntries(data);
-  console.log("datata", data);
+
 
   const _action = data._action;
   if (_action == "EDIT" || _action == "UPDATE") {

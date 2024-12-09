@@ -2,7 +2,7 @@ import { Frame, Toast } from "@shopify/polaris";
 
 function ToastBar({
   message = "Success",
-  duration = 2000,
+  duration = 3000,
   show,
   onDismiss,
   isError = false,

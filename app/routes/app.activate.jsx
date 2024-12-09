@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
   data = Object.fromEntries(data);
   const appId = parseInt(data.appId);
   const enable = JSON.parse(data.isActive);
-  console.log(enable);
+ 
   if (enable) {
     const check_subscription = await check_app_subscription(request);
     const apps = await db.merchant.findMany({
@@ -22,7 +22,7 @@ export const action = async ({ request }) => {
     });
 
     if (!check_subscription.hasSubscription && apps.length == 1) {
-      return json({ message: "Upgrade Plan", success: false });
+      return json({ message: "Please upgrade your plan to activate more apps", success: false });
     }
   }
   try {
