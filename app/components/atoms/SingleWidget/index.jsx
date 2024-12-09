@@ -8,8 +8,8 @@ import ImageRenderer from "../ImageRenderer";
 const SingleWidget = ({ widget, handleAddToFavorite = () => {} }) => {
   const navigate = useNavigate();
   return (
-    <div className="card" key={widget.id}>
-      <ImageRenderer src={widget.image} alt="Product Review" />
+    <div className="card" key={widget.id}> 
+      <ImageRenderer src={IMAGES[widget.image]} alt="Product Review" />
       <div className="card-btn">
         {/* <ActiveButton
           afterActivateString="Activate Widget"
