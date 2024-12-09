@@ -6,8 +6,6 @@ import {
   PRO_MONTHLY_PLAN,
   ENTERPRISE_MONTHLY_PLAN,
 } from "../shopify.server";
-import { fetchTimeObject, pickRandomTime } from "./clientFunctions";
-import { get_random_time, getCardCountdownTimer, getClassicCountdownTimer, getDividerCountdownTimer, getHexagonCountdownTimer, getModernCountdownTimer, getProgressBarCountdownTimer, getProgressCircleCountdownTimer } from "./countdown_timer/countdown_timer";
 
 export const getShopName = async (request) => {
   let parsedUrl;
@@ -444,109 +442,9 @@ export const getCountdownTimer = async (shop, timezone) => {
       display_setting: true
     },
   });
-  if (countdownTimer) {
-    countdownTimer.general_setting = JSON.parse(countdownTimer.general_setting);
-    countdownTimer.display_setting = JSON.parse(countdownTimer.display_setting);
-    if(countdownTimer.general_setting.status == 'EVERGREEN')
-    {
-      const randomTimeObject = pickRandomTime(countdownTimer.general_setting.minExpTime, countdownTimer.general_setting.maxExpTime);
-      countdownTimer.general_setting.countDownStartAt = get_local_date(timezone);
-      countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
-    }
-    console.log(get_local_time(timezone), 'localTime');
-    console.log(new Date(countdownTimer.general_setting.countDownStartAt).getTime(), 'countdown Start Time')
-    if (get_utc_time(countdownTimer.general_setting.countDownStartAt) <= get_local_time() ) 
-    {
+  script = ``;
 
-      console.log(new Date(countdownTimer.general_setting.countDownEndsAt).getTime(), 'end time')
-      const timeLeft = getTimeerDifference(get_local_time(), get_utc_time(countdownTimer.general_setting.countDownEndsAt));
-      countdownTimerHtml += `
-        <div style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
-          class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
-          countdownTimer.display_setting.theme !== 1 ? "align-column" : "align-row"}">
-          <div class="main-countdown-title" style="color:${countdownTimer.display_setting.titleColor};">
-            ${countdownTimer.display_setting.title}
-          </div>
-      `;
-      
-      switch (countdownTimer.display_setting.theme) {
-        case 'CLASSIC':
-          countdownTimerHtml += getClassicCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'HEXAGON_TIMER':
-          countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'PROGRESS_CIRCLES':
-          console.log(countdownTimer, 'circle')
-          countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'CARDS':
-          countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'MODERNS':
-          console.log('teset done ')
-          countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'PROGRESS_BAR':
-          countdownTimerHtml += getProgressBarCountdownTimer(timeLeft, countdownTimer);
-          break;
-        case 'MINIMALIST':
-          countdownTimerHtml += getDividerCountdownTimer(timeLeft, countdownTimer);
-          break;
-        default:
-          break;
-      }
-
-      countdownTimerHtml += '</div>';
-    
-      script = `
-        let countdownTimerInterval;
-        function updateCountdownNew() {
-          const now = get_local_time();
-          const endTime = ${new Date(countdownTimer.general_setting.countDownEndsAt).getTime()};
-          const difference = getCountTimeDifference(now, endTime);
-          document.getElementById('seconds').textContent = difference.seconds;
-          document.getElementById('minutes').textContent = difference.minutes;
-          document.getElementById('hours').textContent = difference.hours;
-          document.getElementById('days').textContent = difference.days;
-          if (difference.difference <= 0) {
-            document.getElementById('busyBuddyCountdownTimer').remove();
-            clearInterval(countdownTimerInterval);
-          }
-        }
-        
-        (function() {
-       
-       
-          const form = document.querySelector('.product-form');
-          if (form) {
-            const htmlToInsert = \`<div id="busyBuddyCountdownTimer" class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>\`;
-            form.insertAdjacentHTML('beforebegin', htmlToInsert);
-            if("${countdownTimer.display_setting.theme}"=='PROGRESS_CIRCLES')
-            {
-              updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime())
-              const timerInterval = setInterval(() => {
-              updateProgress(new Date("${countdownTimer.general_setting.countDownStartAt}").getTime(), new Date("${countdownTimer.general_setting.countDownEndsAt}").getTime());
-            }, 1000);      
-            }
-            else if("${countdownTimer.display_setting.theme}" == 'PROGRESS_BAR')
-            {
-             startCountdown("${countdownTimer.general_setting.countDownStartAt}", "${countdownTimer.general_setting.countDownEndsAt}", document.getElementById('progressBar'));
-              countdownTimerInterval = setInterval(updateCountdownNew, 1000);
-            }
-           
-            else
-            {
-              countdownTimerInterval = setInterval(updateCountdownNew, 1000);
-            }
-                
-          }
-        })();
-      `;
-    }
-  }
-
-  return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts };
+  return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts, countdownTimer: countdownTimer };
 };
 
 export const check_enable_button = async (shop) => {
@@ -632,38 +530,4 @@ export const addScriptTag = async(shop)=>{
       src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
     },
   }));
-}
-function formatDate(date) {
-  const yyyy = date.getUTCFullYear();
-  const mm = String(date.getUTCMonth() + 1).padStart(2, '0'); 
-  const dd = String(date.getUTCDate()).padStart(2, '0'); 
-  const hh = String(date.getUTCHours()).padStart(2, '0');
-  const min = String(date.getUTCMinutes()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-}
-function get_local_time(timezone)
-{
-
-  return Date.now();
-}
-function get_local_date()
-{
-  let localTime = new Date();
-  return formatDate(new Date(localTime))
-}
-function getTimeerDifference(startAt, endsAt, type) {
-  let difference = endsAt - startAt;
-
-  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-  return { days, hours, minutes, seconds, difference };
-}
-function get_utc_time(dateString)
-{
-const date = new Date(dateString);
-const timestamp = date.getTime();
-return timestamp
 }
