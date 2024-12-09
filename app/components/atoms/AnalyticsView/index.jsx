@@ -27,6 +27,10 @@ const basicOptions = {
         display: true,
         text: "Count",
       },
+      ticks: {
+        beginAtZero: true, // Ensure the axis starts at 0
+      },
+      min: 0,
     },
   },
 };
@@ -38,8 +42,6 @@ function AnalyticsView({
   data,
   chartRef,
 }) {
-  
-
   return (
     <Card sectioned>
       <div className="tabsContainer">
@@ -57,28 +59,32 @@ function AnalyticsView({
               }}
             >
               <TextContainer>
-                <h3 className="tabLabel">{tab.label}</h3>
                 <div className="tabData">
-                  <p className="tabValue">{currentTab?.totalCount}</p>
-                  {currentTab?.percentageChange ? (
-                    <p
-                      className="tabDescription"
-                      style={{
-                        backgroundColor: tab.percentageColor,
-                      }}
-                    >
-                      <img
-                        src={
-                          currentTab?.hasIncreased
-                            ? IMAGES.UpArrowWhite
-                            : IMAGES.DownArrowWhite
-                        }
-                      />{" "}
-                      {currentTab?.percentageChange}%
-                    </p>
-                  ) : (
-                    ""
-                  )}
+                  <div className="value-left">
+                    <p className="tabValue">{currentTab?.totalCount}</p>
+                    <h3 className="tabLabel">{tab.label}</h3>
+                  </div>
+                  <div className="value-left">
+                    {currentTab?.percentageChange ? (
+                      <p
+                        className="tabDescription"
+                        style={{
+                          backgroundColor: tab.percentageColor,
+                        }}
+                      >
+                        <img
+                          src={
+                            currentTab?.hasIncreased
+                              ? IMAGES.UpArrowWhite
+                              : IMAGES.DownArrowWhite
+                          }
+                        />{" "}
+                        {currentTab?.percentageChange}%
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
               </TextContainer>
             </div>

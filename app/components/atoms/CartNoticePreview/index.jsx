@@ -1,47 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "./Style.css"; // Import CSS for styling
-import PreviewCardBanner from "../../atoms/PreviewCardBanner";
-import { APP_TYPE } from "../../../utils/constants";
-import PreviewCardTimer from "../../atoms/PreviewCardTimer";
-import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
-import ImageRenderer from "../../atoms/ImageRenderer";
+import React from "react";
+import "./style.css";
+import ProductPreviewCard from "../../templates/ProductPreviewCard";
+import ImageRenderer from "../ImageRenderer";
 import IMAGES from "../../../utils/Images";
-
-const ProductPreviewCard = ({
-  settingsState,
-  announcementBarType,
-  setSettingsState,
-  appType = APP_TYPE.ANNOUNCEMENT_BARS,
-  colorTheme = COLOR_THEME.LIGHT,
-}) => {
-  const [quantity, setQuantity] = useState(1);
-  // console.log("settings state is here",settingsState);
-
-  const handleQuantityChange = (e) => {
-    const value = Math.max(0, parseInt(e.target.value)); // Prevent going below 0
-    setQuantity(value);
-  };
-
-  const fetchTimerComponent = () => {
-    switch (appType) {
-      case APP_TYPE.ANNOUNCEMENT_BARS:
-        return (
-          <PreviewCardBanner
-            settingsState={settingsState}
-            announcementBarType={announcementBarType}
-            setSettingsState={setSettingsState}
-          />
-        );
-
-      case APP_TYPE.COUNTDOWN_TIMER:
-        return (
-          <PreviewCardTimer settingsState={settingsState}></PreviewCardTimer>
-        );
-
-      default:
-        return null; // or handle other cases, if necessary
-    }
-  };
+import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
+const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
   return (
     <div className="product-preview-card-container">
       <div
@@ -52,6 +15,37 @@ const ProductPreviewCard = ({
       >
         {/* Dummy URL bar */}
         <div className="url-bar">example.com/product-page</div>
+        <div className="emoji-previewout">
+          <div
+            className="emoji-previewbx"
+            style={{
+              backgroundColor: cartNoticeCustomization.backgroundColor,
+              color: cartNoticeCustomization.textColor,
+              marginTop:
+                cartNoticeCustomization.marginTop +
+                cartNoticeCustomization.marginTopUnit,
+              marginBottom:
+                cartNoticeCustomization.marginBottom +
+                cartNoticeCustomization.marginBottomUnit,
+            }}
+          >
+            {cartNoticeCustomization.addAnEmoji && (
+              <div className="cart-emoji">
+                {cartNoticeCustomization.emojiToAdd}
+              </div>
+            )}
+            <div
+              className={`${cartNoticeCustomization.primaryText || cartNoticeCustomization.secondaryText ? "show-padding" : ""} text-container`}
+            >
+              <p className="primary-text">
+                {cartNoticeCustomization.primaryText}
+              </p>
+              <p className="secondary-text">
+                {cartNoticeCustomization.secondaryText}
+              </p>
+            </div>
+          </div>
+        </div>
         {/* Title Text */}
         {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
         {/* Product Image */}
@@ -74,8 +68,8 @@ const ProductPreviewCard = ({
           <div className="quantity-container">
             <input
               type="number"
-              value={quantity}
-              onChange={handleQuantityChange}
+              value={2}
+              onChange={() => {}}
               className="quantity-input"
               min="0"
             />
@@ -86,8 +80,6 @@ const ProductPreviewCard = ({
         <div className="add-to-cart-container">
           <button className="add-to-cart-button">Add to cart</button>
         </div>
-
-        {fetchTimerComponent()}
 
         {/* Product Description */}
         <div className="product-description">
@@ -109,4 +101,4 @@ const ProductPreviewCard = ({
   );
 };
 
-export default ProductPreviewCard;
+export default CartNoticePreview;

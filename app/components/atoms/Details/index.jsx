@@ -21,7 +21,7 @@ const Details = ({ description, points }) => {
             key={index}
             className={`point ${index % 2 === 0 ? "left" : "right"}`}
           >
-            <TickIcon />
+            {/* <TickIcon /> */}
             <div>
               <span className="point-description">{point}</span>
             </div>

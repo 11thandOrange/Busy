@@ -112,7 +112,7 @@ export const ANNOUNCEMENT_BAR_INITIAL_STATE = {
 };
 
 export const ANNOUNCEMENT_BARS_TABS = {
-  ANNOUNCEMENT_BAR: 2,
+  ANNOUNCEMENT_BAR: 1,
 };
 
 export const COLOR_THEME = {

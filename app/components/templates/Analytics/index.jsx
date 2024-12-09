@@ -8,6 +8,22 @@ import { formatDate } from "../../../utils/clientFunctions";
 import { TABS_ENUM } from "../../../utils/constants";
 import DateRangeButton from "../../atoms/DateRangePicker/Index";
 
+function getFormattedDates(startDate, endDate) {
+  const formattedDates = [];
+  const currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const year = currentDate.getFullYear();
+
+    formattedDates.push(`${month}/${day}/${year}`);
+    currentDate.setDate(currentDate.getDate() + 1); // Increment by one day
+  }
+
+  return formattedDates;
+}
+
 const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
   const fetcher = useFetcher();
   const [selected, setSelected] = useState(apps?.[0]?.id);
@@ -100,7 +116,6 @@ const Analytics = ({ apps = [], showAppSelection = false, appId = null }) => {
                   gradient.addColorStop(1, tabData.color + "00"); // Fully transparent
                 }
               }
-
               return {
                 label: tabData.label,
                 data: item.activityData.map((data) => ({

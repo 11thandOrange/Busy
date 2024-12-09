@@ -7,10 +7,11 @@
 }
 
 .bb-tabs-content .homepage-details {
-    background-color: white !important;
+    /* background-color: white !important; */
     border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0rem 0.1875rem 0.0625rem -0.0625rem rgba(26, 26, 26, .07);
+    /* margin-top: 50px !important; */
+    /* padding: 20px; */
+    /* box-shadow: 0rem 0.1875rem 0.0625rem -0.0625rem rgba(26, 26, 26, .07); */
 }
 
 .bb-tabs-content .homepage-details .points-grid {
@@ -50,4 +51,16 @@
 
 .bb-tabs-content .bb-swiper-slider::before {
     display: none;
+}
+
+.Polaris-Box > .Polaris-Box{
+    padding: 0px;
+}
+.bb-analytics {
+    padding: 18px 0 0 0;
+}
+
+.bb-tabs-content .Polaris-Page-Header__BreadcrumbWrapper { 
+    display: flex;
+    align-items: center;
 }

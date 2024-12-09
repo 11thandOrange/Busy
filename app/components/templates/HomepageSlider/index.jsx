@@ -8,11 +8,16 @@ import "./homepageSlider.css";
 import HomepageDetails from "../../atoms/HomepageDetails";
 import Slider from "../../atoms/Slider";
 
-export default function HomepageSlider({  sliderData = [] }) {
+export default function HomepageSlider({ sliderData = [] }) {
   return (
     <>
-     
-      <Slider autoplay={false} navigation={true} autoplayDelay={1000} sliderData={sliderData}></Slider>
+      <Slider
+        autoplay={false}
+        navigation={true}
+        autoplayDelay={1000}
+        sliderData={sliderData}
+        openPopupOnClick={true}
+      ></Slider>
     </>
   );
 }
