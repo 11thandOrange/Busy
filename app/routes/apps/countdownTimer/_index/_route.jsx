@@ -16,6 +16,7 @@ import CountDownTimerCustomization from "../../../../components/templates/Countd
 import { COLOR_THEME } from "../../../../constants/announcementCustomizationConfig";
 import { check_app_active } from "../../../../utils/function";
 import { useLoaderData } from "@remix-run/react";
+import IMAGES from "../../../../utils/Images";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -66,7 +67,14 @@ export async function action({ request }) {
 
 const route = () => {
   const countdownTimerData = useLoaderData();
-
+  const sliderData = [
+    {
+      type: "video",
+      preview: IMAGES.CountDownPreview,
+      content: IMAGES.CountDownTimerSlider,
+      title: "Countdown Timer",
+    },
+  ];
   const [customizationData, setCustomizationData] = useState(null);
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -112,11 +120,10 @@ const route = () => {
         selectedType={selectedType}
         setSelectedType={(type) => {
           setSelectedType(type);
-     
+
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
         onCustomizeBtnClick={() => {
-         
           setSelectedTab(1);
         }}
         headerContent={{

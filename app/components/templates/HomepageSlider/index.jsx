@@ -9,6 +9,7 @@ import HomepageDetails from "../../atoms/HomepageDetails";
 import Slider from "../../atoms/Slider";
 
 export default function HomepageSlider({ sliderData = [] }) {
+
   return (
     <>
       <Slider

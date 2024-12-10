@@ -14,6 +14,7 @@ import CountDownTimerCustomization from "../../../../components/templates/Countd
 import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
 import { useLoaderData } from "@remix-run/react";
 import { check_app_active } from "../../../../utils/function";
+import IMAGES from "../../../../utils/Images";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -82,7 +83,16 @@ const CartNotice = () => {
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
   const isAppActive = cartNotice.app_active;
+  const sliderData = [
 
+    {
+      type: "image",
+      preview: IMAGES.CartNoticeSlider,
+      content: IMAGES.CartNoticeSlider,
+      title: "Cart Notice",
+    },
+   
+  ];
   const tabs = [
     {
       id: "Overview-1",
