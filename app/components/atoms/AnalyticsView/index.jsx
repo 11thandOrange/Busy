@@ -12,7 +12,7 @@ const basicOptions = {
     },
     title: {
       display: true,
-      text: "Analytics",
+      text: "Customer Activity",
     },
   },
   scales: {

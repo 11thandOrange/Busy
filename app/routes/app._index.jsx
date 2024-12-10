@@ -20,7 +20,7 @@ export const loader = async ({ request }) => {
       id: true,
       name: true,
       image: true,
-      slug: true
+      slug: true,
     },
   });
   let widgets = await db.widget.findMany({
@@ -124,7 +124,7 @@ export default function Index() {
           <Layout.Section>
             <Card title="My Apps" sectioned>
               <Text as="h2" variant="headingSm">
-                Essentials Apps
+                Essential Apps buttons
               </Text>
               <div className="apps_list">
                 {data?.apps?.map((item) => {
@@ -135,8 +135,12 @@ export default function Index() {
                       key={item.id}
                     >
                       <div className="app-databx">
-                        <div className="appimagebx"><ImageRenderer src={item?.image} /></div>
-                        <div className="apptextebx"><span>{item.name}</span></div>
+                        <div className="appimagebx">
+                          <ImageRenderer src={item?.image} />
+                        </div>
+                        <div className="apptextebx">
+                          <span>{item.name}</span>
+                        </div>
                       </div>
                     </Link>
                   );
