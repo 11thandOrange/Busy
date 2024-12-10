@@ -88,6 +88,70 @@ body:has(.cart-emoji) .emoji-previewbx{
 .emoji-previewbx .show-padding{
     padding: 10px;
 }
-.product-details{
-    color: black;
+.product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.product-info{
+    color: #000;
+    margin:10px 10px 10px 0;
+
+}
+.product-info .name{
+   font-weight: 600;
+   font-size: 20px;
+
+}
+.product-info .price{
+  font-weight: bold;
+  color: #636262;
+
+}
+.cart-actions{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.cart-actions .Polaris-Icon{
+    margin: 0px;
+    height: auto;
+    width: 45px;
+    padding: 10px;
+}
+.cart-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0 15px;
+}
+.cart-footer .checkout-btn{
+    background: #606060;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    /* color: #fff; */
+}
+
+.cart-titlebx {
+    font-size: 28px;
+    color: #000;
+    margin: 20px 0;
+}
+.separator {
+    border-bottom: 1px solid #aaa8a8;
+    height: 34px;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+.separator p{
+    font-size: 11px;
+    color: #4f4e4e;
 }

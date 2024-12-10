@@ -165,11 +165,15 @@ export default function Index() {
                         <div className="appimagebx">
                           <ImageRenderer src={item?.image} />
                         </div>
-                        <div className="apptextebx">
-                          <span>{item.name}</span>
-                        </div>
-                        <div className="apptextebx">
-                          <span>{item.description_title}</span>
+                        <div>
+                          <div className="apptextebx">
+                            <span>{item.name}</span>
+                          </div>
+                          <div>
+                            <span className="desc">
+                              {item.description_title}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </Link>

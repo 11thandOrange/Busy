@@ -41,6 +41,7 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
         },
         updateCallback,
         finishCallback,
+        "minutes",
       );
     }
 
@@ -67,6 +68,9 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
       >
         {/* Dummy URL bar */}
         <div className="url-bar">example.com/product-page</div>
+        <div className="cart-titlebx">
+          <h2>Your cart</h2>
+        </div>
         <div className="emoji-previewout">
           <div
             className="emoji-previewbx"
@@ -99,18 +103,29 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
           </div>
         </div>
 
+        <div className="separator">
+          <p>PRODUCT</p>
+          <p>TOTAL</p>
+        </div>
+
         <div className="product-details">
           <ImageRenderer
             src={IMAGES.shoeDiscount}
             alt={"Product"}
             styleClass="product-image"
           />
-          <p>The shoe</p>
-          <p>$200 </p>
         </div>
-        <IncDecCounter></IncDecCounter>
-        <Icon source={DeleteIcon} tone="base" />
-        <button>Continue To Checkout</button>
+        <div className="product-info">
+          <p className="name">The shoe</p>
+          <p className="price">$200 </p>
+        </div>
+        <div className="cart-actions">
+          <IncDecCounter></IncDecCounter>
+          <Icon source={DeleteIcon} tone="base" />
+        </div>
+        <div className="cart-footer">
+          <button className="checkout-btn">Continue To Checkout</button>
+        </div>
       </div>
     </div>
   );

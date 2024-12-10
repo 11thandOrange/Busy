@@ -254,7 +254,7 @@ const route = () => {
 
   useEffect(() => {
     // Set default tab to Announcement Bars tab if there are are announcement bars present
-    console.log("Location is here", location);
+    
 
     if (location.state && location.state.tabToOpen) {
       setSelectedTab(location.state.tabToOpen);
