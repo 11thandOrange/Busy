@@ -1,16 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import ProductPreviewCard from "../../templates/ProductPreviewCard";
 import ImageRenderer from "../ImageRenderer";
 import IMAGES from "../../../utils/Images";
 import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
+import { startCountdown } from "../../../utils/clientFunctions";
+import IncDecCounter from "../IncDecCounter";
+import { DeleteIcon } from "@shopify/polaris-icons";
+import { Icon } from "@shopify/polaris";
 const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    remainingDays: 0,
+    remainingHours: 0,
+    remainingMinutes: 0,
+    remainingSeconds: 0,
+  });
+  const [isFinished, setIsFinished] = useState(false);
+  useEffect(() => {
+    const updateCallback = (timeObject) => {
+      setTimeLeft(timeObject);
+    };
+    const finishCallback = () => {
+      setIsFinished(true);
+      setTimeLeft({
+        remainingMinutes: 0,
+        remainingSeconds: 0,
+      });
+    };
+
+    let interval = null;
+
+    if (cartNoticeCustomization.countdownTimer) {
+      setIsFinished(false);
+      interval = startCountdown(
+        {
+          days: 0,
+          hours: 0,
+          minutes: cartNoticeCustomization.countdownTimer,
+          seconds: 0,
+        },
+        updateCallback,
+        finishCallback,
+      );
+    }
+
+    return () => clearInterval(interval);
+  }, [
+    cartNoticeCustomization.countdownTimer,
+    cartNoticeCustomization.showCountdownTimer,
+  ]);
+
+  const replaceText = (mainTxt) => {
+    let replacedTxt = cartNoticeCustomization.showCountdownTimer
+      ? `${timeLeft.remainingMinutes} : ${timeLeft.remainingSeconds}`
+      : "";
+
+    return mainTxt.replace("{{counter}}", replacedTxt);
+  };
   return (
     <div className="product-preview-card-container">
       <div
         className="product-preview-card"
         style={{
-          backgroundColor: colorTheme == COLOR_THEME.LIGHT ? "white" : "black",
+          backgroundColor: "white", //colorTheme == COLOR_THEME.LIGHT ? "white" : "black",
         }}
       >
         {/* Dummy URL bar */}
@@ -38,64 +90,27 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
               className={`${cartNoticeCustomization.primaryText || cartNoticeCustomization.secondaryText ? "show-padding" : ""} text-container`}
             >
               <p className="primary-text">
-                {cartNoticeCustomization.primaryText}
+                {replaceText(cartNoticeCustomization.primaryText)}
               </p>
               <p className="secondary-text">
-                {cartNoticeCustomization.secondaryText}
+                {replaceText(cartNoticeCustomization.secondaryText)}
               </p>
             </div>
           </div>
         </div>
-        {/* Title Text */}
-        {/* <div className="title-text"> {settingsState.generalSettings.message } </div> */}
-        {/* Product Image */}
-        <div className="product-image-container">
+
+        <div className="product-details">
           <ImageRenderer
             src={IMAGES.shoeDiscount}
             alt={"Product"}
             styleClass="product-image"
           />
+          <p>The shoe</p>
+          <p>$200 </p>
         </div>
-
-        {/* Product Title, Price, and Quantity */}
-        <div className="product-info">
-          <h2 className="product-title">Product title</h2>
-          <p className="product-price">
-            <span className="old-price">300 $USD</span>
-            <span className="current-price">200 $USD</span>
-          </p>
-          {/* Quantity Selector */}
-          <div className="quantity-container">
-            <input
-              type="number"
-              value={2}
-              onChange={() => {}}
-              className="quantity-input"
-              min="0"
-            />
-          </div>
-        </div>
-
-        {/* Add to Cart Button */}
-        <div className="add-to-cart-container">
-          <button className="add-to-cart-button">Add to cart</button>
-        </div>
-
-        {/* Product Description */}
-        <div className="product-description">
-          <h3>Product description</h3>
-          <p>
-            Here you’ll go into more depth about your product. Outline its key
-            features, what sets it apart from other products in the market, its
-            size and weight if applicable, and any other important details
-            customers need to know.
-          </p>
-          <ul>
-            <li>
-              <strong>Material:</strong> What is the product made of?
-            </li>
-          </ul>
-        </div>
+        <IncDecCounter></IncDecCounter>
+        <Icon source={DeleteIcon} tone="base" />
+        <button>Continue To Checkout</button>
       </div>
     </div>
   );

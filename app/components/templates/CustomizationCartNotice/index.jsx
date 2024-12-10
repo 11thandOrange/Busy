@@ -21,7 +21,7 @@ import "./style.css";
 import CustomEmojiPicker from "../../atoms/CustomEmojiPicker";
 import CartNoticePreview from "../../atoms/CartNoticePreview";
 
-const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
+const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
   const fetcher = useFetcher();
 
   const INITIAL_STATE = {
@@ -30,7 +30,7 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
     primaryText: "",
     secondaryText: "",
     showCountdownTimer: false,
-    countdownTimer: 0,
+    countdownTimer: 1,
     addAnEmoji: false,
     emojiToAdd: "🔥",
     marginTop: 0,
@@ -133,7 +133,7 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
           handleDiscardChanges={handleDiscardChanges}
           fetcherState={fetcher.state}
         />
-        <ui-title-bar title="Settings" />
+        {/* <ui-title-bar title="Settings" /> */}
         <BlockStack gap={{ xs: "800", sm: "400" }}>
           <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
             {/* <Box
@@ -192,7 +192,6 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
                     setCartNoticeCustomization((prevState) => ({
                       ...prevState,
                       showCountdownTimer: value,
-                      countdownTimer: 0,
                     }));
                   }}
                 />
@@ -214,24 +213,24 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
                   />
                 ) : null}
                 <div className="addanemjoibx">
-                <Checkbox
-                  label="Add an Emoji"
-                  checked={cartNoticeCustomization?.addAnEmoji}
-                  onChange={(value) => {
-                    handleCartNoticeCustomizationChange(value, "addAnEmoji");
-                  }}
-                />
-                {cartNoticeCustomization?.addAnEmoji ? (
-                  <CustomEmojiPicker
-                    label={cartNoticeCustomization.emojiToAdd}
-                    onEmojiClick={(data) => {
-                      handleCartNoticeCustomizationChange(
-                        data.emoji,
-                        "emojiToAdd",
-                      );
+                  <Checkbox
+                    label="Add an Emoji"
+                    checked={cartNoticeCustomization?.addAnEmoji}
+                    onChange={(value) => {
+                      handleCartNoticeCustomizationChange(value, "addAnEmoji");
                     }}
                   />
-                ) : null}
+                  {cartNoticeCustomization?.addAnEmoji ? (
+                    <CustomEmojiPicker
+                      label={cartNoticeCustomization.emojiToAdd}
+                      onEmojiClick={(data) => {
+                        handleCartNoticeCustomizationChange(
+                          data.emoji,
+                          "emojiToAdd",
+                        );
+                      }}
+                    />
+                  ) : null}
                 </div>
               </div>
               <div className="input-selector-container">
@@ -264,7 +263,10 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
                 />
               </div>
             </Card>
-            <CartNoticePreview cartNoticeCustomization={cartNoticeCustomization} colorTheme={colorTheme}></CartNoticePreview>
+            <CartNoticePreview
+              cartNoticeCustomization={cartNoticeCustomization}
+              colorTheme={colorTheme}
+            ></CartNoticePreview>
           </InlineGrid>
         </BlockStack>
       </Page>

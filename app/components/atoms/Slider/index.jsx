@@ -11,6 +11,7 @@ import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import "./style.css";
 import ImageRenderer from "../ImageRenderer";
 import { SliderModal } from "../sliderModal";
+import IMAGES from "../../../utils/Images";
 
 const sliderType = {
   IMAGE: "image",
@@ -31,6 +32,34 @@ const Slider = ({
   sliderData = [],
   openPopupOnClick = true,
 }) => {
+  sliderData = [
+    {
+      type: "image",
+      preview: IMAGES.AnnouncementBarSlider,
+      content: IMAGES.AnnouncementBarSlider,
+      title: "Announcement Bar",
+    },
+
+    {
+      type: "video",
+      preview: IMAGES.InactiveTabPreview,
+      content: IMAGES.InactiveTabSlider,
+      title: "Inactive Tab",
+    },
+    {
+      type: "image",
+      preview: IMAGES.CartNoticeSlider,
+      content: IMAGES.CartNoticeSlider,
+      title: "Cart Notice",
+    },
+    {
+      type: "video",
+      preview: IMAGES.CountDownPreview,
+      content: IMAGES.CountDownTimerSlider,
+      title: "Countdown Timer",
+    },
+  ];
+
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [modalState, setModalState] = useState({
     show: false,

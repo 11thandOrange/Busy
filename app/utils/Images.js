@@ -9,14 +9,19 @@ import Holidays from "../assets/themes/Holidays.svg";
 import Squares from "../assets/themes/Squares.svg";
 import Sunshine from "../assets/themes/Sunshine.svg";
 import Watercolor from "../assets/themes/Watercolor.svg";
-import DownArrowWhite from '../assets/icons/down_arrow_white.svg';
-import UpArrowWhite from '../assets/icons/up_arrow_white.svg';
+import DownArrowWhite from "../assets/icons/down_arrow_white.svg";
+import UpArrowWhite from "../assets/icons/up_arrow_white.svg";
 import shoeDiscount from "../assets/icons/shoe_discount.svg";
+import AnnouncementBarSlider from "../assets/images/Announcement_Bar.png";
+import CartNoticeSlider from "../assets/images/Cart_Notice.png";
+import CountDownTimerSlider from "../assets/videos/Countdown Timer.mov";
+import InactiveTabSlider from "../assets/videos/Inactive_Tab_Message.mov";
+import CountDownPreview from "../assets/videos/preview/CountDownPreview.png";
+import InactiveTabPreview from "../assets/videos/preview/InactiveTabPreview.png";
 
 import announcement_bar from "../assets/images/Coming Soon Banner.gif";
 import cart_notice from "../assets/images/Cart Number.gif";
 import countdown_timer from "../assets/images/15 DAY LEFT.gif";
-
 const IMAGES = {
   HeartIcon,
   FilledHeartIcon,
@@ -34,7 +39,13 @@ const IMAGES = {
   shoeDiscount,
   announcement_bar,
   cart_notice,
-  countdown_timer
+  countdown_timer,
+  AnnouncementBarSlider,
+  CartNoticeSlider,
+  CountDownTimerSlider,
+  InactiveTabSlider,
+  CountDownPreview,
+  InactiveTabPreview,
 };
 
 export default IMAGES;
