@@ -211,7 +211,7 @@ export const getAnnouncementBar = async (shop, timezone) => {
       script += `
         let countdownInterval;
         function updateCountdown() {
-          const now = get_local_time();
+          const now = get_current_timestamp();
           let difference = getTimeDifference(now, ${endTime});
           let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
