@@ -49,6 +49,14 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
     cartNoticeCustomization.countdownTimer,
     cartNoticeCustomization.showCountdownTimer,
   ]);
+
+  const replaceText = (mainTxt) => {
+    let replacedTxt = cartNoticeCustomization.showCountdownTimer
+      ? `${timeLeft.remainingMinutes} : ${timeLeft.remainingSeconds}`
+      : "";
+
+    return mainTxt.replace("{{counter}}", replacedTxt);
+  };
   return (
     <div className="product-preview-card-container">
       <div
@@ -82,20 +90,10 @@ const CartNoticePreview = ({ cartNoticeCustomization, colorTheme }) => {
               className={`${cartNoticeCustomization.primaryText || cartNoticeCustomization.secondaryText ? "show-padding" : ""} text-container`}
             >
               <p className="primary-text">
-                {cartNoticeCustomization.showCountdownTimer
-                  ? cartNoticeCustomization.primaryText.replace(
-                      "{{counter}}",
-                      `${timeLeft.remainingMinutes} : ${timeLeft.remainingSeconds}`,
-                    )
-                  : cartNoticeCustomization.primaryText}
+                {replaceText(cartNoticeCustomization.primaryText)}
               </p>
               <p className="secondary-text">
-                {cartNoticeCustomization.showCountdownTimer
-                  ? cartNoticeCustomization.secondaryText.replace(
-                      "{{counter}}",
-                      `${timeLeft.remainingMinutes} : ${timeLeft.remainingSeconds}`,
-                    )
-                  : cartNoticeCustomization.secondaryText}
+                {replaceText(cartNoticeCustomization.secondaryText)}
               </p>
             </div>
           </div>
