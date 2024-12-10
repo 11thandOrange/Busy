@@ -30,7 +30,7 @@ const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
     primaryText: "",
     secondaryText: "",
     showCountdownTimer: false,
-    countdownTimer: 0,
+    countdownTimer: 1,
     addAnEmoji: false,
     emojiToAdd: "🔥",
     marginTop: 0,
@@ -192,7 +192,6 @@ const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
                     setCartNoticeCustomization((prevState) => ({
                       ...prevState,
                       showCountdownTimer: value,
-                      countdownTimer: 0,
                     }));
                   }}
                 />

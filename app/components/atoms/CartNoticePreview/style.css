@@ -88,3 +88,6 @@ body:has(.cart-emoji) .emoji-previewbx{
 .emoji-previewbx .show-padding{
     padding: 10px;
 }
+.product-details{
+    color: black;
+}

@@ -19,6 +19,7 @@ export const loader = async ({ request }) => {
     select: {
       id: true,
       name: true,
+      description_title: true,
       image: true,
       slug: true,
     },
@@ -124,10 +125,10 @@ export default function Index() {
           <Layout.Section>
             <Card title="My Apps" sectioned>
               <Text as="h2" variant="headingSm">
-                Essential Apps buttons
+                Essentials Apps
               </Text>
               <div className="apps_list">
-                {data?.apps?.map((item) => {
+                {data?.apps?.map((item) => {         
                   return (
                     <Link
                       className="list-item bb-anchorTag"
@@ -140,6 +141,9 @@ export default function Index() {
                         </div>
                         <div className="apptextebx">
                           <span>{item.name}</span>
+                        </div>
+                        <div className="apptextebx">
+                          <span>{item.description_title}</span>
                         </div>
                       </div>
                     </Link>
