@@ -1,4 +1,4 @@
-const baseUrl = 'https://probably-expires-pillow-ep.trycloudflare.com';
+const baseUrl = 'https://been-competing-butterfly-annex.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;

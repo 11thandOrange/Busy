@@ -38,6 +38,5 @@ import { authenticate } from "../shopify.server";
         shop: shop
       }
     });
-  
     return json(countdown_timer);
   }

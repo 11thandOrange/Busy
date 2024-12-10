@@ -186,7 +186,7 @@ const CustomizationCartNotice = ({ cartSettings,colorTheme }) => {
               <div>
                 <Checkbox
                   label="Show countdown timer"
-                  helpText="This will include a {{ counter }} tag in the Secondary text. You can reposition the countdown timer anywhere in the Secondary text by moving the tag."
+                  helpText="This will include a {{counter}} tag in the Secondary text. You can reposition the countdown timer anywhere in the Secondary text by moving the tag."
                   checked={cartNoticeCustomization?.showCountdownTimer}
                   onChange={(value) => {
                     setCartNoticeCustomization((prevState) => ({
