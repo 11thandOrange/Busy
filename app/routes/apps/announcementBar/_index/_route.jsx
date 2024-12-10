@@ -23,6 +23,7 @@ import { check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
 import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
+import IMAGES from "../../../../utils/Images";
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
   let announcement_bars,
@@ -201,6 +202,14 @@ const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const sliderData = [
+    {
+      type: "image",
+      preview: IMAGES.AnnouncementBarSlider,
+      content: IMAGES.AnnouncementBarSlider,
+      title: "Announcement Bar",
+    },
+  ];
   const tabs = [
     {
       id: "Overview-1",
@@ -245,7 +254,7 @@ const route = () => {
 
   useEffect(() => {
     // Set default tab to Announcement Bars tab if there are are announcement bars present
-    console.log("Location is here", location);
+    
 
     if (location.state && location.state.tabToOpen) {
       setSelectedTab(location.state.tabToOpen);

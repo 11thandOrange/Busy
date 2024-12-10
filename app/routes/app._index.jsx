@@ -8,7 +8,7 @@ import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
 import SingleWidget from "../components/atoms/SingleWidget";
 import IMAGES from "../utils/Images";
-import sliderData from "../data/sliderData.json";
+
 import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
 
@@ -92,7 +92,33 @@ export const action = async ({ request }) => {
 export default function Index() {
   const data = useLoaderData();
   const fetcher = useFetcher();
+  const sliderData = [
+    {
+      type: "image",
+      preview: IMAGES.AnnouncementBarSlider,
+      content: IMAGES.AnnouncementBarSlider,
+      title: "Announcement Bar",
+    },
 
+    {
+      type: "video",
+      preview: IMAGES.InactiveTabPreview,
+      content: IMAGES.InactiveTabSlider,
+      title: "Inactive Tab",
+    },
+    {
+      type: "image",
+      preview: IMAGES.CartNoticeSlider,
+      content: IMAGES.CartNoticeSlider,
+      title: "Cart Notice",
+    },
+    {
+      type: "video",
+      preview: IMAGES.CountDownPreview,
+      content: IMAGES.CountDownTimerSlider,
+      title: "Countdown Timer",
+    },
+  ];
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(
       {
@@ -128,7 +154,7 @@ export default function Index() {
                 Essentials Apps
               </Text>
               <div className="apps_list">
-                {data?.apps?.map((item) => {         
+                {data?.apps?.map((item) => {
                   return (
                     <Link
                       className="list-item bb-anchorTag"
@@ -139,11 +165,15 @@ export default function Index() {
                         <div className="appimagebx">
                           <ImageRenderer src={item?.image} />
                         </div>
-                        <div className="apptextebx">
-                          <span>{item.name}</span>
-                        </div>
-                        <div className="apptextebx">
-                          <span>{item.description_title}</span>
+                        <div>
+                          <div className="apptextebx">
+                            <span>{item.name}</span>
+                          </div>
+                          <div>
+                            <span className="desc">
+                              {item.description_title}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </Link>

@@ -56,12 +56,16 @@ export function fetchTimeObject(startDate, endDate) {
   return timeObject;
 }
 
-export function startCountdown(timeObject, updateCallback, finishCallback) {
-  const { days, hours, minutes, seconds } = timeObject;
+export function startCountdown(
+  timeObject,
+  updateCallback,
+  finishCallback,
+  mode = "days",
+) {
+  const { days = 0, hours = 0, minutes = 0, seconds = 0 } = timeObject;
 
   let totalSeconds =
     days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
-  console.log("hey",totalSeconds);
 
   function updateTimer() {
     if (totalSeconds <= 0) {
@@ -72,19 +76,37 @@ export function startCountdown(timeObject, updateCallback, finishCallback) {
 
     totalSeconds--;
 
-    const remainingDays = Math.floor(totalSeconds / (24 * 60 * 60));
-    const remainingHours = Math.floor(
-      (totalSeconds % (24 * 60 * 60)) / (60 * 60),
-    );
-    const remainingMinutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-    const remainingSeconds = totalSeconds % 60;
+    // Calculate the remaining time based on the mode
+    let remainingTimeObject;
+    switch (mode) {
+      case "minutes":
+        remainingTimeObject = {
+          remainingMinutes: Math.floor(totalSeconds / 60),
+          remainingSeconds: totalSeconds % 60,
+        };
+        break;
 
-    const remainingTimeObject = {
-      remainingDays,
-      remainingHours,
-      remainingMinutes,
-      remainingSeconds,
-    };
+      case "hours":
+        remainingTimeObject = {
+          remainingHours: Math.floor(totalSeconds / (60 * 60)),
+          remainingMinutes: Math.floor((totalSeconds % (60 * 60)) / 60),
+          remainingSeconds: totalSeconds % 60,
+        };
+        break;
+
+      case "days":
+      default:
+        remainingTimeObject = {
+          remainingDays: Math.floor(totalSeconds / (24 * 60 * 60)),
+          remainingHours: Math.floor(
+            (totalSeconds % (24 * 60 * 60)) / (60 * 60),
+          ),
+          remainingMinutes: Math.floor((totalSeconds % (60 * 60)) / 60),
+          remainingSeconds: totalSeconds % 60,
+        };
+        break;
+    }
+    // console.log("remainingTimeObject", remainingTimeObject);
 
     updateCallback(remainingTimeObject);
   }

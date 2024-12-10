@@ -32,33 +32,7 @@ const Slider = ({
   sliderData = [],
   openPopupOnClick = true,
 }) => {
-  sliderData = [
-    {
-      type: "image",
-      preview: IMAGES.AnnouncementBarSlider,
-      content: IMAGES.AnnouncementBarSlider,
-      title: "Announcement Bar",
-    },
 
-    {
-      type: "video",
-      preview: IMAGES.InactiveTabPreview,
-      content: IMAGES.InactiveTabSlider,
-      title: "Inactive Tab",
-    },
-    {
-      type: "image",
-      preview: IMAGES.CartNoticeSlider,
-      content: IMAGES.CartNoticeSlider,
-      title: "Cart Notice",
-    },
-    {
-      type: "video",
-      preview: IMAGES.CountDownPreview,
-      content: IMAGES.CountDownTimerSlider,
-      title: "Countdown Timer",
-    },
-  ];
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [modalState, setModalState] = useState({

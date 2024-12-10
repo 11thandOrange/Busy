@@ -10,6 +10,7 @@ import { authenticate } from "../../../../shopify.server";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useFetcher } from "@remix-run/react";
 import { check_app_active } from "../../../../utils/function";
+import IMAGES from "../../../../utils/Images";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -54,7 +55,14 @@ export async function action({ request }) {
 
 const route = () => {
   const inActiveTabData = useLoaderData();
-
+  const sliderData = [
+    {
+      type: "video",
+      preview: IMAGES.InactiveTabPreview,
+      content: IMAGES.InactiveTabSlider,
+      title: "Inactive Tab",
+    },
+  ];
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
   const isAppActive = inActiveTabData.app_active;
@@ -92,7 +100,6 @@ const route = () => {
           // navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}
         onCustomizeBtnClick={() => {
-         
           setSelectedTab(1);
         }}
         headerContent={{
