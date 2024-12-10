@@ -387,6 +387,11 @@ export const getCartNotice = async (shop) => {
       cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
       cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
     }
+    else
+    {
+      cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', '');
+      cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', '');
+    }
     htmlToInsert += `<div class="cart-reserved-text-box" style="margin-left:20px;"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
     <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
    
