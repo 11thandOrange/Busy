@@ -6,7 +6,7 @@
   
   .tab {
     flex: 1 1 150px;
-    padding: 20px;
+    padding: 12px 20px;
     background-color: #f4f6f8;
     color: inherit;
     border-radius: 8px;
@@ -53,4 +53,7 @@
 .bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer .tabDescription img{
     width: 12px;
     margin-right: 2px;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer h3{
+  border: none;
 }

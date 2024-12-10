@@ -76,3 +76,16 @@
   width: fit-content;
   margin-left: auto;
 }
+
+
+.dateContainerContent .Polaris-Badge--toneSuccess {
+  box-shadow: 0px 0px 0px 3px #90ee91;
+  background-color: #004b41;
+  color:#ffffff;
+}
+
+.dateContainerContent .Polaris-Badge--toneCritical {
+  background-color: #8e0b21;
+  box-shadow: 0px 0px 0px 3px #ff7575;
+  color: #ffffff;
+}
