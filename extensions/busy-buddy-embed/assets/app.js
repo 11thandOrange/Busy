@@ -1,4 +1,4 @@
-const baseUrl = 'https://been-competing-butterfly-annex.trycloudflare.com';
+const baseUrl = 'https://busybuddy.projectlabs.in';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -25,7 +25,7 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-          if(app==4)
+          if(app==4 && data.countdownTimer)
             {
               if(data?.discount_products)
                 { 
@@ -625,3 +625,18 @@ const pickRandomTime = (minExp, maxExp) => {
       seconds: 0,
     };
   };
+function get_local_time()
+{
+ 
+  let localDate = new Date();
+  const year = localDate.getFullYear();
+  const month = localDate.getMonth();
+  const day = localDate.getDate();
+  const hours = localDate.getHours();
+  const minutes = localDate.getMinutes();
+  const seconds = localDate.getSeconds();
+  const milliseconds = localDate.getMilliseconds();
+
+  return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
+
+}

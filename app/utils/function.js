@@ -211,7 +211,7 @@ export const getAnnouncementBar = async (shop, timezone) => {
       script += `
         let countdownInterval;
         function updateCountdown() {
-          const now = get_local_time();
+          const now = get_current_timestamp();
           let difference = getTimeDifference(now, ${endTime});
           let countdownString = \`<span>\${difference.days}d \${difference.hours}h \${difference.minutes}m \${difference.seconds}s </span>\`;
           let message = ("${announcement_bar.general_setting.message}").replace('#countdown_timer#', countdownString);
@@ -373,7 +373,10 @@ export const getCartNotice = async (shop) => {
   {
     cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
     htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop}${cartNotice.general_setting.marginTopUnit};margin-bottom:${cartNotice.general_setting.marginBottom}${cartNotice.general_setting.marginBottomUnit};">`;
-    htmlToInsert += `<div class="fireEmoji">${cartNotice.emojiToAdd}</div>`
+    if(cartNotice.emojiToAdd!=null)
+    {
+      htmlToInsert += `<div class="fireEmoji">${cartNotice.emojiToAdd}</div>`
+    }
     if (cartNotice.showCountdown) {
       const countdownTimer = parseInt(cartNotice.countdown_timer)*60;
       let minutes = Math.floor(countdownTimer / 60);
@@ -383,6 +386,11 @@ export const getCartNotice = async (shop) => {
       const countdownText = `<span class="busyBuddyCartReservedTimer" style="color: red;">${minutes}:${remainingSeconds}</span>`;
       cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
       cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
+    }
+    else
+    {
+      cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', '');
+      cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', '');
     }
     htmlToInsert += `<div class="cart-reserved-text-box" style="margin-left:20px;"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
     <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
