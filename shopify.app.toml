@@ -1,29 +1,34 @@
-# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+ # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "66741fd2a46bacd291b55be34ac42d9d"
+client_id = "3420c14f9c2a7ba0b6bbc3d1e0388be9"
 name = "BusyBuddy"
-handle = "busybuddy-6"
-application_url = "https://reading-levy-mass-won.trycloudflare.com"
+handle = "busybuddy"
+application_url = "https://busybuddy.projectlabs.in"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-d7cce324.myshopify.com"
+dev_store_url = "quickstart-f05d22ad.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_script_tags,write_script_tags"
+scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_customers,read_discounts,write_discounts,read_shipping"
 
 [auth]
 redirect_urls = [
-  "https://reading-levy-mass-won.trycloudflare.com/auth/callback",
-  "https://reading-levy-mass-won.trycloudflare.com/auth/shopify/callback",
-  "https://reading-levy-mass-won.trycloudflare.com/api/auth/callback"
+  "https://busybuddy.projectlabs.in/auth/callback",
+  "https://busybuddy.projectlabs.in/auth/shopify/callback",
+  "https://busybuddy.projectlabs.in/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-10"
+
+[[webhooks.subscriptions]]
+topics = [ "app/uninstalled" ]
+compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
+uri = "/webhooks"
 
 [pos]
 embedded = false
