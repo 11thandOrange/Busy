@@ -302,7 +302,7 @@ function getCountdownTimer(countdownTimer)
       countdownTimer.general_setting.countDownStartAt = get_local_date();
       countdownTimer.general_setting.countDownEndsAt = get_random_time(randomTimeObject);
     }
-    if (new Date(countdownTimer.general_setting.countDownStartAt).getTime() <= get_current_timestamp() ) 
+    if (new Date(countdownTimer.general_setting.countDownStartAt).getTime() <= get_current_timestamp() && new Date(countdownTimer.general_setting.countDownEndsAt).getTime() >= get_current_timestamp()) 
     {
         const timeLeft = getTimeDifference(get_current_timestamp(), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
         console.log(timeLeft)
