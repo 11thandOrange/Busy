@@ -36,11 +36,11 @@ import ManageDataChange from "../ManageDataChange";
 import { useFetcher } from "@remix-run/react";
 import Toast from "../../atoms/Toast";
 import { useNavigate } from "@remix-run/react";
-
-const options = [
-  { label: "Active", value: STATUS.ACTIVE },
-  { label: "Inactive", value: STATUS.INACTIVE },
-];
+import StepsRenderer from "../StepsRenderer";
+import CustomizationStep from "./CustomizationStep";
+import EnableAppStep from "./EnableAppStep";
+import EnableInShopifyStep from "./EnableInShopifyStep";
+import ReviewStep from "./ReviewStep";
 
 const AnnouncementCustomization = ({
   announcementBarType,
@@ -58,52 +58,78 @@ const AnnouncementCustomization = ({
   });
   const prevSettingsState = useRef({});
   const [error, setError] = useState({ ...ANNOUNCEMENT_BARS_ERROR_STATE });
-  const selectGeneralSettings = useCallback(() => {
-    switch (announcementBarType) {
-      case ANNOUNCEMENT_BAR_TYPES.TEXT:
-        return (
-          <GeneralSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-          ></GeneralSettings>
-        );
-      case ANNOUNCEMENT_BAR_TYPES.FREE_SHIPPING:
-        return (
-          <FreeShippingSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-          ></FreeShippingSettings>
-        );
-      case ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER:
-        return (
-          <OrderCounterSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-          ></OrderCounterSettings>
-        );
-      case ANNOUNCEMENT_BAR_TYPES.COUNTDOWN_TIMER:
-        return (
-          <CountdownTimerSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-            error={error}
-            setError={setError}
-          ></CountdownTimerSettings>
-        );
-      case ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE:
-        return (
-          <EmailCaptureSettings
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-          ></EmailCaptureSettings>
-        );
-
-      default:
-        break;
-    }
-  }, [settingsState, ANNOUNCEMENT_BAR_TYPES, error]);
 
   const [showLoader, setShowLoader] = useState(true);
+  const [selectedStep, setSelectedStep] = useState(0);
+  let enableApp = false;
+  let enableAppInStore = false;
+  const steps = [
+    {
+      id: 0,
+      icon: (
+        <span role="img" aria-label="icon">
+          ✔️
+        </span>
+      ),
+      title: "Customize Appearance",
+      description: "Products in the offer",
+      component: (
+        <CustomizationStep
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+          announcementBarType={announcementBarType}
+          error={error}
+          setError={setError}
+        ></CustomizationStep>
+      ),
+    },
+    {
+      id: 1,
+      icon: (
+        <span role="img" aria-label="icon">
+          🎯
+        </span>
+      ),
+      title: "Enable App",
+      description: "Discount type & amount",
+      component: (
+        <EnableAppStep setSettingsState={setSettingsState}></EnableAppStep>
+      ),
+    },
+    {
+      id: 2,
+      icon: (
+        <span role="img" aria-label="icon">
+          🎨
+        </span>
+      ),
+      title: "Enable In Shopify Store",
+      description: "Where & how to display",
+      component: (
+        <EnableInShopifyStep
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+        ></EnableInShopifyStep>
+      ),
+    },
+    {
+      id: 3,
+      icon: (
+        <span role="img" aria-label="icon">
+          📄
+        </span>
+      ),
+      title: "Review",
+      description: "Offer summary & publish",
+      component: (
+        <ReviewStep
+          settingsState={settingsState}
+          enableAppInStore={enableAppInStore}
+        ></ReviewStep>
+      ),
+    },
+  ];
+
   useEffect(() => {
     if (initialData) {
       setSettingsState(initialData);
@@ -156,10 +182,21 @@ const AnnouncementCustomization = ({
   }, [fetcher]);
 
   const goback = () => {
-    navigate('/apps/announcementBar?appId=1', {
+    navigate("/apps/announcementBar?appId=1", {
       state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
     });
   };
+
+  const filteredSteps = steps.filter((step) => {
+    if (step.id === 1 && enableApp) {
+      return false;
+    }
+    if (step.id === 2 && enableAppInStore) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <div>
       <Page
@@ -171,6 +208,12 @@ const AnnouncementCustomization = ({
           show={!isLoading(fetcher.state) && fetcher.data}
           message="Settings saved"
         />
+        <StepsRenderer
+          tabs={filteredSteps}
+          selected={selectedStep}
+          setSelected={setSelectedStep}
+          error={error}
+        ></StepsRenderer>
         <div className="customization-container">
           <ManageDataChange
             newState={settingsState}
@@ -188,61 +231,9 @@ const AnnouncementCustomization = ({
             isError={checkError(error)}
             showBarInitially={true}
           />
+
           <div className="customization-left-section">
-            <Card>
-              <Selector
-                options={options}
-                label="Status"
-                helpText="Only one announcement bar will be displayed at the time"
-                onSelect={(value) => {
-                  setSettingsState((prevState) =>
-                    updateState("status", value, prevState),
-                  );
-                }}
-                initialValue={settingsState.status}
-              ></Selector>
-            </Card>
-            <Card>
-              <CustomTextField
-                type="text"
-                label="Name"
-                helpText="The private name of this smart bar. Only you will see this."
-                onValueChange={(value) => {
-                  setSettingsState((prevState) =>
-                    updateState("name", value, prevState),
-                  );
-                }}
-                value={settingsState.name}
-              ></CustomTextField>
-            </Card>
-            <Card>
-              <div className="general-settings-header">
-                <Text variant="bodyMd" fontWeight="bold" as="span">
-                  General Settings
-                </Text>
-              </div>
-              {selectGeneralSettings()}
-            </Card>
-            <Card>
-              <ThemeStyleGrid
-                onThemeSelected={(value, type, image) => {
-                  setSettingsState((prevState) =>
-                    updateState(
-                      "themeStyle",
-                      { id: value, type: type, image: image },
-                      prevState,
-                    ),
-                  );
-                }}
-                selectedTheme={settingsState.themeStyle.id}
-              ></ThemeStyleGrid>
-            </Card>
-            <Card>
-              <ThemeSettings
-                setSettingsState={setSettingsState}
-                settingsState={settingsState}
-              ></ThemeSettings>
-            </Card>
+            {filteredSteps[selectedStep].component}
           </div>
           <div className="customization-right-section">
             <ProductPreviewCard
