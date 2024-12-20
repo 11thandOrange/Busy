@@ -54,7 +54,7 @@ export async function action({ request }) {
     if (!gift) {
       gift = await db.Gift.create({
         data: {
-          shop: shop,
+          shop: shop, 
         },
       });
     }
