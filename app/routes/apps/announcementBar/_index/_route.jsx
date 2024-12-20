@@ -24,6 +24,8 @@ import Analytics from "../../../../components/templates/Analytics";
 import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
 import IMAGES from "../../../../utils/Images";
+import { getAppEmbedStatus, getAppEmbedUrl } from "../../../../utils/store-helper";
+
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
   let announcement_bars,
@@ -78,6 +80,8 @@ export async function loader({ request }) {
     announcement_bar_setting,
     app_active,
     color_theme: setting?.color_theme,
+    app_embed: await getAppEmbedStatus(session),
+    app_embed_url: await getAppEmbedUrl(session)
   });
 }
 
