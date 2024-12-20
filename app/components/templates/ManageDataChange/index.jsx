@@ -13,6 +13,7 @@ const ManageDataChange = ({
   isError = false,
   showDiscardPopup = false,
   showBarInitially = false,
+  showSaveButton = true,
 }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [onDiscardChanges, setOnDiscardChanges] = useState(false);
@@ -20,7 +21,6 @@ const ManageDataChange = ({
   useEffect(() => {
     setHasChanged(hasChanges(prevState, newState));
   }, [newState, prevState]);
-
 
   const shouldShowBar = showBarInitially || (hasChanged && !isError);
 
@@ -34,8 +34,8 @@ const ManageDataChange = ({
           discardActionButtonClick={() => {
             setOnDiscardChanges(true);
           }}
-          
-          show={showBarInitially ? hasChanged && !isError : true}
+          // show={showBarInitially ? hasChanged && !isError : true}
+          show={showBarInitially ? showSaveButton && !isError : true}
           fetcherState={fetcherState}
         />
       )}

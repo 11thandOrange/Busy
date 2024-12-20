@@ -1,33 +1,37 @@
-import { Card, Text } from "@shopify/polaris";
+import { Card, RadioButton, Text } from "@shopify/polaris";
 import React from "react";
-import ToggleButtons from "../../../atoms/ToggleButtons";
 import { updateState } from "../../../../utils/clientFunctions";
 
-const EnableAppToggles = {
-  Enable_Later: { name: "Enable Later", id: 0 },
-  Enable_Now: { name: "Enable Now", id: 1 },
-};
-
-const EnableAppStep = ({ setSettingsState, tabId }) => {
-  const toggleButtons = Object.values(EnableAppToggles);
+const EnableAppStep = ({ setSettingsState, settingsState }) => {
   return (
     <div>
       <Card>
         <Text>Enable App</Text>
-        <ToggleButtons
-          buttons={toggleButtons}
-          onToggle={(app) => {
-            if (EnableAppToggles.Enable_Now.id === app.id) {
+
+        <>
+          <RadioButton
+            label="Enable Now"
+            checked={settingsState.enableApp}
+            id="Enable_Now"
+            name="enableApp"
+            onChange={(value) => {
               setSettingsState((prevState) =>
-                updateState("enableApp", true, prevState),
+                updateState("enableApp", value, prevState),
               );
-            } else {
+            }}
+          />
+          <RadioButton
+            label="Enable Later"
+            checked={!settingsState.enableApp}
+            id="Enable_Later"
+            name="enableApp"
+            onChange={(value) => {
               setSettingsState((prevState) =>
-                updateState("enableApp", false, prevState),
+                updateState("enableApp", !value, prevState),
               );
-            }
-          }}
-        />
+            }}
+          />
+        </>
       </Card>
     </div>
   );

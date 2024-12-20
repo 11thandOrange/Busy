@@ -2,6 +2,8 @@ import { Button, Card, Checkbox, Text } from "@shopify/polaris";
 import React from "react";
 import ToggleButtons from "../../../atoms/ToggleButtons";
 import { updateState } from "../../../../utils/clientFunctions";
+import ImageRenderer from "../../../atoms/ImageRenderer";
+import IMAGES from "../../../../utils/Images";
 
 const EnableAppToggles = {
   Enable_Later: { name: "Enable Later", id: 0 },
@@ -17,20 +19,6 @@ const EnableInShopifyStep = ({ setSettingsState, tabId, settingsState }) => {
           Your Announcement Bar Wont Show Up In Your Store Yet! You must enable
           it in the Shopify Theme Editor.
         </Text>
-        {/* <ToggleButtons
-          buttons={toggleButtons}
-          onToggle={(app) => {
-            if (EnableAppToggles.Enable_Now.id === app.id) {
-              setSettingsState((prevState) =>
-                updateState("enableAppInShopify", true, prevState),
-              );
-            } else {
-              setSettingsState((prevState) =>
-                updateState("enableAppInShopify", false, prevState),
-              );
-            }
-          }}
-        /> */}
         <Button
           variant="primary"
           onClick={() => {
@@ -48,6 +36,9 @@ const EnableInShopifyStep = ({ setSettingsState, tabId, settingsState }) => {
           }}
           checked={settingsState.enableAppInShopifyLater || false}
         ></Checkbox>
+        <Text>How to Enable app :</Text>
+        <ImageRenderer src={IMAGES.shoeDiscount}></ImageRenderer>
+        <a href="#">How to Enable app in shopify store</a>
       </Card>
     </div>
   );

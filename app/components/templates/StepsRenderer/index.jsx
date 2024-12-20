@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
-import "./style.css"; // Custom styles for tabs
-
+import "./style.css"; 
 const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
   const handleTabChange = useCallback(
     (selectedTabIndex) => setSelected(selectedTabIndex),
@@ -18,7 +17,8 @@ const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
           >
             <div className="tab-content">
               <div className="tab-circle">
-                {selected === index ? "✔" : index + 1}
+                {/* {selected === index ? index + 1 : "✔"} */}
+                {index + 1}
               </div>
               <div className="tab-details">
                 <div className="tab-title">{tab.title}</div>
