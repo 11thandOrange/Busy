@@ -11,6 +11,7 @@ import IMAGES from "../utils/Images";
 
 import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
+import EnableAppPopup from "../components/templates/EnableAppPopup";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -146,8 +147,13 @@ export default function Index() {
           </Text>
         </div>
       </div>
+
       <BlockStack gap="500">
         <Layout>
+          <Layout.Section>
+            {" "}
+            <EnableAppPopup show={true}></EnableAppPopup>
+          </Layout.Section>
           <Layout.Section>
             <Card title="My Apps" sectioned>
               <Text as="h2" variant="headingSm">

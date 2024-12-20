@@ -67,6 +67,9 @@ export const SETTINGS_INITIAL_STATE = {
     textColor: "#ffffff",
     specialColor: "#38619a",
   },
+  enableApp: false,
+  enableAppInShopify: false,
+  enableAppInShopifyLater: false,
 };
 const now = new Date();
 const tomorrow = new Date(now);

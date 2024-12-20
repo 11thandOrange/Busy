@@ -229,16 +229,7 @@ const route = () => {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
       component: (
-        <CheckBars
-          barsData={announcementBarsData}
-          pagination={true}
-          onPageNext={() => {
-            console.log("next");
-          }}
-          onPagePrevious={() => {
-            console.log("previous");
-          }}
-        />
+        <CheckBars barsData={announcementBarsData} pagination={true} />
       ),
     },
     {
@@ -258,7 +249,6 @@ const route = () => {
 
   useEffect(() => {
     // Set default tab to Announcement Bars tab if there are are announcement bars present
-    
 
     if (location.state && location.state.tabToOpen) {
       setSelectedTab(location.state.tabToOpen);

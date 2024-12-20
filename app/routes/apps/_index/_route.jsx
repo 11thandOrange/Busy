@@ -11,8 +11,8 @@ import { CATEGORIES_ENUM } from "../../../utils/constants";
 import { authenticate } from "../../../shopify.server";
 
 export const loader = async ({ request }) => {
-  const {session} = await authenticate.admin(request);
-  const shop = session.shop
+  const { session } = await authenticate.admin(request);
+  const shop = session.shop;
   let apps = await db.app.findMany({
     include: {
       Merchant: true,
@@ -24,7 +24,9 @@ export const loader = async ({ request }) => {
     },
   });
   apps = apps.map((app) => {
-    const isInstalled = app.Merchant.some((merchant) => merchant.enabled && merchant.shop == shop);
+    const isInstalled = app.Merchant.some(
+      (merchant) => merchant.enabled && merchant.shop == shop,
+    );
 
     return {
       id: app.id,
@@ -66,9 +68,7 @@ export const action = async ({ request }) => {
         },
       });
       return updatedApp;
-    } 
-    else 
-    {
+    } else {
       const newMerchant = await db.merchant.create({
         data: {
           appId: appId,
@@ -92,9 +92,26 @@ function TabsInsideOfACard() {
     setTabs(
       apps.categories.filter((item) => item.id != CATEGORIES_ENUM.favorites),
     );
-    
-    
-    setAppsList(apps.apps);
+
+    console.log("apps is here", apps.apps);
+
+    setAppsList([
+      ...apps.apps,
+      {
+        id: 5,
+        name: "Send As Gift",
+        description_title: "The Clock is Ticking! ⏰",
+        description_content:
+          "Add urgency with a live countdown to your sale’s end, making sure customers act fast before time runs out!",
+        image:
+          "https://d3acrzpqhtrug6.cloudfront.net/dist/assets/media/app-start/countdown/countdown-timer.af816958311d3f91ad5f.svg",
+        categoryId: [],
+        createdAt: "2024-11-21T05:10:44.534Z",
+        updatedAt: "2024-11-21T05:12:21.522Z",
+        isInstalled: false,
+        slug: "sendAsGift",
+      },
+    ]);
   }, []);
 
   return (

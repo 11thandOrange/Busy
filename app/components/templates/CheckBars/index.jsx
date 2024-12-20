@@ -4,6 +4,7 @@ import {
   useIndexResourceState,
   Text,
   Badge,
+  Button,
 } from "@shopify/polaris";
 import "./style.css";
 import React, { useEffect, useState } from "react";
@@ -23,11 +24,23 @@ const barState = {
   INACTIVE: "critical",
 };
 
+export const emptyStateButtonType = {
+  POPOVER: "popover",
+  BUTTON: "button",
+};
 function CheckBars({
   barsData = [],
   pagination = false,
   onPageNext = () => {},
   onPagePrevious = () => {},
+  heading = "Announcement Bar",
+  emptyStateHeading = "Create your first Announcement Bar",
+  emptyStateDescription = "Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars.",
+  emptyStateBtnType = emptyStateButtonType.POPOVER,
+  emptyStateBtnText = "Create Announcement Bar",
+  emptyStateBtnCallback = () => {},
+  deletConfirmationMessage = "This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?",
+  toastMessage = "Announcement bar(s) deleted successfully",
 }) {
   const fetcher = useFetcher();
   const navigate = useNavigate();
@@ -61,7 +74,6 @@ function CheckBars({
       (currentPage - 1) * itemsPerPage,
       (currentPage - 1) * itemsPerPage + itemsPerPage,
     );
-   
 
     setBars(barsDataNew);
   }, [currentPage, barsData]);
@@ -129,13 +141,27 @@ function CheckBars({
     clearSelection();
   };
 
+  const emptyStateBtnRenderer = () => {
+    switch (emptyStateBtnType) {
+      case emptyStateButtonType.POPOVER:
+        return (
+          <PopoverContent
+            options={announcementPopoverData}
+            heading={emptyStateBtnText}
+            onSelect={handleCreateClick}
+          />
+        );
+      case emptyStateButtonType.BUTTON:
+        return (
+          <Button onClick={emptyStateBtnCallback} variant="primary">
+            {emptyStateBtnText}
+          </Button>
+        );
+    }
+  };
   return (
     <LegacyCard>
-      <ToastBar
-        onDismiss={onDismiss}
-        show={showToast}
-        message="Announcement bar(s) deleted successfully"
-      />
+      <ToastBar onDismiss={onDismiss} show={showToast} message={toastMessage} />
       <IndexTable
         resourceName={resourceName}
         itemCount={bars?.length}
@@ -143,22 +169,16 @@ function CheckBars({
         emptyState={
           <div className="bb-announcement-wrapper">
             <DynamicEmptyState
-              heading="Create your first Announcement Bar"
-              description="Display an interactive Free Shipping message, capture leads, or build trust using any of the 5 types of Announcement Bars."
-              actionContent={
-                <PopoverContent
-                  options={announcementPopoverData}
-                  heading="Create Announcement Bar"
-                  onSelect={handleCreateClick}
-                />
-              }
+              heading={emptyStateHeading}
+              description={emptyStateDescription}
+              actionContent={emptyStateBtnRenderer()}
               actionCallback={() => {}}
             />
           </div>
         }
         selectable={true}
         onSelectionChange={handleSelectionChange}
-        headings={[{ title: `Showing ${bars?.length} announcement bar(s)` }]}
+        headings={[{ title: `Showing ${bars?.length} ${heading}(s)` }]}
         promotedBulkActions={promotedBulkActions}
         {...(pagination && barsData?.length > 0
           ? {
@@ -180,20 +200,14 @@ function CheckBars({
         {rowMarkup}
       </IndexTable>
       <div style={{ position: "absolute", top: "4px", right: "10px" }}>
-        {bars?.length > 0 && (
-          <PopoverContent
-            options={announcementPopoverData}
-            heading="Create"
-            onSelect={handleCreateClick}
-          />
-        )}
+        {bars?.length > 0 && emptyStateBtnRenderer()}
         <DiscardChangesConfirmationPopup
           active={confirmDelete}
           toggleModal={() => setConfirmDelete(false)}
           primaryActionClick={handleDeleteConfirm}
           secondaryActionContent="Close"
           primaryActionContent="Delete"
-          mainContent="This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?"
+          mainContent={deletConfirmationMessage}
           title={`Delete ${selectedResources.length} item(s)?`}
           fetcherState={fetcher.state}
         />
