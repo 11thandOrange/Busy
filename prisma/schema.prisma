@@ -163,7 +163,7 @@ model Cart_notice {
   showCountdown           Boolean         @default(true)
   countdown_timer         Int             @default(1)
   general_setting         String
-  shop                  String            @unique
+  shop                    String            @unique
   createdAt               DateTime        @default(now())
 }
 
@@ -173,4 +173,28 @@ model countdown_timer {
   display_setting       String?
   shop                  String            @unique
   createdAt             DateTime            @default(now())
+}
+
+model Gift{
+  id                        Int           @id @default(autoincrement())
+  giftWrapStatus            Boolean       @default(false)
+  gift_wrap                 GiftWrap[]   @relation("GiftWraps")
+  giftMessageSetting        String?
+  giftRecieptSetting        String?
+  giftAppearanceSetting     String?
+  appearanceRules           String?
+  accountSetting            String?
+  shop                      String?       @unique
+  createdAt                 DateTime      @default(now())  
+}
+
+model GiftWrap{
+    id                      Int           @id @default(autoincrement())
+    title                   String? 
+    description             String?
+    price                   Int
+    image                   String? 
+    giftId                  Int?
+    gift                    Gift?         @relation("GiftWraps", fields: [giftId], references: [id])
+    createdAt               DateTime      @default(now())
 }
