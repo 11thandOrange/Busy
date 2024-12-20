@@ -1,7 +1,8 @@
 import React from "react";
+import SendAsGiftCustomization from "../../../../../components/templates/SendAsGiftCustomization";
 
-const sendAsGiftCustomization = () => {
-  return <div>sendAsGiftCustomization</div>;
+const GiftCustomization = () => {
+  return <div><SendAsGiftCustomization></SendAsGiftCustomization></div>;
 };
 
-export default sendAsGiftCustomization;
+export default GiftCustomization;

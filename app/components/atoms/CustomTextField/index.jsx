@@ -15,6 +15,7 @@ function CustomTextField({
   errorMessage = false,
   max,
   maxLength = 1000,
+  prefix ="",
 }) {
   const handleTextFieldChange = useCallback((value) => {
     onValueChange(value);
@@ -34,6 +35,7 @@ function CustomTextField({
         {...(max !== undefined ? { max } : {})}
         error={errorMessage}
         maxLength={maxLength}
+        prefix={prefix}
       />
     </>
   );

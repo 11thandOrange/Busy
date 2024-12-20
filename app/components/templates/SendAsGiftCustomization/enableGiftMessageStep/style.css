@@ -1,0 +1,4 @@
+.priceAndTitle{
+    display: flex;
+    gap:10px
+}
