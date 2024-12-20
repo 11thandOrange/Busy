@@ -539,3 +539,53 @@ export const addScriptTag = async(shop)=>{
     },
   }));
 }
+
+export const appActivate = async(shop, appId, enable)=>{
+  const appId = parseInt(appId);
+  const subscription = await check_subscription(request);
+  const apps = await db.merchant.findMany({
+    where: {
+      shop: shop,
+      enabled: true,
+      appId: {
+        not: appId,
+      },
+    },
+  });
+
+  if (!subscription.hasSubscription && apps.length == 1) {
+    return json({ message: "Please upgrade your plan to activate more apps", success: false });
+  }
+  
+  try {
+    const existingMerchant = await db.merchant.findFirst({
+      where: {
+        appId: appId,
+        shop: shop,
+      },
+    });
+
+    if (existingMerchant) {
+      const updatedApp = await db.merchant.update({
+        where: {
+          id: existingMerchant.id,
+        },
+        data: {
+          enabled: enable,
+        },
+      });
+      return json({ success: true, updatedApp, isActive: enable });
+    } else {
+      const newMerchant = await db.merchant.create({
+        data: {
+          appId: appId,
+          shop: shop,
+          enabled: enable,
+        },
+      });
+      return json({ success: true, newMerchant, isActive: enable });
+    }
+  } catch (error) {
+    throw new Error("Failed to update or create merchant");
+  }
+}
