@@ -45,6 +45,7 @@ export const ROUTES = {
   ANNOUNCEMENT_OVERVIEW: "/apps/announcementBar",
   INACTIVE_TAB: "/apps/inactiveTabMessage",
   ANALYTICS: "/analytics",
+  SEND_AS_GIFT_CUSTOMIZATION: "/apps/sendAsGift/customization",
 };
 
 export const FETCHER_STATE = {

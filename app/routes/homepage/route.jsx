@@ -27,11 +27,11 @@ const route = () => {
       component: <AnnouncementSettings></AnnouncementSettings>,
     },
 
-    {
-      id: "Announcement-bars-1",
-      content: "Announcement Bars",
-      component: <CheckBars></CheckBars>,
-    },
+    // {
+    //   id: "Announcement-bars-1",
+    //   content: "Announcement Bars",
+    //   component: <CheckBars></CheckBars>,
+    // },
   ];
   return (
     <>
@@ -44,7 +44,6 @@ const route = () => {
         setSelectedType={(type) => {
           setSelectedType(type);
         }}
-        
       >
         {tabs[selectedTab].component}
       </Homepage>

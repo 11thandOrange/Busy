@@ -52,7 +52,7 @@ const AnnouncementCustomization = ({
   const [selectedStep, setSelectedStep] = useState(0);
 
   // Flags
-  let enableApp = false;
+  let enableApp = true;
   let enableAppInStore = false;
 
   // Step Configuration
