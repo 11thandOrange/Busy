@@ -1,4 +1,4 @@
-const baseUrl = 'https://busybuddy.projectlabs.in';
+const baseUrl = 'https://concluded-inches-shareware-strengthen.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -344,8 +344,8 @@ function getCountdownTimer(countdownTimer)
         }
 
         countdownTimerHtml += '</div>';
-        const form = document.querySelector('.product-form');
 
+    let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
     if (form) {
       const htmlToInsert = `<div id="busyBuddyCountdownTimer" class="busyBuddyCountdownTimer">${countdownTimerHtml}</div>`;
       form.insertAdjacentHTML('beforebegin', htmlToInsert);

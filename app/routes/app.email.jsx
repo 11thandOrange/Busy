@@ -44,7 +44,6 @@ export const action = async ({ request }) => {
       console.log('Email sent:', info.response);
     }
   });  
-  
   response = json({ message: (emailCoupon.general_setting.couponText.replace('#coupon#', emailCoupon.general_setting.coupon)), success: true });
-  return  response;
+  return cors(request, response, { methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"] });
 };

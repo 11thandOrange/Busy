@@ -1,14 +1,14 @@
- # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "3420c14f9c2a7ba0b6bbc3d1e0388be9"
+client_id = "f917087e0914103830db8dd72df385b0"
 name = "BusyBuddy"
-handle = "busybuddy"
-application_url = "https://busybuddy.projectlabs.in"
+handle = "busybuddy-41"
+application_url = "https://jokes-furnishings-poison-blonde.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
-dev_store_url = "quickstart-f05d22ad.myshopify.com"
+dev_store_url = "quickstart-d7cce324.myshopify.com"
 automatically_update_urls_on_dev = true
 
 [access_scopes]
@@ -17,18 +17,18 @@ scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_custom
 
 [auth]
 redirect_urls = [
-  "https://busybuddy.projectlabs.in/auth/callback",
-  "https://busybuddy.projectlabs.in/auth/shopify/callback",
-  "https://busybuddy.projectlabs.in/api/auth/callback"
+  "https://jokes-furnishings-poison-blonde.trycloudflare.com/auth/callback",
+  "https://jokes-furnishings-poison-blonde.trycloudflare.com/auth/shopify/callback",
+  "https://jokes-furnishings-poison-blonde.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-10"
 
-[[webhooks.subscriptions]]
-topics = [ "app/uninstalled" ]
-compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
-uri = "/webhooks"
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
+  uri = "/webhooks"
 
 [pos]
 embedded = false
