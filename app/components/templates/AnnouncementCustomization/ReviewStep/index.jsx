@@ -1,13 +1,16 @@
 import { Button, Card, Icon, Text } from "@shopify/polaris";
 import React, { useCallback } from "react";
 import { EditIcon } from "@shopify/polaris-icons";
+import { isLoading } from "../../../../utils/clientFunctions";
 
 const ReviewStep = ({
   settingsState,
+  fetcherState,
   enableAppInStore,
   enableApp,
   setSelectedStep,
   editButtonsList = [],
+  onSaveAndPublish = () => {},
 }) => {
   const renderEditButton = (btn, index) => (
     <li key={btn.id} className="edit-button-item">
@@ -33,7 +36,12 @@ const ReviewStep = ({
           All Done? Save & Publish!
         </Text>
         {enableAppInStore && <Button>Edit placement in Shopify Store?</Button>}
-        <Button variant="primary" style={{ marginTop: "0.5rem" }}>
+        <Button
+          variant="primary"
+          style={{ marginTop: "0.5rem" }}
+          onClick={onSaveAndPublish}
+          loading={isLoading(fetcherState)}
+        >
           Save & Publish
         </Button>
       </Card>

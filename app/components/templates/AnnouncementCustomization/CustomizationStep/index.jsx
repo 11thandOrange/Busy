@@ -25,7 +25,8 @@ const CustomizationStep = ({
   error,
   setError,
   announcementBarType,
-  tabId
+  tabId,
+ 
 }) => {
   const selectGeneralSettings = useCallback(() => {
     switch (announcementBarType) {

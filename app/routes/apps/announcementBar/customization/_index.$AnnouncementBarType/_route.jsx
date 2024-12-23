@@ -11,12 +11,15 @@ const Customization = () => {
   const fetcher = useFetcher();
   const [fetchQuery] = useSearchParams();
   const [customizationData, setCustomizationData] = useState(null);
+  const [appActivationState, setAppActivationState] = useState({
+    enableApp: false,
+    enableAppInStore: false,
+    enableAppInStoreURL: "",
+  });
   const [colorTheme, setColorTheme] = useState("light");
-
   const barId = fetchQuery.get("id");
   useEffect(() => {
     if (barId) {
-     
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW + "?id=" + barId);
     } else {
       fetcher.load(ROUTES.ANNOUNCEMENT_OVERVIEW);
@@ -25,10 +28,16 @@ const Customization = () => {
 
   useEffect(() => {
     if (fetcher.data) {
-    
       const data = fetcher.data.announcement_customization;
 
       setColorTheme(fetcher.data.color_theme);
+      console.log("fetching app stgate", fetcher.data);
+
+      setAppActivationState({
+        enableApp: fetcher.data.app_active,
+        enableAppInStore: fetcher.data.app_embed,
+        enableAppInStoreURL: fetcher.data.app_embed_url,
+      });
       if (data) {
         setCustomizationData({
           id: data.id,
@@ -49,6 +58,7 @@ const Customization = () => {
         backActionRoute={ROUTES.ANNOUNCEMENT_OVERVIEW}
         initialData={customizationData}
         colorTheme={colorTheme}
+        appActivationState={appActivationState}
       />
     </div>
   );

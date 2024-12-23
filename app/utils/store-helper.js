@@ -9,6 +9,7 @@ export const getActiveTheme = async(shop) =>{
 
 export const checkAppEmbed = async (themeId, session) => {
   try {
+    return false;
     const response = await fetch(`https://${session.shop}/admin/api/2024-01/themes/${themeId}/assets.json?asset[key]=config/settings_data.json`, {
       method: 'GET',
       headers: {
@@ -16,7 +17,6 @@ export const checkAppEmbed = async (themeId, session) => {
         'X-Shopify-Access-Token': session.accessToken,
       },
     });
-
     if (!response.ok) {
       throw new Error(`Failed to fetch theme assets: ${response.statusText}`);
     }
@@ -30,10 +30,11 @@ export const checkAppEmbed = async (themeId, session) => {
     let current;
     try {
       current = JSON.parse(data.asset.value);
+      console.log('current value', current)
     } catch (jsonError) {
       throw new Error('Error parsing JSON from asset value: ' + jsonError.message);
     }
-
+console.log('testing ',current.current)
     // Check if the embed block exists and is disabled
     const blockId = `shopify://apps/busybuddy/blocks/star_rating/${process.env.SHOPIFY_BUSYBUDDY_EMBED_ID}`;
     const disable = Object.values(current.current.blocks).find(block => block.type === blockId);
