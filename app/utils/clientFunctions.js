@@ -276,7 +276,10 @@ export const isExpirationTimeValid = (minExp, maxExp) => {
 };
 
 export const checkError = (error) => {
-  return Object.values(error).some((value) => value);
+  if (error === null) {
+    return false;
+  }
+  return Object.values(error)?.some((value) => value);
 };
 
 export function formatDateToCustomString(date) {

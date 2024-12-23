@@ -9,13 +9,15 @@ function CustomTextField({
   helpText,
   readOnly = false,
   value,
+  placeholder = "",
   onValueChange = () => {},
   disabled = false,
   min,
   errorMessage = false,
   max,
   maxLength = 1000,
-  prefix ="",
+  prefix = "",
+  autoFocus = false,
 }) {
   const handleTextFieldChange = useCallback((value) => {
     onValueChange(value);
@@ -24,12 +26,13 @@ function CustomTextField({
   return (
     <>
       <TextField
+        autoFocus={autoFocus}
         label={label}
         type={type}
         value={value}
         onChange={handleTextFieldChange}
         helpText={helpText}
-        placeholder={value}
+        placeholder={placeholder}
         disabled={disabled}
         {...(min !== undefined ? { min } : {})}
         {...(max !== undefined ? { max } : {})}

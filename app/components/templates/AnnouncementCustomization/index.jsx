@@ -55,6 +55,17 @@ const AnnouncementCustomization = ({
   let enableApp = true;
   let enableAppInStore = false;
 
+  const editButtonsList = [
+    { id: 0, title: "Customize Appearance" },
+    { id: 1, title: "Enable App" },
+    { id: 2, title: "Enable App in Store" },
+  ];
+  editButtonsList.filter((btn) => {
+    if ((btn.id === 1 && enableApp) || (btn.id === 2 && enableAppInStore)) {
+      return false;
+    }
+    return true;
+  });
   // Step Configuration
   const steps = [
     {
@@ -118,6 +129,7 @@ const AnnouncementCustomization = ({
           enableAppInStore={enableAppInStore}
           enableApp={enableApp}
           setSelectedStep={setSelectedStep}
+          editButtonsList={editButtonsList}
         />
       ),
     },
@@ -169,6 +181,7 @@ const AnnouncementCustomization = ({
   }, [fetcher]);
 
   // Filter Steps Based on App State
+
   const filteredSteps = steps.filter((step) => {
     if ((step.id === 1 && enableApp) || (step.id === 2 && enableAppInStore)) {
       return false;

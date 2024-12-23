@@ -24,6 +24,7 @@ export const CATEGORIES_ENUM = {
 export const APP_TYPE = {
   ANNOUNCEMENT_BARS: 1,
   COUNTDOWN_TIMER: 2,
+  SEND_AS_A_GIFT: 3,
 };
 
 export const TABS_ENUM = {

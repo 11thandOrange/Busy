@@ -38,6 +38,8 @@ const ProductPreviewCard = ({
           <PreviewCardTimer settingsState={settingsState}></PreviewCardTimer>
         );
 
+      case APP_TYPE.SEND_AS_A_GIFT:
+        return <h1>Send as a gift</h1>;
       default:
         return null; // or handle other cases, if necessary
     }

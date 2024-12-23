@@ -1,5 +1,5 @@
 import { Button, Card, Icon, Text } from "@shopify/polaris";
-import React from "react";
+import React, { useCallback } from "react";
 import { EditIcon } from "@shopify/polaris-icons";
 
 const ReviewStep = ({
@@ -7,19 +7,12 @@ const ReviewStep = ({
   enableAppInStore,
   enableApp,
   setSelectedStep,
+  editButtonsList = [],
 }) => {
-  const editButtonList = [
-    { id: 0, title: "Customize Appearance" },
-    { id: 1, title: "Enable App" },
-    { id: 2, title: "Enable App in Store" },
-  ];
-
-  const filteredEditButtonList = editButtonList.filter((btn) => {
-    if ((btn.id === 1 && enableApp) || (btn.id === 2 && enableAppInStore)) {
-      return false;
-    }
-    return true;
-  });
+  const filteredEditButtonList = useCallback(() => {
+    
+  
+  },[editButtonsList]);
 
   const renderEditButton = (btn, index) => (
     <li key={btn.id} className="edit-button-item">

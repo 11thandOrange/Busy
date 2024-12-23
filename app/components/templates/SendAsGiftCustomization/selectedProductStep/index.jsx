@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
+import ProductListingWithSearchBar from "../../../atoms/SearchBarWithBrowse";
 const SelectedProductStep = () => {
   return (
     <div>
@@ -25,6 +26,7 @@ const SelectedProductStep = () => {
             onChange={(value) => {}}
           />
         </>
+        <ProductListingWithSearchBar></ProductListingWithSearchBar>
       </Card>
     </div>
   );
