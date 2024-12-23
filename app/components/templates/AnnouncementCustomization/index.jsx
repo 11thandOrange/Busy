@@ -52,7 +52,7 @@ const AnnouncementCustomization = ({
   const [selectedStep, setSelectedStep] = useState(0);
 
   // Flags
-  let enableApp = true;
+  let enableApp = false;
   let enableAppInStore = false;
 
   const editButtonsList = [

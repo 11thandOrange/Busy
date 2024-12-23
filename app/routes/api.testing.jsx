@@ -1,38 +1,98 @@
 import { authenticate } from "../shopify.server";
-import { check_app_active, getAnnouncementBar, getCartNotice, getCountdownTimer, getInactiveTabMessage } from "../utils/function";
 import { json } from "@remix-run/node";
-import { checkAppEmbed } from "../utils/store-helper";
+import { cors } from "remix-utils/cors";
 
 
 export const loader = async ({ request }) => {
-    const {session} = await authenticate.admin(request);
-    console.log(await checkAppEmbed(136426684552, session.shop))
-    return (request, {themes: await checkAppEmbed(136426684552, session.shop)})
-    const shop = session.shop;
-    const appId = 1;
-    let response;
- 
-  if(!(await check_app_active(appId, shop)))
-  {
-  
-    return json(response)
+    
+    const {admin} = await authenticate.admin(request);
+    const response = await admin.graphql(
+      `#graphql
+      query GetProducts {
+        products(first: 100) {
+          nodes {
+            id
+            title,
+            media(first: 5) {
+              edges {
+                node {
+                  id,
+                  preview{
+                  image{
+                  url}}
+                }
+              }
+            }   
+            priceRange {
+              maxVariantPrice {
+                amount,
+                currencyCode
+              }
+            }
+          }
+        }
+      }`,
+    );
+
+    const data = await response.json();
+
+    console.log(data, 'product list')
+  return cors(request, json(data.data.products.nodes));  
+}
+export async function action({ request }) {
+  const { admin, session } = await authenticate.admin(request);
+  const shop = session.shop;
+  const data = Object.fromEntries(await request.formData());
+
+  if (data._action === 'GiftWrap') {
+    let gift = await db.Gift.findFirst({
+      where: {
+        shop: shop,
+      },
+    });
+
+    if (!gift) {
+      gift = await db.Gift.create({
+        data: {
+          shop: shop, 
+        },
+      });
+    }
+
+    const giftWrap = await db.GiftWrap.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        price: parseInt(data.price),
+        image: data.image,
+        giftId: gift.id,
+      },
+    });
+
+    const product = new admin.rest.resources.Product({session: session});
+    product.title = data.title;
+    product.body_html = `<strong>${data.description}</strong>`;
+    product.vendor = "BusyBuddy Shop";
+    product.product_type = "gift";
+    product.status = "active";
+    await product.save({
+      update: true,
+    });
+
+    return { success: true, giftWrap };
   }
-  if(appId==1)
+  else
   {
-   
-    response = await getAnnouncementBar(shop);
+    await db.gift.upsert({
+      where: { shop: shop },
+      update: {data,
+        shop: shop,
+      },
+      create: {
+        data,
+        shop: shop,
+      },
+    });
   }
-  else if(appId == 2)
-  {
-    response = await getInactiveTabMessage(shop)
-  }    
-  else if(appId == 3)
-  {
-    response = await getCartNotice(shop)
-  }    
-  else if(appId == 4)
-  {
-    response = await getCountdownTimer(shop)
-  }    
-  return json(response);  
+  return { success: false, message: 'Invalid action' };
 }

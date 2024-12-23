@@ -9,11 +9,6 @@ const ReviewStep = ({
   setSelectedStep,
   editButtonsList = [],
 }) => {
-  const filteredEditButtonList = useCallback(() => {
-    
-  
-  },[editButtonsList]);
-
   const renderEditButton = (btn, index) => (
     <li key={btn.id} className="edit-button-item">
       <Text>{btn.title}</Text>
@@ -32,9 +27,7 @@ const ReviewStep = ({
       <h3>Review Settings</h3>
       <Card>
         <ul className="edit-button-list">
-          {filteredEditButtonList.map((btn, index) =>
-            renderEditButton(btn, index),
-          )}
+          {editButtonsList.map((btn, index) => renderEditButton(btn, index))}
         </ul>
         <Text variant="headingMd" style={{ marginTop: "1rem" }}>
           All Done? Save & Publish!

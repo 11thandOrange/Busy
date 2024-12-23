@@ -469,7 +469,49 @@ export const check_enable_button = async (shop) => {
     return false;
   }
 };
+export const getSendAsGift = async(shop) =>{
+  let htmlToInsert = '';
+  let script = '';
+  const gift = await db.gift.findFirst({
+    where: {
+      shop: shop,
+    },
+    include: {
+      gift_wrap: true,
+    },
+  });
+  
 
+  // Iterate over each gift wrap item
+  gift.gift_wrap.forEach((item) => {
+    let itemHtml = `<div id="giftWrap-${item.id}" class="gift-wrap-item" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
+    if (item.image) {
+      itemHtml += `<img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
+    } else {
+      itemHtml += `<img src="https://via.placeholder.com/100" alt="No Image" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
+    }
+    itemHtml += `<h3>${item.title}</h3>`;
+    itemHtml += `<p>${item.description}</p>`;
+    itemHtml += `<p><strong>Price: $${item.price.toFixed(2)}</strong></p>`;
+    itemHtml += `<button class="add-gift-wrap-btn" data-id="${item.id}" data-price="${item.price}">Add to Cart</button>`;
+    itemHtml += `</div>`;
+    htmlToInsert += itemHtml;
+    script += `
+      (function() {
+        const button = document.querySelector('.add-gift-wrap-btn[data-id="${item.id}"]');
+        if (button) {
+          button.addEventListener('click', function() {
+            alert('Gift wrap with ID ' + "${item.id}" + ' added to the cart for $' + "${item.price.toFixed(2)}");
+          });
+        }
+      })();
+    `;
+  });
+  return {
+    html: htmlToInsert,
+    script
+  };
+}
 export const can_active = async (request, shop) => {
   try {
     const setting = await db.merchant.findMany({
@@ -538,4 +580,54 @@ export const addScriptTag = async(shop)=>{
       src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
     },
   }));
+}
+
+export const appActivate = async(shop, appId, enable)=>{
+  const subscription = await check_subscription(request);
+  appId = parseInt(appId);
+  const apps = await db.merchant.findMany({
+    where: {
+      shop: shop,
+      enabled: true,
+      appId: {
+        not: appId,
+      },
+    },
+  });
+
+  if (!subscription.hasSubscription && apps.length == 1) {
+    return json({ message: "Please upgrade your plan to activate more apps", success: false });
+  }
+  
+  try {
+    const existingMerchant = await db.merchant.findFirst({
+      where: {
+        appId: appId,
+        shop: shop,
+      },
+    });
+
+    if (existingMerchant) {
+      const updatedApp = await db.merchant.update({
+        where: {
+          id: existingMerchant.id,
+        },
+        data: {
+          enabled: enable,
+        },
+      });
+      return json({ success: true, updatedApp, isActive: enable });
+    } else {
+      const newMerchant = await db.merchant.create({
+        data: {
+          appId: appId,
+          shop: shop,
+          enabled: enable,
+        },
+      });
+      return json({ success: true, newMerchant, isActive: enable });
+    }
+  } catch (error) {
+    throw new Error("Failed to update or create merchant");
+  }
 }

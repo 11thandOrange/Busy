@@ -177,7 +177,6 @@ export async function action({ request }) {
       response = json({ message: "Announcement Bar Updated", success: true });
       return response;
     case "DELETE":
-      console.log(data.announcement_bar_id, "TEst");
       await db.Announcement_bar.deleteMany({
         where: {
           id: {
@@ -196,7 +195,6 @@ export async function action({ request }) {
 }
 const route = () => {
   const announcementData = useLoaderData();
-  // console.log(announcementData, "announcementData");
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const announcementBarsData = announcementData.announcement_bars;
