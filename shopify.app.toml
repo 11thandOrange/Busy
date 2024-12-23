@@ -3,7 +3,7 @@
 client_id = "f917087e0914103830db8dd72df385b0"
 name = "BusyBuddy"
 handle = "busybuddy-41"
-application_url = "https://jokes-furnishings-poison-blonde.trycloudflare.com"
+application_url = "https://buzz-public-protected-rating.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,13 +13,13 @@ automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_customers,read_discounts,write_discounts,read_shipping"
+scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_customers,read_discounts,write_discounts,read_shipping,read_products,write_products"
 
 [auth]
 redirect_urls = [
-  "https://jokes-furnishings-poison-blonde.trycloudflare.com/auth/callback",
-  "https://jokes-furnishings-poison-blonde.trycloudflare.com/auth/shopify/callback",
-  "https://jokes-furnishings-poison-blonde.trycloudflare.com/api/auth/callback"
+  "https://buzz-public-protected-rating.trycloudflare.com/auth/callback",
+  "https://buzz-public-protected-rating.trycloudflare.com/auth/shopify/callback",
+  "https://buzz-public-protected-rating.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
