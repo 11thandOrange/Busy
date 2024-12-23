@@ -2,7 +2,14 @@ import React from "react";
 import "./style.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
 import ProductListingWithSearchBar from "../../../atoms/SearchBarWithBrowse";
-const SelectedProductStep = () => {
+import SearchBarWithBrowse from "../../../atoms/SearchBarWithBrowse";
+import { PRODUCT_SELECTION_TYPE } from "../../../../constants/sendAsGistCustomizationConfig";
+import { updateState } from "../../../../utils/clientFunctions";
+const SelectedProductStep = ({
+  productsList = [],
+  settingsState,
+  setSettingsState,
+}) => {
   return (
     <div>
       <Card>
@@ -13,20 +20,46 @@ const SelectedProductStep = () => {
         <>
           <RadioButton
             label="Any Product"
-            checked={true}
+            checked={
+              settingsState.productType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
+            }
             id="Any_Product"
             name="Any_Product"
-            onChange={(value) => {}}
+            onChange={(value) => {
+              setSettingsState((prevState) =>
+                updateState(
+                  "productType",
+                  PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
+                  prevState,
+                ),
+              );
+            }}
           />
           <RadioButton
             label="Specific Products"
-            checked={true}
+            checked={
+              settingsState.productType ==
+              PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT
+            }
             id="Specific_Products"
             name="Specific_Products"
-            onChange={(value) => {}}
+            onChange={(value) => {
+              setSettingsState((prevState) =>
+                updateState(
+                  "productType",
+                  PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT,
+                  prevState,
+                ),
+              );
+            }}
           />
         </>
-        <ProductListingWithSearchBar></ProductListingWithSearchBar>
+        {settingsState.productType ==
+          PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
+          <SearchBarWithBrowse
+            productsList={productsList}
+          ></SearchBarWithBrowse>
+        )}
       </Card>
     </div>
   );

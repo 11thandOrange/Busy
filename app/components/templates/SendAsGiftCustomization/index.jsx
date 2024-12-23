@@ -11,7 +11,10 @@ import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
 import { APP_TYPE } from "../../../utils/constants";
 import "../AnnouncementCustomization/Settings.css";
-const SendAsGiftCustomization = () => {
+import EnableGiftReceiptStep from "./enableGiftReceiptStep";
+import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
+import ReviewStep from "../AnnouncementCustomization/ReviewStep";
+const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
 
   const [selectedStep, setSelectedStep] = useState(0);
@@ -21,9 +24,11 @@ const SendAsGiftCustomization = () => {
   const prevSettingsState = useRef({});
   const [error, setError] = useState({});
   const editButtonsList = [
-    { id: 0, title: "Customize Appearance" },
-    { id: 1, title: "Enable App" },
-    { id: 2, title: "Enable App in Store" },
+    { id: 0, title: "Select Products" },
+    { id: 1, title: "Enable Gift Wrap" },
+    { id: 2, title: "Enable Gift Message" },
+    { id: 3, title: "Enable Gift Receipt" },
+    { id: 4, title: "Enable Gift Recipient Email" },
   ];
   const steps = [
     {
@@ -33,6 +38,7 @@ const SendAsGiftCustomization = () => {
       description: "Select Products",
       component: (
         <SelectedProductStep
+          productsList={productsList}
           settingsState={settingsState}
           setSettingsState={setSettingsState}
         ></SelectedProductStep>
@@ -67,21 +73,27 @@ const SendAsGiftCustomization = () => {
 
       title: "Enable Gift Receipt",
       description: "Enable Gift Receipt",
-      component: <h1>Enable Gift Receipt</h1>,
+      component: <EnableGiftReceiptStep></EnableGiftReceiptStep>,
     },
     {
       id: 4,
 
       title: "Enable Gift Recipient Email",
       description: "Enable Gift Recipient Email",
-      component: <h1>Enable Gift Recipient Email</h1>,
+      component: <EnableGiftReceiptEmail></EnableGiftReceiptEmail>,
     },
     {
       id: 5,
 
       title: "Review",
       description: "Review",
-      component: <h1>Review</h1>,
+      component: (
+        <ReviewStep
+          settingsState={settingsState}
+          setSelectedStep={setSelectedStep}
+          editButtonsList={editButtonsList}
+        />
+      ),
     },
   ];
   // const filterSteps = () => {

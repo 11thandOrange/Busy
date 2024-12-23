@@ -3,3 +3,37 @@
     justify-content: space-between;
     flex-grow: 2fr 1fr;
 }
+
+/* Container for search bar and browse button */
+.product-listing-with-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Selected products container */
+  .selected-products {
+    margin-top: 20px;
+  }
+  
+  .selected-products-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .selected-products-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .selected-products-item .product-title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
