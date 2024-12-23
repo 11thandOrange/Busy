@@ -6,7 +6,7 @@ import ProductPreviewCard from "../ProductPreviewCard";
 import SelectedProductStep from "./selectedProductStep";
 import EnableGiftWrapStep from "./enableGiftWrapStep";
 import EnableGiftMessageStep from "./enableGiftMessageStep";
-import { GIFT_CUSTOMIZATION_STATE } from "../../../constants/sendAsGistCustomizationConfig";
+import { GIFT_CUSTOMIZATION_STATE } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
 import { APP_TYPE } from "../../../utils/constants";
@@ -30,6 +30,10 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
     { id: 3, title: "Enable Gift Receipt" },
     { id: 4, title: "Enable Gift Recipient Email" },
   ];
+
+  const handleOnSave = () => {
+    console.log("handleOnSave", settingsState);
+  };
   const steps = [
     {
       id: 0,
@@ -73,14 +77,24 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
 
       title: "Enable Gift Receipt",
       description: "Enable Gift Receipt",
-      component: <EnableGiftReceiptStep></EnableGiftReceiptStep>,
+      component: (
+        <EnableGiftReceiptStep
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+        ></EnableGiftReceiptStep>
+      ),
     },
     {
       id: 4,
 
       title: "Enable Gift Recipient Email",
       description: "Enable Gift Recipient Email",
-      component: <EnableGiftReceiptEmail></EnableGiftReceiptEmail>,
+      component: (
+        <EnableGiftReceiptEmail
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+        ></EnableGiftReceiptEmail>
+      ),
     },
     {
       id: 5,
@@ -111,9 +125,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   //     return true;
   //   });
   // };
-  const handleOnSave = () => {
-    console.log("handleOnSave");
-  };
+
   return (
     <Page>
       {/* <Toast

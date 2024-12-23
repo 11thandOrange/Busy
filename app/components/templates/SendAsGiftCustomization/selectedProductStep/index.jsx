@@ -3,7 +3,7 @@ import "./style.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
 import ProductListingWithSearchBar from "../../../atoms/SearchBarWithBrowse";
 import SearchBarWithBrowse from "../../../atoms/SearchBarWithBrowse";
-import { PRODUCT_SELECTION_TYPE } from "../../../../constants/sendAsGistCustomizationConfig";
+import { PRODUCT_SELECTION_TYPE } from "../../../../constants/sendAsGiftCustomizationConfig";
 import { updateState } from "../../../../utils/clientFunctions";
 const SelectedProductStep = ({
   productsList = [],
@@ -58,6 +58,13 @@ const SelectedProductStep = ({
           PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
           <SearchBarWithBrowse
             productsList={productsList}
+            selectedProducts={settingsState.selectedProductList}
+            setSelectedProducts={(products) => {
+              setSettingsState((prevState) =>
+                updateState("selectedProductList", products, prevState),
+              );
+            }}
+           
           ></SearchBarWithBrowse>
         )}
       </Card>

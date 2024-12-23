@@ -40,7 +40,6 @@ export const loader = async ({ request }) => {
 };
 const GiftCustomization = () => {
   const products = useLoaderData();
-  console.log("prodcuts list", products);
 
   return (
     <div>

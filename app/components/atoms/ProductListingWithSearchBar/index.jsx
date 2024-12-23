@@ -1,8 +1,9 @@
 import { Button, Checkbox, Icon, Modal } from "@shopify/polaris";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomTextField from "../CustomTextField";
 import { SearchIcon } from "@shopify/polaris-icons";
 import "./style.css";
+
 export default function ProductListingWithSearchBar({
   open = false,
   onClose = () => {},
@@ -12,8 +13,12 @@ export default function ProductListingWithSearchBar({
   primaryActionOnClick = () => {},
   secondaryActionOnClick = () => {},
   productsList = [],
+  checkedProducts = [],
 }) {
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState(checkedProducts);
+  useEffect(() => {
+    setSelectedProducts(checkedProducts);
+  }, [checkedProducts]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const closePopup = () => {
@@ -22,12 +27,15 @@ export default function ProductListingWithSearchBar({
     onClose();
   };
 
-  const handleCheckboxChange = (productId) => {
+  const handleCheckboxChange = (product) => {
     setSelectedProducts((prevSelected) => {
-      if (prevSelected.includes(productId)) {
-        return prevSelected.filter((id) => id !== productId);
+      const exists = prevSelected.some(
+        (selected) => selected.id === product.id,
+      );
+      if (exists) {
+        return prevSelected.filter((selected) => selected.id !== product.id);
       } else {
-        return [...prevSelected, productId];
+        return [...prevSelected, product];
       }
     });
   };
@@ -73,8 +81,10 @@ export default function ProductListingWithSearchBar({
             <div key={product.id} className="product-item">
               <Checkbox
                 className="product-checkbox"
-                checked={selectedProducts.includes(product.id)}
-                onChange={() => handleCheckboxChange(product.id)}
+                checked={selectedProducts.some(
+                  (selected) => selected.id === product.id,
+                )}
+                onChange={() => handleCheckboxChange(product)}
               />
               <img
                 src={product?.media?.edges[0]?.node?.preview?.image?.url || ""}
