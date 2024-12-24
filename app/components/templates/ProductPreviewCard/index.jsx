@@ -6,6 +6,7 @@ import PreviewCardTimer from "../../atoms/PreviewCardTimer";
 import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
 import ImageRenderer from "../../atoms/ImageRenderer";
 import IMAGES from "../../../utils/Images";
+import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 
 const ProductPreviewCard = ({
   settingsState,
@@ -39,7 +40,7 @@ const ProductPreviewCard = ({
         );
 
       case APP_TYPE.SEND_AS_A_GIFT:
-        return <h1>Send as a gift</h1>;
+        return <SendAsGiftPreview settingsState={settingsState}></SendAsGiftPreview>;
       default:
         return null; // or handle other cases, if necessary
     }

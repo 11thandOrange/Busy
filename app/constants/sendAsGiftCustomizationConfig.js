@@ -7,7 +7,7 @@ export const GIFT_CUSTOMIZATION_STATE = {
   selectedProductList: [],
 
   enableGiftWrap: false,
-  giftWrapImage: "",
+  giftWrapImage: null,
   giftWrapTitle: "Gift",
   giftWrapPrice: "0",
   giftWrapDescription: "",
