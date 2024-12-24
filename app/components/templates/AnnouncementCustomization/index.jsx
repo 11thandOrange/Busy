@@ -51,7 +51,10 @@ const AnnouncementCustomization = ({
   const [error, setError] = useState({ ...ANNOUNCEMENT_BARS_ERROR_STATE });
   const [showLoader, setShowLoader] = useState(true);
   const [selectedStep, setSelectedStep] = useState(0);
-
+  const [toastConfig, setToastConfig] = useState({
+    isError: false,
+    message: "",
+  });
   const editButtonsList = [
     { id: 0, title: "Customize Appearance" },
     { id: 1, title: "Enable App" },
@@ -183,6 +186,13 @@ const AnnouncementCustomization = ({
   // Navigate Back on Successful Save
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
+      console.log("Announcement data here ftehcer", fetcher.data);
+
+      if (fetcher.data.success) {
+        setToastConfig({ isError: false, message: fetcher.data.message });
+      } else {
+        setToastConfig({ isError: true, message: fetcher.data.message });
+      }
       navigate("/apps/announcementBar?appId=1", {
         state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
       });
@@ -203,7 +213,8 @@ const AnnouncementCustomization = ({
     <Page>
       <Toast
         show={!isLoading(fetcher.state) && fetcher.data}
-        message="Settings saved"
+        message={toastConfig.message}
+        isError={toastConfig.isError}
       />
       <StepsRenderer
         tabs={filteredSteps}

@@ -19,7 +19,7 @@ import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
 
-import { check_app_active } from "../../../../utils/function";
+import { appActivate, check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
 import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
@@ -143,23 +143,22 @@ export async function action({ request }) {
           shop,
         },
       });
-      if(data.enable_now && await appActivate(shop, id, data.enable_now))
-      {
+      if (
+        data.enable_now &&
+        (await appActivate(shop, id, JSON.parse(data.enable_now), request)).success
+      ) {
         response = json({
           message: "Announcement Bar Added",
           success: true,
           announcement_bar,
         });
-      }
-      else
-      {
+      } else {
         response = json({
-          message: "Please Upgrade Your Plan",  
+          message: "Please Upgrade Your Plan",
           success: false,
-        })
+        });
       }
 
-      
       return response;
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
@@ -188,21 +187,21 @@ export async function action({ request }) {
           type,
         },
       });
-      if(data.enable_now && await appActivate(shop, id, data.enable_now))
-        {
-          response = json({
-            message: "Announcement Bar Updated",
-            success: true,
-            announcement_bar,
-          });
-        }
-        else
-        {
-          response = json({
-            message: "Please Upgrade Your Plan",  
-            success: false,
-          })
-        }
+      if (
+        data.enable_now &&
+        ((await appActivate(shop, id, JSON.parse(data.enable_now), request)).success)
+      ) {
+        console.log("App Activated", await appActivate(shop, id, JSON.parse(data.enable_now), request));
+        response = json({
+          message: "Announcement Bar Updated",
+          success: true
+        });
+      } else {
+        response = json({
+          message: "Please Upgrade Your Plan",
+          success: false,
+        });
+      }
       return response;
     case "DELETE":
       await db.Announcement_bar.deleteMany({
@@ -225,6 +224,8 @@ const route = () => {
   const announcementData = useLoaderData();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
+  console.log("Announcement data here", announcementData);
+
   const announcementBarsData = announcementData.announcement_bars;
   const announcementBarsSettings = announcementData.announcement_bar_setting;
   const isAppActive = announcementData.app_active;
