@@ -1,0 +1,40 @@
+.review-step{
+    width: 100%; 
+}
+
+.review-step  .step-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 -15px 15px;
+    border-bottom: 1px solid #cccc;
+    padding: 0 0 10px 20px;
+}
+
+.review-step ul.edit-button-list{
+    list-style: none;
+    padding: 0px 5px;
+}
+.review-step ul.edit-button-list li{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 0 5px 0;
+}
+.review-step ul.edit-button-list li p{
+    font-size: 12px;
+}
+
+.review-step .Polaris-Text--headingMd {
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+/* .review-step .editbtn-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+} */
+
+.review-step button.Polaris-Button {
+    margin: 0 10px 0 0;
+}

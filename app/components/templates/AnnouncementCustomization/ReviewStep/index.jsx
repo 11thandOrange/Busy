@@ -2,6 +2,7 @@ import { Button, Card, Icon, Text } from "@shopify/polaris";
 import React, { useCallback } from "react";
 import { EditIcon } from "@shopify/polaris-icons";
 import { isLoading } from "../../../../utils/clientFunctions";
+import "./style.css";
 
 const ReviewStep = ({
   settingsState,
@@ -27,12 +28,13 @@ const ReviewStep = ({
   );
 
   return (
-    <div>
-      <h3>Review Settings</h3>
+    <div className="review-step">
       <Card>
+      <div className="step-title">Review Settings</div>
         <ul className="edit-button-list">
           {editButtonsList.map((btn, index) => renderEditButton(btn, index))}
         </ul>
+        <div className="editbtn-container">
         <Text variant="headingMd" style={{ marginTop: "1rem" }}>
           All Done? Save & Publish!
         </Text>
@@ -46,6 +48,7 @@ const ReviewStep = ({
         >
           Save & Publish
         </Button>
+        </div>
       </Card>
     </div>
   );

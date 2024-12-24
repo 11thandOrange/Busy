@@ -4,7 +4,7 @@ import ToggleButtons from "../../../atoms/ToggleButtons";
 import { updateState } from "../../../../utils/clientFunctions";
 import ImageRenderer from "../../../atoms/ImageRenderer";
 import IMAGES from "../../../../utils/Images";
-
+import "./style.css"
 const EnableAppToggles = {
   Enable_Later: { name: "Enable Later", id: 0 },
   Enable_Now: { name: "Enable Now", id: 1 },
@@ -18,12 +18,13 @@ const EnableInShopifyStep = ({
 }) => {
   const toggleButtons = Object.values(EnableAppToggles);
   return (
-    <div>
+    <div className="Announcement-box">
       <Card>
         <Text>
           Your Announcement Bar Wont Show Up In Your Store Yet! You must enable
           it in the Shopify Theme Editor.
         </Text>
+        <div className="button-container">
         <Button
           variant="primary"
           onClick={() => {
@@ -43,9 +44,16 @@ const EnableInShopifyStep = ({
           }}
           checked={settingsState.enableAppInShopifyLater || false}
         ></Checkbox>
-        <Text>How to Enable app :</Text>
-        <ImageRenderer src={IMAGES.shoeDiscount}></ImageRenderer>
-        <a href="#">How to Enable app in shopify store</a>
+        </div>
+        <div className="text-container">
+          <Text>How to Enable app :</Text>
+        </div>
+        <div className="image-container">
+          <ImageRenderer src={IMAGES.shoeDiscount}></ImageRenderer>
+        </div>
+        <div className="link-container">
+          <a href="#">How to Enable app in shopify store</a>
+        </div>
       </Card>
     </div>
   );
