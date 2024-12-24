@@ -54,3 +54,8 @@ export const FETCHER_STATE = {
   LOADING: "loading",
   SUBMITTING: "submitting",
 };
+export const APP_LISTING = {
+  ANNOUNCEMENT_BARS: 1,
+  COUNTDOWN_TIMER: 2,
+  SEND_AS_A_GIFT: 3,
+};

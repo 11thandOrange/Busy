@@ -18,6 +18,7 @@ import { cors } from "remix-utils/cors";
 import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
+import { APP_LISTING } from "../../../../utils/constants";
 
 import { appActivate, check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
@@ -145,7 +146,7 @@ export async function action({ request }) {
       });
       if (
         data.enable_now &&
-        (await appActivate(shop, id, JSON.parse(data.enable_now), request)).success
+        (await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success
       ) {
         response = json({
           message: "Announcement Bar Added",
@@ -154,7 +155,7 @@ export async function action({ request }) {
         });
       } else {
         response = json({
-          message: "Please Upgrade Your Plan",
+          message: "Please Upgrade Your Plan to enable the app",
           success: false,
         });
       }
@@ -189,16 +190,15 @@ export async function action({ request }) {
       });
       if (
         data.enable_now &&
-        ((await appActivate(shop, id, JSON.parse(data.enable_now), request)).success)
+        ((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success)
       ) {
-        console.log("App Activated", await appActivate(shop, id, JSON.parse(data.enable_now), request));
         response = json({
           message: "Announcement Bar Updated",
           success: true
         });
       } else {
         response = json({
-          message: "Please Upgrade Your Plan",
+          message: "Please Upgrade Your Plan to enable the app",
           success: false,
         });
       }
@@ -224,7 +224,6 @@ const route = () => {
   const announcementData = useLoaderData();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
-  console.log("Announcement data here", announcementData);
 
   const announcementBarsData = announcementData.announcement_bars;
   const announcementBarsSettings = announcementData.announcement_bar_setting;
@@ -293,7 +292,6 @@ const route = () => {
         selectedType={selectedType}
         setSelectedType={(type) => {
           setSelectedType(type);
-          console.log("Selected Type", type);
 
           navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}`);
         }}

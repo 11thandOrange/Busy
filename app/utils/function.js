@@ -627,13 +627,14 @@ export const appActivate = async (shop, appId, enable, request) => {
   }
 
   try {
+    console.log('apId', appId)
     const existingMerchant = await db.merchant.findFirst({
       where: {
         appId: appId,
         shop: shop,
       },
     });
-
+console.log('exist merchant', existingMerchant)
     if (existingMerchant) {
       const updatedApp = await db.merchant.update({
         where: {
@@ -643,6 +644,7 @@ export const appActivate = async (shop, appId, enable, request) => {
           enabled: enable,
         },
       });
+
       return { success: true, updatedApp, isActive: enable };
     } else {
       const newMerchant = await db.merchant.create({
