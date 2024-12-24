@@ -22,3 +22,6 @@ export const GIFT_CUSTOMIZATION_STATE = {
   sendEmailUponCheckout: false,
   sendEmailWhenItemIsShipped: false,
 };
+export const GIFT_CUSTOMIZATION_ERROR_STATE = {
+  noProductError: false,
+};

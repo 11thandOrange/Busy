@@ -23,7 +23,10 @@ const SearchBarWithBrowse = ({
           prefix={<Icon source={SearchIcon} tone="base" />}
           placeholder="Search products or collections"
           onValueChange={toggleModal}
-          autoFocus
+          autoFocus={true}
+          errorMessage={
+            selectedProducts.length == 0 && "Please select at least one product"
+          }
         />
         <Button onClick={toggleModal}>Browse</Button>
       </div>
@@ -41,9 +44,11 @@ const SearchBarWithBrowse = ({
 
       {/* Selected products */}
       <div className="selected-products">
-        <Text as="h3" variant="headingMd">
-          Selected Products
-        </Text>
+        {selectedProducts.length > 0 && (
+          <Text as="h3" variant="headingMd">
+            Selected Products
+          </Text>
+        )}
         {selectedProducts?.map((product) => (
           <div key={product.id} className="selected-products-item">
             <img

@@ -73,6 +73,7 @@ const AnnouncementCustomization = ({
       general_setting: JSON.stringify(settingsState.generalSettings),
       theme_style: JSON.stringify(settingsState.themeStyle),
       theme_settings: JSON.stringify(settingsState.themeSettings),
+      enable_now: settingsState.enableApp,
       type: announcementBarType,
     };
 

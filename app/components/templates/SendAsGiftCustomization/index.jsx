@@ -6,7 +6,10 @@ import ProductPreviewCard from "../ProductPreviewCard";
 import SelectedProductStep from "./selectedProductStep";
 import EnableGiftWrapStep from "./enableGiftWrapStep";
 import EnableGiftMessageStep from "./enableGiftMessageStep";
-import { GIFT_CUSTOMIZATION_STATE } from "../../../constants/sendAsGiftCustomizationConfig";
+import {
+  GIFT_CUSTOMIZATION_ERROR_STATE,
+  GIFT_CUSTOMIZATION_STATE,
+} from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
 import { APP_TYPE } from "../../../utils/constants";
@@ -22,7 +25,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
     ...GIFT_CUSTOMIZATION_STATE,
   });
   const prevSettingsState = useRef({});
-  const [error, setError] = useState({});
+  const [error, setError] = useState({ ...GIFT_CUSTOMIZATION_ERROR_STATE });
   const editButtonsList = [
     { id: 0, title: "Select Products" },
     { id: 1, title: "Enable Gift Wrap" },
