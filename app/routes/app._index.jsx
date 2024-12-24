@@ -12,6 +12,7 @@ import IMAGES from "../utils/Images";
 import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
 import EnableAppPopup from "../components/templates/EnableAppPopup";
+import { getAppEmbedStatus, getAppEmbedUrl } from "../utils/store-helper";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -49,7 +50,8 @@ export const loader = async ({ request }) => {
     };
   });
 
-  const response = { apps, categories: await getCategories(), widgets };
+  const response = { apps, categories: await getCategories(), widgets,  app_embed: await getAppEmbedStatus(session),
+    app_embed_url: await getAppEmbedUrl(session) };
   return cors(request, response);
 };
 export const action = async ({ request }) => {
