@@ -11,6 +11,7 @@ const ReviewStep = ({
   setSelectedStep,
   editButtonsList = [],
   onSaveAndPublish = () => {},
+  error = false,
 }) => {
   const renderEditButton = (btn, index) => (
     <li key={btn.id} className="edit-button-item">
@@ -41,6 +42,7 @@ const ReviewStep = ({
           style={{ marginTop: "0.5rem" }}
           onClick={onSaveAndPublish}
           loading={isLoading(fetcherState)}
+          disabled={error}
         >
           Save & Publish
         </Button>

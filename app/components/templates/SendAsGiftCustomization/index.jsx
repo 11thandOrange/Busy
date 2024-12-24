@@ -48,6 +48,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
           productsList={productsList}
           settingsState={settingsState}
           setSettingsState={setSettingsState}
+          setError={setError}
         ></SelectedProductStep>
       ),
     },
@@ -109,6 +110,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
           settingsState={settingsState}
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
+          error={checkError(error)}
         />
       ),
     },
