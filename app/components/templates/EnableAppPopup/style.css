@@ -47,3 +47,21 @@
     color: #4f4f4f;
   }
   
+
+.enable-app-popup .popup-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  flex-direction: row;
+}
+
+.enable-app-popup .popup-content p, .enable-app-popup .popup-header {
+  margin: 0px;
+}
+
+.enable-app-popup button.Polaris-Button {
+  position: relative;
+  top: -10px;
+  right: 30px;
+}
