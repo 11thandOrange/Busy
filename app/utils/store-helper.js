@@ -9,7 +9,6 @@ export const getActiveTheme = async(shop) =>{
 
 export const checkAppEmbed = async (themeId, session) => {
   try {
-    return false;
     const response = await fetch(`https://${session.shop}/admin/api/2024-01/themes/${themeId}/assets.json?asset[key]=config/settings_data.json`, {
       method: 'GET',
       headers: {
@@ -34,10 +33,10 @@ console.log('data test', data)
     } catch (jsonError) {
       throw new Error('Error parsing JSON from asset value: ' + jsonError.message);
     } 
-    const blockId = `shopify://apps/busybuddy/blocks/star_rating/424c328e-0fdb-472a-8d79-f5ec6b5adf31`;
+    const blockId = `shopify://apps/busybuddy/blocks/star_rating/`;
     const disable = Object.values(current.current.blocks).find(block => block.type.includes(blockId));
     if (disable) {
-      return disable.disabled;
+      return !(disable.disabled);
     } else {
       return false;
     }
