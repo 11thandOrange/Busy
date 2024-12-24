@@ -11,11 +11,7 @@ const Customization = () => {
   const fetcher = useFetcher();
   const [fetchQuery] = useSearchParams();
   const [customizationData, setCustomizationData] = useState(null);
-  const [appActivationState, setAppActivationState] = useState({
-    enableApp: false,
-    enableAppInStore: false,
-    enableAppInStoreURL: "",
-  });
+  const [appActivationState, setAppActivationState] = useState(null);
   const [colorTheme, setColorTheme] = useState("light");
   const barId = fetchQuery.get("id");
   useEffect(() => {

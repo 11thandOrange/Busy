@@ -29,6 +29,7 @@ import { isLoading, checkError } from "../../../utils/clientFunctions";
 import { APP_TYPE, ROUTES } from "../../../utils/constants";
 
 import "./Settings.css";
+import CustomSpinner from "../../atoms/Spinner";
 
 const AnnouncementCustomization = ({
   announcementBarType,
@@ -61,6 +62,9 @@ const AnnouncementCustomization = ({
     { id: 2, title: "Enable App in Store" },
   ];
   editButtonsList.filter((btn) => {
+    if (appActivationState == null) {
+      return;
+    }
     if (
       (btn.id === 1 && appActivationState.enableApp) ||
       (btn.id === 2 && appActivationState.enableAppInStore)
@@ -145,7 +149,9 @@ const AnnouncementCustomization = ({
         <EnableInShopifyStep
           settingsState={settingsState}
           setSettingsState={setSettingsState}
-          enableAppInStoreURL={appActivationState.enableAppInStoreURL}
+          enableAppInStoreURL={
+            appActivationState && appActivationState.enableAppInStoreURL
+          }
         />
       ),
     },
@@ -161,8 +167,10 @@ const AnnouncementCustomization = ({
       component: (
         <ReviewStep
           settingsState={settingsState}
-          enableAppInStore={appActivationState.enableAppInStore}
-          enableApp={appActivationState.enableApp}
+          enableAppInStore={
+            appActivationState && appActivationState.enableAppInStore
+          }
+          enableApp={appActivationState && appActivationState.enableApp}
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
           onSaveAndPublish={handleOnSave}
@@ -186,8 +194,6 @@ const AnnouncementCustomization = ({
   // Navigate Back on Successful Save
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
-      console.log("Announcement data here ftehcer", fetcher.data);
-
       if (fetcher.data.success) {
         setToastConfig({ isError: false, message: fetcher.data.message });
       } else {
@@ -200,6 +206,9 @@ const AnnouncementCustomization = ({
   }, [fetcher]);
 
   const filteredSteps = steps.filter((step) => {
+    if (appActivationState == null) {
+      return;
+    }
     if (
       (step.id === 1 && appActivationState.enableApp) ||
       (step.id === 2 && appActivationState.enableAppInStore)
@@ -216,43 +225,51 @@ const AnnouncementCustomization = ({
         message={toastConfig.message}
         isError={toastConfig.isError}
       />
-      <StepsRenderer
-        tabs={filteredSteps}
-        selected={selectedStep}
-        setSelected={setSelectedStep}
-        error={error}
-      />
-      <div className="customization-container">
-        <ManageDataChange
-          newState={settingsState}
-          prevState={prevSettingsState.current}
-          handleSaveChanges={handleOnSave}
-          handleDiscardChanges={() => {
-            if (Object.keys(prevSettingsState.current).length > 0) {
-              setSettingsState(prevSettingsState.current);
-            }
-            navigate("/apps/announcementBar?appId=1", {
-              state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
-            });
-          }}
-          fetcherState={fetcher.state}
-          isError={checkError(error)}
-          showBarInitially={true}
-          showSaveButton={selectedStep == filteredSteps.length - 1}
-        />
-        <div className="customization-left-section">
-          {filteredSteps[selectedStep].component}
-        </div>
-        <div className="customization-right-section">
-          <ProductPreviewCard
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-            announcementBarType={announcementBarType}
-            appType={APP_TYPE.ANNOUNCEMENT_BARS}
-            colorTheme={colorTheme}
+
+      {appActivationState ? (
+        <>
+          {" "}
+          <StepsRenderer
+            tabs={filteredSteps}
+            selected={selectedStep}
+            setSelected={setSelectedStep}
+            error={error}
           />
-        </div>
-      </div>
+          <div className="customization-container">
+            <ManageDataChange
+              newState={settingsState}
+              prevState={prevSettingsState.current}
+              handleSaveChanges={handleOnSave}
+              handleDiscardChanges={() => {
+                if (Object.keys(prevSettingsState.current).length > 0) {
+                  setSettingsState(prevSettingsState.current);
+                }
+                navigate("/apps/announcementBar?appId=1", {
+                  state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
+                });
+              }}
+              fetcherState={fetcher.state}
+              isError={checkError(error)}
+              showBarInitially={true}
+              showSaveButton={selectedStep == filteredSteps.length - 1}
+            />
+            <div className="customization-left-section">
+              {filteredSteps[selectedStep]?.component}
+            </div>
+            <div className="customization-right-section">
+              <ProductPreviewCard
+                setSettingsState={setSettingsState}
+                settingsState={settingsState}
+                announcementBarType={announcementBarType}
+                appType={APP_TYPE.ANNOUNCEMENT_BARS}
+                colorTheme={colorTheme}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <CustomSpinner></CustomSpinner>
+      )}
     </Page>
   );
 };

@@ -609,6 +609,7 @@ export const addScriptTag = async (shop) => {
 export const appActivate = async (shop, appId, enable, request) => {
   const subscription = await check_subscription(request);
   appId = parseInt(appId);
+  enable = JSON.parse(enable);
   const apps = await db.merchant.findMany({
     where: {
       shop: shop,

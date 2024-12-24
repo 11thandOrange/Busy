@@ -145,18 +145,19 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now &&
-        (await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success
+        data.enable_now && data.enable_now != "undefined" &&
+        !(await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, data.enable_now, request)).success
       ) {
+        response = json({
+          message: "Please Upgrade Your Plan to enable the app",
+          success: false,
+        });
+        
+      } else {
         response = json({
           message: "Announcement Bar Added",
           success: true,
           announcement_bar,
-        });
-      } else {
-        response = json({
-          message: "Please Upgrade Your Plan to enable the app",
-          success: false,
         });
       }
 
@@ -189,17 +190,18 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now &&
-        ((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success)
+        data.enable_now && data.enable_now != "undefined" &&
+        !((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, data.enable_now, request)).success)
       ) {
-        response = json({
-          message: "Announcement Bar Updated",
-          success: true
-        });
-      } else {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
           success: false,
+        });
+        
+      } else {
+        response = json({
+          message: "Announcement Bar Updated",
+          success: true
         });
       }
       return response;
