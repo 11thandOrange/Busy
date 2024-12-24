@@ -9,6 +9,7 @@ import { getCategories, getShopName } from "../../../utils/function";
 import GoBack from "../../../components/atoms/GoBack";
 import { CATEGORIES_ENUM } from "../../../utils/constants";
 import { authenticate } from "../../../shopify.server";
+import { getAppEmbedStatus, getAppEmbedUrl } from "../../../utils/store-helper";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -42,7 +43,8 @@ export const loader = async ({ request }) => {
     };
   });
 
-  const response = { apps, categories: await getCategories() };
+  const response = { apps, categories: await getCategories(), app_embed: await getAppEmbedStatus(session),
+    app_embed_url: await getAppEmbedUrl(session) };
   return cors(request, response);
 };
 export const action = async ({ request }) => {

@@ -3,7 +3,7 @@ import { Button, Card, Icon } from "@shopify/polaris";
 import { XIcon } from "@shopify/polaris-icons";
 import "./style.css";
 
-const EnableAppPopup = ({ show = false }) => {
+const EnableAppPopup = ({ show = false, enableAppUrl = "" }) => {
   const [isVisible, setIsVisible] = useState(show);
 
   const handleClose = () => {
@@ -22,7 +22,9 @@ const EnableAppPopup = ({ show = false }) => {
       </div>
       <div className="popup-content">
         <p>Complete the installation and your app will show on your store.</p>
-        <Button primary>Enable in your theme Editor</Button>
+        <Button onClick={() => window.open(enableAppUrl, "_blank")} primary>
+          Enable in your theme Editor
+        </Button>
       </div>
     </Card>
   );
