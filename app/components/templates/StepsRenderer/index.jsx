@@ -7,26 +7,28 @@ const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
   );
 
   return (
-    <div className="tabs-container">
-      <div className="tabs-header">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab.id || index}
-            className={`tab-button ${selected === index ? "active" : ""}`}
-            onClick={() => handleTabChange(index)}
-          >
-            <div className="tab-content">
-              <div className="tab-circle">
-                {/* {selected === index ? index + 1 : "✔"} */}
-                {index + 1}
+    <div className="app-tabs">
+      <div className="tabs-container">
+        <div className="tabs-header">
+          {tabs.map((tab, index) => (
+            <button
+              key={tab.id || index}
+              className={`tab-button ${selected === index ? "active" : ""}`}
+              onClick={() => handleTabChange(index)}
+            >
+              <div className="tab-content">
+                <div className="tab-circle">
+                  {/* {selected === index ? index + 1 : "✔"} */}
+                  {index + 1}
+                </div>
+                <div className="tab-details">
+                  <div className="tab-title">{tab.title}</div>
+                  <div className="tab-description">{tab.description}</div>
+                </div>
               </div>
-              <div className="tab-details">
-                <div className="tab-title">{tab.title}</div>
-                <div className="tab-description">{tab.description}</div>
-              </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
