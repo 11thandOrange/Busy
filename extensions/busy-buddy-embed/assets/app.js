@@ -8,7 +8,9 @@ const elementIdMap = {
   'busyBuddyInactiveTabMessage': 2,
   'busyBuddyCartNotice': 3,
   'busyBuddyCountdownTimer': 4,
+  'busyBuddySendAsGift': 5
 };
+var apps = ['busyBuddyAnnouncementBar', 'busyBuddyInactiveTabMessage', 'busyBuddyCartNotice', 'busyBuddyCountdownTimer', 'busyBuddySendAsGift'];
 
 function fetch_request(url, app)
 {
@@ -51,7 +53,6 @@ function fetch_request(url, app)
           console.error('There was a problem with the fetch operation:', error);
         });
 }
-var apps = ['busyBuddyAnnouncementBar', 'busyBuddyInactiveTabMessage', 'busyBuddyCartNotice', 'busyBuddyCountdownTimer'];
 
 const trackImpressionsForDynamicElements = () => {
   const observer = new MutationObserver((mutationsList) => {

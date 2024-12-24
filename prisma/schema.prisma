@@ -174,50 +174,53 @@ model countdown_timer {
   shop                  String            @unique
   createdAt             DateTime            @default(now())
 }
-
-model Gift{
+model Gift {
   id                        Int           @id @default(autoincrement())
   selectionType             String?       @default("any")
   productList               String?
   giftWrapStatus            Boolean       @default(false)
-  gift_wrap                 GiftWrap[]   @relation("GiftWraps")
-  giftMessageStatus            Boolean       @default(false)
-  gift_message                 GiftMessage[]   @relation("GiftMessages")
-  giftRecieptStatus            Boolean       @default(false)
-  gift_reciept                 GiftReciept[]   @relation("GiftReciepts")
+  gift_wrap                 GiftWrap?     @relation("GiftWrapRelation")
+  giftWrapId                Int?          @unique
+  giftMessageStatus         Boolean       @default(false)
+  gift_message              GiftMessage?  @relation("GiftMessageRelation")
+  giftMessageId             Int?          @unique
+  giftRecieptStatus         Boolean       @default(false)
+  gift_reciept              GiftReciept?  @relation("GiftRecieptRelation")
+  giftRecieptId             Int?          @unique
   giftAppearanceSetting     String?
   appearanceRules           String?
   accountSetting            String?
   shop                      String?
-  createdAt                 DateTime      @default(now())  
+  createdAt                 DateTime      @default(now())
 }
 
-model GiftWrap{
-    id                      Int           @id @default(autoincrement())
-    title                   String? 
-    description             String?
-    price                   Int
-    image                   String? 
-    productId               Int? 
-    giftId                  Int?
-    gift                    Gift?         @relation("GiftWraps", fields: [giftId], references: [id])
-    createdAt               DateTime      @default(now())
+model GiftWrap {
+  id                      Int           @id @default(autoincrement())
+  title                   String? 
+  description             String?
+  price                   Int
+  image                   String? 
+  giftId                  Int?          @unique
+  gift                    Gift?         @relation("GiftWrapRelation", fields: [giftId], references: [id])
+  createdAt               DateTime      @default(now())
 }
-model GiftMessage{
-    id                      Int           @id @default(autoincrement())
-    title                   String? 
-    description             String?
-    productId               Int? 
-    giftId                  Int?
-    gift                    Gift?         @relation("GiftMessages", fields: [giftId], references: [id])
-    createdAt               DateTime      @default(now())
+
+model GiftMessage {
+  id                      Int           @id @default(autoincrement())
+  title                   String? 
+  description             String?
+  productId               Int? 
+  giftId                  Int?          @unique
+  gift                    Gift?         @relation("GiftMessageRelation", fields: [giftId], references: [id])
+  createdAt               DateTime      @default(now())
 }
-model GiftReciept{
-    id                      Int           @id @default(autoincrement())
-    title                   String? 
-    description             String?
-    productId               Int? 
-    giftId                  Int?
-    gift                    Gift?         @relation("GiftReciepts", fields: [giftId], references: [id])
-    createdAt               DateTime      @default(now())
+
+model GiftReciept {
+  id                      Int           @id @default(autoincrement())
+  title                   String? 
+  description             String?
+  productId               Int? 
+  giftId                  Int?          @unique
+  gift                    Gift?         @relation("GiftRecieptRelation", fields: [giftId], references: [id])
+  createdAt               DateTime      @default(now())
 }
