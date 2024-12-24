@@ -109,7 +109,7 @@ const AnnouncementCustomization = ({
         </span>
       ),
       title: "Customize Appearance",
-      description: "Products in the offer",
+      description: "Customize announcement bar",
       component: (
         <CustomizationStep
           settingsState={settingsState}
@@ -128,7 +128,7 @@ const AnnouncementCustomization = ({
         </span>
       ),
       title: "Enable App",
-      description: "Discount type & amount",
+      description: "Enable your app",
       component: (
         <EnableAppStep
           setSettingsState={setSettingsState}
@@ -144,7 +144,7 @@ const AnnouncementCustomization = ({
         </span>
       ),
       title: "Enable In Shopify Store",
-      description: "Where & how to display",
+      description: "Enable your app in store",
       component: (
         <EnableInShopifyStep
           settingsState={settingsState}
@@ -163,7 +163,7 @@ const AnnouncementCustomization = ({
         </span>
       ),
       title: "Review",
-      description: "Offer summary & publish",
+      description: "Review your changes",
       component: (
         <ReviewStep
           settingsState={settingsState}

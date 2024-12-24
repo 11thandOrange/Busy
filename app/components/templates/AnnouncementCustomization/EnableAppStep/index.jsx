@@ -1,12 +1,14 @@
 import { Card, RadioButton, Text } from "@shopify/polaris";
 import React from "react";
 import { updateState } from "../../../../utils/clientFunctions";
+import "./style.css";
 
 const EnableAppStep = ({ setSettingsState, settingsState }) => {
   return (
-    <div>
+    <div className="enable-app-step">
+      
       <Card>
-        <Text>Enable App</Text>
+        <div className="step-title">Enable App</div>
 
         <>
           <RadioButton

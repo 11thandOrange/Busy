@@ -1,0 +1,13 @@
+.enable-app-step{
+    width: 100%; 
+}
+
+.enable-app-step .step-title{
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+
+.enable-app-step .Polaris-Choice{
+    width: 50%;
+}
