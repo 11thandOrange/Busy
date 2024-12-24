@@ -59,3 +59,8 @@ export const APP_LISTING = {
   COUNTDOWN_TIMER: 2,
   SEND_AS_A_GIFT: 3,
 };
+export const MAX_APP_ALLOWED_SUBSCRIPTION_TYPES = {
+  FREE: 1,
+  STARTER: 4,
+  ENTERPRISE:20
+};

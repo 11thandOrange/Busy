@@ -145,8 +145,8 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now && data.enable_now != "undefined" &&
-        !(await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, data.enable_now, request)).success
+        data.enable_now == "true" &&
+        (await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success
       ) {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
@@ -190,8 +190,8 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now && data.enable_now != "undefined" &&
-        !((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, data.enable_now, request)).success)
+        data.enable_now == "true" &&
+        ((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success)
       ) {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
