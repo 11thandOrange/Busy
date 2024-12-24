@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTextField from "../CustomTextField";
 import { SearchIcon, DeleteIcon } from "@shopify/polaris-icons";
 import { Button, Icon, Text } from "@shopify/polaris";

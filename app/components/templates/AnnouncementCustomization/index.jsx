@@ -175,6 +175,7 @@ const AnnouncementCustomization = ({
           editButtonsList={editButtonsList}
           onSaveAndPublish={handleOnSave}
           fetcherState={fetcher.state}
+          error={error}
         />
       ),
     },
@@ -194,6 +195,7 @@ const AnnouncementCustomization = ({
   // Navigate Back on Successful Save
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
+      setSelectedStep(0);
       if (fetcher.data.success) {
         setToastConfig({ isError: false, message: fetcher.data.message });
       } else {

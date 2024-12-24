@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./style.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
 import ProductListingWithSearchBar from "../../../atoms/SearchBarWithBrowse";
@@ -9,7 +9,23 @@ const SelectedProductStep = ({
   productsList = [],
   settingsState,
   setSettingsState,
+  setError = () => {},
 }) => {
+  useEffect(() => {
+    if (settingsState.selectedProductList) {
+      if (settingsState.productType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT) {
+        setError((prevState) => ({
+          ...prevState,
+          noProductError: false,
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          noProductError: settingsState.selectedProductList.length == 0,
+        }));
+      }
+    }
+  }, [settingsState.selectedProductList, settingsState.productType]);
   return (
     <div>
       <Card>
@@ -64,7 +80,6 @@ const SelectedProductStep = ({
                 updateState("selectedProductList", products, prevState),
               );
             }}
-           
           ></SearchBarWithBrowse>
         )}
       </Card>
