@@ -25,29 +25,26 @@ export const checkAppEmbed = async (themeId, session) => {
     if (!data || !data.asset || !data.asset.value) {
       throw new Error('Asset value is missing in the response.');
     }
-
+console.log('data test', data)
     // Parse the JSON value inside the asset
     let current;
     try {
       current = JSON.parse(data.asset.value);
     } catch (jsonError) {
       throw new Error('Error parsing JSON from asset value: ' + jsonError.message);
-    }
-
-    // Check if the embed block exists and is disabled
-    const blockId = `shopify://apps/busybuddy/blocks/star_rating/${process.env.SHOPIFY_BUSYBUDDY_EMBED_ID}`;
-    const disable = Object.values(current.current.blocks).find(block => block.type === blockId);
-
+    } 
+    const blockId = `shopify://apps/busybuddy/blocks/star_rating/424c328e-0fdb-472a-8d79-f5ec6b5adf31`;
+    const disable = Object.values(current.current.blocks).find(block => block.type.includes(blockId));
     if (disable) {
       return disable.disabled;
     } else {
-      throw new Error('Embed block not found.');
+      return false;
     }
 
   } catch (error) {
     // Log detailed error and return error message
     console.error('Error fetching app embeds:', error);
-    return { error: error.message };
+    return false;
   }
 };
 

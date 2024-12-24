@@ -140,12 +140,23 @@ export async function action({ request }) {
           shop,
         },
       });
+      if(data.enable_now && await appActivate(shop, id, data.enable_now))
+      {
+        response = json({
+          message: "Announcement Bar Added",
+          success: true,
+          announcement_bar,
+        });
+      }
+      else
+      {
+        response = json({
+          message: "Please Upgrade Your Plan",  
+          success: false,
+        })
+      }
 
-      response = json({
-        message: "Announcement Bar Added",
-        success: true,
-        announcement_bar,
-      });
+      
       return response;
     case "SETTING_CREATE":
       await db.announcement_bar_setting.upsert({
@@ -174,7 +185,21 @@ export async function action({ request }) {
           type,
         },
       });
-      response = json({ message: "Announcement Bar Updated", success: true });
+      if(data.enable_now && await appActivate(shop, id, data.enable_now))
+        {
+          response = json({
+            message: "Announcement Bar Updated",
+            success: true,
+            announcement_bar,
+          });
+        }
+        else
+        {
+          response = json({
+            message: "Please Upgrade Your Plan",  
+            success: false,
+          })
+        }
       return response;
     case "DELETE":
       await db.Announcement_bar.deleteMany({

@@ -631,3 +631,23 @@ export const appActivate = async(shop, appId, enable)=>{
     throw new Error("Failed to update or create merchant");
   }
 }
+export const createProduct = async(session, data)=>{
+  const product = new admin.rest.resources.Product({session: session});
+    product.title = data.title;
+    product.body_html = `<strong>${data.description}</strong>`;
+    product.vendor = "BusyBuddy Shop";
+    product.product_type = "gift";
+    product.status = "active";
+    await product.save({
+      update: true,
+    });
+}
+export const attachImage = async(session, product_id, data) =>{
+  const image = new admin.rest.resources.Image({session: session});
+  image.product_id = product_id;
+  image.position = 1;
+  image.attachment = data.image;
+  await image.save({
+  update: true,
+});
+}
