@@ -6,8 +6,8 @@ export const GIFT_CUSTOMIZATION_STATE = {
   productType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
   selectedProductList: [],
   giftWrapImage: "",
-  giftWrapTitle: "",
-  giftWrapPrice: "",
+  giftWrapTitle: "Gift",
+  giftWrapPrice: "0",
   giftWrapDescription: "",
 
   giftMessageTitle: "",

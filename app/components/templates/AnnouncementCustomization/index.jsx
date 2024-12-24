@@ -175,6 +175,7 @@ const AnnouncementCustomization = ({
           editButtonsList={editButtonsList}
           onSaveAndPublish={handleOnSave}
           fetcherState={fetcher.state}
+          error={error}
         />
       ),
     },
