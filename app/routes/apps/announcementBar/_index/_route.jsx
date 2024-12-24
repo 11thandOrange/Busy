@@ -145,7 +145,7 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now &&
+        data.enable_now == "true" &&
         (await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success
       ) {
         response = json({
@@ -189,7 +189,7 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now &&
+        data.enable_now == "true" &&
         ((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success)
       ) {
         response = json({

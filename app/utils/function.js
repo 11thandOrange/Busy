@@ -63,8 +63,6 @@ export const check_subscription = async (request) => {
     };
   }
   const subscription = billingCheck.appSubscriptions[0];
-  console.log("Subscription found:", subscription);
-
   return {
     hasSubscription: true,
     subscription,
@@ -609,6 +607,8 @@ export const addScriptTag = async (shop) => {
 export const appActivate = async (shop, appId, enable, request) => {
   const subscription = await check_subscription(request);
   appId = parseInt(appId);
+  enable = JSON.parse(enable);
+  if(enable != true) return;
   const apps = await db.merchant.findMany({
     where: {
       shop: shop,
@@ -627,14 +627,12 @@ export const appActivate = async (shop, appId, enable, request) => {
   }
 
   try {
-    console.log('apId', appId)
     const existingMerchant = await db.merchant.findFirst({
       where: {
         appId: appId,
         shop: shop,
       },
     });
-console.log('exist merchant', existingMerchant)
     if (existingMerchant) {
       const updatedApp = await db.merchant.update({
         where: {
@@ -657,7 +655,6 @@ console.log('exist merchant', existingMerchant)
       return { success: true, newMerchant, isActive: enable };
     }
   } catch (error) {
-    console.log(error, 'cehck')
     throw new Error("Failed to update or create merchant d", error);
   }
 };
