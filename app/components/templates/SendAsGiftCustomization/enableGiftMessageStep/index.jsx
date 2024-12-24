@@ -1,14 +1,23 @@
-import { Card, DropZone } from "@shopify/polaris";
+import { Card, Checkbox, DropZone } from "@shopify/polaris";
 import React from "react";
 import CustomTextField from "../../../atoms/CustomTextField";
 import "./style.css";
 import { updateState } from "../../../../utils/clientFunctions";
 const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
-  
-
   return (
     <div>
       <Card>
+        <Checkbox
+          label="Enable Gift Message"
+          checked={settingsState.enableGiftMessage}
+          onChange={(value) => {
+            console.log("onchanging", value);
+
+            setSettingsState((prevState) =>
+              updateState("enableGiftMessage", value, prevState),
+            );
+          }}
+        ></Checkbox>
         <CustomTextField
           type={"text"}
           label={"Gift Message Title"}

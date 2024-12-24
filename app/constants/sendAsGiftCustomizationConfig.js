@@ -5,11 +5,14 @@ export const PRODUCT_SELECTION_TYPE = {
 export const GIFT_CUSTOMIZATION_STATE = {
   productType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
   selectedProductList: [],
+
+  enableGiftWrap: false,
   giftWrapImage: "",
   giftWrapTitle: "Gift",
   giftWrapPrice: "0",
   giftWrapDescription: "",
 
+  enableGiftMessage: false,
   giftMessageTitle: "",
   giftMessageDescription: "",
 

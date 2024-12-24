@@ -1,0 +1,10 @@
+.gift-customization-container{
+display: flex;
+flex-direction: column;
+margin-bottom: 20px;
+}
+.color-emoji-container{
+display: flex;
+justify-content: space-between;
+align-items: center;
+}

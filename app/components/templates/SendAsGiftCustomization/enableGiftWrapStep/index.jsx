@@ -1,13 +1,26 @@
-import { Card, DropZone } from "@shopify/polaris";
+import { Card, Checkbox, DropZone } from "@shopify/polaris";
 import React from "react";
 import CustomTextField from "../../../atoms/CustomTextField";
 import "./style.css";
 import DropZoneWithImageFileUpload from "../../../atoms/DropZoneWithImageFileUpload";
 import { updateState } from "../../../../utils/clientFunctions";
+import GiftCustomization from "../../AnnouncementCustomization/GiftCustomization";
 const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
   return (
     <div>
       <Card>
+        <GiftCustomization></GiftCustomization>
+        <Checkbox
+          label="Enable Gift Wrap"
+          checked={settingsState.enableGiftWrap}
+          onChange={(value) => {
+            console.log("onchanging", value);
+
+            setSettingsState((prevState) =>
+              updateState("enableGiftWrap", value, prevState),
+            );
+          }}
+        ></Checkbox>
         <DropZoneWithImageFileUpload
           label="Gift Wrap Image (optional; supported image types: gif, jpg and png)"
           onImageUpload={(value) => {
