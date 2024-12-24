@@ -197,7 +197,6 @@ export async function action({ request }) {
           type,
         },
       });
-      console.log(await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS), 'app activatei')
       if (
         data.enable_now == "true" && await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS)
       ) {

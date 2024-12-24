@@ -147,7 +147,7 @@ function CheckBars({
         return (
           <PopoverContent
             options={announcementPopoverData}
-            heading={emptyStateBtnText}
+            heading={"create"}
             onSelect={handleCreateClick}
           />
         );
