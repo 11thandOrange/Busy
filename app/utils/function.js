@@ -544,7 +544,7 @@ export const can_active = async (request, shop, appId) => {
       console.log(setting.length)
       return setting.length < 1;
     } else {
-      return setting.length <= 4 && (await hasSubscription).hasSubscription()
+      return setting.length < 4 && (hasSubscription).hasSubscription()
         ? true
         : false;
     }

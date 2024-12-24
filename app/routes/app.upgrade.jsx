@@ -2,10 +2,10 @@ import {authenticate} from "../shopify.server";
 
 
 export const loader = async ({ request }) => {
+  const { billing } = await authenticate.admin(request);
   const url = new URL(request.url);
   const queryParams = new URLSearchParams(url.search);
   const plan = queryParams.get('plan');
-  const { billing } = await authenticate.admin(request);
  
   await billing.require({
     plans: [plan],
