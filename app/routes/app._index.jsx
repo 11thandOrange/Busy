@@ -160,7 +160,7 @@ export default function Index() {
           <Layout.Section>
             {" "}
             <EnableAppPopup
-              show={data.app_embed}
+              show={!data.app_embed}
               enableAppUrl={data.app_embed_url}
             ></EnableAppPopup>
           </Layout.Section>

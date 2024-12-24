@@ -56,6 +56,6 @@ export const getAppEmbedStatus = async (session) => {
 
 export const getAppEmbedUrl = async (session) => {
   const activeTheme = await getActiveTheme(session.shop);
-  let url = `https://${session.shop}/admin/themes/${activeTheme.id}/editor?context=apps}`;
+  let url = `https://${session.shop}/admin/themes/${activeTheme.id}/editor?context=apps`;
   return url;
 }
