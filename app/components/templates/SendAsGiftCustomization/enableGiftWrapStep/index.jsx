@@ -9,7 +9,7 @@ const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
   return (
     <div>
       <Card>
-        <GiftCustomization></GiftCustomization>
+        <GiftCustomization setSettingsState={setSettingsState} settingsState={settingsState} ></GiftCustomization>
         <Checkbox
           label="Enable Gift Wrap"
           checked={settingsState.enableGiftWrap}

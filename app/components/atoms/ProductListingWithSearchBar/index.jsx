@@ -77,22 +77,24 @@ export default function ProductListingWithSearchBar({
             onValueChange={handleSearchChange}
             value={searchQuery}
           />
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="product-item">
-              <Checkbox
-                className="product-checkbox"
-                checked={selectedProducts.some(
-                  (selected) => selected.id === product.id,
-                )}
-                onChange={() => handleCheckboxChange(product)}
-              />
-              <img
-                src={product?.media?.edges[0]?.node?.preview?.image?.url || ""}
-                alt={product?.title || "Product Image"}
-              />
-              <span>{product.title}</span>
-            </div>
-          ))}
+          <div className="product-list-container">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="product-item">
+                <Checkbox
+                  className="product-checkbox"
+                  checked={selectedProducts.some(
+                    (selected) => selected.id === product.id
+                  )}
+                  onChange={() => handleCheckboxChange(product)}
+                />
+                <img
+                  src={product?.media?.edges[0]?.node?.preview?.image?.url || ""}
+                  alt={product?.title || "Product Image"}
+                />
+                <span>{product.title}</span>
+              </div>
+            ))}
+          </div>
         </Modal.Section>
       </Modal>
     </div>
