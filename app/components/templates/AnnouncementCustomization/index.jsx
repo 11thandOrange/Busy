@@ -36,6 +36,7 @@ const AnnouncementCustomization = ({
   backActionRoute = ROUTES.APPS,
   initialData,
   colorTheme = COLOR_THEME.LIGHT,
+  appActivationState = null,
 }) => {
   const navigate = useNavigate();
   const fetcher = useFetcher();
@@ -50,22 +51,50 @@ const AnnouncementCustomization = ({
   const [error, setError] = useState({ ...ANNOUNCEMENT_BARS_ERROR_STATE });
   const [showLoader, setShowLoader] = useState(true);
   const [selectedStep, setSelectedStep] = useState(0);
-
-  // Flags
-  let enableApp = false;
-  let enableAppInStore = false;
-
+  const [toastConfig, setToastConfig] = useState({
+    isError: false,
+    message: "",
+  });
   const editButtonsList = [
     { id: 0, title: "Customize Appearance" },
     { id: 1, title: "Enable App" },
     { id: 2, title: "Enable App in Store" },
   ];
   editButtonsList.filter((btn) => {
-    if ((btn.id === 1 && enableApp) || (btn.id === 2 && enableAppInStore)) {
+    if (
+      (btn.id === 1 && appActivationState.enableApp) ||
+      (btn.id === 2 && appActivationState.enableAppInStore)
+    ) {
       return false;
     }
     return true;
   });
+  const handleOnSave = () => {
+    const payload = {
+      name: settingsState.name,
+      status: Number(settingsState.status),
+      general_setting: JSON.stringify(settingsState.generalSettings),
+      theme_style: JSON.stringify(settingsState.themeStyle),
+      theme_settings: JSON.stringify(settingsState.themeSettings),
+      enable_now: settingsState.enableApp,
+      type: announcementBarType,
+    };
+
+    fetcher.submit(
+      {
+        ...payload,
+        ...(initialData
+          ? { id: initialData.id, _action: "UPDATE" }
+          : { _action: "CREATE" }),
+      },
+      {
+        method: "POST",
+        action: ROUTES.ANNOUNCEMENT_OVERVIEW,
+      },
+    );
+
+    prevSettingsState.current = settingsState;
+  };
   // Step Configuration
   const steps = [
     {
@@ -112,7 +141,13 @@ const AnnouncementCustomization = ({
       ),
       title: "Enable In Shopify Store",
       description: "Where & how to display",
-      component: <EnableInShopifyStep settingsState={settingsState} />,
+      component: (
+        <EnableInShopifyStep
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+          enableAppInStoreURL={appActivationState.enableAppInStoreURL}
+        />
+      ),
     },
     {
       id: 3,
@@ -126,10 +161,12 @@ const AnnouncementCustomization = ({
       component: (
         <ReviewStep
           settingsState={settingsState}
-          enableAppInStore={enableAppInStore}
-          enableApp={enableApp}
+          enableAppInStore={appActivationState.enableAppInStore}
+          enableApp={appActivationState.enableApp}
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
+          onSaveAndPublish={handleOnSave}
+          fetcherState={fetcher.state}
         />
       ),
     },
@@ -145,45 +182,28 @@ const AnnouncementCustomization = ({
   }, [initialData]);
 
   // Handle Save Action
-  const handleOnSave = () => {
-    const payload = {
-      name: settingsState.name,
-      status: Number(settingsState.status),
-      general_setting: JSON.stringify(settingsState.generalSettings),
-      theme_style: JSON.stringify(settingsState.themeStyle),
-      theme_settings: JSON.stringify(settingsState.themeSettings),
-      type: announcementBarType,
-    };
-
-    fetcher.submit(
-      {
-        ...payload,
-        ...(initialData
-          ? { id: initialData.id, _action: "UPDATE" }
-          : { _action: "CREATE" }),
-      },
-      {
-        method: "POST",
-        action: ROUTES.ANNOUNCEMENT_OVERVIEW,
-      },
-    );
-
-    prevSettingsState.current = settingsState;
-  };
 
   // Navigate Back on Successful Save
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
+      console.log("Announcement data here ftehcer", fetcher.data);
+
+      if (fetcher.data.success) {
+        setToastConfig({ isError: false, message: fetcher.data.message });
+      } else {
+        setToastConfig({ isError: true, message: fetcher.data.message });
+      }
       navigate("/apps/announcementBar?appId=1", {
         state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
       });
     }
   }, [fetcher]);
 
-  // Filter Steps Based on App State
-
   const filteredSteps = steps.filter((step) => {
-    if ((step.id === 1 && enableApp) || (step.id === 2 && enableAppInStore)) {
+    if (
+      (step.id === 1 && appActivationState.enableApp) ||
+      (step.id === 2 && appActivationState.enableAppInStore)
+    ) {
       return false;
     }
     return true;
@@ -193,7 +213,8 @@ const AnnouncementCustomization = ({
     <Page>
       <Toast
         show={!isLoading(fetcher.state) && fetcher.data}
-        message="Settings saved"
+        message={toastConfig.message}
+        isError={toastConfig.isError}
       />
       <StepsRenderer
         tabs={filteredSteps}

@@ -40,11 +40,12 @@ export const loader = async ({ request }) => {
 };
 const GiftCustomization = () => {
   const products = useLoaderData();
-  console.log("products", products);
 
   return (
     <div>
-      <SendAsGiftCustomization></SendAsGiftCustomization>
+      <SendAsGiftCustomization
+        productsList={products}
+      ></SendAsGiftCustomization>
     </div>
   );
 };

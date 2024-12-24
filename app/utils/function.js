@@ -1,5 +1,6 @@
 import db from "../db.server";
 import { DateTime } from "luxon";
+import { json } from "@remix-run/node";
 import {
   authenticate,
   STARTER_MONTHLY_PLAN,
@@ -116,13 +117,13 @@ export const createEvent = async (data) => {
 export function getTimeDifference(startTime, endTime, timezone) {
   const start = DateTime.fromISO(startTime, { zone: timezone });
   const end = DateTime.fromISO(endTime, { zone: timezone });
-  const diff = end.diff(start, ['days', 'hours', 'minutes', 'seconds']);
+  const diff = end.diff(start, ["days", "hours", "minutes", "seconds"]);
 
   return {
     days: diff.days,
     hours: diff.hours,
     minutes: diff.minutes,
-    seconds: diff.seconds
+    seconds: diff.seconds,
   };
 }
 export const getEventTypes = async (appId) => {
@@ -144,19 +145,21 @@ export const getEventTypes = async (appId) => {
 };
 
 export const getAnnouncementBar = async (shop, timezone) => {
-  let script = '';
+  let script = "";
   const announcement_bar = await db.announcement_bar.findFirst({
     where: {
       shop: shop,
-      status: true
+      status: true,
     },
     orderBy: {
-      updatedAt: 'desc',
+      updatedAt: "desc",
     },
   });
 
   if (announcement_bar && announcement_bar.status) {
-    announcement_bar.general_setting = JSON.parse(announcement_bar.general_setting);
+    announcement_bar.general_setting = JSON.parse(
+      announcement_bar.general_setting,
+    );
     announcement_bar.theme_setting = JSON.parse(announcement_bar.theme_setting);
     announcement_bar.theme_style = JSON.parse(announcement_bar.theme_style);
 
@@ -172,10 +175,9 @@ export const getAnnouncementBar = async (shop, timezone) => {
       announcementBar.style.width = '100%';
       announcementBar.style.position = 'relative'; /* Ensure space for the close button */
     `;
-    
-    if(await check_enable_button(shop))
-    {
-        script += `
+
+    if (await check_enable_button(shop)) {
+      script += `
         const closeButton = document.createElement('button');
         closeButton.textContent = 'x';
         closeButton.style.position = 'absolute';
@@ -193,20 +195,22 @@ export const getAnnouncementBar = async (shop, timezone) => {
         announcementBar.appendChild(closeButton);
       `;
     }
-    
+
     script += `
       const messageDiv = document.createElement('div');
       announcementBar.appendChild(messageDiv);
     `;
-  
+
     if (announcement_bar.type == 1) {
       script += `
         messageDiv.textContent = "${announcement_bar.general_setting.message.replace(/"/g, '\\"')}";
       `;
     }
 
-    if (announcement_bar.type == 2) { 
-      const endTime = new Date(announcement_bar.general_setting.countDownEndsAt).getTime();
+    if (announcement_bar.type == 2) {
+      const endTime = new Date(
+        announcement_bar.general_setting.countDownEndsAt,
+      ).getTime();
 
       script += `
         let countdownInterval;
@@ -228,20 +232,20 @@ export const getAnnouncementBar = async (shop, timezone) => {
         countdownInterval = setInterval(updateCountdown, 1000);  // Start the countdown interval after its declaration
       `;
     }
-    if(announcement_bar.type == 3)
-      {
-        const shipping_rule = await getShippingRule(shop);
-        const getDomestingShipping = shipping_rule.find((shipping)=>shipping.name=='Domestic');
-        const price = getDomestingShipping.price_based_shipping_rates;
-        const free_price = price.find((pr)=> pr.price == 0);
-        if(free_price.min_order_subtotal == null) return {script:''}
-       
-        
-          script +=  `let shipping_price = ${free_price.min_order_subtotal}
+    if (announcement_bar.type == 3) {
+      const shipping_rule = await getShippingRule(shop);
+      const getDomestingShipping = shipping_rule.find(
+        (shipping) => shipping.name == "Domestic",
+      );
+      const price = getDomestingShipping.price_based_shipping_rates;
+      const free_price = price.find((pr) => pr.price == 0);
+      if (free_price.min_order_subtotal == null) return { script: "" };
+
+      script += `let shipping_price = ${free_price.min_order_subtotal}
                       get_cart_total(function(price){
                         if(price == 0)
                         {
-                          messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#amount#', free_price.min_order_subtotal)}";
+                          messageDiv.textContent = "${announcement_bar.general_setting.message.replace("#amount#", free_price.min_order_subtotal)}";
                         }
                         else if(price != 0 && price < shipping_price)
                         {
@@ -255,13 +259,11 @@ export const getAnnouncementBar = async (shop, timezone) => {
                         }
         })
           `;
-        
-      }
-    if(announcement_bar.type == 4)
-    {
+    }
+    if (announcement_bar.type == 4) {
       const order_count = await getOrderCounter(shop);
       script += `
-      messageDiv.textContent = "${announcement_bar.general_setting.message.replace('#orders_count#', order_count)}";`;
+      messageDiv.textContent = "${announcement_bar.general_setting.message.replace("#orders_count#", order_count)}";`;
     }
     if (announcement_bar.type == 5) {
       script += `
@@ -280,39 +282,38 @@ export const getAnnouncementBar = async (shop, timezone) => {
         \`;
       `;
     }
-    
+
     if (announcement_bar.theme_style?.id == 1) {
       script += `announcementBar.style.backgroundColor = "${announcement_bar.theme_setting?.backgroundColor}";
-                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`
-              
+                  announcementBar.style.color = "${announcement_bar.theme_setting?.textColor}";`;
     }
     if (announcement_bar.theme_style?.id != 1) {
-       script += `announcementBar.style.color = "#fff";`
+      script += `announcementBar.style.color = "#fff";`;
     }
     if (announcement_bar.theme_style?.id == 2) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-2');`;
     }
 
     if (announcement_bar.theme_style?.id == 3) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-3');`;
     }
     if (announcement_bar.theme_style?.id == 4) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-4');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-4');`;
     }
     if (announcement_bar.theme_style?.id == 5) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-5');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-5');`;
     }
     if (announcement_bar.theme_style?.id == 6) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-6');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-6');`;
     }
     if (announcement_bar.theme_style?.id == 7) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-7');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-7');`;
     }
     if (announcement_bar.theme_style?.id == 8) {
-      script += `announcementBar.classList.add('busy-buddy-announcement-bar-8');`
+      script += `announcementBar.classList.add('busy-buddy-announcement-bar-8');`;
     }
 
-    if (announcement_bar.theme_setting?.status == 'TOP_FIXED') {
+    if (announcement_bar.theme_setting?.status == "TOP_FIXED") {
       script += `
         announcementBar.style.position = 'sticky';
         announcementBar.style.top = '0'; 
@@ -321,7 +322,7 @@ export const getAnnouncementBar = async (shop, timezone) => {
       `;
     }
 
-    if (announcement_bar.theme_setting?.status == 'BOTTOM') {
+    if (announcement_bar.theme_setting?.status == "BOTTOM") {
       script += ` document.body.appendChild(announcementBar);`;
     } else {
       script += `document.body.prepend(announcementBar);`;
@@ -369,35 +370,46 @@ export const getCartNotice = async (shop) => {
     },
   });
 
-  if(cartNotice)
-  {
-    cartNotice.general_setting = cartNotice.general_setting?JSON.parse(cartNotice.general_setting):''
+  if (cartNotice) {
+    cartNotice.general_setting = cartNotice.general_setting
+      ? JSON.parse(cartNotice.general_setting)
+      : "";
     htmlToInsert = `<div id="busyBuddyCartNotice" class="di-flex busyBuddyCartNotice" style="background-color:${cartNotice.backgroundColor};color:${cartNotice.textColor};margin-top:${cartNotice.general_setting.marginTop}${cartNotice.general_setting.marginTopUnit};margin-bottom:${cartNotice.general_setting.marginBottom}${cartNotice.general_setting.marginBottomUnit};">`;
-    if(cartNotice.emojiToAdd!=null)
-    {
-      htmlToInsert += `<div class="fireEmoji">${cartNotice.emojiToAdd}</div>`
+    if (cartNotice.emojiToAdd != null) {
+      htmlToInsert += `<div class="fireEmoji">${cartNotice.emojiToAdd}</div>`;
     }
     if (cartNotice.showCountdown) {
-      const countdownTimer = parseInt(cartNotice.countdown_timer)*60;
+      const countdownTimer = parseInt(cartNotice.countdown_timer) * 60;
       let minutes = Math.floor(countdownTimer / 60);
       let remainingSeconds = countdownTimer % 60;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      remainingSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      remainingSeconds =
+        remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
       const countdownText = `<span class="busyBuddyCartReservedTimer" style="color: red;">${minutes}:${remainingSeconds}</span>`;
-      cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', countdownText);
-      cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', countdownText);
-    }
-    else
-    {
-      cartNotice.primary_message = cartNotice.primary_message.replace('{{counter}}', '');
-      cartNotice.secondary_message = cartNotice.secondary_message.replace('{{counter}}', '');
+      cartNotice.primary_message = cartNotice.primary_message.replace(
+        "{{counter}}",
+        countdownText,
+      );
+      cartNotice.secondary_message = cartNotice.secondary_message.replace(
+        "{{counter}}",
+        countdownText,
+      );
+    } else {
+      cartNotice.primary_message = cartNotice.primary_message.replace(
+        "{{counter}}",
+        "",
+      );
+      cartNotice.secondary_message = cartNotice.secondary_message.replace(
+        "{{counter}}",
+        "",
+      );
     }
     htmlToInsert += `<div class="cart-reserved-text-box" style="margin-left:20px;"><span id="cart_reserved_message">${cartNotice.primary_message}</span>
     <span class="cartReservedTimerText">${cartNotice.secondary_message}`;
-   
-      htmlToInsert += `</span></div></div>`;
+
+    htmlToInsert += `</span></div></div>`;
   }
-  
+
   const script = `
   (function() {
    get_cart(function(cart){
@@ -438,21 +450,26 @@ export const getCartNotice = async (shop) => {
 };
 
 export const getCountdownTimer = async (shop, timezone) => {
-  let countdownTimerHtml = '';
+  let countdownTimerHtml = "";
   let script;
- 
+
   let countdownTimer = await db.countdown_timer.findFirst({
     where: {
       shop: shop,
     },
     select: {
       general_setting: true,
-      display_setting: true
+      display_setting: true,
     },
   });
   script = ``;
 
-  return { script, discount_products:countdownTimer?.display_setting?.timerForDiscountedProducts, countdownTimer: countdownTimer };
+  return {
+    script,
+    discount_products:
+      countdownTimer?.display_setting?.timerForDiscountedProducts,
+    countdownTimer: countdownTimer,
+  };
 };
 
 export const check_enable_button = async (shop) => {
@@ -464,14 +481,13 @@ export const check_enable_button = async (shop) => {
       },
     });
     return setting !== null;
-  } 
-  catch (error) {
+  } catch (error) {
     return false;
   }
 };
-export const getSendAsGift = async(shop) =>{
-  let htmlToInsert = '';
-  let script = '';
+export const getSendAsGift = async (shop) => {
+  let htmlToInsert = "";
+  let script = "";
   const gift = await db.gift.findFirst({
     where: {
       shop: shop,
@@ -480,7 +496,6 @@ export const getSendAsGift = async(shop) =>{
       gift_wrap: true,
     },
   });
-  
 
   // Iterate over each gift wrap item
   gift.gift_wrap.forEach((item) => {
@@ -509,80 +524,89 @@ export const getSendAsGift = async(shop) =>{
   });
   return {
     html: htmlToInsert,
-    script
+    script,
   };
-}
+};
 export const can_active = async (request, shop) => {
   try {
     const setting = await db.merchant.findMany({
       where: {
         shop: shop,
         enabled: true,
-      }
+      },
     });
-    let hasSubscription =  check_subscription(request);
-    if(!((await hasSubscription).hasSubscription))
-    {
+    let hasSubscription = check_subscription(request);
+    if (!(await hasSubscription).hasSubscription) {
       return setting.count <= 1;
+    } else {
+      return setting.count <= 4 && (await hasSubscription).hasSubscription()
+        ? true
+        : false;
     }
-    else
-    {
-      return setting.count <= 4 && (await hasSubscription).hasSubscription()?true:false;;
-    }
-  } 
-  catch (error) 
-  {
+  } catch (error) {
     return false;
   }
 };
-export const storefront_api = async (shop, url, method, query=null) => {
+export const storefront_api = async (shop, url, method, query = null) => {
   const session = await db.session.findFirst({
-    where: { shop: shop }
+    where: { shop: shop },
   });
-  
+
   if (session) {
     try {
       const response = await fetch(url, {
         method: method,
         headers: {
-          'X-Shopify-Access-Token': session.accessToken,
-          'Content-Type': 'application/json',
+          "X-Shopify-Access-Token": session.accessToken,
+          "Content-Type": "application/json",
         },
-        body: query
+        body: query,
       });
       const data = await response.json();
       return { success: true, data };
     } catch (error) {
-      console.error('API request failed:', error);
+      console.error("API request failed:", error);
       return { success: false, error: error.message };
     }
   } else {
-    return { success: false, error: 'Session not found' };
+    return { success: false, error: "Session not found" };
   }
-}
-export const getShippingRule = async(shop)=>{
-  const shipping_rule = await storefront_api(shop, `https://${shop}/admin/api/2024-04/shipping_zones.json`, 'GET');
+};
+export const getShippingRule = async (shop) => {
+  const shipping_rule = await storefront_api(
+    shop,
+    `https://${shop}/admin/api/2024-04/shipping_zones.json`,
+    "GET",
+  );
   return shipping_rule.data.shipping_zones;
-}
-export const getOrderCounter = async(shop)=>{
-  const order_count = await storefront_api(shop, `https://${shop}/admin/api/2024-10/orders/count.json?status=any`, 'GET');
-  if(order_count.success)
-  {
+};
+export const getOrderCounter = async (shop) => {
+  const order_count = await storefront_api(
+    shop,
+    `https://${shop}/admin/api/2024-10/orders/count.json?status=any`,
+    "GET",
+  );
+  if (order_count.success) {
     return order_count.data.count;
   }
   return 0;
-}
+};
 
-export const addScriptTag = async(shop)=>{
-  const scriptTag = await storefront_api(shop, `https://${shop}/admin/api/2024-10/script_tags.json`, 'GET', JSON.stringify({
-    script_tag: {
-      event: 'onload',
-      src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
-    },
-  }));
-}
+export const addScriptTag = async (shop) => {
+  const scriptTag = await storefront_api(
+    shop,
+    `https://${shop}/admin/api/2024-10/script_tags.json`,
+    "GET",
+    JSON.stringify({
+      script_tag: {
+        event: "onload",
+        src: `${process.env.SHOPIFY_APP_URL}/scripts/script.js`,
+      },
+    }),
+  );
+};
 
-export const appActivate = async(shop, appId, enable)=>{
+export const appActivate = async (shop, appId, enable, request) => {
   const subscription = await check_subscription(request);
   appId = parseInt(appId);
   const apps = await db.merchant.findMany({
@@ -596,9 +620,12 @@ export const appActivate = async(shop, appId, enable)=>{
   });
 
   if (!subscription.hasSubscription && apps.length == 1) {
-    return json({ message: "Please upgrade your plan to activate more apps", success: false });
+    return {
+      message: "Please upgrade your plan to activate more apps",
+      success: false,
+    };
   }
-  
+
   try {
     const existingMerchant = await db.merchant.findFirst({
       where: {
@@ -616,7 +643,7 @@ export const appActivate = async(shop, appId, enable)=>{
           enabled: enable,
         },
       });
-      return json({ success: true, updatedApp, isActive: enable });
+      return { success: true, updatedApp, isActive: enable };
     } else {
       const newMerchant = await db.merchant.create({
         data: {
@@ -625,29 +652,30 @@ export const appActivate = async(shop, appId, enable)=>{
           enabled: enable,
         },
       });
-      return json({ success: true, newMerchant, isActive: enable });
+      return { success: true, newMerchant, isActive: enable };
     }
   } catch (error) {
-    throw new Error("Failed to update or create merchant");
+    console.log(error, 'cehck')
+    throw new Error("Failed to update or create merchant d", error);
   }
-}
-export const createProduct = async(session, data)=>{
-  const product = new admin.rest.resources.Product({session: session});
-    product.title = data.title;
-    product.body_html = `<strong>${data.description}</strong>`;
-    product.vendor = "BusyBuddy Shop";
-    product.product_type = "gift";
-    product.status = "active";
-    await product.save({
-      update: true,
-    });
-}
-export const attachImage = async(session, product_id, data) =>{
-  const image = new admin.rest.resources.Image({session: session});
+};
+export const createProduct = async (session, data) => {
+  const product = new admin.rest.resources.Product({ session: session });
+  product.title = data.title;
+  product.body_html = `<strong>${data.description}</strong>`;
+  product.vendor = "BusyBuddy Shop";
+  product.product_type = "gift";
+  product.status = "active";
+  await product.save({
+    update: true,
+  });
+};
+export const attachImage = async (session, product_id, data) => {
+  const image = new admin.rest.resources.Image({ session: session });
   image.product_id = product_id;
   image.position = 1;
   image.attachment = data.image;
   await image.save({
-  update: true,
-});
-}
+    update: true,
+  });
+};

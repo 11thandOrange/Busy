@@ -10,7 +10,12 @@ const EnableAppToggles = {
   Enable_Now: { name: "Enable Now", id: 1 },
 };
 
-const EnableInShopifyStep = ({ setSettingsState, tabId, settingsState }) => {
+const EnableInShopifyStep = ({
+  setSettingsState,
+  tabId,
+  settingsState,
+  enableAppInStoreURL,
+}) => {
   const toggleButtons = Object.values(EnableAppToggles);
   return (
     <div>
@@ -22,7 +27,9 @@ const EnableInShopifyStep = ({ setSettingsState, tabId, settingsState }) => {
         <Button
           variant="primary"
           onClick={() => {
-            console.log("on click view in theme editor");
+            console.log("appActivationInStoreLink", enableAppInStoreURL);
+
+            window.open(enableAppInStoreURL, "_blank");
           }}
         >
           View In Theme Editor
