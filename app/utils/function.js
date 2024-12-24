@@ -1,6 +1,5 @@
 import db from "../db.server";
 import { DateTime } from "luxon";
-import { json } from "@remix-run/node";
 import {
   authenticate,
   STARTER_MONTHLY_PLAN,
@@ -536,12 +535,8 @@ export const can_active = async (request, shop, appId) => {
         },
       },
     });
-    console.log(setting)
     let hasSubscription = await check_subscription(request);
-    console.log(hasSubscription)
     if (!(hasSubscription).hasSubscription) {
-      console.log('check')
-      console.log(setting.length)
       return setting.length < 1;
     } else {
       return setting.length < 4 && (hasSubscription).hasSubscription()

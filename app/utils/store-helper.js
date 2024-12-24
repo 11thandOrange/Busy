@@ -24,12 +24,9 @@ export const checkAppEmbed = async (themeId, session) => {
     if (!data || !data.asset || !data.asset.value) {
       throw new Error('Asset value is missing in the response.');
     }
-console.log('data test', data)
-    // Parse the JSON value inside the asset
     let current;
     try {
       current = JSON.parse(data.asset.value);
-      console.log('current value', current)
     } catch (jsonError) {
       throw new Error('Error parsing JSON from asset value: ' + jsonError.message);
     } 
@@ -42,7 +39,6 @@ console.log('data test', data)
     }
 
   } catch (error) {
-    // Log detailed error and return error message
     console.error('Error fetching app embeds:', error);
     return false;
   }
