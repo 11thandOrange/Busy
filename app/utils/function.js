@@ -525,19 +525,26 @@ export const getSendAsGift = async (shop) => {
     script,
   };
 };
-export const can_active = async (request, shop) => {
+export const can_active = async (request, shop, appId) => {
   try {
     const setting = await db.merchant.findMany({
       where: {
         shop: shop,
         enabled: true,
+        appId: {
+          not: appId,
+        },
       },
     });
-    let hasSubscription = check_subscription(request);
-    if (!(await hasSubscription).hasSubscription) {
-      return setting.count <= 1;
+    console.log(setting)
+    let hasSubscription = await check_subscription(request);
+    console.log(hasSubscription)
+    if (!(hasSubscription).hasSubscription) {
+      console.log('check')
+      console.log(setting.length)
+      return setting.length < 1;
     } else {
-      return setting.count <= 4 && (await hasSubscription).hasSubscription()
+      return setting.length <= 4 && (await hasSubscription).hasSubscription()
         ? true
         : false;
     }
@@ -605,27 +612,8 @@ export const addScriptTag = async (shop) => {
 };
 
 export const appActivate = async (shop, appId, enable, request) => {
-  const subscription = await check_subscription(request);
   appId = parseInt(appId);
   enable = JSON.parse(enable);
-  if(enable != true) return;
-  const apps = await db.merchant.findMany({
-    where: {
-      shop: shop,
-      enabled: true,
-      appId: {
-        not: appId,
-      },
-    },
-  });
-
-  if (!subscription.hasSubscription && apps.length == 1) {
-    return {
-      message: "Please upgrade your plan to activate more apps",
-      success: false,
-    };
-  }
-
   try {
     const existingMerchant = await db.merchant.findFirst({
       where: {

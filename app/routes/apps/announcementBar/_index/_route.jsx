@@ -20,7 +20,7 @@ import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
 import { APP_LISTING } from "../../../../utils/constants";
 
-import { appActivate, check_app_active } from "../../../../utils/function";
+import { appActivate, can_active, check_app_active } from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
 import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
@@ -145,18 +145,27 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now == "true" &&
-        (await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success
+        data.enable_now == "true" && await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS)
       ) {
+        await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)
+        response = json({
+          message: "Announcement Bar Added and App Activated",
+          success: true,
+          announcement_bar,
+        });
+      } 
+      else if(data.enable_now == "true") {
+        response = json({
+          message: "Please Upgrade Your Plan to enable the app",
+          success: false,
+        });
+      }
+      else
+      {
         response = json({
           message: "Announcement Bar Added",
           success: true,
           announcement_bar,
-        });
-      } else {
-        response = json({
-          message: "Please Upgrade Your Plan to enable the app",
-          success: false,
         });
       }
 
@@ -188,18 +197,26 @@ export async function action({ request }) {
           type,
         },
       });
+      console.log(await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS), 'app activatei')
       if (
-        data.enable_now == "true" &&
-        ((await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)).success)
+        data.enable_now == "true" && await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS)
       ) {
+        await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)
         response = json({
-          message: "Announcement Bar Updated",
+          message: "Announcement Bar Updated and App Activated",
           success: true
         });
-      } else {
+      } else if(data.enable_now == "true") {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
           success: false,
+        });
+      }
+      else
+      {
+        response = json({
+          message: "Announcement Bar Updated",
+          success: true,
         });
       }
       return response;
