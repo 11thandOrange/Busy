@@ -103,6 +103,7 @@ fetch('/cart/update.js', {
 fetch('/products/' + window.location.pathname.split('/').pop() + '.js')
     .then(response => response.json())
     .then(product => {
+      console.log(product)
         console.log("Product ID from API:", product.id);
     })
     .catch(error => {

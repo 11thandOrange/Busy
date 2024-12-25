@@ -741,11 +741,16 @@ export const appActivate = async (shop, appId, enable, request) => {
   }
 };
 export const createProduct = async (session, data) => {
-  const product = new admin.rest.resources.Product({ session: session });
+  const product = new admin.rest.resources.Product({session: session});
   product.title = data.title;
   product.body_html = `<strong>${data.description}</strong>`;
   product.vendor = "BusyBuddy Shop";
   product.product_type = "gift";
+  product.images = [
+    {
+      "src": "http://example.com/rails_logo.gif"
+    }
+  ];
   product.status = "active";
   await product.save({
     update: true,
