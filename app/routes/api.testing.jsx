@@ -45,90 +45,113 @@ export const loader = async ({ request }) => {
 }
 export async function action({ request }) {
   const { admin, session } = await authenticate.admin(request);
-  const shop = session.shop;
-  const data = Object.fromEntries(await request.formData());
-  const gift = await prisma.gift.create({
-    data: {
-      giftWrapStatus: data.giftWrapStatus,
-      giftMessageStatus: data.giftMessageStatus,
-      giftRecieptStatus: data.giftRecieptStatus,
-      giftAppearanceSetting: data.giftAppearanceSetting,
-      appearanceRules: data.appearanceRules,
-      accountSetting: data.accountSetting,
-      shop: session.shop
-    },
-  });
+  const shop = session.shop; // Get the shop from the session
+  const data = Object.fromEntries(await request.formData()); // Get form data
 
-  const giftWrap = await prisma.giftWrap.create({
-    data: {
-      title: 'Luxury Wrap',
-      description: 'Gold foil wrapping with a satin bow',
-      price: 15,
-      image: 'https://example.com/ luxury-wrap.jpg',
-      giftId: gift.id,
-    },
-  });
-
-  const giftMessage = await prisma.giftMessage.create({
-    data: {
-      title: 'Happy Birthday!', // Customize as needed
-      description: 'Wishing you all the best on your special day!',
-      giftId: gift.id,
-    },
-  });
-
-  const giftReciept = await prisma.giftReciept.create({
-    data: {
-      title: 'Gift Receipt', // Customize as needed
-      description: 'This receipt is proof of your purchase for the gift above.',
-      giftId: gift.id,
-    },
-  });
-
-  if (data._action === 'GiftWrap') {
-    let gift = await db.Gift.findFirst({
-      where: {
-        shop: shop,
-      },
-    });
-
-    if (!gift) {
-      gift = await db.Gift.create({
+  switch (data._action) {
+    case "create":
+      const newGift = await db.gift.create({
         data: {
-          shop: shop, 
+          selectionType: "any",
+          giftWrapStatus: data.giftWrapStatus,
+          giftMessageStatus: data.giftMessageStatus,
+          giftRecieptStatus: data.giftReceiptStatus,
+          shop: shop, // Use the shop from the session
+
+          // Conditionally create related models
+          giftWraps: data.giftWrapStatus ? {
+            create: {
+              title: "Premium Wrap",
+              price: 5,
+              image: "image_url",
+            }
+          } : undefined,
+
+          giftMessages: data.giftMessageStatus ? {
+            create: {
+              title: "Happy Birthday!",
+              description: "Hope you have a wonderful day!",
+            }
+          } : undefined,
+
+          giftReceipts: data.giftReceiptStatus ? {
+            create: {
+              title: "Order Receipt",
+              description: "Your order is ready for delivery.",
+            }
+          } : undefined,
         },
       });
-    }
 
-    const giftWrap = await db.GiftWrap.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        price: parseInt(data.price),
-        image: data.image,
-        giftId: gift.id,
-      },
-    });
+      if (giftWrapStatus) {
+        await createProduct(session, { type: "giftWrap", data: newGift.giftWraps });
+      }
 
-    createProduct(session, data.giftWrap);
+      if (giftMessageStatus) {
+        await createProduct(session, { type: "giftMessage", data: newGift.giftMessages });
+      }
 
-    return { success: true, giftWrap };
+      if (giftReceiptStatus) {
+        await createProduct(session, { type: "giftReceipt", data: newGift.giftReceipts });
+      }
+      return { success: true, gift: newGift };
+
+    case "update":
+      const giftIdToUpdate = parseInt(data.giftId); 
+
+      const updatedGiftData = {};
+      if (data.selectionType) {
+        updatedGiftData.selectionType = data.selectionType;
+      }
+      if (data.giftWrapStatus !== undefined) {
+        updatedGiftData.giftWrapStatus = data.giftWrapStatus === "true";
+      }
+      if (data.giftMessageStatus !== undefined) {
+        updatedGiftData.giftMessageStatus = data.giftMessageStatus === "true";
+      }
+      if (data.giftRecieptStatus !== undefined) {
+        updatedGiftData.giftRecieptStatus = data.giftRecieptStatus === "true";
+      }
+      const updatedGift = await db.gift.update({
+        where: { id: giftIdToUpdate },
+        data: updatedGiftData,
+      });
+      if (updatedGiftData.giftWrapStatus !== undefined && updatedGiftData.giftWrapStatus) {
+        await db.giftWrap.updateMany({
+          where: { giftId: giftIdToUpdate },
+          data: {
+            title: data.giftWrapTitle || "Default Wrap",
+            price: parseInt(data.giftWrapPrice) || 0,
+            image: data.giftWrapImage || "default_image_url",
+          },
+        });
+      }
+
+      if (updatedGiftData.giftMessageStatus !== undefined && updatedGiftData.giftMessageStatus) {
+        await db.giftMessage.updateMany({
+          where: { giftId: giftIdToUpdate },
+          data: {
+            title: data.giftMessageTitle || "Default Message",
+            description: data.giftMessageDescription || "Default description",
+          },
+        });
+      }
+
+      if (updatedGiftData.giftRecieptStatus !== undefined && updatedGiftData.giftRecieptStatus) {
+        await db.giftReciept.updateMany({
+          where: { giftId: giftIdToUpdate },
+          data: {
+            title: data.giftReceiptTitle || "Default Receipt",
+            description: data.giftReceiptDescription || "Your order is ready for delivery.",
+          },
+        });
+      }
+      return { success: true, updatedGift };
+    default:
+      return { success: false, message: 'Invalid action' };
   }
-  else
-  {
-    await db.gift.upsert({
-      where: { shop: shop },
-      update: {data,
-        shop: shop,
-      },
-      create: {
-        data,
-        shop: shop,
-      },
-    });
-  }
-  return { success: false, message: 'Invalid action' };
 }
+
 // export let action = async ({ request }) => {
 //   // Parse the form data
 //   let formData = await unstable_parseMultipartFormData(request, uploadHandler);

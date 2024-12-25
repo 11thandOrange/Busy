@@ -1,4 +1,4 @@
-import { check_app_active, getAnnouncementBar, getCartNotice, getCountdownTimer, getInactiveTabMessage } from "../utils/function";
+import { check_app_active, getAnnouncementBar, getCartNotice, getCountdownTimer, getInactiveTabMessage, getSendAsGift } from "../utils/function";
 import { json } from "@remix-run/node";
 import { cors } from "remix-utils/cors";
 
@@ -9,7 +9,7 @@ export const loader = async ({ request }) => {
   const appId = parseInt(url.searchParams.get('appId'));
   const shop = url.searchParams.get('shop');
   const timestamp = url.searchParams.get('timezone');
-  //  Check App is Active Or Not
+
   if(!(await check_app_active(appId, shop)))
   {
     return cors(request, json(response))
@@ -32,7 +32,7 @@ export const loader = async ({ request }) => {
   } 
   else if(appId == 5)
   {
-    response = 'console.log("Send As Gift")'
+    response = await getSendAsGift(shop)
   }   
   return cors(request, json(response));  
 }
