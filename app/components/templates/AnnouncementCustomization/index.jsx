@@ -127,8 +127,8 @@ const AnnouncementCustomization = ({
           🎯
         </span>
       ),
-      title: "Enable App",
-      description: "Enable your app",
+      title: "Activate",
+      description: "Activate Announcement Bar App",
       component: (
         <EnableAppStep
           setSettingsState={setSettingsState}
@@ -143,8 +143,8 @@ const AnnouncementCustomization = ({
           🎨
         </span>
       ),
-      title: "Enable In Shopify Store",
-      description: "Enable your app in store",
+      title: "Complete BusyBuddy Install",
+      description: "Show Your BusyBuddy Apps On Your Store",
       component: (
         <EnableInShopifyStep
           settingsState={settingsState}

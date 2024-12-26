@@ -28,3 +28,24 @@
     color: #0070d2;
     text-decoration: none;
 }
+.Announcement-box .link-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.Announcement-box .image-container {
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 10px;
+}
+
+.Announcement-box .image-container img {
+    width: 450px;
+}
+
+.desc{
+    font-size: 13px;
+    line-height: 20px;
+    margin-top: 5px;
+}

@@ -18,6 +18,8 @@ import CountDownTimerSlider from "../assets/videos/Countdown Timer.mov";
 import InactiveTabSlider from "../assets/videos/Inactive_Tab_Message.mov";
 import CountDownPreview from "../assets/videos/preview/CountDownPreview.png";
 import InactiveTabPreview from "../assets/videos/preview/InactiveTabPreview.png";
+import ActivateApp from "../assets/videos/Activate_App.mov";
+import AppInstall from "../assets/videos/preview/App_Install.gif";
 
 import announcement_bar from "../assets/images/Coming Soon Banner.gif";
 import cart_notice from "../assets/images/Cart Number.gif";
@@ -46,6 +48,8 @@ const IMAGES = {
   InactiveTabSlider,
   CountDownPreview,
   InactiveTabPreview,
+  ActivateApp,
+  AppInstall,
 };
 
 export default IMAGES;
