@@ -1,6 +1,5 @@
 import db from "../db.server";
 import { DateTime } from "luxon";
-import { json } from "@remix-run/node";
 import {
   authenticate,
   STARTER_MONTHLY_PLAN,
@@ -484,8 +483,9 @@ export const check_enable_button = async (shop) => {
   }
 };
 export const getSendAsGift = async (shop) => {
-  let htmlToInsert = "";
   let script = "";
+
+  // Fetch gift and associated gift_wrap details from the database
   const gift = await db.gift.findFirst({
     where: {
       shop: shop,
@@ -494,37 +494,135 @@ export const getSendAsGift = async (shop) => {
       gift_wrap: true,
     },
   });
+  if (gift) {
+    const giftData = {
+      ...gift,
+      gift_wrap: gift.gift_wrap ? {
+        ...gift.gift_wrap,
+        productId: gift.gift_wrap.productId?.toString(),
+      } : null,
+    };
 
-  // Iterate over each gift wrap item
-  gift.gift_wrap.forEach((item) => {
-    let itemHtml = `<div id="giftWrap-${item.id}" class="gift-wrap-item" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
-    if (item.image) {
-      itemHtml += `<img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
+    let itemHtml = `<div id="giftWrap-${gift.gift_wrap.productId}" class="gift-wrap-item busyBuddySendAsGift" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
+    if (gift.gift_wrap.image) {
+      itemHtml += `<img src="${gift.gift_wrap.image}" alt="${gift.gift_wrap.title}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
     } else {
       itemHtml += `<img src="https://via.placeholder.com/100" alt="No Image" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
     }
-    itemHtml += `<h3>${item.title}</h3>`;
-    itemHtml += `<p>${item.description}</p>`;
-    itemHtml += `<p><strong>Price: $${item.price.toFixed(2)}</strong></p>`;
-    itemHtml += `<button class="add-gift-wrap-btn" data-id="${item.id}" data-price="${item.price}">Add to Cart</button>`;
+
+    itemHtml += `<h3>${gift.gift_wrap.title}</h3>`;
+    itemHtml += `<p>${gift.gift_wrap.description}</p>`;
+    itemHtml += `<p><strong>Price: $${gift.gift_wrap.price.toFixed(2)}</strong></p>`;
     itemHtml += `</div>`;
-    htmlToInsert += itemHtml;
-    script += `
-      (function() {
-        const button = document.querySelector('.add-gift-wrap-btn[data-id="${item.id}"]');
-        if (button) {
-          button.addEventListener('click', function() {
-            alert('Gift wrap with ID ' + "${item.id}" + ' added to the cart for $' + "${item.price.toFixed(2)}");
-          });
-        }
-      })();
+
+    const popupHtml = `
+      <div id="giftWrapPopup" class="gift-wrap-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; justify-content: center; align-items: center;">
+        <div class="popup-content" style="background: #fff; padding: 20px; max-width: 500px; width: 100%; border-radius: 8px;">
+          <button id="closePopupBtn" style="position: absolute; top: 10px; right: 10px; background: #fff; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+          <h2>Gift Wrap Options</h2>
+          ${itemHtml}
+          <div>
+            <label>
+              <input type="checkbox" id="giftWrapCheckbox"> Add Gift Wrap
+            </label>
+          </div>
+          <div>
+            <label for="giftMessageText">Gift Message:</label>
+            <textarea id="giftMessageText" rows="4" style="width: 100%;"></textarea>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" id="giftRecipientCheckbox"> Add Gift Recipient Info
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" id="giftEmailCheckbox"> Send Gift by Email
+            </label>
+          </div>
+          <button id="addGiftWrapBtn">Add Gift Wrap</button>
+        </div>
+      </div>
     `;
-  });
-  return {
-    html: htmlToInsert,
-    script,
-  };
+    script += `
+      let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
+      if (form) {
+        const buttonHtml = \`<div id="busyBuddySendAsGift" class="busyBuddyCountdownTimer busyBuddySendAsGift" style="cursor: pointer;">Add As Gift Options</div>\`;
+        form.insertAdjacentHTML('beforebegin', buttonHtml);
+        document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
+      }
+
+      document.getElementById('busyBuddySendAsGift')?.addEventListener('click', function() {
+        document.getElementById('giftWrapPopup').style.display = 'flex';
+      });
+
+      document.getElementById('closePopupBtn')?.addEventListener('click', function() {
+        document.getElementById('giftWrapPopup').style.display = 'none';
+      });
+
+      function handleAddGift() {
+        const gift = ${JSON.stringify(giftData)};
+        let giftWrapProduct = \`\${gift.gift_wrap.productId}\`;
+        let bodyData = { updates: { [giftWrapProduct]: 1 } };
+
+        const giftWrapSelected = document.querySelector('#giftWrapCheckbox').checked;
+        const giftMessage = document.querySelector('#giftMessageText').value;
+        const recipientSelected = document.querySelector('#giftRecipientCheckbox').checked;
+        const giftEmailSelected = document.querySelector('#giftEmailCheckbox').checked;
+
+        const attributes = {};
+        let note;
+
+        if (gift?.notes === true) {
+          note = \`Gift Message: \${giftMessage} Gift Recipient: \${recipientSelected} Gift Email: \${giftEmailSelected}\`;
+          bodyData.note = note;
+        } else {
+          if (giftMessage.trim() !== "") {
+            attributes["Gift Message"] = giftMessage;
+          }
+          if (recipientSelected) {
+            attributes["Gift Recipient"] = "Yes";
+          }
+          if (giftEmailSelected) {
+            attributes["Gift Email"] = "Yes";
+          }
+          if (Object.keys(attributes).length > 0) {
+            bodyData.attributes = attributes;
+          }
+        }
+
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bodyData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Cart updated successfully:", data);
+          document.getElementById('giftWrapPopup').style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error updating cart:', error);
+        });
+      }
+      document.getElementById('addGiftWrapBtn')?.addEventListener('click', handleAddGift);
+    `;
+
+    return {
+      script,
+    };
+  } else {
+    console.error('Gift not found');
+    return {
+      script: '',
+    };
+  }
 };
+
+
+
 export const can_active = async (request, shop, appId) => {
   try {
     const setting = await db.merchant.findMany({
@@ -536,12 +634,8 @@ export const can_active = async (request, shop, appId) => {
         },
       },
     });
-    console.log(setting)
     let hasSubscription = await check_subscription(request);
-    console.log(hasSubscription)
     if (!(hasSubscription).hasSubscription) {
-      console.log('check')
-      console.log(setting.length)
       return setting.length < 1;
     } else {
       return setting.length < 4 && (hasSubscription).hasSubscription()
@@ -647,16 +741,22 @@ export const appActivate = async (shop, appId, enable, request) => {
   }
 };
 export const createProduct = async (session, data) => {
-  const product = new admin.rest.resources.Product({ session: session });
+  const product = new admin.rest.resources.Product({session: session});
   product.title = data.title;
   product.body_html = `<strong>${data.description}</strong>`;
   product.vendor = "BusyBuddy Shop";
   product.product_type = "gift";
+  product.images = [
+    {
+      "src": "http://example.com/rails_logo.gif"
+    }
+  ];
   product.status = "active";
   await product.save({
     update: true,
   });
 };
+
 export const attachImage = async (session, product_id, data) => {
   const image = new admin.rest.resources.Image({ session: session });
   image.product_id = product_id;

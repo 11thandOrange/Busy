@@ -200,6 +200,7 @@ model GiftWrap {
   description             String?
   price                   Int
   image                   String? 
+  productId               BigInt?  
   giftId                  Int?          @unique
   gift                    Gift?         @relation("GiftWrapRelation", fields: [giftId], references: [id])
   createdAt               DateTime      @default(now())
@@ -222,5 +223,13 @@ model GiftReciept {
   productId               Int? 
   giftId                  Int?          @unique
   gift                    Gift?         @relation("GiftRecieptRelation", fields: [giftId], references: [id])
+  createdAt               DateTime      @default(now())
+}
+
+model GiftSetting {
+  id                      Int           @id @default(autoincrement())
+  refresh_cart            Boolean       @default(false)
+  optionLogging           String        @default("notes")
+  shop                    String        @unique
   createdAt               DateTime      @default(now())
 }

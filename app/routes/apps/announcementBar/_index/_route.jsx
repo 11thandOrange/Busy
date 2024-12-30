@@ -7,7 +7,6 @@ import {
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
 import {
-  useFetcher,
   useLoaderData,
   useLocation,
   useNavigate,

@@ -22,3 +22,8 @@
 .enable-app-step .Polaris-Text--bodyMd{
     padding: 0 0 0 10px;
 }
+.enable-app-step .step-content{
+    video {
+        margin-top: 10px;
+    }
+}

@@ -21,9 +21,9 @@ const EnableInShopifyStep = ({
     <div className="Announcement-box">
       <Card>
         <Text>
-          Your Announcement Bar Wont Show Up In Your Store Yet! You must enable
-          it in the Shopify Theme Editor.
+          Your Announcement Bar Won’t Show Up In Your Store Yet!
         </Text>
+        <p className="desc">Complete Install & Your BusyBuddy Apps Will Show On Your Store. You will only need to complete this step once</p>
         <div className="button-container">
         <Button
           variant="primary"
@@ -33,26 +33,27 @@ const EnableInShopifyStep = ({
             window.open(enableAppInStoreURL, "_blank");
           }}
         >
-          View In Theme Editor
+          Enable In Your Theme Editor
         </Button>
-        <Checkbox
-          label="Enable later"
-          onChange={(value) => {
-            setSettingsState((prevState) =>
-              updateState("enableAppInShopifyLater", value, prevState),
-            );
-          }}
-          checked={settingsState.enableAppInShopifyLater || false}
-        ></Checkbox>
+        
         </div>
-        <div className="text-container">
-          <Text>How to Enable app :</Text>
-        </div>
+        
         <div className="image-container">
-          <ImageRenderer src={IMAGES.shoeDiscount}></ImageRenderer>
+          <ImageRenderer src={IMAGES.AppInstall}></ImageRenderer>
         </div>
-        <div className="link-container">
-          <a href="#">How to Enable app in shopify store</a>
+        <div className='link-foot'>
+          <Checkbox
+            label="Enable later"
+            onChange={(value) => {
+              setSettingsState((prevState) =>
+                updateState("enableAppInShopifyLater", value, prevState),
+              );
+            }}
+            checked={settingsState.enableAppInShopifyLater || false}
+          />
+          <div className="link-container">
+            <a href="#">How To Enable BusyBuddy In Your Shopify Store</a>
+          </div>
         </div>
       </Card>
     </div>

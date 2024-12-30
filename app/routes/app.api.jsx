@@ -9,7 +9,7 @@ export const loader = async ({ request }) => {
   const appId = parseInt(url.searchParams.get('appId'));
   const shop = url.searchParams.get('shop');
   const timestamp = url.searchParams.get('timezone');
-  //  Check App is Active Or Not
+
   if(!(await check_app_active(appId, shop)))
   {
     return cors(request, json(response))
@@ -34,6 +34,5 @@ export const loader = async ({ request }) => {
   {
     response = await getSendAsGift(shop)
   }   
-  console.log(response)
   return cors(request, json(response));  
 }
