@@ -18,6 +18,7 @@ import EnableGiftReceiptStep from "./enableGiftReceiptStep";
 import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
 import { useNavigate } from "@remix-run/react";
+import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
 
