@@ -18,6 +18,7 @@ function CustomTextField({
   maxLength = 1000,
   prefix = "",
   autoFocus = false,
+  step = "any",
 }) {
   const handleTextFieldChange = useCallback((value) => {
     onValueChange(value);
@@ -26,6 +27,7 @@ function CustomTextField({
   return (
     <>
       <TextField
+        step={step}
         autoFocus={autoFocus}
         label={label}
         type={type}
