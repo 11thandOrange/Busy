@@ -4,12 +4,11 @@ import CustomTextField from "../../../atoms/CustomTextField";
 import "./style.css";
 import DropZoneWithImageFileUpload from "../../../atoms/DropZoneWithImageFileUpload";
 import { updateState } from "../../../../utils/clientFunctions";
-import GiftCustomization from "../../AnnouncementCustomization/GiftCustomization";
+import GiftCustomization from "../GiftCustomization";
 const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
   return (
-    <div>
+    <div className="enable-gift-wrap-container">
       <Card>
-        <GiftCustomization setSettingsState={setSettingsState} settingsState={settingsState} ></GiftCustomization>
         <Checkbox
           label="Enable Gift Wrap"
           checked={settingsState.enableGiftWrap}
@@ -67,6 +66,35 @@ const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
             );
           }}
         ></CustomTextField>
+      </Card>
+      <Card>
+        <GiftCustomization
+          onColorChange={(color) => {
+            setSettingsState((prevState) =>
+              updateState("giftWrapCustomizationColor", color, prevState),
+            );
+          }}
+          onTextChange={(text) => {
+            setSettingsState((prevState) =>
+              updateState("giftWrapCustomizationText", text, prevState),
+            );
+          }}
+          onEmojiChange={(emojiData) => {
+            setSettingsState((prevState) =>
+              updateState(
+                "giftWrapCustomizationEmoji",
+                emojiData.emoji,
+                prevState,
+              ),
+            );
+          }}
+          setSettingsState={setSettingsState}
+          settingsState={{
+            customizationText: settingsState.giftWrapCustomizationText,
+            customizationColor: settingsState.giftWrapCustomizationColor,
+            customizationEmoji: settingsState.giftWrapCustomizationEmoji,
+          }}
+        ></GiftCustomization>
       </Card>
     </div>
   );

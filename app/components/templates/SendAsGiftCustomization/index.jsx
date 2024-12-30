@@ -17,6 +17,7 @@ import "../AnnouncementCustomization/Settings.css";
 import EnableGiftReceiptStep from "./enableGiftReceiptStep";
 import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
+import { useNavigate } from "@remix-run/react";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
 
@@ -24,6 +25,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   const [settingsState, setSettingsState] = useState({
     ...GIFT_CUSTOMIZATION_STATE,
   });
+  const navigate = useNavigate();
   const prevSettingsState = useRef({});
   const [error, setError] = useState({ ...GIFT_CUSTOMIZATION_ERROR_STATE });
   const editButtonsList = [

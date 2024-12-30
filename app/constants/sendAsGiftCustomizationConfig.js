@@ -25,9 +25,13 @@ export const GIFT_CUSTOMIZATION_STATE = {
   sendEmailUponCheckout: false,
   sendEmailWhenItemIsShipped: false,
 
-  customizationText: "",
-  customizationColor: "",
-  customizationEmoji: "🔥",
+  giftWrapCustomizationText: "",
+  giftWrapCustomizationColor: "",
+  giftWrapCustomizationEmoji: "🔥",
+
+  giftMessageCustomizationText: "",
+  giftMessageCustomizationColor: "",
+  giftMessageCustomizationEmoji: "🔥",
 };
 export const GIFT_CUSTOMIZATION_ERROR_STATE = {
   noProductError: false,
