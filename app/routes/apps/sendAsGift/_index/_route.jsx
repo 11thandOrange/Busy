@@ -10,6 +10,7 @@ import CheckBars, {
 } from "../../../../components/templates/CheckBars";
 import { ROUTES } from "../../../../utils/constants";
 import SendAsGiftSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings";
+import CustomizationSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings/CustomizationSettings";
 
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -106,6 +107,12 @@ const route = () => {
           toastMessage="Gift(s) deleted successfully"
         />
       ),
+    },
+
+    {
+      id: "Customization-1",
+      content: "Customization",
+      component: <CustomizationSettings />,
     },
 
     {

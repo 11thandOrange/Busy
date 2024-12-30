@@ -56,7 +56,7 @@ function Homepage({
           onSelect={handleTabChange}
         />
 
-        {children}
+        <div className="homepage-tab-renderer">{children}</div>
       </Page>
     </div>
   );
