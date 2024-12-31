@@ -756,7 +756,7 @@ export const createProduct = async (session, data) => {
   product.product_type = "gift";
   product.images = [
     {
-      "src": "http://example.com/rails_logo.gif"
+      "src": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ];
   product.status = "active";
@@ -773,4 +773,12 @@ export const attachImage = async (session, product_id, data) => {
   await image.save({
     update: true,
   });
+};
+export const getGiftSetting = async (shop) => {
+  const giftSetting = await db.gift_setting.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+  return giftSetting;
 };

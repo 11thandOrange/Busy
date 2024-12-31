@@ -82,15 +82,15 @@ export const action = async ({ request }) => {
       });
 
       if (giftWrapStatus) {
-        await createProduct(session, { type: "giftWrap", data: newGift.giftWraps });  // This will need adjustment
+        await createProduct(session, { type: "giftWrap", data: newGift });
       }
 
       if (giftMessageStatus) {
-        await createProduct(session, { type: "giftMessage", data: newGift.giftMessages });  // Adjust for newGift.giftMessages
+        await createProduct(session, { type: "giftMessage", data: newGift });
       }
 
       if (giftReceiptStatus) {
-        await createProduct(session, { type: "giftReceipt", data: newGift.giftReceipts });  // Adjust for newGift.giftReceipts
+        await createProduct(session, { type: "giftReceipt", data: newGift });
       }
 
       return { success: true, gift: newGift };
