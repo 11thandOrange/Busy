@@ -8,6 +8,7 @@ import ManageDataChange from "../../../ManageDataChange";
 import { COLOR_THEME } from "../../../../../constants/announcementCustomizationConfig";
 import { APP_TYPE } from "../../../../../utils/constants";
 import ProductPreviewCard from "../../../ProductPreviewCard";
+import CartPreview from "../../../CartPreview";
 export const DISPLAY_GIFT_OPTIONS = {
   BOTH: "both",
   CART_ONLY: "cart_only",
@@ -160,13 +161,22 @@ const CustomizationSettings = ({
           </Card>
         </div>
         <div className="customization-right-section">
-          <ProductPreviewCard
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-            announcementBarType={announcementBarType}
-            appType={APP_TYPE.SEND_AS_A_GIFT}
-            colorTheme={colorTheme}
-          ></ProductPreviewCard>
+          {settingsState.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          settingsState.displayGiftOptions ===
+            DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
+            <ProductPreviewCard
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+              announcementBarType={announcementBarType}
+              appType={APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION}
+              colorTheme={colorTheme}
+            ></ProductPreviewCard>
+          ) : (
+            <CartPreview
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+            ></CartPreview>
+          )}
         </div>
       </div>
     </>

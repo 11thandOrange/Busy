@@ -25,6 +25,7 @@ export const APP_TYPE = {
   ANNOUNCEMENT_BARS: 1,
   COUNTDOWN_TIMER: 2,
   SEND_AS_A_GIFT: 3,
+  SEND_AS_A_GIFT_CUSTOMIZATION: 4,
 };
 
 export const TABS_ENUM = {
@@ -58,6 +59,7 @@ export const APP_LISTING = {
   ANNOUNCEMENT_BARS: 1,
   COUNTDOWN_TIMER: 2,
   SEND_AS_A_GIFT: 3,
+ 
 };
 export const MAX_APP_ALLOWED_SUBSCRIPTION_TYPES = {
   FREE: 1,
