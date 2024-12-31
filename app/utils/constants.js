@@ -70,4 +70,5 @@ export const MAX_APP_ALLOWED_SUBSCRIPTION_TYPES = {
 export const APP_LINKS = {
   HOW_TO_ENABLE_LINK:
     "https://www.canva.com/design/DAGaOdJ6UjU/tLvKCz0PGaWoFhZ-uoYVhQ/view?utm_content=DAGaOdJ6UjU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc1ea38183e",
-};
+  SHIPPING_AMOUNT_TUTORIAL:"https://help.shopify.com/en/manual/fulfillment/setup/shipping-profiles/setting-up-shipping-profiles"
+  };
