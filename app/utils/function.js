@@ -485,7 +485,6 @@ export const check_enable_button = async (shop) => {
 export const getSendAsGift = async (shop) => {
   let script = "";
 
-  // Fetch gift and associated gift_wrap details from the database
   const gift = await db.gift.findFirst({
     where: {
       shop: shop,
@@ -495,24 +494,31 @@ export const getSendAsGift = async (shop) => {
     },
   });
   if (gift) {
-    const giftData = {
-      ...gift,
-      gift_wrap: gift.gift_wrap ? {
-        ...gift.gift_wrap,
-        productId: gift.gift_wrap.productId?.toString(),
-      } : null,
-    };
-
-    let itemHtml = `<div id="giftWrap-${gift.gift_wrap.productId}" class="gift-wrap-item busyBuddySendAsGift" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
+    
+    let itemHtml = `<div id="giftWrap-${gift.wrapProductId}" class="gift-wrap-item busyBuddySendAsGift" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
     if (gift.gift_wrap.image) {
-      itemHtml += `<img src="${gift.gift_wrap.image}" alt="${gift.gift_wrap.title}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
+      itemHtml += `<img src="${gift.giftWrapImage}" alt="${gift.giftWrapTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
     } else {
       itemHtml += `<img src="https://via.placeholder.com/100" alt="No Image" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
     }
-
-    itemHtml += `<h3>${gift.gift_wrap.title}</h3>`;
-    itemHtml += `<p>${gift.gift_wrap.description}</p>`;
-    itemHtml += `<p><strong>Price: $${gift.gift_wrap.price.toFixed(2)}</strong></p>`;
+    if(gift.enableGiftWrap)
+    {
+      itemHtml += `<h3>${gift.giftWrapTitle}</h3>`;
+      itemHtml += `<p>${gift.giftWrapDescription}</p>`;
+      itemHtml += `<p><strong>Price: $${gift.giftWrapPrice.toFixed(2)}</strong></p>`;
+    }
+    if(gift.enableGiftMessage)
+    {
+      itemHtml += `<h3>${gift.giftMessageTitle}</h3>`;
+      itemHtml += `<p>${gift.giftMessageDescription}</p>`;
+      itemHtml += `<p><strong><input type="text" id="giftMessageText"></strong></p>`;
+    }
+    if(gift.enableGiftRecipient)
+    {
+      itemHtml += `<h3>${gift.recipientEmailTitle}</h3>`;
+      itemHtml += `<p>${gift.recipientEmailDescription}</p>`;
+      itemHtml += `<p><strong><input type="text" id="giftRecipientEmail"></strong></p>`;
+    }
     itemHtml += `</div>`;
 
     const popupHtml = `
@@ -546,7 +552,9 @@ export const getSendAsGift = async (shop) => {
     `;
     script += `
       let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
-      if (form) {
+      let currentPageProductId = form.querySelector('input[name="id"]')?.value; 
+      if(("${gift.selectionType}"=="any" || ${gift.selectedProductList.includes(get_current_page().productId)}) && form)
+      {
         const buttonHtml = \`<div id="busyBuddySendAsGift" class="busyBuddyCountdownTimer busyBuddySendAsGift" style="cursor: pointer;">Add As Gift Options</div>\`;
         form.insertAdjacentHTML('beforebegin', buttonHtml);
         document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
@@ -748,7 +756,7 @@ export const createProduct = async (session, data) => {
   product.product_type = "gift";
   product.images = [
     {
-      "src": "http://example.com/rails_logo.gif"
+      "src": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ];
   product.status = "active";
@@ -765,4 +773,12 @@ export const attachImage = async (session, product_id, data) => {
   await image.save({
     update: true,
   });
+};
+export const getGiftSetting = async (shop) => {
+  const giftSetting = await db.gift_setting.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+  return giftSetting;
 };

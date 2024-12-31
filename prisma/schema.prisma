@@ -177,59 +177,48 @@ model countdown_timer {
 model Gift {
   id                        Int           @id @default(autoincrement())
   selectionType             String?       @default("any")
-  productList               String?
-  giftWrapStatus            Boolean       @default(false)
-  gift_wrap                 GiftWrap?     @relation("GiftWrapRelation")
-  giftWrapId                Int?          @unique
-  giftMessageStatus         Boolean       @default(false)
-  gift_message              GiftMessage?  @relation("GiftMessageRelation")
-  giftMessageId             Int?          @unique
-  giftRecieptStatus         Boolean       @default(false)
-  gift_reciept              GiftReciept?  @relation("GiftRecieptRelation")
-  giftRecieptId             Int?          @unique
-  giftAppearanceSetting     String?
-  appearanceRules           String?
-  accountSetting            String?
-  shop                      String?
+  selectedProductList       String?       
+  enableGiftWrap            Boolean       @default(false)
+  giftWrapImage             String?       
+  giftWrapTitle             String?       
+  giftWrapPrice             Float?        
+  giftWrapDescription       String?       
+  enableGiftMessage         Boolean       @default(false)
+  giftMessageTitle          String?       
+  giftMessageDescription    String?       
+  sendWithGiftReceipt       Boolean       @default(false)
+  sendWithNoInvoice         Boolean       @default(false)
+  recipientEmailTitle       String?       
+  recipientEmailDescription String?      
+  recipientEmail            String?       
+  sendEmailUponCheckout     Boolean       @default(false) 
+  sendEmailWhenItemIsShipped Boolean     @default(false)
+  giftWrapCustomizationText String?      
+  giftWrapCustomizationColor String?     
+  giftWrapCustomizationEmoji String?      
+  giftMessageCustomizationText String?    
+  giftMessageCustomizationColor String?  
+  giftMessageCustomizationEmoji String?   
+  wrapProductId             String?
+  messageProductId          String?
+  recipeientProductId       String?
+  shop                      String?      
   createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime?      @updatedAt 
 }
 
-model GiftWrap {
-  id                      Int           @id @default(autoincrement())
-  title                   String? 
-  description             String?
-  price                   Int
-  image                   String? 
-  productId               BigInt?  
-  giftId                  Int?          @unique
-  gift                    Gift?         @relation("GiftWrapRelation", fields: [giftId], references: [id])
-  createdAt               DateTime      @default(now())
-}
-
-model GiftMessage {
-  id                      Int           @id @default(autoincrement())
-  title                   String? 
-  description             String?
-  productId               Int? 
-  giftId                  Int?          @unique
-  gift                    Gift?         @relation("GiftMessageRelation", fields: [giftId], references: [id])
-  createdAt               DateTime      @default(now())
-}
-
-model GiftReciept {
-  id                      Int           @id @default(autoincrement())
-  title                   String? 
-  description             String?
-  productId               Int? 
-  giftId                  Int?          @unique
-  gift                    Gift?         @relation("GiftRecieptRelation", fields: [giftId], references: [id])
-  createdAt               DateTime      @default(now())
-}
 
 model GiftSetting {
-  id                      Int           @id @default(autoincrement())
-  refresh_cart            Boolean       @default(false)
-  optionLogging           String        @default("notes")
-  shop                    String        @unique
-  createdAt               DateTime      @default(now())
+  id                            Int           @id @default(autoincrement())
+  addEmailClient                String?
+  giftWrapTagName               String?  
+  giftMessageTagName            String?
+  giftReceiptTagName            String?
+  refreshTheCart                Boolean       @default(true)
+  giftLogging                   String        @default("1")
+  showDecimalPoints             Boolean       @default(false)
+  displayGiftButton             String        @default("Both")
+  displayGiftOptions            String        @default("Both")
+  shop                          String        @unique
+  createdAt                     DateTime      @default(now())
 }
