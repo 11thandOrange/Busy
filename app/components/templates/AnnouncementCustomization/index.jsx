@@ -23,6 +23,7 @@ import {
   ANNOUNCEMENT_BARS_TABS,
   COLOR_THEME,
   SETTINGS_INITIAL_STATE,
+  STATUS,
 } from "../../../constants/announcementCustomizationConfig";
 
 import { isLoading, checkError } from "../../../utils/clientFunctions";
@@ -57,9 +58,32 @@ const AnnouncementCustomization = ({
     message: "",
   });
   const editButtonsList = [
-    { id: 0, title: "Customize Appearance" },
-    { id: 1, title: "Enable App" },
-    { id: 2, title: "Enable App in Store" },
+    {
+      id: 0,
+      title: "Customize Appearance",
+      data: {
+        "Announcement Bar Active": (
+          settingsState.status == STATUS.ACTIVE
+        ).toString(),
+      },
+    },
+    {
+      id: 1,
+      title: "Enable App",
+      data: {
+        "Announcement Bar App":
+          settingsState.enableApp == true ? "true" : "false",
+      },
+    },
+    {
+      id: 2,
+      title: "Enable App in Store",
+      data: {
+        "Enable Later": settingsState.enableAppInShopifyLater
+          ? "true"
+          : "false",
+      },
+    },
   ];
   const filteredButtonsList = editButtonsList.filter((btn) => {
     return !(

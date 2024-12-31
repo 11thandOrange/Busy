@@ -15,18 +15,30 @@ const ReviewStep = ({
   enableAppInStoreURL = "#",
   error = false,
 }) => {
-  const renderEditButton = (btn, index) => (
-    <li key={btn.id} className="edit-button-item">
-      <Text>{btn.title}</Text>
-      <div
-        className="edit-button-icon"
-        onClick={() => setSelectedStep(index)}
-        style={{ cursor: "pointer" }}
-      >
-        <Icon source={EditIcon} tone="base" />
-      </div>
-    </li>
-  );
+  const renderEditButton = (btn, index) => {
+
+
+    return (
+      <li key={btn.id} className="edit-button-item">
+        <Text>{btn.title}</Text>
+        <div
+          className="edit-button-icon"
+          onClick={() => setSelectedStep(index)}
+          style={{ cursor: "pointer" }}
+        >
+          <Icon source={EditIcon} tone="base" />
+          {btn.data &&
+            Object.keys(btn.data).map((key) => {
+              return (
+                <p>
+                  {key}: {btn.data[key]}
+                </p>
+              );
+            })}
+        </div>
+      </li>
+    );
+  };
 
   return (
     <div className="review-step">
