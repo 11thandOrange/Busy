@@ -3,19 +3,34 @@ import IMAGES from "../../../../utils/Images";
 import Homepage from "../../../../components/templates/homepage";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import Analytics from "../../../../components/templates/Analytics";
-import { useNavigate } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useSearchParams } from "react-router-dom";
 import CheckBars, {
   emptyStateButtonType,
 } from "../../../../components/templates/CheckBars";
 import { ROUTES } from "../../../../utils/constants";
+import { cors } from "remix-utils/cors";
 import SendAsGiftSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings";
 import CustomizationSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import { authenticate } from "../../../../shopify.server";
+import db from '../../../../db.server'
+import { json } from "@remix-run/node";
 
+export const loader = async ({ request }) => {
+  const {session} = await authenticate.admin(request)
+  const giftListing = await db.Gift.findMany({
+    where: {
+      shop: session.shop,
+    }
+  });
+  return cors(request, json({giftListing: giftListing}));
+}
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedType, setSelectedType] = useState(1);
   const navigate = useNavigate();
+  const gift = useLoaderData();
+  console.log("Gift", gift);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const isAppActive = true;

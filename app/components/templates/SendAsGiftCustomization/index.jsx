@@ -12,12 +12,12 @@ import {
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
-import { APP_TYPE } from "../../../utils/constants";
+import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import "../AnnouncementCustomization/Settings.css";
 import EnableGiftReceiptStep from "./enableGiftReceiptStep";
 import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
-import { useNavigate } from "@remix-run/react";
+import { useFetcher, useNavigate } from "@remix-run/react";
 import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
@@ -26,6 +26,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   const [settingsState, setSettingsState] = useState({
     ...GIFT_CUSTOMIZATION_STATE,
   });
+  const fetcher = useFetcher();
   const navigate = useNavigate();
   const prevSettingsState = useRef({});
   const [error, setError] = useState({ ...GIFT_CUSTOMIZATION_ERROR_STATE });
@@ -38,8 +39,19 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   ];
 
   const handleOnSave = () => {
+    fetcher.submit(
+      {
+        ...settingsState,
+        _action: "CREATE_GIFT",
+      },
+      {
+        method: "POST",
+        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+      },
+    );
     console.log("handleOnSave", settingsState);
   };
+
   const steps = [
     {
       id: 0,

@@ -4,10 +4,11 @@ import { authenticate } from "../../../../../shopify.server";
 import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
-import { create } from "domain";
+import db from "../../../../../db.server";
 
 export const loader = async ({ request }) => {
-  const { admin } = await authenticate.admin(request);
+  const { admin, session } = await authenticate.admin(request);
+  const shop = session.shop;
   const response = await admin.graphql(
     `#graphql
       query GetProducts {
@@ -36,49 +37,47 @@ export const loader = async ({ request }) => {
       }`,
   );
 
-  const giftListing = await db.Gift.findMany({
-    where: {
-      shop: shop,
-    }
-  });
+  const giftListing = [];
 
   const data = await response.json();
-  return cors(request, json({ products: data.data.products.nodes, giftListing: giftListing }));
+  return cors(
+    request,
+    json({ products: data.data.products.nodes, giftListing: giftListing }),
+  );
 };
 
 export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
-
   switch (data._action) {
     case "CREATE_GIFT":
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
-          enableGiftWrap: data.enableGiftWrap,
+          enableGiftWrap: JSON.parse(data.enableGiftWrap),
           giftWrapImage: data.giftWrapImage,
           giftWrapTitle: data.giftWrapTitle,
-          giftWrapPrice: data.giftWrapPrice,
+          giftWrapPrice: parseFloat(data.giftWrapPrice),
           giftWrapDescription: data.giftWrapDescription,
-          enableGiftMessage: data.enableGiftMessage,
+          enableGiftMessage: JSON.parse(data.enableGiftMessage),
           giftMessageTitle: data.giftMessageTitle,
           giftMessageDescription: data.giftMessageDescription,
-          sendWithGiftReceipt: data.sendWithGiftReceipt,
-          sendWithNoInvoice: data.sendWithNoInvoice,
+          sendWithGiftReceipt: JSON.parse(data.sendWithGiftReceipt),  
+          sendWithNoInvoice: JSON.parse(data.sendWithNoInvoice),
           recipientEmailTitle: data.recipientEmailTitle,
           recipientEmailDescription: data.recipientEmailDescription,
           recipientEmail: data.recipientEmail,
-          sendEmailUponCheckout: data.sendEmailUponCheckout,
-          sendEmailWhenItemIsShipped: data.sendEmailWhenItemIsShipped,
+          sendEmailUponCheckout: JSON.parse(data.sendEmailUponCheckout),
+          sendEmailWhenItemIsShipped: JSON.parse(data.sendEmailWhenItemIsShipped),
           giftWrapCustomizationText: data.giftWrapCustomizationText,
           giftWrapCustomizationColor: data.giftWrapCustomizationColor,
           giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
           giftMessageCustomizationText: data.giftMessageCustomizationText,
           giftMessageCustomizationColor: data.giftMessageCustomizationColor,
           giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
-          shop: shop
+          shop: shop,
         },
       });
 
@@ -125,17 +124,16 @@ export const action = async ({ request }) => {
           giftMessageCustomizationText: data.giftMessageCustomizationText,
           giftMessageCustomizationColor: data.giftMessageCustomizationColor,
           giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
-          shop: shop
+          shop: shop,
         },
       });
-      if(data.enableGiftWrap)
-      {
-        await createProduct(session, { 
-          type: "giftWrap", 
-          title: data.giftWrapTitle, 
-          price: data.giftWrapPrice, 
-          description: data.giftWrapDescription, 
-          image: data.giftWrapImage 
+      if (data.enableGiftWrap) {
+        await createProduct(session, {
+          type: "giftWrap",
+          title: data.giftWrapTitle,
+          price: data.giftWrapPrice,
+          description: data.giftWrapDescription,
+          image: data.giftWrapImage,
         });
       }
       return { success: true, updatedGift };
@@ -144,15 +142,13 @@ export const action = async ({ request }) => {
       await db.gift.deleteMany({
         where: {
           id: {
-            in: data.giftIds
-              .split(",")
-              .map((num) => parseInt(num, 10)),
+            in: data.giftIds.split(",").map((num) => parseInt(num, 10)),
           },
           shop: shop,
         },
       });
-        return { success: true, updatedGift };
-    case 'SETTING':
+      return { success: true, updatedGift };
+    case "SETTING":
       await db.Gift.upsert({
         where: { shop: shop },
         update: {
@@ -173,21 +169,22 @@ export const action = async ({ request }) => {
           refreshTheCart: data.refreshTheCart,
           giftLogging: data.giftLogging,
           showDecimalPoints: data.showDecimalPoints,
-          shop: shop
+          shop: shop,
         },
       });
     default:
-      return { success: false, message: 'Invalid action' };
+      return { success: false, message: "Invalid action" };
   }
 };
 
 const GiftCustomization = () => {
   const products = useLoaderData();
+  console.log(products, "pro");
 
   return (
     <div>
       <SendAsGiftCustomization
-        productsList={products}
+        productsList={products.products}
       ></SendAsGiftCustomization>
     </div>
   );
