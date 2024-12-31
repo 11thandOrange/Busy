@@ -25,6 +25,11 @@ export async function loader({ request }) {
     const shop = session.shop;
 
     let apps = await db.app.findMany({
+      where: {
+        activities: {
+          none: {}
+        },
+      },
       include: {
         Merchant: true,
         categories: {

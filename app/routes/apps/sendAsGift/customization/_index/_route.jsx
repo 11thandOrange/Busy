@@ -35,9 +35,105 @@ export const loader = async ({ request }) => {
       }`,
   );
 
+  const giftListing = await db.Gift.findMany({
+    where: {
+      shop: shop,
+    }
+  });
+
   const data = await response.json();
-  return cors(request, json(data.data.products.nodes));
+  return cors(request, json({ products: data.data.products.nodes, giftListing: giftListing }));
 };
+
+export const action = async ({ request }) => {
+  const { admin, session } = await authenticate.admin(request);
+  const shop = session.shop;
+  const data = Object.fromEntries(await request.formData());
+
+  switch (data._action) {
+    case "create":
+      const newGift = await db.gift.create({
+        data: {
+          selectionType: data.selectionType,
+          selectedProductList: data.selectedProductList,
+          enableGiftWrap: data.enableGiftWrap,
+          giftWrapImage: data.giftWrapImage,
+          giftWrapTitle: data.giftWrapTitle,
+          giftWrapPrice: data.giftWrapPrice,
+          giftWrapDescription: data.giftWrapDescription,
+          enableGiftMessage: data.enableGiftMessage,
+          giftMessageTitle: data.giftMessageTitle,
+          giftMessageDescription: data.giftMessageDescription,
+          sendWithGiftReceipt: data.sendWithGiftReceipt,
+          sendWithNoInvoice: data.sendWithNoInvoice,
+          recipientEmailTitle: data.recipientEmailTitle,
+          recipientEmailDescription: data.recipientEmailDescription,
+          recipientEmail: data.recipientEmail,
+          sendEmailUponCheckout: data.sendEmailUponCheckout,
+          sendEmailWhenItemIsShipped: data.sendEmailWhenItemIsShipped,
+          giftWrapCustomizationText: data.giftWrapCustomizationText,
+          giftWrapCustomizationColor: data.giftWrapCustomizationColor,
+          giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
+          giftMessageCustomizationText: data.giftMessageCustomizationText,
+          giftMessageCustomizationColor: data.giftMessageCustomizationColor,
+          giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
+          shop: shop
+        },
+      });
+
+      if (giftWrapStatus) {
+        await createProduct(session, { type: "giftWrap", data: newGift.giftWraps });  // This will need adjustment
+      }
+
+      if (giftMessageStatus) {
+        await createProduct(session, { type: "giftMessage", data: newGift.giftMessages });  // Adjust for newGift.giftMessages
+      }
+
+      if (giftReceiptStatus) {
+        await createProduct(session, { type: "giftReceipt", data: newGift.giftReceipts });  // Adjust for newGift.giftReceipts
+      }
+
+      return { success: true, gift: newGift };
+
+    case "update":
+      await db.gift.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          selectionType: data.selectionType,
+          selectedProductList: data.selectedProductList,
+          enableGiftWrap: data.enableGiftWrap,
+          giftWrapImage: data.giftWrapImage,
+          giftWrapTitle: data.giftWrapTitle,
+          giftWrapPrice: data.giftWrapPrice,
+          giftWrapDescription: data.giftWrapDescription,
+          enableGiftMessage: data.enableGiftMessage,
+          giftMessageTitle: data.giftMessageTitle,
+          giftMessageDescription: data.giftMessageDescription,
+          sendWithGiftReceipt: data.sendWithGiftReceipt,
+          sendWithNoInvoice: data.sendWithNoInvoice,
+          recipientEmailTitle: data.recipientEmailTitle,
+          recipientEmailDescription: data.recipientEmailDescription,
+          recipientEmail: data.recipientEmail,
+          sendEmailUponCheckout: data.sendEmailUponCheckout,
+          sendEmailWhenItemIsShipped: data.sendEmailWhenItemIsShipped,
+          giftWrapCustomizationText: data.giftWrapCustomizationText,
+          giftWrapCustomizationColor: data.giftWrapCustomizationColor,
+          giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
+          giftMessageCustomizationText: data.giftMessageCustomizationText,
+          giftMessageCustomizationColor: data.giftMessageCustomizationColor,
+          giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
+          shop: shop
+        },
+      });
+      return { success: true, updatedGift };
+
+    default:
+      return { success: false, message: 'Invalid action' };
+  }
+};
+
 const GiftCustomization = () => {
   const products = useLoaderData();
 

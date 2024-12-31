@@ -641,3 +641,26 @@ function get_local_time()
   return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds)).getTime();
 
 }
+async function get_current_page() {
+  const path = window.location.pathname;
+  
+  if (path.includes('/cart')) {
+    return { page: 'cart', productId: '' };
+  } else if (path.includes('/products/')) {
+    const productId = await get_product_id(); // Use async/await to wait for the product ID
+    return { page: 'product', productId: productId };
+  } else {
+    return { page: '', productId: '' };
+  }
+}
+
+async function get_product_id() {
+  try {
+    const response = await fetch('/products/' + window.location.pathname.split('/').pop() + '.js');
+    const product = await response.json();
+    return product.id;  // Return the product ID after the promise resolves
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    return null;  // In case of error, return null or handle it accordingly
+  }
+}
