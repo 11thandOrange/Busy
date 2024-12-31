@@ -4,6 +4,7 @@ import { authenticate } from "../../../../../shopify.server";
 import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
+import { create } from "domain";
 
 export const loader = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
@@ -127,6 +128,16 @@ export const action = async ({ request }) => {
           shop: shop
         },
       });
+      if(data.enableGiftWrap)
+      {
+        await createProduct(session, { 
+          type: "giftWrap", 
+          title: data.giftWrapTitle, 
+          price: data.giftWrapPrice, 
+          description: data.giftWrapDescription, 
+          image: data.giftWrapImage 
+        });
+      }
       return { success: true, updatedGift };
 
     case "DELETE_GIFT":
