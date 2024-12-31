@@ -27,7 +27,7 @@ export async function loader({ request }) {
     let apps = await db.app.findMany({
       where: {
         activities: {
-          none: {}
+          some: {},
         },
       },
       include: {

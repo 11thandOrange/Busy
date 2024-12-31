@@ -51,7 +51,7 @@ export const action = async ({ request }) => {
   const data = Object.fromEntries(await request.formData());
 
   switch (data._action) {
-    case "create":
+    case "CREATE_GIFT":
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
@@ -95,7 +95,7 @@ export const action = async ({ request }) => {
 
       return { success: true, gift: newGift };
 
-    case "update":
+    case "UPDATE_GIFT":
       await db.gift.update({
         where: {
           id: data.id,
@@ -129,6 +129,42 @@ export const action = async ({ request }) => {
       });
       return { success: true, updatedGift };
 
+    case "DELETE_GIFT":
+      await db.gift.deleteMany({
+        where: {
+          id: {
+            in: data.giftIds
+              .split(",")
+              .map((num) => parseInt(num, 10)),
+          },
+          shop: shop,
+        },
+      });
+        return { success: true, updatedGift };
+    case 'SETTING':
+      await db.Gift.upsert({
+        where: { shop: shop },
+        update: {
+          addEmailClient: data.addEmailClient,
+          giftWrapTagName: data.giftWrapTagName,
+          giftMessageTagName: data.giftMessageTagName,
+          giftReceiptTagName: data.giftReceiptTagName,
+          refreshTheCart: data.refreshTheCart,
+          giftLogging: data.giftLogging,
+          showDecimalPoints: data.showDecimalPoints,
+          shop: shop,
+        },
+        create: {
+          addEmailClient: data.addEmailClient,
+          giftWrapTagName: data.giftWrapTagName,
+          giftMessageTagName: data.giftMessageTagName,
+          giftReceiptTagName: data.giftReceiptTagName,
+          refreshTheCart: data.refreshTheCart,
+          giftLogging: data.giftLogging,
+          showDecimalPoints: data.showDecimalPoints,
+          shop: shop
+        },
+      });
     default:
       return { success: false, message: 'Invalid action' };
   }

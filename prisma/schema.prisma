@@ -209,9 +209,16 @@ model Gift {
 
 
 model GiftSetting {
-  id                      Int           @id @default(autoincrement())
-  refresh_cart            Boolean       @default(false)
-  optionLogging           String        @default("notes")
-  shop                    String        @unique
-  createdAt               DateTime      @default(now())
+  id                            Int           @id @default(autoincrement())
+  addEmailClient                String?
+  giftWrapTagName               String?  
+  giftMessageTagName            String?
+  giftReceiptTagName            String?
+  refreshTheCart                Boolean       @default(true)
+  giftLogging                   String        @default("1")
+  showDecimalPoints             Boolean       @default(false)
+  displayGiftButton             String        @default("Both")
+  displayGiftOptions            String        @default("Both")
+  shop                          String        @unique
+  createdAt                     DateTime      @default(now())
 }
