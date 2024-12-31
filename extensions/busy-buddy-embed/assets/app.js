@@ -1,4 +1,4 @@
-const baseUrl = 'https://acrobat-subjective-blades-reuters.trycloudflare.com';
+const baseUrl = 'https://busybuddy.projectlabs.in';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
