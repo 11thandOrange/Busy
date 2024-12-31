@@ -3,7 +3,7 @@ export const PRODUCT_SELECTION_TYPE = {
   SPECIFIC_PRODUCT: 2,
 };
 export const GIFT_CUSTOMIZATION_STATE = {
-  productType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
+  selectionType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
   selectedProductList: [],
 
   enableGiftWrap: true,

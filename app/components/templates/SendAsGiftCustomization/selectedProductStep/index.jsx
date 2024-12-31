@@ -13,7 +13,7 @@ const SelectedProductStep = ({
 }) => {
   useEffect(() => {
     if (settingsState.selectedProductList) {
-      if (settingsState.productType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT) {
+      if (settingsState.selectionType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT) {
         setError((prevState) => ({
           ...prevState,
           noProductError: false,
@@ -25,7 +25,7 @@ const SelectedProductStep = ({
         }));
       }
     }
-  }, [settingsState.selectedProductList, settingsState.productType]);
+  }, [settingsState.selectedProductList, settingsState.selectionType]);
   return (
     <div>
       <Card>
@@ -37,14 +37,14 @@ const SelectedProductStep = ({
           <RadioButton
             label="Any Product"
             checked={
-              settingsState.productType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
+              settingsState.selectionType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
             }
             id="Any_Product"
             name="Any_Product"
             onChange={(value) => {
               setSettingsState((prevState) =>
                 updateState(
-                  "productType",
+                  "selectionType",
                   PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
                   prevState,
                 ),
@@ -54,7 +54,7 @@ const SelectedProductStep = ({
           <RadioButton
             label="Specific Products"
             checked={
-              settingsState.productType ==
+              settingsState.selectionType ==
               PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT
             }
             id="Specific_Products"
@@ -62,7 +62,7 @@ const SelectedProductStep = ({
             onChange={(value) => {
               setSettingsState((prevState) =>
                 updateState(
-                  "productType",
+                  "selectionType",
                   PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT,
                   prevState,
                 ),
@@ -70,7 +70,7 @@ const SelectedProductStep = ({
             }}
           />
         </>
-        {settingsState.productType ==
+        {settingsState.selectionType ==
           PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
           <SearchBarWithBrowse
             productsList={productsList}
