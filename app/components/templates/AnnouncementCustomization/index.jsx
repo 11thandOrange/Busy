@@ -61,18 +61,13 @@ const AnnouncementCustomization = ({
     { id: 1, title: "Enable App" },
     { id: 2, title: "Enable App in Store" },
   ];
-  editButtonsList.filter((btn) => {
-    if (appActivationState == null) {
-      return;
-    }
-    if (
-      (btn.id === 1 && appActivationState.enableApp) ||
-      (btn.id === 2 && appActivationState.enableAppInStore)
-    ) {
-      return false;
-    }
-    return true;
+  const filteredButtonsList = editButtonsList.filter((btn) => {
+    return !(
+      (btn.id === 1 && appActivationState?.enableApp) ||
+      (btn.id === 2 && appActivationState?.enableAppInStore)
+    );
   });
+
   const handleOnSave = () => {
     const payload = {
       name: settingsState.name,
@@ -172,10 +167,13 @@ const AnnouncementCustomization = ({
           }
           enableApp={appActivationState && appActivationState.enableApp}
           setSelectedStep={setSelectedStep}
-          editButtonsList={editButtonsList}
+          editButtonsList={filteredButtonsList}
           onSaveAndPublish={handleOnSave}
           fetcherState={fetcher.state}
           error={checkError(error)}
+          enableAppInStoreURL={
+            appActivationState && appActivationState.enableAppInStoreURL
+          }
         />
       ),
     },

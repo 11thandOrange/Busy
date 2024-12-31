@@ -9,6 +9,8 @@ import CheckBars, {
   emptyStateButtonType,
 } from "../../../../components/templates/CheckBars";
 import { ROUTES } from "../../../../utils/constants";
+import SendAsGiftSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings";
+import CustomizationSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings/CustomizationSettings";
 
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -108,9 +110,15 @@ const route = () => {
     },
 
     {
+      id: "Customization-1",
+      content: "Customization",
+      component: <CustomizationSettings />,
+    },
+
+    {
       id: "Settings-1",
       content: "Settings",
-      component: <h1> Settings Content </h1>,
+      component: <SendAsGiftSettings />,
     },
     {
       id: "Analytics-1",

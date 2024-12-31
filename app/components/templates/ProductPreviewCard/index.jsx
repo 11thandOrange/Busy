@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Style.css"; // Import CSS for styling
+import "./Style.css";
 import PreviewCardBanner from "../../atoms/PreviewCardBanner";
 import { APP_TYPE } from "../../../utils/constants";
 import PreviewCardTimer from "../../atoms/PreviewCardTimer";
@@ -40,7 +40,9 @@ const ProductPreviewCard = ({
         );
 
       case APP_TYPE.SEND_AS_A_GIFT:
-        return <SendAsGiftPreview settingsState={settingsState}></SendAsGiftPreview>;
+        return (
+          <SendAsGiftPreview settingsState={settingsState}></SendAsGiftPreview>
+        );
       default:
         return null; // or handle other cases, if necessary
     }

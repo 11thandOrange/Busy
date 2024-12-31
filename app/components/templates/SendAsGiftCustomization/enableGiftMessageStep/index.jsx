@@ -3,10 +3,12 @@ import React from "react";
 import CustomTextField from "../../../atoms/CustomTextField";
 import "./style.css";
 import { updateState } from "../../../../utils/clientFunctions";
+import GiftCustomization from "../GiftCustomization";
 const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
   return (
-    <div>
+    <div className="enable-gift-message-container">
       <Card>
+      
         <Checkbox
           label="Enable Gift Message"
           checked={settingsState.enableGiftMessage}
@@ -40,6 +42,36 @@ const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
             );
           }}
         ></CustomTextField>
+        
+      </Card>
+      <Card>
+      <GiftCustomization
+          onColorChange={(color) => {
+            setSettingsState((prevState) =>
+              updateState("giftMessageCustomizationColor", color, prevState),
+            );
+          }}
+          onTextChange={(text) => {
+            setSettingsState((prevState) =>
+              updateState("giftMessageCustomizationText", text, prevState),
+            );
+          }}
+          onEmojiChange={(emojiData) => {
+            setSettingsState((prevState) =>
+              updateState(
+                "giftMessageCustomizationEmoji",
+                emojiData.emoji,
+                prevState,
+              ),
+            );
+          }}
+          setSettingsState={setSettingsState}
+          settingsState={{
+            customizationText: settingsState.giftMessageCustomizationText,
+            customizationColor: settingsState.giftMessageCustomizationColor,
+            customizationEmoji: settingsState.giftMessageCustomizationEmoji,
+          }}
+        ></GiftCustomization>
       </Card>
     </div>
   );

@@ -3,18 +3,18 @@ export const PRODUCT_SELECTION_TYPE = {
   SPECIFIC_PRODUCT: 2,
 };
 export const GIFT_CUSTOMIZATION_STATE = {
-  productType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
+  selectionType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
   selectedProductList: [],
 
-  enableGiftWrap: false,
+  enableGiftWrap: true,
   giftWrapImage: null,
   giftWrapTitle: "Gift",
   giftWrapPrice: "0",
   giftWrapDescription: "",
 
   enableGiftMessage: false,
-  giftMessageTitle: "",
-  giftMessageDescription: "",
+  giftMessageTitle: "Title",
+  giftMessageDescription: "Description",
 
   sendWithGiftReceipt: false,
   sendWithNoInvoice: false,
@@ -24,6 +24,14 @@ export const GIFT_CUSTOMIZATION_STATE = {
   recipientEmail: "",
   sendEmailUponCheckout: false,
   sendEmailWhenItemIsShipped: false,
+
+  giftWrapCustomizationText: "",
+  giftWrapCustomizationColor: "",
+  giftWrapCustomizationEmoji: "🔥",
+
+  giftMessageCustomizationText: "",
+  giftMessageCustomizationColor: "",
+  giftMessageCustomizationEmoji: "🔥",
 };
 export const GIFT_CUSTOMIZATION_ERROR_STATE = {
   noProductError: false,
