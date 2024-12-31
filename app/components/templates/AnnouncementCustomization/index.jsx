@@ -171,6 +171,9 @@ const AnnouncementCustomization = ({
           onSaveAndPublish={handleOnSave}
           fetcherState={fetcher.state}
           error={checkError(error)}
+          enableAppInStoreURL={
+            appActivationState && appActivationState.enableAppInStoreURL
+          }
         />
       ),
     },

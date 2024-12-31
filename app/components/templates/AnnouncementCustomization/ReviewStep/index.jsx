@@ -12,6 +12,7 @@ const ReviewStep = ({
   setSelectedStep,
   editButtonsList = [],
   onSaveAndPublish = () => {},
+  enableAppInStoreURL = "#",
   error = false,
 }) => {
   const renderEditButton = (btn, index) => (
@@ -30,24 +31,37 @@ const ReviewStep = ({
   return (
     <div className="review-step">
       <Card>
-      <div className="step-title">Review Settings</div>
+        <div className="step-title">Review Settings</div>
         <ul className="edit-button-list">
           {editButtonsList.map((btn, index) => renderEditButton(btn, index))}
         </ul>
         <div className="editbtn-container">
-        <Text variant="headingMd" style={{ marginTop: "1rem" }}>
-          All Done? Save & Publish!
-        </Text>
-        {enableAppInStore && <Button>Edit placement in Shopify Store?</Button>}
-        <Button
-          variant="primary"
-          style={{ marginTop: "0.5rem" }}
-          onClick={onSaveAndPublish}
-          loading={isLoading(fetcherState)}
-          disabled={error}
-        >
-          Save & Publish
-        </Button>
+          <Text variant="headingMd" style={{ marginTop: "1rem" }}>
+            All Done? Save & Publish!
+          </Text>
+          {enableAppInStore && (
+            <Button
+              onClick={() => {
+                onSaveAndPublish();
+                window.open(enableAppInStoreURL, "_blank");
+              }}
+              loading={isLoading(fetcherState)}
+              disabled={error}
+            >
+              Edit placement in Shopify Store?
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            style={{ marginTop: "0.5rem" }}
+            onClick={() => {
+              onSaveAndPublish();
+            }}
+            loading={isLoading(fetcherState)}
+            disabled={error}
+          >
+            Save & Publish
+          </Button>
         </div>
       </Card>
     </div>
