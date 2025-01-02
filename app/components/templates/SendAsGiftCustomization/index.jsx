@@ -9,6 +9,7 @@ import EnableGiftMessageStep from "./enableGiftMessageStep";
 import {
   GIFT_CUSTOMIZATION_ERROR_STATE,
   GIFT_CUSTOMIZATION_STATE,
+  PRODUCT_SELECTION_TYPE,
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
@@ -17,7 +18,7 @@ import "../AnnouncementCustomization/Settings.css";
 import EnableGiftReceiptStep from "./enableGiftReceiptStep";
 import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
-import { useFetcher, useNavigate } from "@remix-run/react";
+import { data, useFetcher, useNavigate } from "@remix-run/react";
 import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
 import CartPreview from "../CartPreview";
 import { DISPLAY_GIFT_OPTIONS } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
@@ -35,11 +36,59 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   const prevSettingsState = useRef({});
   const [error, setError] = useState({ ...GIFT_CUSTOMIZATION_ERROR_STATE });
   const editButtonsList = [
-    { id: 0, title: "Select Products" },
-    { id: 1, title: "Enable Gift Wrap" },
-    { id: 2, title: "Enable Gift Message" },
-    { id: 3, title: "Enable Gift Receipt" },
-    { id: 4, title: "Enable Gift Recipient Email" },
+    {
+      id: 0,
+      title: "Select Products",
+      data: {
+        "Selected Products":
+          settingsState.selectionType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
+            ? "All Products"
+            : "Specific Products",
+      },
+    },
+    {
+      id: 1,
+      title: "Enable Gift Wrap",
+      data: {
+        Title: settingsState.giftWrapTitle,
+        Price: "$" + settingsState.giftWrapPrice,
+        Description: settingsState.giftWrapDescription,
+        Image: settingsState.giftWrapImage ? "Yes" : "No",
+      },
+    },
+    {
+      id: 2,
+      title: "Enable Gift Message",
+      data: {
+        Title: settingsState.giftMessageTitle,
+        Description: settingsState.giftMessageDescription,
+      },
+    },
+    {
+      id: 3,
+      title: "Enable Gift Receipt",
+      data: {
+        "Send with Gift Receipt": settingsState.sendWithGiftReceipt
+          ? "Yes"
+          : "No",
+        "Send with No Invoice": settingsState.sendWithNoInvoice ? "Yes" : "No",
+      },
+    },
+    {
+      id: 4,
+      title: "Enable Gift Recipient Email",
+      data: {
+        Title: settingsState.recipientEmailTitle,
+        Description: settingsState.recipientEmailDescription,
+
+        "Recipient Email": settingsState.recipientEmail,
+        "Send Email Upon Checkout": settingsState.sendEmailUponCheckout
+          ? "Yes"
+          : "No",
+        "Send Email When Item Is Shipped":
+          settingsState.sendEmailWhenItemIsShipped ? "Yes" : "No",
+      },
+    },
   ];
 
   // const handleOnSave = () => {
