@@ -42,18 +42,75 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
     { id: 4, title: "Enable Gift Recipient Email" },
   ];
 
+  // const handleOnSave = () => {
+  //   let payload = {
+  //     ...settingsState,
+  //     giftWrapImage: settingsState.giftWrapImage,
+  //   };
+
+  //   fetcher.submit(
+  //     {
+  //       ...payload,
+  //       _action: "CREATE_GIFT",
+  //     },
+  //     {
+  //       method: "POST",
+  //       action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+  //     },
+  //   );
+  //   console.log("handleOnSave", settingsState);
+  // };
   const handleOnSave = () => {
-    fetcher.submit(
-      {
+    if (!settingsState.giftWrapImage) {
+      // If no image is selected, send null in the payload
+      let payload = {
         ...settingsState,
-        _action: "CREATE_GIFT",
-      },
-      {
-        method: "POST",
-        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-      },
-    );
-    console.log("handleOnSave", settingsState);
+        giftWrapImage: null,
+      };
+
+      fetcher.submit(
+        {
+          ...payload,
+          _action: "CREATE_GIFT",
+        },
+        {
+          method: "POST",
+          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+        },
+      );
+
+      console.log("handleOnSave without image", payload);
+      return;
+    }
+
+    const reader = new window.FileReader();
+
+    reader.readAsDataURL(settingsState.giftWrapImage);
+    reader.onload = function () {
+      const base64data = reader.result;
+
+      let payload = {
+        ...settingsState,
+        giftWrapImage: base64data,
+      };
+
+      fetcher.submit(
+        {
+          ...payload,
+          _action: "CREATE_GIFT",
+        },
+        {
+          method: "POST",
+          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+        },
+      );
+
+      console.log("handleOnSave with image", payload);
+    };
+
+    reader.onerror = function (error) {
+      console.error("Error reading file:", error);
+    };
   };
 
   const steps = [
@@ -126,6 +183,8 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
       description: "Review",
       component: (
         <ReviewStep
+          fetcherState={fetcher.state}
+          onSaveAndPublish={handleOnSave}
           settingsState={settingsState}
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
@@ -178,7 +237,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
               state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
             });
           }}
-          // fetcherState={fetcher.state}
+          fetcherState={fetcher.state}
           isError={checkError(error)}
           showBarInitially={true}
           showSaveButton={selectedStep == steps.length - 1}
