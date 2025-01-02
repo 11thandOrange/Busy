@@ -21,7 +21,10 @@ import ReviewStep from "../AnnouncementCustomization/ReviewStep";
 import { data, useFetcher, useNavigate } from "@remix-run/react";
 import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
 import CartPreview from "../CartPreview";
-import { DISPLAY_GIFT_OPTIONS } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import {
+  DISPLAY_GIFT_OPTIONS,
+  GIFT_BTN_TYPE,
+} from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
@@ -81,7 +84,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
         Title: settingsState.recipientEmailTitle,
         Description: settingsState.recipientEmailDescription,
 
-        "Recipient Email": settingsState.recipientEmail,
+        "Recipient Email": settingsState.recipientEmail || "No Recipient Email",
         "Send Email Upon Checkout": settingsState.sendEmailUponCheckout
           ? "Yes"
           : "No",
@@ -295,19 +298,27 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {DISPLAY_GIFT_OPTIONS.CART_ONLY === DISPLAY_GIFT_OPTIONS.BOTH ||
+          {DISPLAY_GIFT_OPTIONS.BOTH === DISPLAY_GIFT_OPTIONS.BOTH ||
           DISPLAY_GIFT_OPTIONS.BOTH ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard
               setSettingsState={setSettingsState}
-              settingsState={settingsState}
-              appType={APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION}
+              settingsState={{
+                ...settingsState,
+                displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
+                giftBtnType: GIFT_BTN_TYPE.BOTH,
+              }}
+              appType={APP_TYPE.SEND_AS_A_GIFT}
               // colorTheme={colorTheme}
             ></ProductPreviewCard>
           ) : (
             <CartPreview
               setSettingsState={setSettingsState}
-              settingsState={settingsState}
+              settingsState={{
+                ...settingsState,
+                displayGiftOptions: DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY,
+                giftBtnType: GIFT_BTN_TYPE.BOTH,
+              }}
             ></CartPreview>
           )}
         </div>

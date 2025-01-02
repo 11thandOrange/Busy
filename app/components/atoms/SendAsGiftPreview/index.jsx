@@ -23,7 +23,10 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
               {" "}
               {settingsState.giftWrapCustomizationEmoji}
             </div>
-            <div className="title-price-container">
+            <div
+              className="title-price-container"
+              style={{ color: settingsState.giftWrapCustomizationColor }}
+            >
               <div className="gift-title">{settingsState.giftWrapTitle}</div>
               <div className="gift-price">${settingsState.giftWrapPrice}</div>
             </div>
@@ -40,7 +43,10 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
               {" "}
               {settingsState.giftMessageCustomizationEmoji}
             </div>
-            <div className="title-price-container">
+            <div
+              className="title-price-container"
+              style={{ color: settingsState.giftMessageCustomizationColor }}
+            >
               <div className="gift-title">{settingsState.giftMessageTitle}</div>
               <div className="gift-price">
                 {settingsState.giftMessageDescription}
