@@ -7,6 +7,7 @@ import {
 import CheckBars from "../../../../components/templates/CheckBars";
 import Homepage from "../../../../components/templates/homepage";
 import {
+  useFetcher,
   useLoaderData,
   useLocation,
   useNavigate,
@@ -258,6 +259,7 @@ const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const fetcher = useFetcher();
   const sliderData = [
     {
       type: "image",
@@ -268,8 +270,6 @@ const route = () => {
   ];
   const formatBarsData = useCallback(
     (data) => {
-     
-
       return data.map((item) => {
         return {
           id: item.id,
@@ -300,10 +300,22 @@ const route = () => {
       component: (
         <CheckBars
           barsData={formatBarsData(announcementBarsData)}
-          onBarClick = {(type=null,id=null) => {
-            navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`);
+          onBarClick={(type = null, id = null) => {
+            navigate(
+              `${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`,
+            );
           }}
           pagination={true}
+          fetcher={fetcher}
+          onDelete={(selectedResources) => {
+            fetcher.submit(
+              {
+                _action: "DELETE",
+                announcement_bar_id: selectedResources,
+              },
+              { method: "DELETE", action: ROUTES.ANNOUNCEMENT_OVERVIEW },
+            );
+          }}
         />
       ),
     },

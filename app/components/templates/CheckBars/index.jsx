@@ -43,8 +43,10 @@ function CheckBars({
   deletConfirmationMessage = "This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?",
   toastMessage = "Announcement bar(s) deleted successfully",
   onBarClick = () => {},
+  fetcher = useFetcher(),
+  onDelete = () => {},
 }) {
-  const fetcher = useFetcher();
+ 
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { showToast, onDismiss } = useToast(fetcher);
@@ -132,13 +134,8 @@ function CheckBars({
   );
 
   const handleDeleteConfirm = () => {
-    fetcher.submit(
-      {
-        _action: "DELETE",
-        announcement_bar_id: selectedResources,
-      },
-      { method: "DELETE", action: ROUTES.ANNOUNCEMENT_OVERVIEW },
-    );
+  
+    onDelete(selectedResources)
     setConfirmDelete(false);
     setCurrentPage(1);
     clearSelection();
