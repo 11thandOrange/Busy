@@ -1,77 +1,54 @@
 .send-as-gift-preview {
-    display: flex;
-    position: absolute;
-    top: 20%;
-  
-    flex-wrap: wrap;
-    gap: 16px;
-    max-height: 400px;
-    width: 100%;
-    left: 0px;
-    overflow-y: auto;
-    padding: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9f3;
-   
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.784);
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  }
-  
-  .send-as-gift-preview::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Edge */
-  }
-  
-  .content-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* flex: 1 1 calc(50% - 16px); */
-    min-width: 240px;
-    width: 100%;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .title-price-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .gift-title {
-    font-size: 18px;
-    font-weight: bold;
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  position: absolute;
+  top: 20%;
+  max-height: 400px;
+  width: 100%;
+  left: 0px;
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9f3;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.784);
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.send-as-gift-preview::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-title {
+  font-size: 18px;
+  font-weight: bold;
  
-    margin-bottom: 8px;
-  }
-  
-  .gift-price {
-    font-size: 16px;
- 
-  }
-  
-  .gift-image {
-    max-width: 100px;
-    max-height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .customization-emoji {
-    font-size: 32px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px; 
-    height: 48px; 
-    border-radius: 50%; 
-    background-color: #f0f8ff; 
-    color: #555;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-    margin-right: 16px; 
-    text-align: center; 
-  }
+}
+
+.accordion-arrow {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.accordion-content {
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
