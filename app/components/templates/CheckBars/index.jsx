@@ -28,6 +28,7 @@ export const emptyStateButtonType = {
   POPOVER: "popover",
   BUTTON: "button",
 };
+
 function CheckBars({
   barsData = [],
   pagination = false,
@@ -41,6 +42,7 @@ function CheckBars({
   emptyStateBtnCallback = () => {},
   deletConfirmationMessage = "This cannot be undone. Are you sure you want to delete the selected announcement bar(s)?",
   toastMessage = "Announcement bar(s) deleted successfully",
+  onBarClick = () => {},
 }) {
   const fetcher = useFetcher();
   const navigate = useNavigate();
@@ -52,16 +54,11 @@ function CheckBars({
     plural: "announcement bars",
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Default number of items per page
+  const itemsPerPage = 10; 
 
-  // Derived pagination controls
+
   const hasNext = currentPage * itemsPerPage < barsData?.length;
   const hasPrevious = currentPage > 1;
-  const handleNextPage = () => {
-    if (hasNext) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  };
 
   const {
     selectedResources,
@@ -69,14 +66,20 @@ function CheckBars({
     handleSelectionChange,
     clearSelection,
   } = useIndexResourceState(bars);
-  useEffect(() => {
-    const barsDataNew = barsData?.slice(
-      (currentPage - 1) * itemsPerPage,
-      (currentPage - 1) * itemsPerPage + itemsPerPage,
-    );
 
-    setBars(barsDataNew);
+  useEffect(() => {
+    const paginatedBars = barsData.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage,
+    );
+    setBars(paginatedBars);
   }, [currentPage, barsData]);
+
+  const handleNextPage = () => {
+    if (hasNext) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
 
   const handlePreviousPage = () => {
     if (hasPrevious) {
@@ -96,14 +99,14 @@ function CheckBars({
   };
 
   const rowMarkup = bars?.map(
-    ({ id, name, createdAt, status, general_setting, type }, index) => (
+    ({ id, name, createdAt, status, message, type }, index) => (
       <IndexTable.Row
         id={id}
         key={id}
         selected={selectedResources.includes(id)}
         position={index}
         onClick={() => {
-          navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`);
+          onBarClick(type, id);
         }}
       >
         <IndexTable.Cell>
@@ -111,7 +114,7 @@ function CheckBars({
             <Text variant="bodyMd" fontWeight="bold" as="span">
               {name}
             </Text>
-            <p>{JSON.parse(general_setting).message || "Description"}</p>
+            <p>{message || "Description"}</p>
           </div>
         </IndexTable.Cell>
         <div className="dateContainerContent">
@@ -159,6 +162,7 @@ function CheckBars({
         );
     }
   };
+
   return (
     <LegacyCard>
       <ToastBar onDismiss={onDismiss} show={showToast} message={toastMessage} />
@@ -183,8 +187,8 @@ function CheckBars({
         {...(pagination && barsData?.length > 0
           ? {
               pagination: {
-                hasNext: hasNext,
-                hasPrevious: hasPrevious,
+                hasNext,
+                hasPrevious,
                 onPrevious: handlePreviousPage,
                 onNext: handleNextPage,
                 label: bars?.length
@@ -212,7 +216,7 @@ function CheckBars({
           fetcherState={fetcher.state}
         />
       </div>
-      {isLoading(fetcher.state) && <SpinnerExample></SpinnerExample>}
+      {isLoading(fetcher.state) && <SpinnerExample />}
     </LegacyCard>
   );
 }

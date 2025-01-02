@@ -6,6 +6,13 @@ import DropZoneWithImageFileUpload from "../../../atoms/DropZoneWithImageFileUpl
 import { updateState } from "../../../../utils/clientFunctions";
 import GiftCustomization from "../GiftCustomization";
 const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
+  // const appendImageToState = (value) => {
+  //   const formData = new FormData();
+  //   formData.append("imageFile", value);
+  
+
+  //   return formData;
+  // };
   return (
     <div className="enable-gift-wrap-container">
       <Card>
@@ -23,8 +30,9 @@ const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
         <DropZoneWithImageFileUpload
           label="Gift Wrap Image (optional; supported image types: gif, jpg and png)"
           onImageUpload={(value) => {
+          
             setSettingsState((prevState) =>
-              updateState("giftWrapImage", value, prevState),
+              updateState("giftWrapImage", value/*appendImageToState(value)*/, prevState),
             );
           }}
           initalImage={settingsState.giftWrapImage}

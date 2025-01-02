@@ -9,6 +9,7 @@ import EnableGiftMessageStep from "./enableGiftMessageStep";
 import {
   GIFT_CUSTOMIZATION_ERROR_STATE,
   GIFT_CUSTOMIZATION_STATE,
+  PRODUCT_SELECTION_TYPE,
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
 import { checkError } from "../../../utils/clientFunctions";
@@ -17,8 +18,11 @@ import "../AnnouncementCustomization/Settings.css";
 import EnableGiftReceiptStep from "./enableGiftReceiptStep";
 import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
-import { useFetcher, useNavigate } from "@remix-run/react";
+import { data, useFetcher, useNavigate } from "@remix-run/react";
 import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
+import CartPreview from "../CartPreview";
+import { DISPLAY_GIFT_OPTIONS } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
 
@@ -26,30 +30,136 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   const [settingsState, setSettingsState] = useState({
     ...GIFT_CUSTOMIZATION_STATE,
   });
+  const [showGiftPopup, setShowGiftPopup] = useState(false);
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const prevSettingsState = useRef({});
   const [error, setError] = useState({ ...GIFT_CUSTOMIZATION_ERROR_STATE });
   const editButtonsList = [
-    { id: 0, title: "Select Products" },
-    { id: 1, title: "Enable Gift Wrap" },
-    { id: 2, title: "Enable Gift Message" },
-    { id: 3, title: "Enable Gift Receipt" },
-    { id: 4, title: "Enable Gift Recipient Email" },
+    {
+      id: 0,
+      title: "Select Products",
+      data: {
+        "Selected Products":
+          settingsState.selectionType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
+            ? "All Products"
+            : "Specific Products",
+      },
+    },
+    {
+      id: 1,
+      title: "Enable Gift Wrap",
+      data: {
+        Title: settingsState.giftWrapTitle,
+        Price: "$" + settingsState.giftWrapPrice,
+        Description: settingsState.giftWrapDescription,
+        Image: settingsState.giftWrapImage ? "Yes" : "No",
+      },
+    },
+    {
+      id: 2,
+      title: "Enable Gift Message",
+      data: {
+        Title: settingsState.giftMessageTitle,
+        Description: settingsState.giftMessageDescription,
+      },
+    },
+    {
+      id: 3,
+      title: "Enable Gift Receipt",
+      data: {
+        "Send with Gift Receipt": settingsState.sendWithGiftReceipt
+          ? "Yes"
+          : "No",
+        "Send with No Invoice": settingsState.sendWithNoInvoice ? "Yes" : "No",
+      },
+    },
+    {
+      id: 4,
+      title: "Enable Gift Recipient Email",
+      data: {
+        Title: settingsState.recipientEmailTitle,
+        Description: settingsState.recipientEmailDescription,
+
+        "Recipient Email": settingsState.recipientEmail,
+        "Send Email Upon Checkout": settingsState.sendEmailUponCheckout
+          ? "Yes"
+          : "No",
+        "Send Email When Item Is Shipped":
+          settingsState.sendEmailWhenItemIsShipped ? "Yes" : "No",
+      },
+    },
   ];
 
+  // const handleOnSave = () => {
+  //   let payload = {
+  //     ...settingsState,
+  //     giftWrapImage: settingsState.giftWrapImage,
+  //   };
+
+  //   fetcher.submit(
+  //     {
+  //       ...payload,
+  //       _action: "CREATE_GIFT",
+  //     },
+  //     {
+  //       method: "POST",
+  //       action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+  //     },
+  //   );
+  //   console.log("handleOnSave", settingsState);
+  // };
   const handleOnSave = () => {
-    fetcher.submit(
-      {
+    if (!settingsState.giftWrapImage) {
+      // If no image is selected, send null in the payload
+      let payload = {
         ...settingsState,
-        _action: "CREATE_GIFT",
-      },
-      {
-        method: "POST",
-        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-      },
-    );
-    console.log("handleOnSave", settingsState);
+        giftWrapImage: null,
+      };
+
+      fetcher.submit(
+        {
+          ...payload,
+          _action: "CREATE_GIFT",
+        },
+        {
+          method: "POST",
+          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+        },
+      );
+
+      console.log("handleOnSave without image", payload);
+      return;
+    }
+
+    const reader = new window.FileReader();
+
+    reader.readAsDataURL(settingsState.giftWrapImage);
+    reader.onload = function () {
+      const base64data = reader.result;
+
+      let payload = {
+        ...settingsState,
+        giftWrapImage: base64data,
+      };
+
+      fetcher.submit(
+        {
+          ...payload,
+          _action: "CREATE_GIFT",
+        },
+        {
+          method: "POST",
+          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+        },
+      );
+
+      console.log("handleOnSave with image", payload);
+    };
+
+    reader.onerror = function (error) {
+      console.error("Error reading file:", error);
+    };
   };
 
   const steps = [
@@ -122,6 +232,8 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
       description: "Review",
       component: (
         <ReviewStep
+          fetcherState={fetcher.state}
+          onSaveAndPublish={handleOnSave}
           settingsState={settingsState}
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
@@ -145,7 +257,11 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   //     return true;
   //   });
   // };
-
+  const onGiftBtnClick = () => {
+    setShowGiftPopup((prevState) => {
+      return !prevState;
+    });
+  };
   return (
     <Page>
       {/* <Toast
@@ -170,7 +286,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
               state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
             });
           }}
-          // fetcherState={fetcher.state}
+          fetcherState={fetcher.state}
           isError={checkError(error)}
           showBarInitially={true}
           showSaveButton={selectedStep == steps.length - 1}
@@ -179,13 +295,21 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          <ProductPreviewCard
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-            // announcementBarType={announcementBarType}
-            appType={APP_TYPE.SEND_AS_A_GIFT}
-            // colorTheme={colorTheme}
-          />
+          {DISPLAY_GIFT_OPTIONS.CART_ONLY === DISPLAY_GIFT_OPTIONS.BOTH ||
+          DISPLAY_GIFT_OPTIONS.BOTH ===
+            DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
+            <ProductPreviewCard
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+              appType={APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION}
+              // colorTheme={colorTheme}
+            ></ProductPreviewCard>
+          ) : (
+            <CartPreview
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+            ></CartPreview>
+          )}
         </div>
       </div>
     </Page>

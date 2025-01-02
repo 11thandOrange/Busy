@@ -9,6 +9,8 @@ import IMAGES from "../../../utils/Images";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import { Button, Checkbox } from "@shopify/polaris";
 import { GIFT_BTN_TYPE } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import InlineGiftButton from "../../atoms/InlineGiftButton";
+import DrawerGiftButton from "../../atoms/DrawerGiftButton";
 
 const ProductPreviewCard = ({
   settingsState,
@@ -26,24 +28,39 @@ const ProductPreviewCard = ({
     setQuantity(value);
   };
   const onGiftBtnClick = () => {
-    setShowGiftPopup((prevState) => {
-      return !prevState;
-    });
+    if (appType == APP_TYPE.SEND_AS_A_GIFT) {
+      setShowGiftPopup((prevState) => {
+        return !prevState;
+      });
+    }
   };
   const fetchButtonStyle = () => {
-    
-    switch (settingsState.giftBtnType) {
+    switch (GIFT_BTN_TYPE.BOTH) {
       case GIFT_BTN_TYPE.INLINE:
         return (
-          <Checkbox label="Add as a Gift" onChange={onGiftBtnClick}></Checkbox>
+          <InlineGiftButton
+            settingsState={settingsState}
+            onGiftBtnClick={onGiftBtnClick}
+          ></InlineGiftButton>
         );
       case GIFT_BTN_TYPE.DRAWER:
-        return <Button onClick={onGiftBtnClick}>Add as a Gift</Button>;
+        return (
+          <DrawerGiftButton
+            settingsState={settingsState}
+            onGiftBtnClick={onGiftBtnClick}
+          ></DrawerGiftButton>
+        );
       case GIFT_BTN_TYPE.BOTH:
         return (
           <div>
-            <Checkbox label="Add as a Gift"></Checkbox>
-            <Button>Add as a Gift</Button>
+            <InlineGiftButton
+              settingsState={settingsState}
+              onGiftBtnClick={onGiftBtnClick}
+            ></InlineGiftButton>
+            <DrawerGiftButton
+              settingsState={settingsState}
+              onGiftBtnClick={onGiftBtnClick}
+            ></DrawerGiftButton>
           </div>
         );
     }
@@ -65,17 +82,6 @@ const ProductPreviewCard = ({
         );
 
       case APP_TYPE.SEND_AS_A_GIFT:
-        return (
-          <>
-            <div style={{ color: "black" }}>{fetchButtonStyle()}</div>
-            {showGiftPopup && (
-              <SendAsGiftPreview
-                settingsState={settingsState}
-              ></SendAsGiftPreview>
-            )}
-            ;
-          </>
-        );
 
       case APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION:
         return <div style={{ color: "black" }}>{fetchButtonStyle()}</div>;
@@ -129,7 +135,9 @@ const ProductPreviewCard = ({
         </div>
 
         {fetchTimerComponent()}
-
+        {showGiftPopup && (
+          <SendAsGiftPreview settingsState={settingsState}   onClose={onGiftBtnClick}></SendAsGiftPreview>
+        )}
         {/* Product Description */}
         <div className="product-description">
           <h3>Product description</h3>

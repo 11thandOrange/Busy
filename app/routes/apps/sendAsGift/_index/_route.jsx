@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import IMAGES from "../../../../utils/Images";
 import Homepage from "../../../../components/templates/homepage";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
@@ -13,24 +13,25 @@ import { cors } from "remix-utils/cors";
 import SendAsGiftSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings";
 import CustomizationSettings from "../../../../components/templates/InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import { authenticate } from "../../../../shopify.server";
-import db from '../../../../db.server'
+import db from "../../../../db.server";
 import { json } from "@remix-run/node";
 
 export const loader = async ({ request }) => {
-  const {session} = await authenticate.admin(request)
+  const { session } = await authenticate.admin(request);
   const giftListing = await db.Gift.findMany({
     where: {
       shop: session.shop,
-    }
+    },
   });
-  return cors(request, json({giftListing: giftListing}));
-}
+  return cors(request, json({ giftListing: giftListing }));
+};
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedType, setSelectedType] = useState(1);
+  const [gifts, setGifts] = useState([]);
   const navigate = useNavigate();
   const gift = useLoaderData();
-  console.log("Gift", gift);
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
   const isAppActive = true;
@@ -42,6 +43,21 @@ const route = () => {
       title: "Inactive Tab",
     },
   ];
+
+  const formatBarsData = useCallback(
+    (data) => {
+      return data.map((item) => {
+        return {
+          id: item.id,
+          name: item.giftWrapTitle || "Unknown Title",
+          message: item.giftWrapDescription || "No Description",
+          status: item.enableGiftWrap,
+          createdAt: item.createdAt,
+        };
+      });
+    },
+    [gift.giftListing],
+  );
 
   const tabs = [
     {
@@ -63,62 +79,11 @@ const route = () => {
           emptyStateBtnCallback={() => {
             navigate(ROUTES.SEND_AS_GIFT_CUSTOMIZATION);
           }}
+          onBarClick={(type, id) => {
+            console.log("onclick bar with id", id);
+          }}
           deletConfirmationMessage="This cannot be undone. Are you sure you want to delete the selected gift(s)?"
-          // barsData={[
-          //   {
-          //     id: 16,
-          //     name: "Text Bar ",
-          //     status: false,
-          //     general_setting: '{"message":"Type Text Here"}',
-          //     type: "1",
-          //     createdAt: "2024-12-03T09:53:36.161Z",
-          //   },
-          //   {
-          //     id: 18,
-          //     name: "Text Bar ",
-          //     status: false,
-          //     general_setting:
-          //       '{"countDownStartAt":"2024-12-03T15:40","countDownEndsAt":"2024-12-04T15:40","message":"Offer ends in #countdown_timer#."}',
-          //     type: "2",
-          //     createdAt: "2024-12-03T10:17:10.388Z",
-          //   },
-          //   {
-          //     id: 19,
-          //     name: "Text Bar",
-          //     status: false,
-          //     general_setting:
-          //       '{"countDownStartAt":"2024-12-03T15:40","countDownEndsAt":"2024-12-04T15:40","message":"Offer ends in #countdown_timer#."}',
-          //     type: "2",
-          //     createdAt: "2024-12-03T10:19:09.560Z",
-          //   },
-          //   {
-          //     id: 20,
-          //     name: "Text Bar",
-          //     status: false,
-          //     general_setting:
-          //       '{"message":"Free shipping for orders over #amount#.","progressMessage":"Only #amount# away from free shipping.","finalMessage":"Congratulations! You\'ve got free shipping."}',
-          //     type: "3",
-          //     createdAt: "2024-12-03T11:58:04.532Z",
-          //   },
-          //   {
-          //     id: 21,
-          //     name: "Text Bar",
-          //     status: false,
-          //     general_setting: '{"message":"Type Text Here"}',
-          //     type: "1",
-          //     createdAt: "2024-12-03T11:58:16.052Z",
-          //   },
-          //   {
-          //     id: 22,
-          //     name: "Text Bar",
-          //     status: false,
-          //     general_setting:
-          //       '{"countDownStartAt":"2024-12-19T16:04","countDownEndsAt":"2024-12-21T16:04","message":"Offer ends in #countdown_timer#."}',
-          //     type: "2",
-          //     createdAt: "2024-12-19T10:35:32.016Z",
-          //   },
-          // ]}
-          barsData={[]}
+          barsData={formatBarsData(gift.giftListing)}
           toastMessage="Gift(s) deleted successfully"
         />
       ),
