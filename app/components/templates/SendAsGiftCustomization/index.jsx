@@ -19,6 +19,9 @@ import EnableGiftReceiptEmail from "./enableGiftReceiptEmail";
 import ReviewStep from "../AnnouncementCustomization/ReviewStep";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { ANNOUNCEMENT_BARS_TABS } from "../../../constants/announcementCustomizationConfig";
+import CartPreview from "../CartPreview";
+import { DISPLAY_GIFT_OPTIONS } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 const SendAsGiftCustomization = ({ productsList = [] }) => {
   // Flags
 
@@ -26,6 +29,7 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   const [settingsState, setSettingsState] = useState({
     ...GIFT_CUSTOMIZATION_STATE,
   });
+  const [showGiftPopup, setShowGiftPopup] = useState(false);
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const prevSettingsState = useRef({});
@@ -145,7 +149,11 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   //     return true;
   //   });
   // };
-
+  const onGiftBtnClick = () => {
+    setShowGiftPopup((prevState) => {
+      return !prevState;
+    });
+  };
   return (
     <Page>
       {/* <Toast
@@ -179,13 +187,21 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          <ProductPreviewCard
-            setSettingsState={setSettingsState}
-            settingsState={settingsState}
-            // announcementBarType={announcementBarType}
-            appType={APP_TYPE.SEND_AS_A_GIFT}
-            // colorTheme={colorTheme}
-          />
+          {DISPLAY_GIFT_OPTIONS.CART_ONLY === DISPLAY_GIFT_OPTIONS.BOTH ||
+          DISPLAY_GIFT_OPTIONS.BOTH ===
+            DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
+            <ProductPreviewCard
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+              appType={APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION}
+              // colorTheme={colorTheme}
+            ></ProductPreviewCard>
+          ) : (
+            <CartPreview
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+            ></CartPreview>
+          )}
         </div>
       </div>
     </Page>

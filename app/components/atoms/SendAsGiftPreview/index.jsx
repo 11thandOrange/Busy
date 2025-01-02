@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
 import "./style.css";
-
-const SendAsGiftPreview = ({ settingsState }) => {
+import { XIcon } from "@shopify/polaris-icons";
+import { Icon } from "@shopify/polaris";
+const SendAsGiftPreview = ({ settingsState ,onClose=()=>{}}) => {
   const imgURL = useMemo(() => {
     return (
       settingsState.giftWrapImage &&
@@ -10,30 +11,37 @@ const SendAsGiftPreview = ({ settingsState }) => {
   }, [settingsState.giftWrapImage]);
 
   return (
-    <div className="send-as-gift-preview">
-      {settingsState.enableGiftWrap && (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftWrapTitle}</div>
-            <div className="gift-price">${settingsState.giftWrapPrice}</div>
-          </div>
-          <img
-            className="gift-image"
-            src={imgURL || ""}
-            alt={settingsState.giftWrapTitle || "Gift Wrap"}
-          />
+    <div>
+      <div className="send-as-gift-preview">
+        <div
+          onClick={onClose}
+        >
+          <Icon source={XIcon} tone="base" />
         </div>
-      )}
-      {settingsState.enableGiftMessage && (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftMessageTitle}</div>
-            <div className="gift-price">
-              {settingsState.giftMessageDescription}
+        {settingsState.enableGiftWrap && (
+          <div className="content-container">
+            <div className="title-price-container">
+              <div className="gift-title">{settingsState.giftWrapTitle}</div>
+              <div className="gift-price">${settingsState.giftWrapPrice}</div>
+            </div>
+            <img
+              className="gift-image"
+              src={imgURL || ""}
+              alt={settingsState.giftWrapTitle || "Gift Wrap"}
+            />
+          </div>
+        )}
+        {settingsState.enableGiftMessage && (
+          <div className="content-container">
+            <div className="title-price-container">
+              <div className="gift-title">{settingsState.giftMessageTitle}</div>
+              <div className="gift-price">
+                {settingsState.giftMessageDescription}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

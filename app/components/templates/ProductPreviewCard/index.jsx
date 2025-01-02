@@ -28,12 +28,14 @@ const ProductPreviewCard = ({
     setQuantity(value);
   };
   const onGiftBtnClick = () => {
-    setShowGiftPopup((prevState) => {
-      return !prevState;
-    });
+    if (appType == APP_TYPE.SEND_AS_A_GIFT) {
+      setShowGiftPopup((prevState) => {
+        return !prevState;
+      });
+    }
   };
   const fetchButtonStyle = () => {
-    switch (settingsState.giftBtnType) {
+    switch (GIFT_BTN_TYPE.BOTH) {
       case GIFT_BTN_TYPE.INLINE:
         return (
           <InlineGiftButton
@@ -80,17 +82,6 @@ const ProductPreviewCard = ({
         );
 
       case APP_TYPE.SEND_AS_A_GIFT:
-        return (
-          <>
-            <div style={{ color: "black" }}>{fetchButtonStyle()}</div>
-            {showGiftPopup && (
-              <SendAsGiftPreview
-                settingsState={settingsState}
-              ></SendAsGiftPreview>
-            )}
-            ;
-          </>
-        );
 
       case APP_TYPE.SEND_AS_A_GIFT_CUSTOMIZATION:
         return <div style={{ color: "black" }}>{fetchButtonStyle()}</div>;
@@ -144,7 +135,9 @@ const ProductPreviewCard = ({
         </div>
 
         {fetchTimerComponent()}
-
+        {showGiftPopup && (
+          <SendAsGiftPreview settingsState={settingsState}   onClose={onGiftBtnClick}></SendAsGiftPreview>
+        )}
         {/* Product Description */}
         <div className="product-description">
           <h3>Product description</h3>

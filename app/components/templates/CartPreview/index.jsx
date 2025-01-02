@@ -9,20 +9,25 @@ import { DeleteIcon } from "@shopify/polaris-icons";
 import "./style.css";
 import InlineGiftButton from "../../atoms/InlineGiftButton";
 import DrawerGiftButton from "../../atoms/DrawerGiftButton";
+import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
+import { APP_TYPE } from "../../../utils/constants";
 const CartPreview = ({
   settingsState,
   setSettingsState,
   colorTheme = COLOR_THEME.LIGHT,
+  appType = APP_TYPE.SEND_AS_A_GIFT,
 }) => {
   const [showGiftPopup, setShowGiftPopup] = useState(false);
 
   const onGiftBtnClick = () => {
-    setShowGiftPopup((prevState) => {
-      return !prevState;
-    });
+    if (appType == APP_TYPE.SEND_AS_A_GIFT) {
+      setShowGiftPopup((prevState) => {
+        return !prevState;
+      });
+    }
   };
   const fetchButtonStyle = () => {
-    switch (settingsState.giftBtnType) {
+    switch (GIFT_BTN_TYPE.BOTH) {
       case GIFT_BTN_TYPE.INLINE:
         return (
           <InlineGiftButton
@@ -120,7 +125,12 @@ const CartPreview = ({
             <Icon source={DeleteIcon} tone="base" />
           </div>
           <div className="cart-preview-Gift-btn">{fetchButtonStyle()}</div>
-
+          {showGiftPopup && (
+            <SendAsGiftPreview
+              settingsState={settingsState}
+              onClose={onGiftBtnClick}
+            ></SendAsGiftPreview>
+          )}
           <div className="cart-preview-cart-footer">
             <button className="checkout-btn">Checkout</button>
           </div>
