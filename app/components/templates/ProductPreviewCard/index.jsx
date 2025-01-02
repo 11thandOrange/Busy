@@ -35,7 +35,7 @@ const ProductPreviewCard = ({
     }
   };
   const fetchButtonStyle = () => {
-    switch (GIFT_BTN_TYPE.BOTH) {
+    switch (settingsState.giftBtnType) {
       case GIFT_BTN_TYPE.INLINE:
         return (
           <InlineGiftButton
@@ -117,6 +117,7 @@ const ProductPreviewCard = ({
             <span className="old-price">300 $USD</span>
             <span className="current-price">200 $USD</span>
           </p>
+
           {/* Quantity Selector */}
           <div className="quantity-container">
             <input
@@ -128,15 +129,17 @@ const ProductPreviewCard = ({
             />
           </div>
         </div>
-
+        {fetchTimerComponent()}
         {/* Add to Cart Button */}
         <div className="add-to-cart-container">
           <button className="add-to-cart-button">Add to cart</button>
         </div>
 
-        {fetchTimerComponent()}
         {showGiftPopup && (
-          <SendAsGiftPreview settingsState={settingsState}   onClose={onGiftBtnClick}></SendAsGiftPreview>
+          <SendAsGiftPreview
+            settingsState={settingsState}
+            onClose={onGiftBtnClick}
+          ></SendAsGiftPreview>
         )}
         {/* Product Description */}
         <div className="product-description">

@@ -27,7 +27,7 @@ const CartPreview = ({
     }
   };
   const fetchButtonStyle = () => {
-    switch (GIFT_BTN_TYPE.BOTH) {
+    switch (settingsState.giftBtnType) {
       case GIFT_BTN_TYPE.INLINE:
         return (
           <InlineGiftButton

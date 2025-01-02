@@ -10,7 +10,7 @@ export const GIFT_CUSTOMIZATION_STATE = {
   giftWrapImage: null,
   giftWrapTitle: "Gift",
   giftWrapPrice: "0",
-  giftWrapDescription: "",
+  giftWrapDescription: "Description",
 
   enableGiftMessage: false,
   giftMessageTitle: "Title",
@@ -19,17 +19,17 @@ export const GIFT_CUSTOMIZATION_STATE = {
   sendWithGiftReceipt: false,
   sendWithNoInvoice: false,
 
-  recipientEmailTitle: "",
-  recipientEmailDescription: "",
+  recipientEmailTitle: "Title",
+  recipientEmailDescription: "Description",
   recipientEmail: "",
   sendEmailUponCheckout: false,
   sendEmailWhenItemIsShipped: false,
 
-  giftWrapCustomizationText: "",
+  giftWrapCustomizationText: "Gift 1",
   giftWrapCustomizationColor: "",
   giftWrapCustomizationEmoji: "🔥",
 
-  giftMessageCustomizationText: "",
+  giftMessageCustomizationText: "Gift 2",
   giftMessageCustomizationColor: "",
   giftMessageCustomizationEmoji: "🔥",
 };

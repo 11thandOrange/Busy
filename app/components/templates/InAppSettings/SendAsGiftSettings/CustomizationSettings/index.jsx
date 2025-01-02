@@ -66,7 +66,7 @@ const CustomizationSettings = ({
     displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
     giftBtnType: GIFT_BTN_TYPE.BOTH,
     btnText: "Add a gift",
-    btnColor: "",
+    btnColor: "#000000",
     btnEmoji: "🔥",
   };
   const [settingsState, setSettingsState] = useState(initialState);
