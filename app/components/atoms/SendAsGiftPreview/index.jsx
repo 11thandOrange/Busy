@@ -2,10 +2,11 @@ import React, { useMemo } from "react";
 import "./style.css";
 import { XIcon } from "@shopify/polaris-icons";
 import { Icon } from "@shopify/polaris";
-const SendAsGiftPreview = ({ settingsState ,onClose=()=>{}}) => {
+const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
   const imgURL = useMemo(() => {
     return (
       settingsState.giftWrapImage &&
+      // window.URL.createObjectURL(settingsState.giftWrapImage)
       window.URL.createObjectURL(settingsState.giftWrapImage)
     );
   }, [settingsState.giftWrapImage]);
@@ -13,9 +14,7 @@ const SendAsGiftPreview = ({ settingsState ,onClose=()=>{}}) => {
   return (
     <div>
       <div className="send-as-gift-preview">
-        <div
-          onClick={onClose}
-        >
+        <div onClick={onClose}>
           <Icon source={XIcon} tone="base" />
         </div>
         {settingsState.enableGiftWrap && (
