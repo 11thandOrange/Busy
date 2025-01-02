@@ -26,7 +26,7 @@
   align-items: center;
   cursor: pointer;
   padding: 12px;
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   border-radius: 8px;
   margin-bottom: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -51,4 +51,52 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 16px;
+}
+.send-as-gift-preview .giftCardPreview_wrapper{
+  display: flex ;
+  gap: 10px;
+}
+.send-as-gift-preview .giftCardPreview_wrapper .accordion-icon{
+  font-size: 20px;
+}
+.send-as-gift-preview .giftCardPreview_wrapper .accordion-title{
+  font-weight: 500;
+}
+.send-as-gift-preview .accordion-header .Polaris-Icon{
+  width: 30px;
+  height: 30px;
+}
+.send-as-gift-preview .accordion-content .content-container{
+  display: flex;
+  justify-content: space-between;
+}
+.send-as-gift-preview .accordion-content .content-container img{
+  width: 100%;
+  max-width: 60px;
+  border-radius: 10px;
+}
+.send-as-gift-preview .accordion-content .content-container .title-price-container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.send-as-gift-preview .accordion-content .content-container .title-price-container .gift-title{
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #000000;
+}
+.send-as-gift-preview .accordion-content .content-container .title-price-container .gift-price{
+  font-size: 18px;
+  color: #000000;
+}
+.send-as-gift-close-button span.Polaris-Icon {
+  margin-left: auto;
+  margin-right: unset;
+  margin-bottom: 10px;
+  background-color: #ddd;
+  padding: 3px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  margin-top: -5px;
 }
