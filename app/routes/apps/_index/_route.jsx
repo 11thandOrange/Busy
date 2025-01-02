@@ -103,20 +103,20 @@ function TabsInsideOfACard() {
 
     setAppsList([
       ...apps.apps,
-      // {
-      //   id: 5,
-      //   name: "Send As Gift",
-      //   description_title: "The Clock is Ticking! ⏰",
-      //   description_content:
-      //     "Add urgency with a live countdown to your sale’s end, making sure customers act fast before time runs out!",
-      //   image:
-      //     "https://d3acrzpqhtrug6.cloudfront.net/dist/assets/media/app-start/countdown/countdown-timer.af816958311d3f91ad5f.svg",
-      //   categoryId: [],
-      //   createdAt: "2024-11-21T05:10:44.534Z",
-      //   updatedAt: "2024-11-21T05:12:21.522Z",
-      //   isInstalled: false,
-      //   slug: "sendAsGift",
-      // },
+      {
+        id: 5,
+        name: "Send As Gift",
+        description_title: "The Clock is Ticking! ⏰",
+        description_content:
+          "Add urgency with a live countdown to your sale’s end, making sure customers act fast before time runs out!",
+        image:
+          "https://d3acrzpqhtrug6.cloudfront.net/dist/assets/media/app-start/countdown/countdown-timer.af816958311d3f91ad5f.svg",
+        categoryId: [],
+        createdAt: "2024-11-21T05:10:44.534Z",
+        updatedAt: "2024-11-21T05:12:21.522Z",
+        isInstalled: false,
+        slug: "sendAsGift",
+      },
     ]);
   }, []);
 

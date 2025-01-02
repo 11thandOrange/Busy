@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import {
   ANNOUNCEMENT_BAR_TYPES,
@@ -19,7 +19,11 @@ import { json } from "@remix-run/node";
 import { authenticate } from "../../../../shopify.server";
 import { APP_LISTING } from "../../../../utils/constants";
 
-import { appActivate, can_active, check_app_active } from "../../../../utils/function";
+import {
+  appActivate,
+  can_active,
+  check_app_active,
+} from "../../../../utils/function";
 import Analytics from "../../../../components/templates/Analytics";
 import sliderData from "../../../../data/sliderData.json";
 import AnnouncementSettings from "../../../../components/templates/InAppSettings/AnnouncementSettings";
@@ -144,23 +148,26 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now == "true" && await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS)
+        data.enable_now == "true" &&
+        (await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS))
       ) {
-        await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)
+        await appActivate(
+          shop,
+          APP_LISTING.ANNOUNCEMENT_BARS,
+          JSON.parse(data.enable_now),
+          request,
+        );
         response = json({
           message: "Announcement Bar Added and App Activated",
           success: true,
           announcement_bar,
         });
-      } 
-      else if(data.enable_now == "true") {
+      } else if (data.enable_now == "true") {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
           success: false,
         });
-      }
-      else
-      {
+      } else {
         response = json({
           message: "Announcement Bar Added",
           success: true,
@@ -197,21 +204,25 @@ export async function action({ request }) {
         },
       });
       if (
-        data.enable_now == "true" && await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS)
+        data.enable_now == "true" &&
+        (await can_active(request, shop, APP_LISTING.ANNOUNCEMENT_BARS))
       ) {
-        await appActivate(shop, APP_LISTING.ANNOUNCEMENT_BARS, JSON.parse(data.enable_now), request)
+        await appActivate(
+          shop,
+          APP_LISTING.ANNOUNCEMENT_BARS,
+          JSON.parse(data.enable_now),
+          request,
+        );
         response = json({
           message: "Announcement Bar Updated and App Activated",
-          success: true
+          success: true,
         });
-      } else if(data.enable_now == "true") {
+      } else if (data.enable_now == "true") {
         response = json({
           message: "Please Upgrade Your Plan to enable the app",
           success: false,
         });
-      }
-      else
-      {
+      } else {
         response = json({
           message: "Announcement Bar Updated",
           success: true,
@@ -255,6 +266,23 @@ const route = () => {
       title: "Announcement Bar",
     },
   ];
+  const formatBarsData = useCallback(
+    (data) => {
+     
+
+      return data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          message: JSON.parse(item.general_setting).message || "No Message",
+          status: item.status,
+          createdAt: item.createdAt,
+          type: item.type,
+        };
+      });
+    },
+    [announcementBarsData],
+  );
   const tabs = [
     {
       id: "Overview-1",
@@ -270,7 +298,13 @@ const route = () => {
       id: "Announcement-bars-1",
       content: "Announcement Bars",
       component: (
-        <CheckBars barsData={announcementBarsData} pagination={true} />
+        <CheckBars
+          barsData={formatBarsData(announcementBarsData)}
+          onBarClick = {(type=null,id=null) => {
+            navigate(`${ROUTES.ANNOUNCEMENT_CUSTOMIZATION_ROOT}${type}?id=${id}`);
+          }}
+          pagination={true}
+        />
       ),
     },
     {
