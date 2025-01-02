@@ -1,9 +1,10 @@
 import { Checkbox, Icon, Text } from "@shopify/polaris";
 import React from "react";
 import { GiftCardFilledIcon } from "@shopify/polaris-icons";
+import "./style.css"
 const InlineGiftButton = ({ settingsState, onGiftBtnClick = () => {} }) => {
   return (
-    <div onClick={onGiftBtnClick}>
+    <div className="giftContent-wrapper" onClick={onGiftBtnClick}>
       <Checkbox></Checkbox>
       <Icon source={GiftCardFilledIcon} tone="base" />
       <Text variant="headingSm">

@@ -1,10 +1,10 @@
 import { Icon } from "@shopify/polaris";
 import { GiftCardFilledIcon } from "@shopify/polaris-icons";
 import React from "react";
-
+import "./style.css"
 const DrawerGiftButton = ({ settingsState, onGiftBtnClick = () => {} }) => {
   return (
-    <div>
+    <div className="addGiftBtn">
       <button
         style={{ backgroundColor: settingsState.btnColor }}
         onClick={onGiftBtnClick}
