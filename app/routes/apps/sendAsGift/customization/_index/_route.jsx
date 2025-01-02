@@ -5,6 +5,7 @@ import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
 import db from "../../../../../db.server";
+import { createProduct } from "../../../../../utils/function";
 
 export const loader = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
@@ -80,18 +81,41 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-
-      if (giftWrapStatus) {
-        await createProduct(session, { type: "giftWrap", data: newGift });
+      if(data.enableGiftWrap)
+      {
+        const productData = {
+          title: data.giftWrapTitle,
+          description: data.giftWrapDescription,
+          price: data.giftWrapPrice,
+          type: 'gift',
+          image:"https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          altText:data.giftWrapTitle
+        };
+        await createProduct(admin, session, productData);
       }
-
-      if (giftMessageStatus) {
-        await createProduct(session, { type: "giftMessage", data: newGift });
+      if(data.enableGiftMessage)
+      {
+        await createProduct(admin, session, {
+          title: 'Gift Message',
+          description: '<p>This is a sample product description.</p>',
+          price: 1,
+          image:"https://images.pexels.com/photos/7586239/pexels-photo-7586239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          altText: 'Gift Message',
+          type: 'gift'
+        });
       }
-
-      if (giftReceiptStatus) {
-        await createProduct(session, { type: "giftReceipt", data: newGift });
+      if(data.sendWithGiftReceipt)
+      {
+        await createProduct(admin, session, {
+          title: 'Gift Receipt',
+          description: '<p>This is a sample product description.</p>',
+          price: 1,
+          image:"https://images.pexels.com/photos/7586239/pexels-photo-7586239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          altText: 'Gift Receipt',
+          type: 'gift'
+        });
       }
+     
 
       return { success: true, gift: newGift };
 
@@ -127,15 +151,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      if (data.enableGiftWrap) {
-        await createProduct(session, {
-          type: "giftWrap",
-          title: data.giftWrapTitle,
-          price: data.giftWrapPrice,
-          description: data.giftWrapDescription,
-          image: data.giftWrapImage,
-        });
-      }
+     
       return { success: true, updatedGift };
 
     case "DELETE_GIFT":

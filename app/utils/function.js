@@ -748,32 +748,242 @@ export const appActivate = async (shop, appId, enable, request) => {
     throw new Error("Failed to update or create merchant d", error);
   }
 };
-export const createProduct = async (session, data) => {
-  const product = new admin.rest.resources.Product({session: session});
-  product.title = data.title;
-  product.body_html = `<strong>${data.description}</strong>`;
-  product.vendor = "BusyBuddy Shop";
-  product.product_type = "gift";
-  product.images = [
-    {
-      "src": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+export const createProduct = async (admin, session, productData) => {
+  try {
+    const publicationIds = await getAllPublications(admin);
+    const productResponse = await admin.graphql(
+      `#graphql
+      mutation createProductMetafields($input: ProductInput!) {
+        productCreate(input: $input) {
+          product {
+            id
+            title
+            options {
+              id
+              name
+              values
+            }
+            metafields(first: 3) {
+              edges {
+                node {
+                  id
+                  namespace
+                  key
+                  value
+                }
+              }
+            }
+          }
+          userErrors {
+            message
+            field
+          }
+        }
+      }`,
+      {
+        variables: {
+          "input": {
+            "title": productData.title,
+            "descriptionHtml":productData.description,
+          }
+        },
+      }
+    );
+
+    const productCreateData = await productResponse.json();
+    if (productCreateData?.data?.productCreate?.userErrors?.length > 0) {
+      throw new Error(`Product creation failed: ${productCreateData.data.productCreate.userErrors.map(err => err.message).join(', ')}`);
     }
-  ];
-  product.status = "active";
-  await product.save({
-    update: true,
-  });
+
+    const product = productCreateData?.data?.productCreate?.product;
+    const productId = product?.id;
+
+    await attachImage(admin, productData.image, productData.altText, productId);
+
+    if (!productId) {
+      throw new Error('Product creation failed or no product ID returned.');
+    }
+    const optionId = product?.options?.[0]?.id;
+    if (!optionId) {
+      throw new Error('Product does not have valid options.');
+    }
+
+    const variantCreateData = await createVariant(admin, productData, productId, optionId)
+
+    if (variantCreateData?.data?.productVariantsBulkCreate?.userErrors?.length > 0) {
+      throw new Error(`Product variant creation failed: ${variantCreateData.data.productVariantsBulkCreate.userErrors.map(err => err.message).join(', ')}`);
+    }
+
+    const publishResponse = await admin.graphql(
+      `#graphql
+      mutation publishProductToSalesChannel($id: ID!, $input: [PublicationInput!]!) {
+        publishablePublish(id: $id, input: $input) {
+          publishable {
+            availablePublicationsCount {
+              count
+            }
+            resourcePublicationsCount {
+              count
+            }
+          }
+          shop {
+            publicationCount
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }`,
+      {
+        variables: {
+          id: productId,
+          input: publicationIds
+        }
+      }
+    );
+  
+    const publishData = await publishResponse.json();
+    if (publishData?.data?.productPublish?.userErrors?.length > 0) {
+      const errorMessages = publishData.data.productPublish.userErrors
+        .map((err) => err.message) // Extract error messages
+        .join(', ');
+      throw new Error(`Product publishing failed: ${errorMessages}`);
+    }
+    return productId;
+  } catch (error) {
+    console.error("Unexpected error occurred during product creation:", error);
+  }
 };
 
-export const attachImage = async (session, product_id, data) => {
-  const image = new admin.rest.resources.Image({ session: session });
-  image.product_id = product_id;
-  image.position = 1;
-  image.attachment = data.image;
-  await image.save({
-    update: true,
-  });
+
+export const createVariant = async (admin, productData, productId, optionId) => {
+  const variantResponse = await admin.graphql(
+    `#graphql
+    mutation ProductVariantsCreate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+      productVariantsBulkCreate(productId: $productId, variants: $variants) {
+        productVariants {
+          id
+          title
+          selectedOptions {
+            name
+            value
+          }
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`,
+    {
+      variables: {
+        "productId": productId,
+        "variants": [
+          {
+            "price": productData.price,
+            "inventoryPolicy": "CONTINUE",
+            "inventoryItem": {
+              "tracked": false
+            },
+            "optionValues": [
+              {
+                "name": productData.title,
+                "optionId": optionId
+              }
+            ]
+          }
+        ]
+      },
+    }
+  );
+
+  return await variantResponse.json();
+}
+export const getAllPublications = async (admin) => {
+  let publications = [];
+  let hasNextPage = true;
+  let cursor = null;
+  
+  while (hasNextPage) {
+    const response = await admin.graphql(
+      `#graphql
+      query getAllPublications($first: Int!, $after: String) {
+        publications(first: $first, after: $after) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }`,
+      {
+        variables: {
+          first: 10,
+          after: cursor,
+        },
+      }
+    );
+  
+    const data = await response.json();
+    if (data?.data?.publications?.edges) {
+      publications.push(...data.data.publications.edges);
+    }
+    hasNextPage = data?.data?.publications?.pageInfo?.hasNextPage;
+    cursor = data?.data?.publications?.pageInfo?.endCursor;
+  }
+  const publicationIds = publications.map(pub => ({
+    publicationId: pub.node.id
+  }));
+  return publicationIds;
 };
+
+export const attachImage = async (admin, imageURL, altText, productId) => {
+  const response = await admin.graphql(
+    `#graphql
+    mutation ProductImageCreate($id: ID!, $imageURL: String!, $altText: String!) {
+      productCreateMedia(productId: $id, media: [
+        {
+          mediaContentType: IMAGE,
+          originalSource: $imageURL,
+          alt: $altText
+        }
+      ]) {
+        media {
+          id
+          alt
+          status
+          ... on MediaImage {
+            image {
+              url
+            }
+          }
+        }
+        mediaUserErrors {
+          field
+          message
+        }
+      }
+    }`,
+    {
+      variables: {
+        id: productId,
+        imageURL: imageURL,
+        altText: altText
+      },
+    }
+  );
+
+  // Ensure the response is in the correct format
+  const data = await response.json();
+  return data;
+};
+
 export const getGiftSetting = async (shop) => {
   const giftSetting = await db.gift_setting.findFirst({
     where: {
