@@ -54,9 +54,10 @@
     padding-top: 10px;
     margin-top: 15px;
     position: relative;
+    gap:10px 1%;
 }
 .apps_list .list-item{
-    /* width: 33.33%; */
+    width: 24%;
     display: flex;
     align-items: center;
     padding: 0 0 0 8px;
@@ -66,8 +67,6 @@
     border-radius: 12px;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 1;
-    margin-right: 10px;
 } 
 .apps_list .list-item:last-child{
     margin-right: 0px;
@@ -186,4 +185,20 @@
 
 .value-left p {
     margin: 0px !important;
+}
+@media (max-width: 1162px) {
+    .apps_list .list-item{
+        width: 32%;
+        padding-block: 10px;
+    }
+}
+@media (max-width: 991.98px) {
+    .apps_list .list-item{
+        width: 49%;
+    }
+}
+@media (max-width: 575.98px) {
+    .apps_list .list-item{
+        width: 100%;
+    }
 }

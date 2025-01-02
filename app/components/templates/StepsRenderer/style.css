@@ -10,13 +10,14 @@
 
 .tabs-header {
   display: flex;
-  overflow: hidden; 
+  overflow: hidden;
+  gap: 5px; 
 }
 
 .tab-button {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: #dbdbdb;
   border: none;
   cursor: pointer;
@@ -58,6 +59,7 @@
   background-color: #ffffff;
   font-weight: 600;
   border: 1px solid #616161;
+  margin-bottom: 10px;
 }
 
 .tab-button.active .tab-circle {
@@ -89,4 +91,7 @@
 
 .tab-button.active .tab-description {
   color: #005bd3;
+}
+.apps_list .list-item{
+  flex: unset;
 }
