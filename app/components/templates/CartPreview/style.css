@@ -1,0 +1,77 @@
+
+
+
+
+
+.cart-preview-product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cart-preview-product-info{
+    color: #000;
+    margin:10px 10px 10px 0;
+
+}
+.cart-preview-product-info .name{
+   font-weight: 600;
+   font-size: 20px;
+
+}
+.cart-preview-product-info .price{
+  font-weight: bold;
+  color: #636262;
+
+}
+.cart-preview-cart-actions{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.cart-preview-cart-actions .Polaris-Icon{
+    margin: 0px;
+    height: auto;
+    width: 45px;
+    padding: 10px;
+}
+.cart-preview-cart-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0 15px;
+}
+.cart-preview-cart-footer .checkout-btn{
+    background: #000000;
+    border: none;
+    font-size: medium;
+    font-weight: bold;
+    width: 80%;
+    padding: 12px 25px;
+    color: #fff;
+}
+
+.cart-preview-cart-titlebx {
+    font-size: 28px;
+    color: #000;
+    margin: 20px 0;
+}
+.cart-preview-separator {
+    border-bottom: 1px solid #aaa8a8;
+    height: 34px;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+.cart-preview-separator p{
+    font-size: 11px;
+    color: #4f4e4e;
+}
+.cart-preview-Gift-btn{
+    color:#000
+}

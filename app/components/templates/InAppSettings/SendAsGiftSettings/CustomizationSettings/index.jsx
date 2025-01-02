@@ -9,6 +9,8 @@ import { COLOR_THEME } from "../../../../../constants/announcementCustomizationC
 import { APP_TYPE } from "../../../../../utils/constants";
 import ProductPreviewCard from "../../../ProductPreviewCard";
 import CartPreview from "../../../CartPreview";
+import GiftCustomization from "../../../SendAsGiftCustomization/GiftCustomization";
+import { updateState } from "../../../../../utils/clientFunctions";
 export const DISPLAY_GIFT_OPTIONS = {
   BOTH: "both",
   CART_ONLY: "cart_only",
@@ -63,6 +65,9 @@ const CustomizationSettings = ({
   const initialState = {
     displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
     giftBtnType: GIFT_BTN_TYPE.BOTH,
+    btnText: "Add a gift",
+    btnColor: "",
+    btnEmoji: "🔥",
   };
   const [settingsState, setSettingsState] = useState(initialState);
   const oldSettingRef = useRef(initialState);
@@ -90,6 +95,27 @@ const CustomizationSettings = ({
           handleDiscardChanges={handleDiscardChanges}
         />
         <div className="customization-left-section">
+          <Card>
+            <GiftCustomization
+              onColorChange={(color) => {
+                updateSettings("btnColor", color);
+              }}
+              onTextChange={(text) => {
+                updateSettings("btnText", text);
+              }}
+              onEmojiChange={(emojiData) => {
+                updateSettings("btnEmoji", emojiData);
+              }}
+              setSettingsState={setSettingsState}
+              showEmojiPicker={false}
+              settingsState={{
+                customizationText: settingsState.btnText,
+                customizationColor: settingsState.btnColor,
+                customizationEmoji: settingsState.btnEmoji,
+              }}
+            ></GiftCustomization>
+          </Card>
+
           <Card>
             <Text variant="headingMd">How to display the gift button?</Text>
             <RadioButton

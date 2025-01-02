@@ -54,10 +54,9 @@ function CheckBars({
     plural: "announcement bars",
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Default number of items per page
-  console.log("inside check bars", barsData);
+  const itemsPerPage = 10; 
 
-  // Pagination controls
+
   const hasNext = currentPage * itemsPerPage < barsData?.length;
   const hasPrevious = currentPage > 1;
 

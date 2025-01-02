@@ -10,6 +10,7 @@ const GiftCustomization = ({
   onTextChange = () => {},
   onColorChange = () => {},
   onEmojiChange = () => {},
+  showEmojiPicker = true,
 }) => {
   return (
     <div className="gift-customization-container">
@@ -24,13 +25,15 @@ const GiftCustomization = ({
           initialColor={settingsState.customizationColor}
           onColorChange={onColorChange}
         ></CustomColorPallete>
-        <div>
-          <p>Choose an emoji</p>
-          <CustomEmojiPicker
-            onEmojiClick={onEmojiChange}
-            label={settingsState.customizationEmoji}
-          ></CustomEmojiPicker>
-        </div>
+        {showEmojiPicker && (
+          <div>
+            <p>Choose an emoji</p>
+            <CustomEmojiPicker
+              onEmojiClick={onEmojiChange}
+              label={settingsState.customizationEmoji}
+            ></CustomEmojiPicker>
+          </div>
+        )}
       </div>
     </div>
   );

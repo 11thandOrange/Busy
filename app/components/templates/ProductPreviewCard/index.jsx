@@ -9,6 +9,8 @@ import IMAGES from "../../../utils/Images";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import { Button, Checkbox } from "@shopify/polaris";
 import { GIFT_BTN_TYPE } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import InlineGiftButton from "../../atoms/InlineGiftButton";
+import DrawerGiftButton from "../../atoms/DrawerGiftButton";
 
 const ProductPreviewCard = ({
   settingsState,
@@ -31,19 +33,32 @@ const ProductPreviewCard = ({
     });
   };
   const fetchButtonStyle = () => {
-    
     switch (settingsState.giftBtnType) {
       case GIFT_BTN_TYPE.INLINE:
         return (
-          <Checkbox label="Add as a Gift" onChange={onGiftBtnClick}></Checkbox>
+          <InlineGiftButton
+            settingsState={settingsState}
+            onGiftBtnClick={onGiftBtnClick}
+          ></InlineGiftButton>
         );
       case GIFT_BTN_TYPE.DRAWER:
-        return <Button onClick={onGiftBtnClick}>Add as a Gift</Button>;
+        return (
+          <DrawerGiftButton
+            settingsState={settingsState}
+            onGiftBtnClick={onGiftBtnClick}
+          ></DrawerGiftButton>
+        );
       case GIFT_BTN_TYPE.BOTH:
         return (
           <div>
-            <Checkbox label="Add as a Gift"></Checkbox>
-            <Button>Add as a Gift</Button>
+            <InlineGiftButton
+              settingsState={settingsState}
+              onGiftBtnClick={onGiftBtnClick}
+            ></InlineGiftButton>
+            <DrawerGiftButton
+              settingsState={settingsState}
+              onGiftBtnClick={onGiftBtnClick}
+            ></DrawerGiftButton>
           </div>
         );
     }
