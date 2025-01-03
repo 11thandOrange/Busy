@@ -2,7 +2,12 @@ import { Page, Layout, Text, Card, BlockStack } from "@shopify/polaris";
 
 import { cors } from "remix-utils/cors";
 import db from "../db.server";
-import { Link, useFetcher, useLoaderData, useSearchParams } from "@remix-run/react";
+import {
+  Link,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
@@ -133,10 +138,10 @@ export default function Index() {
   const planChangeStatus = searchParams.get("status");
   const planChangeMessage = searchParams.get("message");
   const [toastState, setToastState] = useState({
-    message: "",
+    message: "Testing",
     show: false,
     isError: false,
-  })
+  });
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(
       {
@@ -145,117 +150,122 @@ export default function Index() {
       { method: "POST", action: "/widgets" },
     );
   };
-  useEffect(()=>{
-    if(planChangeStatus!== null && planChangeMessage!== null) 
-   { setToastState({
-      message: planChangeMessage,
-      show:true,
-      isError:!planChangeStatus
-
-    })}
-  },[])
+  useEffect(() => {
+    if (planChangeStatus !== null && planChangeMessage !== null) {
+      setToastState({
+        message: planChangeMessage,
+        show: true,
+        isError: !planChangeStatus,
+      });
+    }
+  }, []);
   return (
-    <><ToastBar message={toastState.message} show ={toastState.show} isError={toastState.isError} duration={2000} onDismiss={()=>{
-      console.log("On dismis called");
-      setToastState({...toastState, show:false})
-      
-    }}></ToastBar>
-    <Page>
-      
-      <div className="header">
-        <img
-          src={IMAGES.BusyBuddyLogo}
-          alt="Logo"
-          className="logo"
-          loading="lazy"
-        />
-        <div>
-          <Text as="h1" variant="headingLg" className="title">
-            BusyBuddy
-          </Text>
-          <Text as="p" className="subtitle">
-            Every busy body needs busybuddy
-          </Text>
+    <>
+      <ToastBar
+        message={toastState.message}
+        show={toastState.show}
+        isError={toastState.isError}
+        duration={2000}
+        onDismiss={() => {
+          console.log("On dismis called");
+          setToastState({ ...toastState, show: false });
+        }}
+      ></ToastBar>
+      <Page>
+        <div className="header">
+          <img
+            src={IMAGES.BusyBuddyLogo}
+            alt="Logo"
+            className="logo"
+            loading="lazy"
+          />
+          <div>
+            <Text as="h1" variant="headingLg" className="title">
+              BusyBuddy
+            </Text>
+            <Text as="p" className="subtitle">
+              Every busy body needs busybuddy
+            </Text>
+          </div>
         </div>
-      </div>
 
-      <BlockStack gap="500">
-        <Layout>
-          <Layout.Section>
-            {" "}
-            <EnableAppPopup
-              show={!data.app_embed}
-              enableAppUrl={data.app_embed_url}
-            ></EnableAppPopup>
-          </Layout.Section>
-          <Layout.Section>
-            <Card title="My Apps" sectioned>
-              <Text as="h2" variant="headingSm">
-                Essentials Apps
-              </Text>
-              <div className="apps_list">
-                {data?.apps?.map((item) => {
-                  return (
-                    <Link
-                      className="list-item bb-anchorTag"
-                      to={`/apps/${item.slug}?appId=${item.id}`}
-                      key={item.id}
-                    >
-                      <div className="app-databx">
-                        <div className="appimagebx">
-                          <ImageRenderer src={item?.image} />
-                        </div>
-                        <div>
-                          <div className="apptextebx">
-                            <span>{item.name}</span>
+        <BlockStack gap="500">
+          <Layout>
+            <Layout.Section>
+              {" "}
+              <EnableAppPopup
+                show={!data.app_embed}
+                enableAppUrl={data.app_embed_url}
+              ></EnableAppPopup>
+            </Layout.Section>
+            <Layout.Section>
+              <Card title="My Apps" sectioned>
+                <Text as="h2" variant="headingSm">
+                  Essentials Apps
+                </Text>
+                <div className="apps_list">
+                  {data?.apps?.map((item) => {
+                    return (
+                      <Link
+                        className="list-item bb-anchorTag"
+                        to={`/apps/${item.slug}?appId=${item.id}`}
+                        key={item.id}
+                      >
+                        <div className="app-databx">
+                          <div className="appimagebx">
+                            <ImageRenderer src={item?.image} />
                           </div>
                           <div>
-                            <span className="desc">
-                              {item.description_title}
-                            </span>
+                            <div className="apptextebx">
+                              <span>{item.name}</span>
+                            </div>
+                            <div>
+                              <span className="desc">
+                                {item.description_title}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </Card>
-          </Layout.Section>
-          <Layout.Section>
-            <Card sectioned>
-              <Text as="h2" variant="headingSm">
-                Looking For Tips
-              </Text>
-              <Slider
-                autoplay={false}
-                navigation={true}
-                sliderData={sliderData}
-              />
-            </Card>
-          </Layout.Section>
-          <Layout.Section>
-            <Card className="bb-card-wrapper" sectioned>
-              <Text as="h2" variant="headingSm">
-                Suggested Apps
-              </Text>
-              <SingleSlider
-                autoplay={true}
-                navigation={true}
-                autoplayDelay={2000}
-                sliderData={data.widgets}
-                slideRenderer={(item) => (
-                  <SingleWidget
-                    widget={item}
-                    handleAddToFavorite={handleAddToFavorite}
-                  />
-                )}
-              />
-            </Card>
-          </Layout.Section>
-        </Layout>
-      </BlockStack>
-    </Page>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </Card>
+            </Layout.Section>
+            <Layout.Section>
+              <Card sectioned>
+                <Text as="h2" variant="headingSm">
+                  Looking For Tips
+                </Text>
+                <Slider
+                  autoplay={false}
+                  navigation={true}
+                  sliderData={sliderData}
+                />
+              </Card>
+            </Layout.Section>
+            <Layout.Section>
+              <Card className="bb-card-wrapper" sectioned>
+                <Text as="h2" variant="headingSm">
+                  Suggested Apps
+                </Text>
+                <SingleSlider
+                  autoplay={true}
+                  navigation={true}
+                  autoplayDelay={2000}
+                  sliderData={data.widgets}
+                  slideRenderer={(item) => (
+                    <SingleWidget
+                      widget={item}
+                      handleAddToFavorite={handleAddToFavorite}
+                    />
+                  )}
+                />
+              </Card>
+            </Layout.Section>
+          </Layout>
+        </BlockStack>
+      </Page>
     </>
   );
 }
