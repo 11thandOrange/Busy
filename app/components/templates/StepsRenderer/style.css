@@ -17,7 +17,7 @@
 .tab-button {
   flex: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   background-color: #dbdbdb;
   border: none;
   cursor: pointer;
