@@ -6,7 +6,7 @@ import GiftCustomization from "../GiftCustomization";
 
 const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
   return (
-    <div>
+    <div className="selectGiftProduct">
       <Layout></Layout>
       <Card>
         <Checkbox

@@ -7,6 +7,7 @@
 }
 .disabled-product{
   opacity: 0.5;
+  pointer-events: none;
 }
 
 .product-list-container::-webkit-scrollbar {

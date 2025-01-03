@@ -8,7 +8,13 @@
 }
 .selectGiftProduct .Polaris-Box {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 5px;
+}
+.selectGiftProduct{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 .customization-left-section .Polaris-ShadowBevel .Polaris-Choice__Label .Polaris-Text--root{
     margin-bottom: 0 !important;

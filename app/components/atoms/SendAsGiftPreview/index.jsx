@@ -11,6 +11,7 @@ import { Icon } from "@shopify/polaris";
 import GiftWrapPreview from "./GiftWrapPreview";
 import GiftMessagePreview from "./GiftMessagePreview";
 import GiftReceiptPreveiw from "./GiftReceiptPreview";
+import GiftReceiptEmailPreveiw from "./GiftReceiptEmailPreview";
 
 const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
@@ -65,6 +66,18 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       ),
       enabled: settingsState.enableGiftReceipt,
     },
+    {
+      key: "giftReceiptEmail",
+      title: settingsState.giftReceiptEmailCustomizationText,
+      icon: settingsState.giftReceiptEmailCustomizationEmoji,
+      color: settingsState.giftReceiptEmailCustomizationColor,
+      content: (
+        <GiftReceiptEmailPreveiw
+          settingsState={settingsState}
+        ></GiftReceiptEmailPreveiw>
+      ),
+      enabled: settingsState.enableGiftRecipientEmail,
+    },
   ];
 
   const visibleAccordions = allAccordions.filter(
@@ -77,34 +90,36 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
         <div className="send-as-gift-close-button" onClick={onClose}>
           <Icon source={XIcon} tone="base" />
         </div>
-        {visibleAccordions.map((accordion) => (
-          <div key={accordion.key}>
-            <div
-              className="accordion-header"
-              onClick={() => togglePanel(accordion.key)}
-            >
-              <div className="giftCardPreview_wrapper">
-                <div className="accordion-icon">{accordion.icon}</div>
-                <div
-                  className="accordion-title"
-                  style={{ color: accordion.color }}
-                >
-                  {accordion.title}
+        <div className="send-as-gift-preview-wrapper">
+          {visibleAccordions.map((accordion) => (
+            <div key={accordion.key}>
+              <div
+                className="accordion-header"
+                onClick={() => togglePanel(accordion.key)}
+              >
+                <div className="giftCardPreview_wrapper">
+                  <div className="accordion-icon">{accordion.icon}</div>
+                  <div
+                    className="accordion-title"
+                    style={{ color: accordion.color }}
+                  >
+                    {accordion.title}
+                  </div>
+                </div>
+                <div className="accordion-arrow">
+                  {openPanels.includes(accordion.key) ? (
+                    <Icon source={CaretUpIcon} tone="base" />
+                  ) : (
+                    <Icon source={CaretDownIcon} tone="base" />
+                  )}
                 </div>
               </div>
-              <div className="accordion-arrow">
-                {openPanels.includes(accordion.key) ? (
-                  <Icon source={CaretUpIcon} tone="base" />
-                ) : (
-                  <Icon source={CaretDownIcon} tone="base" />
-                )}
-              </div>
+              {openPanels.includes(accordion.key) && (
+                <div className="accordion-content">{accordion.content}</div>
+              )}
             </div>
-            {openPanels.includes(accordion.key) && (
-              <div className="accordion-content">{accordion.content}</div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

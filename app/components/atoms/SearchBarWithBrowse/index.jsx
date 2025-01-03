@@ -43,11 +43,13 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
         {products &&
           products?.map((product) => (
             <div key={product.id} className="selected-products-item">
-              <img
-                src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
-                alt={product.title}
-              />
-              <span className="product-title">{product.title}</span>
+              <div className="imgTitleWrap">
+                <img
+                  src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
+                  alt={product.title}
+                />
+                <span className="product-title">{product.title}</span>
+              </div>
               <div
                 onClick={() => {
                   const idToFilter = product.id;

@@ -24,6 +24,12 @@
     gap: 15px;
     padding: 10px 0;
     border-bottom: 1px solid #eaeaea;
+    justify-content: space-between;
+  }
+  .selected-products-item .imgTitleWrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
   
   .selected-products-item img {
