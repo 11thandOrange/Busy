@@ -4,6 +4,7 @@ import db from '../db.server'
 
 
 export const loader = async ({ request }) => {
+  try {
   const { billing, session } = await authenticate.admin(request);
   const billingCheck = await billing.check();
   const activeSubscription = billingCheck.appSubscriptions.find(sub => sub.status === 'ACTIVE');
@@ -35,7 +36,9 @@ export const loader = async ({ request }) => {
           }
         }
       }
-       return redirect("/app");
+      return redirect("/app?status=true&message=subscription-cancelled");
       };
-   return redirect("/app");
+    } catch (error) {
+      return redirect("/app?status=false&message=no-active-subscription");
+    }
 };

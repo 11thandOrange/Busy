@@ -6,6 +6,8 @@ import {
   PRO_MONTHLY_PLAN,
   ENTERPRISE_MONTHLY_PLAN,
 } from "../shopify.server";
+import fs from 'fs';
+import path from 'path';
 
 export const getShopName = async (request) => {
   let parsedUrl;
@@ -482,21 +484,32 @@ export const check_enable_button = async (shop) => {
     return false;
   }
 };
-export const getSendAsGift = async (shop) => {
+export const getSendAsGift = async (shop, productId='') => {
   let script = "";
+  console.log('script download')
 
-  const gift = await db.gift.findFirst({
+
+  const gifts = await db.Gift.findMany({
     where: {
       shop: shop,
-    },
-    include: {
-      gift_wrap: true,
+      OR: [
+        {
+          selectionType: 'any',
+        },
+        {
+          selectedProductList: {
+            contains: productId.toString(),
+          },
+        },
+      ],
     },
   });
-  if (gift) {
+  
+const gift = gifts[0];
+  if (gifts[0]) {
     
     let itemHtml = `<div id="giftWrap-${gift.wrapProductId}" class="gift-wrap-item busyBuddySendAsGift" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
-    if (gift.gift_wrap.image) {
+    if (gift.giftWrapImage) {
       itemHtml += `<img src="${gift.giftWrapImage}" alt="${gift.giftWrapTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
     } else {
       itemHtml += `<img src="https://via.placeholder.com/100" alt="No Image" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
@@ -553,7 +566,7 @@ export const getSendAsGift = async (shop) => {
     script += `
       let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
       let currentPageProductId = form.querySelector('input[name="id"]')?.value; 
-      if(("${gift.selectionType}"=="any" || ${gift.selectedProductList.includes(get_current_page().productId)}) && form)
+      if(("${gift.selectionType}" == "any" || ${gift.selectedProductList.includes()}) && form)
       {
         const buttonHtml = \`<div id="busyBuddySendAsGift" class="busyBuddyCountdownTimer busyBuddySendAsGift" style="cursor: pointer;">Add As Gift Options</div>\`;
         form.insertAdjacentHTML('beforebegin', buttonHtml);
@@ -569,7 +582,7 @@ export const getSendAsGift = async (shop) => {
       });
 
       function handleAddGift() {
-        const gift = ${JSON.stringify(giftData)};
+        const gift = ${JSON.stringify(gift)};
         let giftWrapProduct = \`\${gift.gift_wrap.productId}\`;
         let bodyData = { updates: { [giftWrapProduct]: 1 } };
 
@@ -810,9 +823,11 @@ export const createProduct = async (admin, session, productData) => {
 
     const variantCreateData = await createVariant(admin, productData, productId, optionId)
 
+    console.log(variantCreateData.data.productVariantsBulkCreate.productVariants, 'variantCreateData')
     if (variantCreateData?.data?.productVariantsBulkCreate?.userErrors?.length > 0) {
       throw new Error(`Product variant creation failed: ${variantCreateData.data.productVariantsBulkCreate.userErrors.map(err => err.message).join(', ')}`);
     }
+    const variantId = variantCreateData.data.productVariantsBulkCreate.productVariants[0].id;
 
     const publishResponse = await admin.graphql(
       `#graphql
@@ -846,11 +861,11 @@ export const createProduct = async (admin, session, productData) => {
     const publishData = await publishResponse.json();
     if (publishData?.data?.productPublish?.userErrors?.length > 0) {
       const errorMessages = publishData.data.productPublish.userErrors
-        .map((err) => err.message) // Extract error messages
+        .map((err) => err.message)
         .join(', ');
       throw new Error(`Product publishing failed: ${errorMessages}`);
     }
-    return productId;
+    return variantId;
   } catch (error) {
     console.error("Unexpected error occurred during product creation:", error);
   }
@@ -979,7 +994,6 @@ export const attachImage = async (admin, imageURL, altText, productId) => {
     }
   );
 
-  // Ensure the response is in the correct format
   const data = await response.json();
   return data;
 };
@@ -992,3 +1006,54 @@ export const getGiftSetting = async (shop) => {
   });
   return giftSetting;
 };
+export const productDelete = async (admin, productId) => {
+  const response = await admin.graphql(
+    `#graphql
+    mutation productDelete($id: ID!) {
+      productDelete(id: $id) {
+        deletedProductId
+        userErrors {
+          field
+          message
+        }
+      }
+    }`,
+    {
+      variables: {
+        id: productId,
+      },
+    }
+  );
+
+  const data = await response.json();
+  return data;
+};
+export const uploadImage = async(image)=>{
+  const base64String = image;
+
+  // Check if the base64 string starts with the correct data URL scheme
+  const matches = base64String.match(/^data:image\/([a-zA-Z]*);base64,([^\"]*)$/);
+  
+  if (!matches) {
+    return ({ success:false, error: "Invalid base64 string" });
+  }
+
+  const type = matches[1];  // image type (e.g., 'png', 'jpeg')
+  const base64Data = matches[2]; // raw base64 data
+  
+  // Convert base64 to binary buffer
+  const buffer = Buffer.from(base64Data, 'base64');
+  
+  // Set the file path in the public directory (adjust filename as needed)
+  const fileName = `image-${Date.now()}.${type}`;
+  const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
+  
+  try {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, buffer);
+    return ({ success: true, filePath: `/uploads/${fileName}` });
+  } catch (error) {
+    console.error('Error writing file', error);
+    return ({ success: false, error: 'Failed to save the image' });
+  }
+}

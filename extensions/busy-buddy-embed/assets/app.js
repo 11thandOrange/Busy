@@ -1,4 +1,4 @@
-const baseUrl = 'https://shift-actual-declare-consequences.trycloudflare.com';
+const baseUrl = 'https://basically-chicks-neighbors-compliant.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -27,6 +27,7 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
+          console.log('data', data)
           if(app==4 && data.countdownTimer)
             {
               if(data?.discount_products)

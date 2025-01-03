@@ -5,7 +5,7 @@ import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
 import db from "../../../../../db.server";
-import { createProduct } from "../../../../../utils/function";
+import { createProduct, uploadImage } from "../../../../../utils/function";
 
 export const loader = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
@@ -51,14 +51,53 @@ export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
+  let wrapProductId = null;
+  let messageProductId = null;
+  let receiptProductId = null;
   switch (data._action) {
     case "CREATE_GIFT":
+      const imagePath = await uploadImage(data.giftWrapImage);
+      if(JSON.parse(data.enableGiftWrap) && data.giftWrapTitle!='' && data.giftWrapPrice!=0 && data.giftWrapDescription!='')
+        {
+          console.log((imagePath.success?(process.env.SHOPIFY_APP_URL+imagePath.filePath):"https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg"), 'new product image')
+          const productData = {
+            title: data.giftWrapTitle,
+            description: data.giftWrapDescription,
+            price: data.giftWrapPrice,
+            type: 'gift',
+            image: (imagePath.success?(process.env.SHOPIFY_APP_URL+imagePath.filePath):"https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg"),
+            altText:data.giftWrapTitle
+          };
+          wrapProductId = await createProduct(admin, session, productData);
+        }
+        if(JSON.parse(data.enableGiftMessage) && data.giftMessageTitle!='' && data.giftMessageDescription!='')
+        {
+          messageProductId = await createProduct(admin, session, {
+            title: data.giftMessageTitle,
+            description: data.giftMessageDescription,
+            price: 1,
+            image:"https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+            altText: 'Gift Message',
+            type: 'gift'
+          });
+        }
+        if(JSON.parse(data.sendWithGiftReceipt) && data.recipientEmailTitle!='' && data.recipientEmailDescription!='')
+        {
+          receiptProductId =await createProduct(admin, session, {
+            title: data.recipientEmailTitle,
+            description: data.recipientEmailDescription,
+            price: 1,
+            image:"https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+            altText: 'Gift Receipt',
+            type: 'gift'
+          });
+        }
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
           enableGiftWrap: JSON.parse(data.enableGiftWrap),
-          giftWrapImage: data.giftWrapImage,
+          giftWrapImage: imagePath.success ? imagePath.filePath : null,
           giftWrapTitle: data.giftWrapTitle,
           giftWrapPrice: parseFloat(data.giftWrapPrice),
           giftWrapDescription: data.giftWrapDescription,
@@ -78,45 +117,12 @@ export const action = async ({ request }) => {
           giftMessageCustomizationText: data.giftMessageCustomizationText,
           giftMessageCustomizationColor: data.giftMessageCustomizationColor,
           giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
+          wrapProductId: wrapProductId,
+          messageProductId: messageProductId,
+          recipeientProductId: receiptProductId,
           shop: shop,
         },
       });
-      if(data.enableGiftWrap)
-      {
-        const productData = {
-          title: data.giftWrapTitle,
-          description: data.giftWrapDescription,
-          price: data.giftWrapPrice,
-          type: 'gift',
-          image:"https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-          altText:data.giftWrapTitle
-        };
-        await createProduct(admin, session, productData);
-      }
-      if(data.enableGiftMessage)
-      {
-        await createProduct(admin, session, {
-          title: 'Gift Message',
-          description: '<p>This is a sample product description.</p>',
-          price: 1,
-          image:"https://images.pexels.com/photos/7586239/pexels-photo-7586239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-          altText: 'Gift Message',
-          type: 'gift'
-        });
-      }
-      if(data.sendWithGiftReceipt)
-      {
-        await createProduct(admin, session, {
-          title: 'Gift Receipt',
-          description: '<p>This is a sample product description.</p>',
-          price: 1,
-          image:"https://images.pexels.com/photos/7586239/pexels-photo-7586239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-          altText: 'Gift Receipt',
-          type: 'gift'
-        });
-      }
-     
-
       return { success: true, gift: newGift };
 
     case "UPDATE_GIFT":
