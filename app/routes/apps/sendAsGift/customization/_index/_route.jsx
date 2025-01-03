@@ -65,12 +65,18 @@ export const loader = async ({ request }) => {
   });
 
   allProducts = [...new Set(allProducts)];
+  const giftCustomization = await db.giftCustomization.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
   return cors(
     request,
     json({
       products: data.data.products.nodes,
       productExists: allProducts,
       sendAsGiftCustomization,
+      giftCustomization
     }),
   );
 };
@@ -79,7 +85,6 @@ export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
-  console.log(data, "data");
   let wrapProductId = null;
   let messageProductId = null;
   let receiptProductId = null;
