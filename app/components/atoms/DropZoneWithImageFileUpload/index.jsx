@@ -26,7 +26,7 @@ export default function DropZoneWithImageFileUpload({
   const fileUpload = !file && <DropZone.FileUpload />;
   const uploadedFile = file && (
     <div className="image-import-wrapper">
-      <LegacyStack>
+      <LegacyStack >
         <Thumbnail
           size="small"
           alt={file.name}
@@ -36,12 +36,12 @@ export default function DropZoneWithImageFileUpload({
               : initalImage
           }
         />
-        <div>
+        {/* <div>
           {file.name}{" "}
           <Text variant="bodySm" as="p">
             {file.size} bytes
           </Text>
-        </div>
+        </div> */}
       </LegacyStack>
     </div>
   );

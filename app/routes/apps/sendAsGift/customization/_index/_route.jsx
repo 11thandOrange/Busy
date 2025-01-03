@@ -241,7 +241,7 @@ export const action = async ({ request }) => {
       });
       return { success: true};
     case "CUSTOMIZATION_SETTING":
-      await db.giftSetting.upsert({
+      await db.giftCustomization.upsert({
         where: { shop: shop },
         update: {
           displayGiftOptions: data.displayGiftOptions,

@@ -1,14 +1,21 @@
 import React, { useMemo, useState } from "react";
 import "./style.css";
-import { XIcon,CaretDownIcon,CaretUpIcon, CartDownIcon, CartUpIcon } from "@shopify/polaris-icons";
+import {
+  XIcon,
+  CaretDownIcon,
+  CaretUpIcon,
+  CartDownIcon,
+  CartUpIcon,
+} from "@shopify/polaris-icons";
 import { Icon } from "@shopify/polaris";
 
 const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
+  const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
   const imgURL = useMemo(() => {
-    return (
-      settingsState.giftWrapImage &&
-      window.URL.createObjectURL(settingsState.giftWrapImage)
-    );
+    return settingsState.giftWrapImage &&
+      validImageTypes.includes(settingsState.giftWrapImage.type)
+      ? window.URL.createObjectURL(settingsState.giftWrapImage)
+      : settingsState.giftWrapImage;
   }, [settingsState.giftWrapImage]);
 
   const [openPanels, setOpenPanels] = useState([]);
@@ -29,10 +36,7 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       color: settingsState.giftWrapCustomizationColor,
       content: (
         <div className="content-container">
-          <div
-            className="title-price-container"
-            
-          >
+          <div className="title-price-container">
             <div className="gift-title">{settingsState.giftWrapTitle}</div>
             <div className="gift-price">${settingsState.giftWrapPrice}</div>
           </div>
@@ -52,10 +56,7 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       color: settingsState.giftMessageCustomizationColor,
       content: (
         <div className="content-container">
-          <div
-            className="title-price-container"
-           
-          >
+          <div className="title-price-container">
             <div className="gift-title">{settingsState.giftMessageTitle}</div>
             <div className="gift-price">
               {settingsState.giftMessageDescription}
@@ -90,10 +91,14 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
                   style={{ color: accordion.color }}
                 >
                   {accordion.title}
-                  </div>
+                </div>
               </div>
               <div className="accordion-arrow">
-                {openPanels.includes(accordion.key) ?  <Icon source={CaretUpIcon} tone="base" /> :  <Icon source={CaretDownIcon} tone="base" />}
+                {openPanels.includes(accordion.key) ? (
+                  <Icon source={CaretUpIcon} tone="base" />
+                ) : (
+                  <Icon source={CaretDownIcon} tone="base" />
+                )}
               </div>
             </div>
             {openPanels.includes(accordion.key) && (
