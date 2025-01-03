@@ -2,7 +2,7 @@ import { Page, Layout, Text, Card, BlockStack } from "@shopify/polaris";
 
 import { cors } from "remix-utils/cors";
 import db from "../db.server";
-import { Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData, useSearchParams } from "@remix-run/react";
 import { getCategories, getShopName } from "../utils/function";
 import Slider from "../components/atoms/Slider";
 import SingleSlider from "../components/atoms/SingleSlider";
@@ -13,6 +13,8 @@ import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
 import EnableAppPopup from "../components/templates/EnableAppPopup";
 import { getAppEmbedStatus, getAppEmbedUrl } from "../utils/store-helper";
+import ToastBar from "../components/atoms/Toast";
+import { useEffect, useState } from "react";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -127,6 +129,14 @@ export default function Index() {
       title: "Countdown Timer",
     },
   ];
+  const [searchParams] = useSearchParams();
+  const planChangeStatus = searchParams.get("status");
+  const planChangeMessage = searchParams.get("message");
+  const [toastState, setToastState] = useState({
+    message: "",
+    show: false,
+    isError: false,
+  })
   const handleAddToFavorite = (widgetId) => {
     fetcher.submit(
       {
@@ -135,9 +145,23 @@ export default function Index() {
       { method: "POST", action: "/widgets" },
     );
   };
+  useEffect(()=>{
+    if(planChangeStatus!== null && planChangeMessage!== null) 
+   { setToastState({
+      message: planChangeMessage,
+      show:true,
+      isError:!planChangeStatus
 
+    })}
+  },[])
   return (
+    <><ToastBar message={toastState.message} show ={toastState.show} isError={toastState.isError} duration={2000} onDismiss={()=>{
+      console.log("On dismis called");
+      setToastState({...toastState, show:false})
+      
+    }}></ToastBar>
     <Page>
+      
       <div className="header">
         <img
           src={IMAGES.BusyBuddyLogo}
@@ -232,5 +256,6 @@ export default function Index() {
         </Layout>
       </BlockStack>
     </Page>
+    </>
   );
 }
