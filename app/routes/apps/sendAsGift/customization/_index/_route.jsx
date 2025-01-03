@@ -65,12 +65,18 @@ export const loader = async ({ request }) => {
   });
 
   allProducts = [...new Set(allProducts)];
+  const giftCustomization = await db.giftCustomization.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
   return cors(
     request,
     json({
       products: data.data.products.nodes,
       productExists: allProducts,
       sendAsGiftCustomization,
+      giftCustomization
     }),
   );
 };
