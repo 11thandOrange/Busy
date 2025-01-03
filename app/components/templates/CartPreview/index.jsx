@@ -27,7 +27,7 @@ const CartPreview = ({
     }
   };
   const fetchButtonStyle = () => {
-    switch (GIFT_BTN_TYPE.BOTH) {
+    switch (settingsState.giftBtnType) {
       case GIFT_BTN_TYPE.INLINE:
         return (
           <InlineGiftButton
@@ -59,9 +59,9 @@ const CartPreview = ({
   };
   return (
     <div>
-      <div className="product-preview-card-container">
+      <div className="cart-preview-card-container">
         <div
-          className="product-preview-card"
+          className="cart-preview-card"
           style={{
             backgroundColor: "white", //colorTheme == COLOR_THEME.LIGHT ? "white" : "black",
           }}

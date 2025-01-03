@@ -15,8 +15,9 @@ import sliderData from "../../../../data/sliderData.json";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import { COLOR_THEME } from "../../../../constants/announcementCustomizationConfig";
 import { check_app_active } from "../../../../utils/function";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
 import IMAGES from "../../../../utils/Images";
+import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -78,6 +79,8 @@ const route = () => {
   const [customizationData, setCustomizationData] = useState(null);
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("appId");
   const isAppActive = countdownTimerData.app_active; //inActiveTabData.app_active;
 
   useEffect(() => {
@@ -106,6 +109,11 @@ const route = () => {
           initialData={customizationData}
         ></CountDownTimerCustomization>
       ),
+    },
+    {
+      id: "announcement-bars-analytics",
+      content: "Analytics",
+      component: <Analytics appId={id} />,
     },
   ];
 

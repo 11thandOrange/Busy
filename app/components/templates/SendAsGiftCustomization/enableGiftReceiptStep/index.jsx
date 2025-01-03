@@ -1,10 +1,11 @@
 import { Card, Checkbox } from "@shopify/polaris";
 import React from "react";
 import { updateState } from "../../../../utils/clientFunctions";
+import "./style.css";
 
 const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
   return (
-    <div>
+    <div className="selectGiftProduct">
       <Card>
         <Checkbox
           label="Send with gift receipt"

@@ -17,10 +17,10 @@ const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
               onClick={() => handleTabChange(index)}
             >
               <div className="tab-content">
-                <div className="tab-circle">
-                  {/* {selected === index ? index + 1 : "✔"} */}
-                  {index + 1}
-                </div>
+                  <div className="tab-circle">
+                    {/* {selected === index ? index + 1 : "✔"} */}
+                    {index + 1}
+                  </div>
                 <div className="tab-details">
                   <div className="tab-title">{tab.title}</div>
                   <div className="tab-description">{tab.description}</div>

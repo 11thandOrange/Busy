@@ -15,15 +15,20 @@ import CustomizationSettings from "../../../../components/templates/InAppSetting
 import { authenticate } from "../../../../shopify.server";
 import db from "../../../../db.server";
 import { json } from "@remix-run/node";
+import { check_app_active } from "../../../../utils/function";
 
 export const loader = async ({ request }) => {
+  const url = new URL(request.url);
+  const appId = parseInt(url.searchParams.get("appId"));
   const { session } = await authenticate.admin(request);
+  const shop = session.shop;
   const giftListing = await db.Gift.findMany({
     where: {
-      shop: session.shop,
+      shop: shop,
     },
   });
-  return cors(request, json({ giftListing: giftListing }));
+  const app_active = await check_app_active(appId, shop);
+  return cors(request, json({ giftListing: giftListing, app_active }));
 };
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -34,7 +39,7 @@ const route = () => {
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
-  const isAppActive = true;
+  const isAppActive = gift.app_active;
   const sliderData = [
     {
       type: "video",

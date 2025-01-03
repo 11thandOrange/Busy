@@ -23,8 +23,6 @@ const CountDownTimerCustomization = ({
   colorTheme = COLOR_THEME.LIGHT,
   initialData,
 }) => {
-  
-
   const fetcher = useFetcher();
   const { showToast, onDismiss } = useToast(fetcher);
   const [settingsState, setSettingsState] = useState({
@@ -60,52 +58,51 @@ const CountDownTimerCustomization = ({
     ) {
       setError((prevState) => updateState("endDateErr", false, prevState));
     }
-  }, [settingsState.settings.status]);
+  }, [settingsState?.settings?.status]);
   return (
     <>
-     <ToastBar
+      <ToastBar
         onDismiss={onDismiss}
         show={showToast}
         message="Customization saved successfully"
       />
-    <div className="customization-container">
-     
-      <ManageDataChange
-        newState={settingsState}
-        prevState={prevSettingsState.current}
-        handleSaveChanges={handleOnSave}
-        handleDiscardChanges={() => {
-          setSettingsState(prevSettingsState.current);
-        }}
-        fetcherState={fetcher.state}
-        isError={checkError(error)}
-      />
-      <div className="customization-left-section">
-        <Card>
-          <CountdownTimerSettings
-            setError={setError}
-            error={error}
+      <div className="customization-container">
+        <ManageDataChange
+          newState={settingsState}
+          prevState={prevSettingsState.current}
+          handleSaveChanges={handleOnSave}
+          handleDiscardChanges={() => {
+            setSettingsState(prevSettingsState.current);
+          }}
+          fetcherState={fetcher.state}
+          isError={checkError(error)}
+        />
+        <div className="customization-left-section">
+          <Card>
+            <CountdownTimerSettings
+              setError={setError}
+              error={error}
+              setSettingsState={setSettingsState}
+              settingsState={settingsState}
+            ></CountdownTimerSettings>
+          </Card>
+          <Card>
+            <SettingsDisplay
+              settingsState={settingsState}
+              setSettingsState={setSettingsState}
+            ></SettingsDisplay>
+          </Card>
+        </div>
+        <div className="customization-right-section">
+          <ProductPreviewCard
             setSettingsState={setSettingsState}
             settingsState={settingsState}
-          ></CountdownTimerSettings>
-        </Card>
-        <Card>
-          <SettingsDisplay
-            settingsState={settingsState}
-            setSettingsState={setSettingsState}
-          ></SettingsDisplay>
-        </Card>
+            announcementBarType={announcementBarType}
+            appType={APP_TYPE.COUNTDOWN_TIMER}
+            colorTheme={colorTheme}
+          ></ProductPreviewCard>
+        </div>
       </div>
-      <div className="customization-right-section">
-        <ProductPreviewCard
-          setSettingsState={setSettingsState}
-          settingsState={settingsState}
-          announcementBarType={announcementBarType}
-          appType={APP_TYPE.COUNTDOWN_TIMER}
-          colorTheme={colorTheme}
-        ></ProductPreviewCard>
-      </div>
-    </div>
     </>
   );
 };

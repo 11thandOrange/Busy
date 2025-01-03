@@ -27,13 +27,13 @@ const SelectedProductStep = ({
     }
   }, [settingsState.selectedProductList, settingsState.selectionType]);
   return (
-    <div>
+    <div className="selectGiftProducts">
       <Card>
-        <Text FontWeight="bold">Select products</Text>
+        <Text  variant="headingMd"><div className="subTitleText">Select products </div></Text>
         <Text fontWeight="medium">
           The discount will only apply to the selected products.
         </Text>
-        <>
+        <div className="checkGroup_wrapper">
           <RadioButton
             label="Any Product"
             checked={
@@ -69,7 +69,7 @@ const SelectedProductStep = ({
               );
             }}
           />
-        </>
+        </div>
         {settingsState.selectionType ==
           PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
           <SearchBarWithBrowse

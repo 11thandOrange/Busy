@@ -12,9 +12,10 @@ import { authenticate } from "../../../../shopify.server";
 // import { check_app_active } from "../../../../utils/function";
 import CountDownTimerCustomization from "../../../../components/templates/CountdownTimerCustomization";
 import CustomizationCartNotice from "../../../../components/templates/CustomizationCartNotice";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { check_app_active } from "../../../../utils/function";
 import IMAGES from "../../../../utils/Images";
+import Analytics from "../../../../components/templates/Analytics";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -82,16 +83,16 @@ const CartNotice = () => {
 
   const [selectedType, setSelectedType] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("appId");
   const isAppActive = cartNotice.app_active;
   const sliderData = [
-
     {
       type: "image",
       preview: IMAGES.CartNoticeSlider,
       content: IMAGES.CartNoticeSlider,
       title: "Cart Notice",
     },
-   
   ];
   const tabs = [
     {
@@ -102,7 +103,17 @@ const CartNotice = () => {
     {
       id: "Settings-1",
       content: "Customization",
-      component: <CustomizationCartNotice cartSettings={cartNoticeData} colorTheme={cartNotice.color_theme} />,
+      component: (
+        <CustomizationCartNotice
+          cartSettings={cartNoticeData}
+          colorTheme={cartNotice.color_theme}
+        />
+      ),
+    },
+    {
+      id: "announcement-bars-analytics",
+      content: "Analytics",
+      component: <Analytics appId={id} />,
     },
   ];
 

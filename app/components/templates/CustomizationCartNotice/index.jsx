@@ -118,6 +118,18 @@ const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
     }
   }, [fetcher.state]);
 
+  const appendCounter = (secondaryText, showCountdownTimer) => {
+    let finalText = secondaryText;
+    if (secondaryText.includes(`{{counter}}`)) {
+      return finalText;
+    }
+    if (showCountdownTimer) {
+      finalText = secondaryText.concat(`{{counter}}`);
+    } else {
+      finalText = secondaryText.replace(`{{counter}}`, "");
+    }
+    return finalText;
+  };
   return (
     <div className="cartNoticeContainer">
       <Page>
@@ -192,6 +204,10 @@ const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
                     setCartNoticeCustomization((prevState) => ({
                       ...prevState,
                       showCountdownTimer: value,
+                      secondaryText: appendCounter(
+                        prevState.secondaryText,
+                        value,
+                      ),
                     }));
                   }}
                 />
