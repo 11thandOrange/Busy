@@ -33,9 +33,14 @@ export const loader = async ({ request }) => {
       shop: shop,
     },
   });
+  const giftCustomization = await db.giftCustomization.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
   return cors(
     request,
-    json({ giftListing: giftListing, settingState: giftSetting, app_active }),
+    json({ giftListing: giftListing, settingState: giftSetting, giftCustomization, app_active }),
   );
 };
 
@@ -118,7 +123,7 @@ const route = () => {
     {
       id: "Customization-1",
       content: "Customization",
-      component: <CustomizationSettings />,
+      component: <CustomizationSettings initialData={gift.giftCustomization} />,
     },
 
     {

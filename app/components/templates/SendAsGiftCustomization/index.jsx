@@ -137,7 +137,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   // };
   const handleOnSave = () => {
     if (!settingsState.giftWrapImage) {
-      // If no image is selected, send null in the payload
+      // If no image is provided, send `null` in the payload
       let payload = {
         ...settingsState,
         giftWrapImage: null,
@@ -160,15 +160,11 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       return;
     }
 
-    const reader = new window.FileReader();
-
-    reader.readAsDataURL(settingsState.giftWrapImage);
-    reader.onload = function () {
-      const base64data = reader.result;
-
+    // Check if giftWrapImage is a URL (string)
+    if (typeof settingsState.giftWrapImage === "string") {
       let payload = {
         ...settingsState,
-        giftWrapImage: base64data,
+        giftWrapImage: settingsState.giftWrapImage, // Send the URL directly
       };
 
       fetcher.submit(
@@ -184,7 +180,36 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
         },
       );
 
-      console.log("handleOnSave with image", payload);
+      console.log("handleOnSave with URL", payload);
+      return;
+    }
+
+    // If giftWrapImage is a File, convert it to Base64
+    const reader = new window.FileReader();
+    reader.readAsDataURL(settingsState.giftWrapImage);
+
+    reader.onload = function () {
+      const base64data = reader.result;
+
+      let payload = {
+        ...settingsState,
+        giftWrapImage: base64data, // Send the Base64 string
+      };
+
+      fetcher.submit(
+        {
+          ...payload,
+          ...(initialData
+            ? { id: initialData.id, _action: "UPDATE_GIFT" }
+            : { _action: "CREATE_GIFT" }),
+        },
+        {
+          method: "POST",
+          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+        },
+      );
+
+      console.log("handleOnSave with Base64 image", payload);
     };
 
     reader.onerror = function (error) {

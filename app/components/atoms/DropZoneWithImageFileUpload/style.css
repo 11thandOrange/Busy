@@ -5,7 +5,7 @@
     width: 98px;
     height: 98px;
 }
-.image-import-wrapper .Polaris-LegacyStack__Item{
+.image-import-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;

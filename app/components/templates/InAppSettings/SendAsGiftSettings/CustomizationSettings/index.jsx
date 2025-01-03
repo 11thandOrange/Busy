@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 import "../../../../templates/AnnouncementCustomization/Settings.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
@@ -6,12 +6,13 @@ import { Card, RadioButton, Text } from "@shopify/polaris";
 import ToastBar from "../../../../atoms/Toast";
 import ManageDataChange from "../../../ManageDataChange";
 import { COLOR_THEME } from "../../../../../constants/announcementCustomizationConfig";
-import { APP_TYPE } from "../../../../../utils/constants";
+import { APP_TYPE, ROUTES } from "../../../../../utils/constants";
 import ProductPreviewCard from "../../../ProductPreviewCard";
 import CartPreview from "../../../CartPreview";
 import GiftCustomization from "../../../SendAsGiftCustomization/GiftCustomization";
 import { updateState } from "../../../../../utils/clientFunctions";
 import { useFetcher } from "@remix-run/react";
+import useToast from "../../../../../hooks/useToast";
 export const DISPLAY_GIFT_OPTIONS = {
   BOTH: "both",
   CART_ONLY: "cart_only",
@@ -28,7 +29,7 @@ const CustomizationSettings = ({
   initialData,
 }) => {
   const fetcher = useFetcher();
-  // const { showToast, onDismiss } = useToast(fetcher);
+  const { showToast, onDismiss } = useToast(fetcher);
   // const [settingsState, setSettingsState] = useState({
   //   ...CUSTOMIZATON_INITIAL_STATE,
   // });
@@ -72,12 +73,17 @@ const CustomizationSettings = ({
   };
   const [settingsState, setSettingsState] = useState(initialState);
   const oldSettingRef = useRef(initialState);
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
+      oldSettingRef.current = initialData;
+    }
+  }, [initialData]);
   const handleSaveSettingsData = () => {
-    console.log("handleSavedafdasdfasdSettingsData", settingsState, fetcher);
     fetcher.submit(
       {
         ...settingsState,
-        _action: "SETTING",
+        _action: "CUSTOMIZATION_SETTING",
       },
 
       {
@@ -95,8 +101,8 @@ const CustomizationSettings = ({
   return (
     <>
       <ToastBar
-        onDismiss={() => {}}
-        show={false}
+        onDismiss={onDismiss}
+        show={showToast}
         message="Settings saved successfully"
       />
       <div className="customization-container">
