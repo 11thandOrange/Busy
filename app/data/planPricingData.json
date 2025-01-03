@@ -11,8 +11,9 @@
         "url" : "/app" ,
         "features" : {
           "appsEnabled" : 1,
-          "otherFeatures" : []
+          "otherFeatures" : [ "User analytics", "Enable/disable any app at any time",  "Flexible pricing", "Powerful apps" , "Quality performance"]
         }
+      
       },
       {
         "id": 2,

@@ -26,11 +26,11 @@ export const GIFT_CUSTOMIZATION_STATE = {
   sendEmailWhenItemIsShipped: false,
 
   giftWrapCustomizationText: "Gift 1",
-  giftWrapCustomizationColor: "",
+  giftWrapCustomizationColor: "#000000",
   giftWrapCustomizationEmoji: "🔥",
 
   giftMessageCustomizationText: "Gift 2",
-  giftMessageCustomizationColor: "",
+  giftMessageCustomizationColor: "#000000",
   giftMessageCustomizationEmoji: "🔥",
 };
 export const GIFT_CUSTOMIZATION_ERROR_STATE = {
