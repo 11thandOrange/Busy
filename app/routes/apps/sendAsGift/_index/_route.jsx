@@ -30,6 +30,7 @@ export const loader = async ({ request }) => {
   const app_active = await check_app_active(appId, shop);
   return cors(request, json({ giftListing: giftListing, app_active }));
 };
+
 const route = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedType, setSelectedType] = useState(1);

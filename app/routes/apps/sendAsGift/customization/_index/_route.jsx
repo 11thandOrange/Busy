@@ -9,6 +9,15 @@ import { createProduct, uploadImage } from "../../../../../utils/function";
 
 export const loader = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
+  let sendAsGiftCustomization = null;
+  const url = new URL(request.url);
+  if (url.searchParams.get("id")) {
+    sendAsGiftCustomization = await db.gift.findFirst({
+      where: {
+        id: parseInt(url.searchParams.get("id")),
+      },
+    });
+  }
   const shop = session.shop;
   const response = await admin.graphql(
     `#graphql
@@ -38,12 +47,26 @@ export const loader = async ({ request }) => {
       }`,
   );
 
-  const giftListing = [];
 
   const data = await response.json();
+  const gifts = await db.gift.findMany({
+    where: {
+      shop: shop,
+    },
+  });
+  
+  let allProducts = [];
+  gifts.forEach(gift => {
+    if (gift.selectedProductList) {
+      const productArray = gift.selectedProductList.split(',').map(product => product.trim());
+      allProducts = [...allProducts, ...productArray];
+    }
+  });
+
+  allProducts = [...new Set(allProducts)];
   return cors(
     request,
-    json({ products: data.data.products.nodes, giftListing: giftListing }),
+    json({ products: data.data.products.nodes, productExists:allProducts, sendAsGiftCustomization }),
   );
 };
 
@@ -59,7 +82,6 @@ export const action = async ({ request }) => {
       const imagePath = await uploadImage(data.giftWrapImage);
       if(JSON.parse(data.enableGiftWrap) && data.giftWrapTitle!='' && data.giftWrapPrice!=0 && data.giftWrapDescription!='')
         {
-          console.log((imagePath.success?(process.env.SHOPIFY_APP_URL+imagePath.filePath):"https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg"), 'new product image')
           const productData = {
             title: data.giftWrapTitle,
             description: data.giftWrapDescription,
@@ -126,6 +148,7 @@ export const action = async ({ request }) => {
       return { success: true, gift: newGift };
 
     case "UPDATE_GIFT":
+      const imagePathUpdate = await uploadImage(data.giftWrapImage);
       await db.gift.update({
         where: {
           id: data.id,
@@ -134,7 +157,7 @@ export const action = async ({ request }) => {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
           enableGiftWrap: data.enableGiftWrap,
-          giftWrapImage: data.giftWrapImage,
+          giftWrapImage: imagePathUpdate.success ? imagePathUpdate.filePath : null,
           giftWrapTitle: data.giftWrapTitle,
           giftWrapPrice: data.giftWrapPrice,
           giftWrapDescription: data.giftWrapDescription,
@@ -171,7 +194,7 @@ export const action = async ({ request }) => {
       });
       return { success: true, updatedGift };
     case "SETTING":
-      await db.Gift.upsert({
+      await db.giftSetting.upsert({
         where: { shop: shop },
         update: {
           addEmailClient: data.addEmailClient,
@@ -180,7 +203,7 @@ export const action = async ({ request }) => {
           giftReceiptTagName: data.giftReceiptTagName,
           refreshTheCart: data.refreshTheCart,
           giftLogging: data.giftLogging,
-          showDecimalPoints: data.showDecimalPoints,
+          showDecimalPoints: JSON.parse(data.showDecimalPoints),
           shop: shop,
         },
         create: {
@@ -190,10 +213,11 @@ export const action = async ({ request }) => {
           giftReceiptTagName: data.giftReceiptTagName,
           refreshTheCart: data.refreshTheCart,
           giftLogging: data.giftLogging,
-          showDecimalPoints: data.showDecimalPoints,
+          showDecimalPoints: JSON.parse(data.showDecimalPoints),
           shop: shop,
         },
       });
+      return { success: true};
     default:
       return { success: false, message: "Invalid action" };
   }
