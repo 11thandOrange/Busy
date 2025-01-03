@@ -8,6 +8,9 @@ import {
   CartUpIcon,
 } from "@shopify/polaris-icons";
 import { Icon } from "@shopify/polaris";
+import GiftWrapPreview from "./GiftWrapPreview";
+import GiftMessagePreview from "./GiftMessagePreview";
+import GiftReceiptPreveiw from "./GiftReceiptPreview";
 
 const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
@@ -35,17 +38,10 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       icon: settingsState.giftWrapCustomizationEmoji,
       color: settingsState.giftWrapCustomizationColor,
       content: (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftWrapTitle}</div>
-            <div className="gift-price">${settingsState.giftWrapPrice}</div>
-          </div>
-          <img
-            className="gift-image"
-            src={imgURL || ""}
-            alt={settingsState.giftWrapTitle || "Gift Wrap"}
-          />
-        </div>
+        <GiftWrapPreview
+          settingsState={settingsState}
+          imgURL={imgURL}
+        ></GiftWrapPreview>
       ),
       enabled: settingsState.enableGiftWrap,
     },
@@ -55,16 +51,19 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       icon: settingsState.giftMessageCustomizationEmoji,
       color: settingsState.giftMessageCustomizationColor,
       content: (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftMessageTitle}</div>
-            <div className="gift-price">
-              {settingsState.giftMessageDescription}
-            </div>
-          </div>
-        </div>
+        <GiftMessagePreview settingsState={settingsState}></GiftMessagePreview>
       ),
       enabled: settingsState.enableGiftMessage,
+    },
+    {
+      key: "giftReceipt",
+      title: settingsState.giftReceiptCustomizationText,
+      icon: settingsState.giftReceiptCustomizationEmoji,
+      color: settingsState.giftReceiptCustomizationColor,
+      content: (
+        <GiftReceiptPreveiw settingsState={settingsState}></GiftReceiptPreveiw>
+      ),
+      enabled: settingsState.enableGiftReceipt,
     },
   ];
 

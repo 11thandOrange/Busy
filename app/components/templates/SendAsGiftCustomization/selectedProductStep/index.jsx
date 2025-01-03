@@ -29,7 +29,9 @@ const SelectedProductStep = ({
   return (
     <div className="selectGiftProducts">
       <Card>
-        <Text  variant="headingMd"><div className="subTitleText">Select products </div></Text>
+        <Text variant="headingMd">
+          <div className="subTitleText">Select products </div>
+        </Text>
         <Text fontWeight="medium">
           The discount will only apply to the selected products.
         </Text>
@@ -76,9 +78,11 @@ const SelectedProductStep = ({
             productsList={productsList}
             selectedProducts={settingsState.selectedProductList}
             setSelectedProducts={(products) => {
-              setSettingsState((prevState) =>
-                updateState("selectedProductList", products, prevState),
-              );
+              setSettingsState((prevState) => {
+               
+
+                return updateState("selectedProductList", products, prevState);
+              });
             }}
           ></SearchBarWithBrowse>
         )}

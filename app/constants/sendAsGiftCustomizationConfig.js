@@ -16,9 +16,11 @@ export const GIFT_CUSTOMIZATION_STATE = {
   giftMessageTitle: "Title",
   giftMessageDescription: "Description",
 
+  enableGiftReceipt: true,
   sendWithGiftReceipt: false,
   sendWithNoInvoice: false,
 
+  enableGiftRecipientEmail: true,
   recipientEmailTitle: "Title",
   recipientEmailDescription: "Description",
   recipientEmail: "",
@@ -32,6 +34,14 @@ export const GIFT_CUSTOMIZATION_STATE = {
   giftMessageCustomizationText: "Gift 2",
   giftMessageCustomizationColor: "#000000",
   giftMessageCustomizationEmoji: "🔥",
+
+  giftReceiptCustomizationText: "Gift 2",
+  giftReceiptCustomizationColor: "#000000",
+  giftReceiptCustomizationEmoji: "🔥",
+
+  giftReceiptEmailCustomizationText: "Gift 2",
+  giftReceiptEmailCustomizationColor: "#000000",
+  giftReceiptEmailCustomizationEmoji: "🔥",
 };
 export const GIFT_CUSTOMIZATION_ERROR_STATE = {
   noProductError: false,

@@ -1,12 +1,23 @@
-import { Card, Checkbox } from "@shopify/polaris";
+import { Card, Checkbox, Layout } from "@shopify/polaris";
 import React from "react";
 import CustomTextField from "../../../atoms/CustomTextField";
 import { updateState } from "../../../../utils/clientFunctions";
+import GiftCustomization from "../GiftCustomization";
 
 const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
   return (
     <div>
+      <Layout></Layout>
       <Card>
+        <Checkbox
+          label="Enable Gift Wrap"
+          checked={settingsState.enableGiftRecipientEmail}
+          onChange={(value) => {
+            setSettingsState((prevState) =>
+              updateState("enableGiftRecipientEmail", value, prevState),
+            );
+          }}
+        ></Checkbox>
         <CustomTextField
           type={"text"}
           label={"Title"}
@@ -58,6 +69,41 @@ const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
             );
           }}
         ></Checkbox>
+      </Card>
+      <Card>
+        <GiftCustomization
+          onColorChange={(color) => {
+            setSettingsState((prevState) =>
+              updateState(
+                "giftReceiptEmailCustomizationColor",
+                color,
+                prevState,
+              ),
+            );
+          }}
+          onTextChange={(text) => {
+            setSettingsState((prevState) =>
+              updateState("giftReceiptEmailCustomizationText", text, prevState),
+            );
+          }}
+          onEmojiChange={(emojiData) => {
+            setSettingsState((prevState) =>
+              updateState(
+                "giftReceiptEmailCustomizationEmoji",
+                emojiData.emoji,
+                prevState,
+              ),
+            );
+          }}
+          setSettingsState={setSettingsState}
+          settingsState={{
+            customizationText: settingsState.giftReceiptEmailCustomizationText,
+            customizationColor:
+              settingsState.giftReceiptEmailCustomizationColor,
+            customizationEmoji:
+              settingsState.giftReceiptEmailCustomizationEmoji,
+          }}
+        ></GiftCustomization>
       </Card>
     </div>
   );

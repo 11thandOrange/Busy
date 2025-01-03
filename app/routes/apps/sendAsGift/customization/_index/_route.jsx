@@ -283,10 +283,10 @@ const GiftCustomization = () => {
     <div>
       <SendAsGiftCustomization
         productsList={products.products}
-        initialData={{
-          ...products.sendAsGiftCustomization,
-          ...products.giftCustomization,
-        }}
+        initialData={
+          products.sendAsGiftCustomization
+        }
+        giftCustomization={products.giftCustomization}
       ></SendAsGiftCustomization>
     </div>
   );

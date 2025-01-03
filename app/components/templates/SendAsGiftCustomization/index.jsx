@@ -27,7 +27,11 @@ import {
 } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import ToastBar from "../../atoms/Toast";
-const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
+const SendAsGiftCustomization = ({
+  productsList = [],
+  initialData,
+  giftCustomization,
+}) => {
   // Flags
 
   const [selectedStep, setSelectedStep] = useState(0);
@@ -100,11 +104,25 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   });
   useEffect(() => {
     if (initialData) {
-      setSettingsState(initialData);
+      const selectedProductIds = initialData?.selectedProductList
+        ? initialData.selectedProductList.split(",")
+        : [];
+
+      const selectedProductsList = selectedProductIds
+        .map((id) => productsList.find((product) => product.id === id))
+        .filter(Boolean); // Filter out any unmatched products
+
+      console.log("initialDataselectedProductsList", initialData);
+
+      setSettingsState({
+        ...initialData,
+        selectedProductsList,
+      });
 
       prevSettingsState.current = initialData;
     }
-  }, [initialData]);
+  }, [initialData, productsList]);
+
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
       if (fetcher.data.success) {
@@ -326,6 +344,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
+                ...giftCustomization,
               }}
               appType={APP_TYPE.SEND_AS_A_GIFT}
               // colorTheme={colorTheme}
@@ -335,6 +354,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
+                ...giftCustomization,
               }}
             ></CartPreview>
           )}

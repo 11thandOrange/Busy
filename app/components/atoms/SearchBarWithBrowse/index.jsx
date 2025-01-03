@@ -118,10 +118,10 @@ const SearchBarWithBrowse = ({
         checkedProducts={selectedProducts}
       />
       {/* Selected products */}
-      <SelectedProduct
+      {/* <SelectedProduct
         selectedProducts={selectedProducts}
         setSelectedProducts={setSelectedProducts}
-      ></SelectedProduct>
+      ></SelectedProduct> */}
     </div>
   );
 };

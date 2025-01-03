@@ -15,7 +15,13 @@ export default function ProductListingWithSearchBar({
   productsList = [],
   checkedProducts = [],
 }) {
-  const [selectedProducts, setSelectedProducts] = useState(checkedProducts);
+  console.log(
+    "checkedProducts: ",
+    checkedProducts,
+    "productsList",
+    productsList,
+  );
+  const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
     setSelectedProducts(checkedProducts);
   }, [checkedProducts]);
@@ -29,7 +35,7 @@ export default function ProductListingWithSearchBar({
 
   const handleCheckboxChange = (product) => {
     setSelectedProducts((prevSelected) => {
-      const exists = prevSelected.some(
+      const exists = prevSelected?.some(
         (selected) => selected.id === product.id,
       );
       if (exists) {
@@ -82,13 +88,15 @@ export default function ProductListingWithSearchBar({
               <div key={product.id} className="product-item">
                 <Checkbox
                   className="product-checkbox"
-                  checked={selectedProducts.some(
-                    (selected) => selected.id === product.id
+                  checked={selectedProducts?.some(
+                    (selected) => selected.id === product.id,
                   )}
                   onChange={() => handleCheckboxChange(product)}
                 />
                 <img
-                  src={product?.media?.edges[0]?.node?.preview?.image?.url || ""}
+                  src={
+                    product?.media?.edges[0]?.node?.preview?.image?.url || ""
+                  }
                   alt={product?.title || "Product Image"}
                 />
                 <span>{product.title}</span>
