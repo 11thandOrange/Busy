@@ -20,7 +20,6 @@ export const loader = async ({ request }) => {
           enabled: true,
         }
       });
-      console.log(apps)
       if (apps.length > 1) {
         const appToKeepEnabled = apps[0];
         for (const app of apps) {
@@ -36,9 +35,9 @@ export const loader = async ({ request }) => {
           }
         }
       }
-      return redirect("/app?status=true&message=subscription-cancelled");
+      return redirect("/app?status=true&message=Subscription Cancelled");
       };
     } catch (error) {
-      return redirect("/app?status=false&message=no-active-subscription");
+      return redirect("/app?status=false&message=No Active Subscripiton");
     }
 };

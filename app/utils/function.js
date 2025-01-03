@@ -486,10 +486,8 @@ export const check_enable_button = async (shop) => {
 };
 export const getSendAsGift = async (shop, productId='') => {
   let script = "";
-  console.log('script download')
-
-
-  const gifts = await db.Gift.findMany({
+  let giftWrapHTML = "";
+  const gifts = await db.gift.findMany({
     where: {
       shop: shop,
       OR: [
@@ -504,7 +502,20 @@ export const getSendAsGift = async (shop, productId='') => {
       ],
     },
   });
-  
+  const giftWrapDetails = gifts
+  .filter(gift => gift.enableGiftWrap) // Filter gifts that have gift wrap enabled
+  .map(gift => ({
+    giftWrapTitle: gift.giftWrapTitle,
+    giftWrapDescription: gift.giftWrapDescription,
+    wrapProductId: gift.wrapProductId,
+  }));
+  giftWrapDetails.forEach(option => {
+    giftWrapHTML += `
+      <h3>${option.giftWrapTitle}</h3>
+      <p>${option.giftWrapDescription}</p>
+      <button onclick="selectGiftWrap('${option.wrapProductId}')">Add to Cart</button>
+    `;
+  });
 const gift = gifts[0];
   if (gifts[0]) {
     
