@@ -47,18 +47,19 @@ export const loader = async ({ request }) => {
       }`,
   );
 
-
   const data = await response.json();
   const gifts = await db.gift.findMany({
     where: {
       shop: shop,
     },
   });
-  
+
   let allProducts = [];
-  gifts.forEach(gift => {
+  gifts.forEach((gift) => {
     if (gift.selectedProductList) {
-      const productArray = gift.selectedProductList.split(',').map(product => product.trim());
+      const productArray = gift.selectedProductList
+        .split(",")
+        .map((product) => product.trim());
       allProducts = [...allProducts, ...productArray];
     }
   });
@@ -66,7 +67,11 @@ export const loader = async ({ request }) => {
   allProducts = [...new Set(allProducts)];
   return cors(
     request,
-    json({ products: data.data.products.nodes, productExists:allProducts, sendAsGiftCustomization }),
+    json({
+      products: data.data.products.nodes,
+      productExists: allProducts,
+      sendAsGiftCustomization,
+    }),
   );
 };
 
@@ -74,46 +79,61 @@ export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
+  console.log(data, "data");
   let wrapProductId = null;
   let messageProductId = null;
   let receiptProductId = null;
   switch (data._action) {
     case "CREATE_GIFT":
       const imagePath = await uploadImage(data.giftWrapImage);
-      if(JSON.parse(data.enableGiftWrap) && data.giftWrapTitle!='' && data.giftWrapPrice!=0 && data.giftWrapDescription!='')
-        {
-          const productData = {
-            title: data.giftWrapTitle,
-            description: data.giftWrapDescription,
-            price: data.giftWrapPrice,
-            type: 'gift',
-            image: (imagePath.success?(process.env.SHOPIFY_APP_URL+imagePath.filePath):"https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg"),
-            altText:data.giftWrapTitle
-          };
-          wrapProductId = await createProduct(admin, session, productData);
-        }
-        if(JSON.parse(data.enableGiftMessage) && data.giftMessageTitle!='' && data.giftMessageDescription!='')
-        {
-          messageProductId = await createProduct(admin, session, {
-            title: data.giftMessageTitle,
-            description: data.giftMessageDescription,
-            price: 1,
-            image:"https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-            altText: 'Gift Message',
-            type: 'gift'
-          });
-        }
-        if(JSON.parse(data.sendWithGiftReceipt) && data.recipientEmailTitle!='' && data.recipientEmailDescription!='')
-        {
-          receiptProductId =await createProduct(admin, session, {
-            title: data.recipientEmailTitle,
-            description: data.recipientEmailDescription,
-            price: 1,
-            image:"https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-            altText: 'Gift Receipt',
-            type: 'gift'
-          });
-        }
+      if (
+        JSON.parse(data.enableGiftWrap) &&
+        data.giftWrapTitle != "" &&
+        data.giftWrapPrice != 0 &&
+        data.giftWrapDescription != ""
+      ) {
+        const productData = {
+          title: data.giftWrapTitle,
+          description: data.giftWrapDescription,
+          price: data.giftWrapPrice,
+          type: "gift",
+          image: imagePath.success
+            ? process.env.SHOPIFY_APP_URL + imagePath.filePath
+            : "https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg",
+          altText: data.giftWrapTitle,
+        };
+        wrapProductId = await createProduct(admin, session, productData);
+      }
+      if (
+        JSON.parse(data.enableGiftMessage) &&
+        data.giftMessageTitle != "" &&
+        data.giftMessageDescription != ""
+      ) {
+        messageProductId = await createProduct(admin, session, {
+          title: data.giftMessageTitle,
+          description: data.giftMessageDescription,
+          price: 1,
+          image:
+            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+          altText: "Gift Message",
+          type: "gift",
+        });
+      }
+      if (
+        JSON.parse(data.sendWithGiftReceipt) &&
+        data.recipientEmailTitle != "" &&
+        data.recipientEmailDescription != ""
+      ) {
+        receiptProductId = await createProduct(admin, session, {
+          title: data.recipientEmailTitle,
+          description: data.recipientEmailDescription,
+          price: 1,
+          image:
+            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+          altText: "Gift Receipt",
+          type: "gift",
+        });
+      }
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
@@ -126,13 +146,15 @@ export const action = async ({ request }) => {
           enableGiftMessage: JSON.parse(data.enableGiftMessage),
           giftMessageTitle: data.giftMessageTitle,
           giftMessageDescription: data.giftMessageDescription,
-          sendWithGiftReceipt: JSON.parse(data.sendWithGiftReceipt),  
+          sendWithGiftReceipt: JSON.parse(data.sendWithGiftReceipt),
           sendWithNoInvoice: JSON.parse(data.sendWithNoInvoice),
           recipientEmailTitle: data.recipientEmailTitle,
           recipientEmailDescription: data.recipientEmailDescription,
           recipientEmail: data.recipientEmail,
           sendEmailUponCheckout: JSON.parse(data.sendEmailUponCheckout),
-          sendEmailWhenItemIsShipped: JSON.parse(data.sendEmailWhenItemIsShipped),
+          sendEmailWhenItemIsShipped: JSON.parse(
+            data.sendEmailWhenItemIsShipped,
+          ),
           giftWrapCustomizationText: data.giftWrapCustomizationText,
           giftWrapCustomizationColor: data.giftWrapCustomizationColor,
           giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
@@ -156,21 +178,25 @@ export const action = async ({ request }) => {
         data: {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
-          enableGiftWrap: data.enableGiftWrap,
-          giftWrapImage: imagePathUpdate.success ? imagePathUpdate.filePath : null,
+          enableGiftWrap: JSON.parse(data.enableGiftWrap),
+          giftWrapImage: imagePathUpdate.success
+            ? imagePathUpdate.filePath
+            : null,
           giftWrapTitle: data.giftWrapTitle,
-          giftWrapPrice: data.giftWrapPrice,
+          giftWrapPrice: parseFloat(data.giftWrapPrice),
           giftWrapDescription: data.giftWrapDescription,
-          enableGiftMessage: data.enableGiftMessage,
+          enableGiftMessage: JSON.parse(data.enableGiftMessage),
           giftMessageTitle: data.giftMessageTitle,
           giftMessageDescription: data.giftMessageDescription,
-          sendWithGiftReceipt: data.sendWithGiftReceipt,
-          sendWithNoInvoice: data.sendWithNoInvoice,
+          sendWithGiftReceipt: JSON.parse(data.sendWithGiftReceipt),
+          sendWithNoInvoice: JSON.parse(data.sendWithNoInvoice),
           recipientEmailTitle: data.recipientEmailTitle,
           recipientEmailDescription: data.recipientEmailDescription,
           recipientEmail: data.recipientEmail,
-          sendEmailUponCheckout: data.sendEmailUponCheckout,
-          sendEmailWhenItemIsShipped: data.sendEmailWhenItemIsShipped,
+          sendEmailUponCheckout: JSON.parse(data.sendEmailUponCheckout),
+          sendEmailWhenItemIsShipped: JSON.parse(
+            data.sendEmailWhenItemIsShipped,
+          ),
           giftWrapCustomizationText: data.giftWrapCustomizationText,
           giftWrapCustomizationColor: data.giftWrapCustomizationColor,
           giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
@@ -180,8 +206,8 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-     
-      return { success: true, updatedGift };
+
+      return { success: true };
 
     case "DELETE_GIFT":
       await db.gift.deleteMany({
@@ -192,7 +218,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true, updatedGift };
+      return { success: true };
     case "SETTING":
       await db.giftSetting.upsert({
         where: { shop: shop },
@@ -217,7 +243,28 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true};
+      return { success: true };
+    case "CUSTOMIZATION_SETTING":
+      await db.giftSetting.upsert({
+        where: { shop: shop },
+        update: {
+          displayGiftOptions: data.displayGiftOptions,
+          giftBtnType: data.giftBtnType,
+          btnText: data.btnText,
+          btnColor: data.btnColor,
+          btnEmoji: data.btnEmoji,
+          shop: shop,
+        },
+        create: {
+          displayGiftOptions: data.displayGiftOptions,
+          giftBtnType: data.giftBtnType,
+          btnText: data.btnText,
+          btnColor: data.btnColor,
+          btnEmoji: data.btnEmoji,
+          shop: shop,
+        },
+      });
+      return { success: true };
     default:
       return { success: false, message: "Invalid action" };
   }
@@ -231,6 +278,7 @@ const GiftCustomization = () => {
     <div>
       <SendAsGiftCustomization
         productsList={products.products}
+        initialData={products.sendAsGiftCustomization}
       ></SendAsGiftCustomization>
     </div>
   );

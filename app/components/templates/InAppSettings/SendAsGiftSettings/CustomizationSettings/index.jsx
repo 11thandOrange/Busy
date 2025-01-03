@@ -11,6 +11,7 @@ import ProductPreviewCard from "../../../ProductPreviewCard";
 import CartPreview from "../../../CartPreview";
 import GiftCustomization from "../../../SendAsGiftCustomization/GiftCustomization";
 import { updateState } from "../../../../../utils/clientFunctions";
+import { useFetcher } from "@remix-run/react";
 export const DISPLAY_GIFT_OPTIONS = {
   BOTH: "both",
   CART_ONLY: "cart_only",
@@ -26,7 +27,7 @@ const CustomizationSettings = ({
   colorTheme = COLOR_THEME.LIGHT,
   initialData,
 }) => {
-  // const fetcher = useFetcher();
+  const fetcher = useFetcher();
   // const { showToast, onDismiss } = useToast(fetcher);
   // const [settingsState, setSettingsState] = useState({
   //   ...CUSTOMIZATON_INITIAL_STATE,
@@ -72,7 +73,18 @@ const CustomizationSettings = ({
   const [settingsState, setSettingsState] = useState(initialState);
   const oldSettingRef = useRef(initialState);
   const handleSaveSettingsData = () => {
-    console.log("handleSaveSettingsData", settingsState);
+    console.log("handleSavedafdasdfasdSettingsData", settingsState, fetcher);
+    fetcher.submit(
+      {
+        ...settingsState,
+        _action: "SETTING",
+      },
+
+      {
+        method: "POST",
+        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+      },
+    );
   };
   const handleDiscardChanges = () => {
     setSettingsState(oldSettingRef.current);
@@ -93,6 +105,7 @@ const CustomizationSettings = ({
           prevState={oldSettingRef.current}
           handleSaveChanges={handleSaveSettingsData}
           handleDiscardChanges={handleDiscardChanges}
+          fetcherState={fetcher.state}
         />
         <div className="customization-left-section">
           <Card>

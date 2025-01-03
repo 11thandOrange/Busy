@@ -1,6 +1,6 @@
 import { Page } from "@shopify/polaris";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StepsRenderer from "../StepsRenderer";
 import ProductPreviewCard from "../ProductPreviewCard";
 import SelectedProductStep from "./selectedProductStep";
@@ -12,7 +12,7 @@ import {
   PRODUCT_SELECTION_TYPE,
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
-import { checkError } from "../../../utils/clientFunctions";
+import { checkError, isLoading } from "../../../utils/clientFunctions";
 import { APP_TYPE, ROUTES } from "../../../utils/constants";
 import "../AnnouncementCustomization/Settings.css";
 import EnableGiftReceiptStep from "./enableGiftReceiptStep";
@@ -26,7 +26,8 @@ import {
   GIFT_BTN_TYPE,
 } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
-const SendAsGiftCustomization = ({ productsList = [] }) => {
+import ToastBar from "../../atoms/Toast";
+const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   // Flags
 
   const [selectedStep, setSelectedStep] = useState(0);
@@ -93,7 +94,29 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
       },
     },
   ];
+  const [toastConfig, setToastConfig] = useState({
+    isError: false,
+    message: "",
+  });
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
 
+      prevSettingsState.current = initialData;
+    }
+  }, [initialData]);
+  useEffect(() => {
+    if (!isLoading(fetcher.state) && fetcher.data) {
+      if (fetcher.data.success) {
+        setToastConfig({ isError: false, message: fetcher.data.message });
+      } else {
+        setToastConfig({ isError: true, message: fetcher.data.message });
+      }
+      navigate("/apps/sendAsGift?appId=5", {
+        state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
+      });
+    }
+  }, [fetcher]);
   // const handleOnSave = () => {
   //   let payload = {
   //     ...settingsState,
@@ -123,7 +146,9 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
       fetcher.submit(
         {
           ...payload,
-          _action: "CREATE_GIFT",
+          ...(initialData
+            ? { id: initialData.id, _action: "UPDATE" }
+            : { _action: "CREATE_GIFT" }),
         },
         {
           method: "POST",
@@ -149,7 +174,9 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
       fetcher.submit(
         {
           ...payload,
-          _action: "CREATE_GIFT",
+          ...(initialData
+            ? { id: initialData.id, _action: "UPDATE_GIFT" }
+            : { _action: "CREATE_GIFT" }),
         },
         {
           method: "POST",
@@ -267,10 +294,11 @@ const SendAsGiftCustomization = ({ productsList = [] }) => {
   };
   return (
     <Page>
-      {/* <Toast
+      <ToastBar
         show={!isLoading(fetcher.state) && fetcher.data}
-        message="Settings saved"
-      /> */}
+        message={toastConfig.message}
+        isError={toastConfig.isError}
+      />
       <StepsRenderer
         tabs={steps}
         selected={selectedStep}

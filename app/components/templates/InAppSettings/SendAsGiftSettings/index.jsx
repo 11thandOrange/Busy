@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SettingSection from "../../GlobalSettings/SettingSection";
 import CustomTextField from "../../../atoms/CustomTextField";
 import { Button, Layout, Text } from "@shopify/polaris";
@@ -6,6 +6,8 @@ import Selector from "../../../atoms/Selector";
 import "./style.css";
 import ToastBar from "../../../atoms/Toast";
 import ManageDataChange from "../../ManageDataChange";
+import { useFetcher } from "@remix-run/react";
+import { ROUTES } from "../../../../utils/constants";
 const REFRESH_CART_CONSTANT = {
   VISUALLY_REFRESH: "1",
   DONT_REFRESH: "2",
@@ -31,7 +33,7 @@ const giftLoggingOptions = [
     value: GIFT_LOGGING_CONSTANT.ADDITIONAL_DETAILS,
   },
 ];
-const SendAsGiftSettings = () => {
+const SendAsGiftSettings = ({ initialData }) => {
   const initialState = {
     addEmailClient: "",
     giftWrapTagName: "",
@@ -43,6 +45,7 @@ const SendAsGiftSettings = () => {
   };
   const [settingsState, setSettingsState] = useState(initialState);
   const oldSettingRef = useRef(initialState);
+  const fetcher = useFetcher();
   const updateSettings = (field, value) => {
     setSettingsState((prevState) => ({
       ...prevState,
@@ -51,10 +54,27 @@ const SendAsGiftSettings = () => {
   };
   const handleSaveSettingsData = () => {
     console.log("handleSaveSettingsData", settingsState);
+    fetcher.submit(
+      {
+        ...settingsState,
+        _action: "SETTING",
+      },
+
+      {
+        method: "POST",
+        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+      },
+    );
   };
   const handleDiscardChanges = () => {
     setSettingsState(oldSettingRef.current);
   };
+  useEffect(() => {
+    if (initialData) {
+      setSettingsState(initialData);
+      oldSettingRef.current = initialData;
+    }
+  }, [initialData]);
   return (
     <Layout>
       <ToastBar
@@ -67,6 +87,7 @@ const SendAsGiftSettings = () => {
         prevState={oldSettingRef.current}
         handleSaveChanges={handleSaveSettingsData}
         handleDiscardChanges={handleDiscardChanges}
+        fetcherState={fetcher.state}
       />
       <SettingSection heading={"Add Email Client"}>
         <CustomTextField
