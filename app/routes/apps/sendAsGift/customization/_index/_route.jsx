@@ -76,7 +76,7 @@ export const loader = async ({ request }) => {
       products: data.data.products.nodes,
       productExists: allProducts,
       sendAsGiftCustomization,
-      giftCustomization
+      giftCustomization,
     }),
   );
 };
@@ -184,7 +184,9 @@ export const action = async ({ request }) => {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
           enableGiftWrap: JSON.parse(data.enableGiftWrap),
-          giftWrapImage: imagePathUpdate.success ? imagePathUpdate.filePath : null,
+          giftWrapImage: imagePathUpdate.success
+            ? imagePathUpdate.filePath
+            : null,
           giftWrapTitle: data.giftWrapTitle,
           giftWrapPrice: parseFloat(data.giftWrapPrice),
           giftWrapDescription: data.giftWrapDescription,
@@ -197,7 +199,9 @@ export const action = async ({ request }) => {
           recipientEmailDescription: data.recipientEmailDescription,
           recipientEmail: data.recipientEmail,
           sendEmailUponCheckout: JSON.parse(data.sendEmailUponCheckout),
-          sendEmailWhenItemIsShipped: JSON.parse(data.sendEmailWhenItemIsShipped),
+          sendEmailWhenItemIsShipped: JSON.parse(
+            data.sendEmailWhenItemIsShipped,
+          ),
           giftWrapCustomizationText: data.giftWrapCustomizationText,
           giftWrapCustomizationColor: data.giftWrapCustomizationColor,
           giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
@@ -244,7 +248,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true};
+      return { success: true };
     case "CUSTOMIZATION_SETTING":
       await db.giftCustomization.upsert({
         where: { shop: shop },
@@ -265,7 +269,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true};
+      return { success: true };
     default:
       return { success: false, message: "Invalid action" };
   }
@@ -279,7 +283,10 @@ const GiftCustomization = () => {
     <div>
       <SendAsGiftCustomization
         productsList={products.products}
-        initialData={products.sendAsGiftCustomization}
+        initialData={{
+          ...products.sendAsGiftCustomization,
+          ...products.giftCustomization,
+        }}
       ></SendAsGiftCustomization>
     </div>
   );

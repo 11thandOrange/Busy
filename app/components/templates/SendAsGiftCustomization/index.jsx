@@ -100,10 +100,9 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   });
   useEffect(() => {
     if (initialData) {
-      // setSettingsState(initialData);
+      setSettingsState(initialData);
 
-      // prevSettingsState.current = initialData;
-      console.log("initialData send as gift", initialData);
+      prevSettingsState.current = initialData;
     }
   }, [initialData]);
   useEffect(() => {
@@ -320,15 +319,13 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {DISPLAY_GIFT_OPTIONS.BOTH === DISPLAY_GIFT_OPTIONS.BOTH ||
-          DISPLAY_GIFT_OPTIONS.BOTH ===
+          {settingsState.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          settingsState.displayGiftOptions ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
-                displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
-                giftBtnType: GIFT_BTN_TYPE.BOTH,
               }}
               appType={APP_TYPE.SEND_AS_A_GIFT}
               // colorTheme={colorTheme}
@@ -338,8 +335,6 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
-                displayGiftOptions: DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY,
-                giftBtnType: GIFT_BTN_TYPE.BOTH,
               }}
             ></CartPreview>
           )}
