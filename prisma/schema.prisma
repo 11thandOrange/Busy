@@ -208,6 +208,17 @@ model Gift {
 }
 
 
+model GiftCustomization {
+  id                            Int           @id @default(autoincrement())
+  displayGiftOptions            String       @default("both")
+  giftBtnType                   String       @default("both")
+  btnText                       String?
+  btnColor                      String?
+  btnEmoji                      String?
+  shop                          String        @unique
+  createdAt                     DateTime      @default(now())
+}
+
 model GiftSetting {
   id                            Int           @id @default(autoincrement())
   addEmailClient                String?
@@ -217,8 +228,6 @@ model GiftSetting {
   refreshTheCart                Boolean       @default(true)
   giftLogging                   String        @default("1")
   showDecimalPoints             Boolean       @default(false)
-  displayGiftButton             String        @default("Both")
-  displayGiftOptions            String        @default("Both")
   shop                          String        @unique
   createdAt                     DateTime      @default(now())
 }

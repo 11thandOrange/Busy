@@ -218,6 +218,27 @@ export const action = async ({ request }) => {
         },
       });
       return { success: true};
+    case "CUSTOMIZATION_SETTING":
+      await db.giftSetting.upsert({
+        where: { shop: shop },
+        update: {
+          displayGiftOptions: data.displayGiftOptions,
+          giftBtnType: data.giftBtnType,
+          btnText: data.btnText,
+          btnColor: data.btnColor,
+          btnEmoji: data.btnEmoji,
+          shop: shop,
+        },
+        create: {
+          displayGiftOptions: data.displayGiftOptions,
+          giftBtnType: data.giftBtnType,
+          btnText: data.btnText,
+          btnColor: data.btnColor,
+          btnEmoji: data.btnEmoji,
+          shop: shop,
+        },
+      });
+      return { success: true};
     default:
       return { success: false, message: "Invalid action" };
   }
