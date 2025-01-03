@@ -100,9 +100,10 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   });
   useEffect(() => {
     if (initialData) {
-      setSettingsState(initialData);
+      // setSettingsState(initialData);
 
-      prevSettingsState.current = initialData;
+      // prevSettingsState.current = initialData;
+      console.log("initialData send as gift", initialData);
     }
   }, [initialData]);
   useEffect(() => {
@@ -117,24 +118,28 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       });
     }
   }, [fetcher]);
-  // const handleOnSave = () => {
-  //   let payload = {
-  //     ...settingsState,
-  //     giftWrapImage: settingsState.giftWrapImage,
-  //   };
 
-  //   fetcher.submit(
-  //     {
-  //       ...payload,
-  //       _action: "CREATE_GIFT",
-  //     },
-  //     {
-  //       method: "POST",
-  //       action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-  //     },
-  //   );
-  //   console.log("handleOnSave", settingsState);
-  // };
+  const handleSaveReq = (payload) => {
+    const payloadData = {
+      ...payload,
+      selectedProductList: payload.selectedProductList.map(
+        (product) => product.id,
+      ),
+    };
+
+    fetcher.submit(
+      {
+        ...payloadData,
+        ...(initialData
+          ? { id: initialData.id, _action: "UPDATE_GIFT" }
+          : { _action: "CREATE_GIFT" }),
+      },
+      {
+        method: "POST",
+        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+      },
+    );
+  };
   const handleOnSave = () => {
     if (!settingsState.giftWrapImage) {
       // If no image is provided, send `null` in the payload
@@ -143,44 +148,19 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
         giftWrapImage: null,
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
-      console.log("handleOnSave without image", payload);
       return;
     }
 
-    // Check if giftWrapImage is a URL (string)
     if (typeof settingsState.giftWrapImage === "string") {
       let payload = {
         ...settingsState,
         giftWrapImage: settingsState.giftWrapImage, // Send the URL directly
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE_GIFT" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
-      console.log("handleOnSave with URL", payload);
       return;
     }
 
@@ -196,18 +176,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
         giftWrapImage: base64data, // Send the Base64 string
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE_GIFT" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
       console.log("handleOnSave with Base64 image", payload);
     };
