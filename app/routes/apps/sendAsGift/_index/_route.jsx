@@ -3,7 +3,7 @@ import IMAGES from "../../../../utils/Images";
 import Homepage from "../../../../components/templates/homepage";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import Analytics from "../../../../components/templates/Analytics";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import { useSearchParams } from "react-router-dom";
 import CheckBars, {
   emptyStateButtonType,
@@ -28,7 +28,15 @@ export const loader = async ({ request }) => {
     },
   });
   const app_active = await check_app_active(appId, shop);
-  return cors(request, json({ giftListing: giftListing, app_active }));
+  const giftSetting = await db.giftSetting.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+  return cors(
+    request,
+    json({ giftListing: giftListing, settingState: giftSetting, app_active }),
+  );
 };
 
 const route = () => {
@@ -37,6 +45,8 @@ const route = () => {
   const [gifts, setGifts] = useState([]);
   const navigate = useNavigate();
   const gift = useLoaderData();
+  const fetcher = useFetcher();
+  console.log("giftsettin", gift.settingState);
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
@@ -86,11 +96,21 @@ const route = () => {
             navigate(ROUTES.SEND_AS_GIFT_CUSTOMIZATION);
           }}
           onBarClick={(type, id) => {
-            console.log("onclick bar with id", id);
+            navigate(ROUTES.SEND_AS_GIFT_CUSTOMIZATION + `?id=${id}`);
+          }}
+          onDelete={(selectedResources) => {
+            fetcher.submit(
+              {
+                _action: "DELETE_GIFT",
+                giftIds: selectedResources,
+              },
+              { method: "DELETE", action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION },
+            );
           }}
           deletConfirmationMessage="This cannot be undone. Are you sure you want to delete the selected gift(s)?"
           barsData={formatBarsData(gift.giftListing)}
           toastMessage="Gift(s) deleted successfully"
+          fetcher={fetcher}
         />
       ),
     },
@@ -104,7 +124,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <SendAsGiftSettings />,
+      component: <SendAsGiftSettings initialData={gift.settingState}/>,
     },
     {
       id: "Analytics-1",

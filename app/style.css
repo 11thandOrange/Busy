@@ -5,6 +5,9 @@
     /* font-family: 'manrope'; */
    
 }
+.Polaris-Frame {
+    min-height: unset !important;
+  }
 .app-main .Polaris-LegacyCard__FirstSectionPadding{
     padding: 0px;
 }
