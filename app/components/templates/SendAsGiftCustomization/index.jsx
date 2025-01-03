@@ -29,6 +29,7 @@ import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import ToastBar from "../../atoms/Toast";
 const SendAsGiftCustomization = ({
   productsList = [],
+  productExists=[],
   initialData,
   giftCustomization,
 }) => {
@@ -216,6 +217,7 @@ const SendAsGiftCustomization = ({
           settingsState={settingsState}
           setSettingsState={setSettingsState}
           setError={setError}
+          productExists={productExists}
         ></SelectedProductStep>
       ),
     },

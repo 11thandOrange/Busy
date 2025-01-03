@@ -30,8 +30,7 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
       (currentPage - 1) * itemsPerPage + itemsPerPage,
     );
 
-   
-      setProducts(selectedProductsNew);
+    setProducts(selectedProductsNew);
   }, [currentPage, selectedProducts]);
   return (
     <>
@@ -91,12 +90,21 @@ const SearchBarWithBrowse = ({
   productsList = [],
   selectedProducts = [],
   setSelectedProducts = () => {},
+  productExists = [],
 }) => {
   const [activePopup, setActivePopup] = useState(false);
   const toggleModal = () => {
     setActivePopup((prevState) => !prevState);
   };
 
+  const disableProduct = () => {
+    const productExistsSet = new Set(productExists);
+    const updatedProductsList = productsList.map((product) => ({
+      ...product,
+      disable: productExistsSet.has(product.id),
+    }));
+    return updatedProductsList;
+  };
   return (
     <div>
       {/* Search bar and browse button */}
@@ -114,7 +122,7 @@ const SearchBarWithBrowse = ({
       </div>
       {/* Product Listing Modal */}
       <ProductListingWithSearchBar
-        productsList={productsList}
+        productsList={disableProduct()}
         open={activePopup}
         onClose={toggleModal}
         primaryActionOnClick={(products) => {

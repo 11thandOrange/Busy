@@ -10,6 +10,7 @@ const SelectedProductStep = ({
   settingsState,
   setSettingsState,
   setError = () => {},
+  productExists=[]
 }) => {
   useEffect(() => {
     if (settingsState.selectedProductList) {
@@ -76,6 +77,7 @@ const SelectedProductStep = ({
           PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
           <SearchBarWithBrowse
             productsList={productsList}
+            productExists={productExists}
             selectedProducts={settingsState.selectedProductList}
             setSelectedProducts={(products) => {
               

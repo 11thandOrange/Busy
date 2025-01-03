@@ -15,7 +15,6 @@ export default function ProductListingWithSearchBar({
   productsList = [],
   checkedProducts = [],
 }) {
-
   const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
     setSelectedProducts(checkedProducts);
@@ -80,7 +79,10 @@ export default function ProductListingWithSearchBar({
           />
           <div className="product-list-container">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="product-item">
+              <div
+                key={product.id}
+                className={`product-item ${product.disable ? "disabled-product" : ""}`}
+              >
                 <Checkbox
                   className="product-checkbox"
                   checked={selectedProducts?.some(
