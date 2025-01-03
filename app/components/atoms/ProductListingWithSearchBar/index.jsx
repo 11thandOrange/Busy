@@ -17,12 +17,14 @@ export default function ProductListingWithSearchBar({
 }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
+    
+
     setSelectedProducts(checkedProducts);
   }, [checkedProducts]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const closePopup = () => {
-    setSelectedProducts([]);
+    setSelectedProducts(checkedProducts);
     setSearchQuery("");
     onClose();
   };
