@@ -487,6 +487,7 @@ export const check_enable_button = async (shop) => {
 export const getSendAsGift = async (shop, productId='') => {
   let script = "";
   let giftWrapHTML = "";
+  let giftMessageHTML = "";
   const gifts = await db.gift.findMany({
     where: {
       shop: shop,
@@ -502,18 +503,47 @@ export const getSendAsGift = async (shop, productId='') => {
       ],
     },
   });
+  const giftCustomization = await db.giftCustomization.findFirst({
+    where: {
+      shop: shop,
+    },
+  });
+  const giftSetting = await db.giftSetting.findFirst({
+    where: {
+      shop: shop, 
+    },
+  });
+  
   const giftWrapDetails = gifts
-  .filter(gift => gift.enableGiftWrap) // Filter gifts that have gift wrap enabled
+  .filter(gift => gift.enableGiftWrap)
   .map(gift => ({
     giftWrapTitle: gift.giftWrapTitle,
     giftWrapDescription: gift.giftWrapDescription,
-    wrapProductId: gift.wrapProductId,
+    giftWrapImage: process.env.SHOPIFY_APP_URL+gift.giftWrapImage,
+    wrapProductId: (gift.wrapProductId).match(/(\d+)$/)[0],
+  }));
+  const giftMessageDetails = gifts
+  .filter(gift => gift.enableGiftMessage)
+  .map(gift => ({
+    giftMessageTitle: gift.giftMessageTitle,
+    giftMessageDescription: gift.giftMessageDescription,
+    giftMessageImage: "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+    messageProductId: (gift.messageProductId).match(/(\d+)$/)[0],
   }));
   giftWrapDetails.forEach(option => {
     giftWrapHTML += `
       <h3>${option.giftWrapTitle}</h3>
       <p>${option.giftWrapDescription}</p>
+      <img src="${option.giftWrapImage}" alt="${option.giftWrapTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">
       <button onclick="selectGiftWrap('${option.wrapProductId}')">Add to Cart</button>
+    `;
+  });
+  giftMessageDetails.forEach(option => {
+    giftMessageHTML += `
+      <h3>${option.giftMessageTitle}</h3>
+      <p>${option.giftMessageDescription}</p>
+      <img src="${option.giftMessageImage}" alt="${option.giftMessageTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">
+      <button onclick="selectGiftWrap('${option.messageProductId}')">Add to Cart</button>
     `;
   });
 const gift = gifts[0];
@@ -1041,21 +1071,16 @@ export const productDelete = async (admin, productId) => {
 };
 export const uploadImage = async(image)=>{
   const base64String = image;
-
-  // Check if the base64 string starts with the correct data URL scheme
   const matches = base64String.match(/^data:image\/([a-zA-Z]*);base64,([^\"]*)$/);
-  
   if (!matches) {
-    return ({ success:false, error: "Invalid base64 string" });
+    return ({ success:true, filePath:image, error: "Invalid base64 string" });
   }
 
-  const type = matches[1];  // image type (e.g., 'png', 'jpeg')
-  const base64Data = matches[2]; // raw base64 data
+  const type = matches[1];
+  const base64Data = matches[2];
   
-  // Convert base64 to binary buffer
   const buffer = Buffer.from(base64Data, 'base64');
   
-  // Set the file path in the public directory (adjust filename as needed)
   const fileName = `image-${Date.now()}.${type}`;
   const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
   

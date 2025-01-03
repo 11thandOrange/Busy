@@ -79,7 +79,6 @@ export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
-  console.log(data, "data");
   let wrapProductId = null;
   let messageProductId = null;
   let receiptProductId = null;
