@@ -1,6 +1,7 @@
 import { DropZone, LegacyStack, Thumbnail, Text } from "@shopify/polaris";
 import { NoteIcon } from "@shopify/polaris-icons";
 import { useState, useCallback, useEffect } from "react";
+import "./style.css";
 
 export default function DropZoneWithImageFileUpload({
   label = "",
@@ -24,23 +25,25 @@ export default function DropZoneWithImageFileUpload({
 
   const fileUpload = !file && <DropZone.FileUpload />;
   const uploadedFile = file && (
-    <LegacyStack>
-      <Thumbnail
-        size="small"
-        alt={file.name}
-        source={
-          validImageTypes.includes(file.type)
-            ? window.URL.createObjectURL(file)
-            : initalImage
-        }
-      />
-      <div>
-        {file.name}{" "}
-        <Text variant="bodySm" as="p">
-          {file.size} bytes
-        </Text>
-      </div>
-    </LegacyStack>
+    <div className="image-import-wrapper">
+      <LegacyStack>
+        <Thumbnail
+          size="small"
+          alt={file.name}
+          source={
+            validImageTypes.includes(file.type)
+              ? window.URL.createObjectURL(file)
+              : initalImage
+          }
+        />
+        <div>
+          {file.name}{" "}
+          <Text variant="bodySm" as="p">
+            {file.size} bytes
+          </Text>
+        </div>
+      </LegacyStack>
+    </div>
   );
 
   return (

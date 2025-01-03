@@ -191,4 +191,5 @@
 }
 .Polaris-ShadowBevel:has(.pick-emojimain) .Polaris-Box{
     overflow: visible !important;
+    border-radius: 12px;
 }
