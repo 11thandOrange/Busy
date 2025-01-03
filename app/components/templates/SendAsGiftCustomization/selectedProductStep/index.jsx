@@ -78,9 +78,9 @@ const SelectedProductStep = ({
             productsList={productsList}
             selectedProducts={settingsState.selectedProductList}
             setSelectedProducts={(products) => {
-              setSettingsState((prevState) => {
-               
+              
 
+              setSettingsState((prevState) => {
                 return updateState("selectedProductList", products, prevState);
               });
             }}

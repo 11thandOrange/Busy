@@ -277,15 +277,12 @@ export const action = async ({ request }) => {
 
 const GiftCustomization = () => {
   const products = useLoaderData();
-  console.log(products, "pro");
 
   return (
     <div>
       <SendAsGiftCustomization
         productsList={products.products}
-        initialData={
-          products.sendAsGiftCustomization
-        }
+        initialData={products.sendAsGiftCustomization}
         giftCustomization={products.giftCustomization}
       ></SendAsGiftCustomization>
     </div>

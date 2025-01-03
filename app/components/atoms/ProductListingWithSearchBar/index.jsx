@@ -15,12 +15,7 @@ export default function ProductListingWithSearchBar({
   productsList = [],
   checkedProducts = [],
 }) {
-  console.log(
-    "checkedProducts: ",
-    checkedProducts,
-    "productsList",
-    productsList,
-  );
+
   const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
     setSelectedProducts(checkedProducts);

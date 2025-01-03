@@ -40,7 +40,12 @@ export const loader = async ({ request }) => {
   });
   return cors(
     request,
-    json({ giftListing: giftListing, settingState: giftSetting, giftCustomization, app_active }),
+    json({
+      giftListing: giftListing,
+      settingState: giftSetting,
+      giftCustomization,
+      app_active,
+    }),
   );
 };
 
@@ -51,7 +56,6 @@ const route = () => {
   const navigate = useNavigate();
   const gift = useLoaderData();
   const fetcher = useFetcher();
-  console.log("giftsettin", gift.settingState);
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("appId");
@@ -129,7 +133,7 @@ const route = () => {
     {
       id: "Settings-1",
       content: "Settings",
-      component: <SendAsGiftSettings initialData={gift.settingState}/>,
+      component: <SendAsGiftSettings initialData={gift.settingState} />,
     },
     {
       id: "Analytics-1",

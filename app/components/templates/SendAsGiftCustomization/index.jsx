@@ -112,14 +112,15 @@ const SendAsGiftCustomization = ({
         .map((id) => productsList.find((product) => product.id === id))
         .filter(Boolean); // Filter out any unmatched products
 
-      console.log("initialDataselectedProductsList", initialData);
-
       setSettingsState({
         ...initialData,
-        selectedProductsList,
+        selectedProductList: selectedProductsList,
       });
 
-      prevSettingsState.current = initialData;
+      prevSettingsState.current = {
+        ...initialData,
+        selectedProductsList: selectedProductsList,
+      };
     }
   }, [initialData, productsList]);
 
@@ -321,9 +322,9 @@ const SendAsGiftCustomization = ({
           prevState={prevSettingsState.current}
           handleSaveChanges={handleOnSave}
           handleDiscardChanges={() => {
-            if (Object.keys(prevSettingsState.current).length > 0) {
-              setSettingsState(prevSettingsState.current);
-            }
+            // if (Object.keys(prevSettingsState.current).length > 0) {
+            //   setSettingsState(prevSettingsState.current);
+            // }
             navigate("/apps/sendAsGift?appId=5", {
               state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
             });
@@ -337,8 +338,8 @@ const SendAsGiftCustomization = ({
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {settingsState.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
-          settingsState.displayGiftOptions ===
+          {giftCustomization.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          giftCustomization.displayGiftOptions ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard
               setSettingsState={setSettingsState}

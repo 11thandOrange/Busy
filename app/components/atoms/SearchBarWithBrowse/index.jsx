@@ -23,13 +23,15 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
   useEffect(() => {
     const selectedProductsNew = selectedProducts?.slice(
       (currentPage - 1) * itemsPerPage,
       (currentPage - 1) * itemsPerPage + itemsPerPage,
     );
 
-    setProducts(selectedProductsNew);
+   
+      setProducts(selectedProductsNew);
   }, [currentPage, selectedProducts]);
   return (
     <>
@@ -39,27 +41,30 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
             Selected Products
           </Text>
         )}
-        {products?.map((product) => (
-          <div key={product.id} className="selected-products-item">
-            <img
-              src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
-              alt={product.title}
-            />
-            <span className="product-title">{product.title}</span>
-            <div
-              onClick={() => {
-                const idToFilter = product.id;
-                const filteredProducts = selectedProducts.filter((product) => {
-                  return product.id !== idToFilter;
-                });
-                setCurrentPage(1);
-                setSelectedProducts(filteredProducts);
-              }}
-            >
-              <Icon source={DeleteIcon} tone="base" />
+        {products &&
+          products?.map((product) => (
+            <div key={product.id} className="selected-products-item">
+              <img
+                src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
+                alt={product.title}
+              />
+              <span className="product-title">{product.title}</span>
+              <div
+                onClick={() => {
+                  const idToFilter = product.id;
+                  const filteredProducts = selectedProducts.filter(
+                    (product) => {
+                      return product.id !== idToFilter;
+                    },
+                  );
+                  setCurrentPage(1);
+                  setSelectedProducts(filteredProducts);
+                }}
+              >
+                <Icon source={DeleteIcon} tone="base" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         {selectedProducts.length > 0 && (
           <div className="selected-products-pagination">
             <Pagination
@@ -118,10 +123,10 @@ const SearchBarWithBrowse = ({
         checkedProducts={selectedProducts}
       />
       {/* Selected products */}
-      {/* <SelectedProduct
+      <SelectedProduct
         selectedProducts={selectedProducts}
         setSelectedProducts={setSelectedProducts}
-      ></SelectedProduct> */}
+      ></SelectedProduct>
     </div>
   );
 };
