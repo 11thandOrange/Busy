@@ -512,3 +512,113 @@ p{
     justify-content: right;
     padding-left: 0 !important;
 }
+/* Send As Gift CSS */
+.send-as-gift-preview {
+  max-width: 940px;
+  margin-inline: auto;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20%;
+  max-height: 400px;
+  width: 100%;
+  left: 0px;
+  padding: 46px 16px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9f3;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.784);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.send-as-gift-preview-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.send-as-gift-close-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 99;
+}
+.send-as-gift-preview::-webkit-scrollbar {
+  display: none;
+}
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.accordion-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.accordion-arrow {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+.accordion-content {
+  display: none;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+.giftCardPreview_wrapper {
+  display: flex;
+  gap: 10px;
+}
+.accordion-icon {
+  font-size: 20px;
+}
+.gift-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+.gift-price {
+  font-size: 18px;
+  color: #000;
+}
+.gift-image {
+  width: 100%;
+  max-width: 60px;
+  border-radius: 10px;
+}
+.title-price-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.giftContent-wrapper {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 16px;
+cursor: pointer;
+padding: 8px;
+font-weight: 600;
+/* background-color: #fff; */
+/* border-radius: 8px; */
+/* border: 1px solid #ddd; */
+/* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+.gift-recepient-text {
+font-size: 15px !important;
+font-weight: 600;
+}
+.gift-email{
+color: black;
+font-size: 15px !important;
+font-weight: 600;
+}

@@ -484,7 +484,7 @@ export const check_enable_button = async (shop) => {
     return false;
   }
 };
-export const getSendAsGift = async (shop, productId='') => {
+export const getSendAsGift = async (shop, productId = '') => {
   let script = "";
   let giftWrapHTML = "";
   let giftMessageHTML = "";
@@ -503,6 +503,7 @@ export const getSendAsGift = async (shop, productId='') => {
       ],
     },
   });
+  
   const giftCustomization = await db.giftCustomization.findFirst({
     where: {
       shop: shop,
@@ -510,177 +511,195 @@ export const getSendAsGift = async (shop, productId='') => {
   });
   const giftSetting = await db.giftSetting.findFirst({
     where: {
-      shop: shop, 
+      shop: shop,
     },
   });
-  
   const giftWrapDetails = gifts
   .filter(gift => gift.enableGiftWrap)
-  .map(gift => ({
-    giftWrapTitle: gift.giftWrapTitle,
-    giftWrapDescription: gift.giftWrapDescription,
-    giftWrapImage: process.env.SHOPIFY_APP_URL+gift.giftWrapImage,
-    wrapProductId: (gift.wrapProductId).match(/(\d+)$/)[0],
-  }));
-  const giftMessageDetails = gifts
-  .filter(gift => gift.enableGiftMessage)
-  .map(gift => ({
-    giftMessageTitle: gift.giftMessageTitle,
-    giftMessageDescription: gift.giftMessageDescription,
-    giftMessageImage: "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-    messageProductId: (gift.messageProductId).match(/(\d+)$/)[0],
-  }));
+  .map(gift => {
+    const wrapProductId = gift.wrapProductId;
+
+    // Ensure that wrapProductId is a valid string and not null or undefined
+    const wrapProductIdMatch = wrapProductId && typeof wrapProductId === 'string' ? wrapProductId.match(/(\d+)$/) : null;
+
+    return {
+      giftWrapTitle: gift.giftWrapTitle,
+      giftWrapDescription: gift.giftWrapDescription,
+      giftWrapImage: process.env.SHOPIFY_APP_URL + gift.giftWrapImage,
+      giftWrapPrice: gift.giftWrapPrice,
+      wrapProductId: wrapProductIdMatch ? wrapProductIdMatch[0] : null,
+    };
+  });
   giftWrapDetails.forEach(option => {
     giftWrapHTML += `
-      <h3>${option.giftWrapTitle}</h3>
-      <p>${option.giftWrapDescription}</p>
-      <img src="${option.giftWrapImage}" alt="${option.giftWrapTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">
-      <button onclick="selectGiftWrap('${option.wrapProductId}')">Add to Cart</button>
+          <div class="accordion-content">
+            <div class="content-container">
+              <div class="title-price-container">
+                <div class="gift-title">${option.giftWrapTitle}</div>
+                <div class="gift-price">$${option.giftWrapPrice}</div>
+              </div>
+              <img class="gift-image" src="${option.giftWrapImage}" alt="Gift Wrap">
+            </div>
+          </div>
     `;
   });
-  giftMessageDetails.forEach(option => {
-    giftMessageHTML += `
-      <h3>${option.giftMessageTitle}</h3>
-      <p>${option.giftMessageDescription}</p>
-      <img src="${option.giftMessageImage}" alt="${option.giftMessageTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">
-      <button onclick="selectGiftWrap('${option.messageProductId}')">Add to Cart</button>
-    `;
-  });
-const gift = gifts[0];
-  if (gifts[0]) {
-    
-    let itemHtml = `<div id="giftWrap-${gift.wrapProductId}" class="gift-wrap-item busyBuddySendAsGift" style="border: 1px solid #ddd; padding: 15px; margin: 10px; background-color: #f9f9f9;">`;
-    if (gift.giftWrapImage) {
-      itemHtml += `<img src="${gift.giftWrapImage}" alt="${gift.giftWrapTitle}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
-    } else {
-      itemHtml += `<img src="https://via.placeholder.com/100" alt="No Image" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 10px;">`;
-    }
-    if(gift.enableGiftWrap)
-    {
-      itemHtml += `<h3>${gift.giftWrapTitle}</h3>`;
-      itemHtml += `<p>${gift.giftWrapDescription}</p>`;
-      itemHtml += `<p><strong>Price: $${gift.giftWrapPrice.toFixed(2)}</strong></p>`;
-    }
-    if(gift.enableGiftMessage)
-    {
-      itemHtml += `<h3>${gift.giftMessageTitle}</h3>`;
-      itemHtml += `<p>${gift.giftMessageDescription}</p>`;
-      itemHtml += `<p><strong><input type="text" id="giftMessageText"></strong></p>`;
-    }
-    if(gift.enableGiftRecipient)
-    {
-      itemHtml += `<h3>${gift.recipientEmailTitle}</h3>`;
-      itemHtml += `<p>${gift.recipientEmailDescription}</p>`;
-      itemHtml += `<p><strong><input type="text" id="giftRecipientEmail"></strong></p>`;
-    }
-    itemHtml += `</div>`;
 
-    const popupHtml = `
-      <div id="giftWrapPopup" class="gift-wrap-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; justify-content: center; align-items: center;">
-        <div class="popup-content" style="background: #fff; padding: 20px; max-width: 500px; width: 100%; border-radius: 8px;">
-          <button id="closePopupBtn" style="position: absolute; top: 10px; right: 10px; background: #fff; border: none; font-size: 20px; cursor: pointer;">&times;</button>
-          <h2>Gift Wrap Options</h2>
-          ${itemHtml}
-          <div>
-            <label>
-              <input type="checkbox" id="giftWrapCheckbox"> Add Gift Wrap
-            </label>
+
+  const popupHtml = `
+    <div id="giftWrapPopup" class="send-as-gift-preview">
+      <div class="send-as-gift-close-button" onclick="onClose()">X</div>
+      <!-- Gift Button Section -->
+      <div class="send-as-gift-preview-wrapper">
+        <div key="1">
+          <div class="accordion-header">
+            <div class="giftCardPreview_wrapper">
+              <div class="accordion-icon">$</div>
+              <div class="accordion-title">Gift Wrap</div>
+            </div>
+            <div class="accordion-arrow">&#x25BC;</div>
           </div>
-          <div>
-            <label for="giftMessageText">Gift Message:</label>
-            <textarea id="giftMessageText" rows="4" style="width: 100%;"></textarea>
+          ${giftWrapHTML}
+        </div>
+        <div key="2">
+          <div class="accordion-header">
+            <div class="giftCardPreview_wrapper">
+              <div class="accordion-icon">$</div>
+              <div class="accordion-title">Gift Receipt</div>
+            </div>
+            <div class="accordion-arrow">&#x25BC;</div>
           </div>
-          <div>
-            <label>
-              <input type="checkbox" id="giftRecipientCheckbox"> Add Gift Recipient Info
-            </label>
+          <div class="accordion-content">
+            <div class="content-container">
+              <div class="title-price-container">
+                <div class="gift-price gift-recepient-text">
+                  Send With Gift Receipt : No
+                </div>
+                <div class="gift-price gift-recepient-text">
+                  Send With No Invoice : "No"
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <label>
-              <input type="checkbox" id="giftEmailCheckbox"> Send Gift by Email
-            </label>
+        </div>
+        <div key="3">
+          <div class="accordion-header">
+            <div class="giftCardPreview_wrapper">
+              <div class="accordion-icon">$</div>
+              <div class="accordion-title">Gift Message</div>
+            </div>
+            <div class="accordion-arrow">&#x25BC;</div>
           </div>
-          <button id="addGiftWrapBtn">Add Gift Wrap</button>
+          <div class="accordion-content">
+            <div class="content-container">
+              <div class="title-price-container">
+                <div class="gift-title">Title</div>
+                <div class="gift-email">Email </div>
+                <div class="gift-price gift-recepient-text">
+                  Send Email Upon Checkout : NO
+                </div>
+                <div class="gift-price gift-recepient-text">
+                  Send When Item Is Shipped : Yes
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div key="4">
+          <div class="accordion-header">
+            <div class="giftCardPreview_wrapper">
+              <div class="accordion-icon">$</div>
+              <div class="accordion-title">Gift Options</div>
+            </div>
+            <div class="accordion-arrow">&#x25BC;</div>
+          </div>
+          <div class="accordion-content">
+            <div class="content-container">
+              <div class="title-price-container">
+                <div class="gift-title">Gift Option</div>
+                <div class="gift-price">Rice</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    `;
-    script += `
-      let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
-      let currentPageProductId = form.querySelector('input[name="id"]')?.value; 
-      if(("${gift.selectionType}" == "any" || ${gift.selectedProductList.includes()}) && form)
-      {
-        const buttonHtml = \`<div id="busyBuddySendAsGift" class="busyBuddyCountdownTimer busyBuddySendAsGift" style="cursor: pointer;">Add As Gift Options</div>\`;
-        form.insertAdjacentHTML('beforebegin', buttonHtml);
-        document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
-      }
+    </div>
+  `;
 
-      document.getElementById('busyBuddySendAsGift')?.addEventListener('click', function() {
-        document.getElementById('giftWrapPopup').style.display = 'flex';
-      });
+  script += `
+    let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
+    let currentPageProductId = form.querySelector('input[name="id"]')?.value;
+    if ("${gifts.some(gift => gift.selectionType === 'any' || gift.selectedProductList.includes(productId.toString()))}" && form) {
+      const buttonHtml = \`<div id="busyBuddySendAsGift" class="giftContent-wrapper" onclick="onGiftBtnClick()">
+        <input type="checkbox" id="giftCheckbox">
+        <label for="giftCheckbox"></label>
+        <img src="https://img.icons8.com/?size=100&id=338&format=png&color=000000" alt="Gift Icon" style="width: 24px; height: 24px;">
+        <span id="giftText">${giftCustomization?.btnText || 'Add as Gift'}</span>
+    </div>\`;
+      form.insertAdjacentHTML('beforebegin', buttonHtml);
+      document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
+    }
 
-      document.getElementById('closePopupBtn')?.addEventListener('click', function() {
-        document.getElementById('giftWrapPopup').style.display = 'none';
-      });
+    document.getElementById('busyBuddySendAsGift')?.addEventListener('click', function() {
+      document.getElementById('giftWrapPopup').style.display = 'flex';
+    });
 
-      function handleAddGift() {
-        const gift = ${JSON.stringify(gift)};
-        let giftWrapProduct = \`\${gift.gift_wrap.productId}\`;
-        let bodyData = { updates: { [giftWrapProduct]: 1 } };
+    document.getElementById('closePopupBtn')?.addEventListener('click', function() {
+      document.getElementById('giftWrapPopup').style.display = 'none';
+    });
 
-        const giftWrapSelected = document.querySelector('#giftWrapCheckbox').checked;
-        const giftMessage = document.querySelector('#giftMessageText').value;
-        const recipientSelected = document.querySelector('#giftRecipientCheckbox').checked;
-        const giftEmailSelected = document.querySelector('#giftEmailCheckbox').checked;
+    function handleAddGift() {
+      const gift = ${JSON.stringify(gifts)};
+      let giftWrapProduct = \`\${gift.gift_wrap.productId}\`;
+      let bodyData = { updates: { [giftWrapProduct]: 1 } };
 
-        const attributes = {};
-        let note;
+      const giftWrapSelected = document.querySelector('#giftWrapCheckbox')?.checked;
+      const giftMessage = document.querySelector('#giftMessageText')?.value;
+      const recipientSelected = document.querySelector('#giftRecipientCheckbox')?.checked;
+      const giftEmailSelected = document.querySelector('#giftEmailCheckbox')?.checked;
 
-        if (gift?.notes === true) {
-          note = \`Gift Message: \${giftMessage} Gift Recipient: \${recipientSelected} Gift Email: \${giftEmailSelected}\`;
-          bodyData.note = note;
-        } else {
-          if (giftMessage.trim() !== "") {
-            attributes["Gift Message"] = giftMessage;
-          }
-          if (recipientSelected) {
-            attributes["Gift Recipient"] = "Yes";
-          }
-          if (giftEmailSelected) {
-            attributes["Gift Email"] = "Yes";
-          }
-          if (Object.keys(attributes).length > 0) {
-            bodyData.attributes = attributes;
-          }
+      const attributes = {};
+      let note;
+
+      if (gift?.notes === true) {
+        note = \`Gift Message: \${giftMessage} Gift Recipient: \${recipientSelected} Gift Email: \${giftEmailSelected}\`;
+        bodyData.note = note;
+      } else {
+        if (giftMessage.trim() !== "") {
+          attributes["Gift Message"] = giftMessage;
         }
-
-        fetch('/cart/update.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bodyData),
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Cart updated successfully:", data);
-          document.getElementById('giftWrapPopup').style.display = 'none';
-        })
-        .catch(error => {
-          console.error('Error updating cart:', error);
-        });
+        if (recipientSelected) {
+          attributes["Gift Recipient"] = "Yes";
+        }
+        if (giftEmailSelected) {
+          attributes["Gift Email"] = "Yes";
+        }
+        if (Object.keys(attributes).length > 0) {
+          bodyData.attributes = attributes;
+        }
       }
-      document.getElementById('addGiftWrapBtn')?.addEventListener('click', handleAddGift);
-    `;
 
-    return {
-      script,
-    };
-  } else {
-    console.error('Gift not found');
-    return {
-      script: '',
-    };
-  }
+      fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Cart updated successfully:", data);
+        document.getElementById('giftWrapPopup').style.display = 'none';
+      })
+      .catch(error => {
+        console.error('Error updating cart:', error);
+      });
+    }
+    document.getElementById('addGiftWrapBtn')?.addEventListener('click', handleAddGift);
+  `;
+
+  return {
+    script,
+  };
 };
 
 
@@ -851,6 +870,7 @@ export const createProduct = async (admin, session, productData) => {
 
     const product = productCreateData?.data?.productCreate?.product;
     const productId = product?.id;
+    console.log(productId, 'product create')
 
     await attachImage(admin, productData.image, productData.altText, productId);
 
@@ -1050,8 +1070,8 @@ export const getGiftSetting = async (shop) => {
 export const productDelete = async (admin, productId) => {
   const response = await admin.graphql(
     `#graphql
-    mutation productDelete($id: ID!) {
-      productDelete(id: $id) {
+    mutation productDelete($input: ProductDeleteInput!) {
+      productDelete(input: $input) {
         deletedProductId
         userErrors {
           field
@@ -1061,7 +1081,9 @@ export const productDelete = async (admin, productId) => {
     }`,
     {
       variables: {
-        id: productId,
+        input: {
+          id: productId,
+        },
       },
     }
   );
@@ -1069,6 +1091,7 @@ export const productDelete = async (admin, productId) => {
   const data = await response.json();
   return data;
 };
+
 export const uploadImage = async(image)=>{
   const base64String = image;
   const matches = base64String.match(/^data:image\/([a-zA-Z]*);base64,([^\"]*)$/);

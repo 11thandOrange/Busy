@@ -51,6 +51,7 @@ export const loader = async ({ request }) => {
   const gifts = await db.gift.findMany({
     where: {
       shop: shop,
+      ...(parseInt(url.searchParams.get("id")) ? { id: { NOT: parseInt(url.searchParams.get("id")) } } : {}),
     },
   });
 

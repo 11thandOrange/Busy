@@ -212,7 +212,7 @@ model GiftCustomization {
   id                            Int           @id @default(autoincrement())
   displayGiftOptions            String       @default("both")
   giftBtnType                   String       @default("both")
-  btnText                       String?
+  btnText                       String      @default("Add As Gift")
   btnColor                      String?
   btnEmoji                      String?
   shop                          String        @unique

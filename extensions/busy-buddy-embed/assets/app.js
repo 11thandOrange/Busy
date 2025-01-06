@@ -1,4 +1,4 @@
-const baseUrl = 'https://basically-chicks-neighbors-compliant.trycloudflare.com';
+const baseUrl = 'https://assessing-door-earnings-maritime.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -48,6 +48,10 @@ function fetch_request(url, app)
             else
             {
               eval(data.script)
+              if(app==5)
+              {
+                initializeAccordion()
+              }
             }          
         })
         .catch(error => {
@@ -664,4 +668,29 @@ async function get_product_id() {
     console.error("Error fetching product data:", error);
     return null;
   }
+}
+
+function initializeAccordion()
+{
+  const accordionHeaders = document.querySelectorAll(".accordion-header");
+  accordionHeaders.forEach((header) => {
+      header.addEventListener("click", () => {
+          const content = header.nextElementSibling;
+          const arrow = header.querySelector(".accordion-arrow");
+          content.style.display = content.style.display === "block" ? "none" : "block";
+          if (arrow) {
+              arrow.innerHTML = content.style.display === "block" ? "&#x25B2;" : "&#x25BC;";
+          }
+      });
+  });
+}
+
+
+function onClose() {
+  alert("Close button clicked!");
+}
+
+function onGiftBtnClick() {
+  const giftText = document.getElementById("giftText");
+  giftText.innerText = giftText.innerText === "Add a Gift" ? "Gift Added" : "Add a Gift";
 }
