@@ -117,40 +117,7 @@ export const action = async ({ request }) => {
         wrapMainProductId = productId;
         wrapProductId = variantId;
       }
-      if (
-        JSON.parse(data.enableGiftMessage) &&
-        data.giftMessageTitle != "" &&
-        data.giftMessageDescription != ""
-      ) {
-        const { productId, variantId } = await createProduct(admin, session, {
-          title: data.giftMessageTitle,
-          description: data.giftMessageDescription,
-          price: 1,
-          image:
-            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-          altText: "Gift Message",
-          type: "gift",
-        });
-        messageMainProductId = productId;
-        messageProductId = variantId;
-      }
-      if (
-        JSON.parse(data.enableGiftRecipientEmail) &&
-        data.recipientEmailTitle != "" &&
-        data.recipientEmailDescription != ""
-      ) {
-        const { productId, variantId } = await createProduct(admin, session, {
-          title: data.recipientEmailTitle,
-          description: data.recipientEmailDescription,
-          price: 1,
-          image:
-            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-          altText: "Gift Receipt",
-          type: "gift",
-        });
-        receiptMainProductId = productId;
-        receiptProductId = variantId;
-      }
+      
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
@@ -199,14 +166,6 @@ export const action = async ({ request }) => {
       {
         await productDelete(admin, getGift.wrapMainProductId)
       }
-      if(getGift.messageMainProductId)
-      {
-        await productDelete(admin, getGift.messageMainProductId)
-      }
-      if(getGift.receiptMainProductId)
-      {
-        await productDelete(admin, getGift.receiptMainProductId)
-      }
       const imagePathUpdate = await uploadImage(data.giftWrapImage);
       if (
         JSON.parse(data.enableGiftWrap) &&
@@ -226,40 +185,6 @@ export const action = async ({ request }) => {
         const { productId, variantId } =await createProduct(admin, session, productData);
         wrapMainProductId = productId;
         wrapProductId = variantId;
-      }
-      if (
-        JSON.parse(data.enableGiftMessage) &&
-        data.giftMessageTitle != "" &&
-        data.giftMessageDescription != ""
-      ) {
-        const { productId, variantId } = await createProduct(admin, session, {
-          title: data.giftMessageTitle,
-          description: data.giftMessageDescription,
-          price: 1,
-          image:
-            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-          altText: "Gift Message",
-          type: "gift",
-        });
-        messageMainProductId = productId;
-        messageProductId = variantId;
-      }
-      if (
-        JSON.parse(data.enableGiftRecipientEmail) &&
-        data.recipientEmailTitle != "" &&
-        data.recipientEmailDescription != ""
-      ) {
-        const { productId, variantId } = await createProduct(admin, session, {
-          title: data.recipientEmailTitle,
-          description: data.recipientEmailDescription,
-          price: 1,
-          image:
-            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-          altText: "Gift Receipt",
-          type: "gift",
-        });
-        receiptMainProductId = productId;
-        receiptProductId = variantId;
       }
       await db.gift.update({
         where: {
