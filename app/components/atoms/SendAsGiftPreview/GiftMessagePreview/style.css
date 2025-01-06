@@ -1,0 +1,12 @@
+.bb_giftMessagePreview {
+    width: 100%;
+}
+.bb_giftMessagePreview .gift-price {
+    font-size: 13px !important;
+    opacity: 0.6;
+    margin-top: -6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+    margin-inline: -12px;
+    padding-inline: 12px;
+}

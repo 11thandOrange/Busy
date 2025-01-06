@@ -74,7 +74,7 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       content: (
         <GiftReceiptEmailPreveiw
           settingsState={settingsState}
-        ></GiftReceiptEmailPreveiw>
+        ></GiftReceiptEmailPreveiw> 
       ),
       enabled: settingsState.enableGiftRecipientEmail,
     },

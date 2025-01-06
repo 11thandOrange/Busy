@@ -189,6 +189,7 @@
 .value-left p {
     margin: 0px !important;
 }
+
 @media (max-width: 1162px) {
     .apps_list .list-item{
         width: 32%;
