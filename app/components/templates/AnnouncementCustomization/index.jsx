@@ -69,7 +69,7 @@ const AnnouncementCustomization = ({
     },
     {
       id: 1,
-      title: "Enable App",
+      title: "Activate App",
       data: {
         "Announcement Bar App":
           settingsState.enableApp == true ? "true" : "false",
@@ -77,7 +77,7 @@ const AnnouncementCustomization = ({
     },
     {
       id: 2,
-      title: "Enable App in Store",
+      title: "Complete BusyBuddy Install",
       data: {
         "Enable Later": settingsState.enableAppInShopifyLater
           ? "true"
