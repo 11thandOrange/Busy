@@ -115,17 +115,18 @@ const SendAsGiftCustomization = ({
 
       const selectedProductsList = selectedProductIds
         .map((id) => productsList.find((product) => product.id === id))
-        .filter(Boolean); // Filter out any unmatched products
-
-      setSettingsState({
-        ...initialData,
-        selectedProductList: selectedProductsList,
-      });
+        .filter(Boolean);
 
       prevSettingsState.current = {
+        ...settingsState,
         ...initialData,
         selectedProductsList: selectedProductsList,
       };
+      setSettingsState((prevState) => ({
+        ...prevState,
+        ...initialData,
+        selectedProductList: selectedProductsList,
+      }));
     }
   }, [initialData, productsList]);
 
@@ -165,7 +166,6 @@ const SendAsGiftCustomization = ({
   };
   const handleOnSave = () => {
     if (!settingsState.giftWrapImage) {
-      // If no image is provided, send `null` in the payload
       let payload = {
         ...settingsState,
         giftWrapImage: null,
