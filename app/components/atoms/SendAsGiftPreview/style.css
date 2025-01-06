@@ -78,6 +78,7 @@
 .send-as-gift-preview .accordion-content .content-container{
   display: flex;
   justify-content: space-between;
+  color: #000000;
 }
 .send-as-gift-preview .accordion-content .content-container img{
   width: 100%;

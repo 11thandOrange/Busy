@@ -16,8 +16,6 @@ const ReviewStep = ({
   error = false,
 }) => {
   const renderEditButton = (btn, index) => {
-
-
     return (
       <li key={btn.id} className="edit-button-item">
         <div className="review-btntitle">
@@ -26,15 +24,15 @@ const ReviewStep = ({
             className="edit-button-icon"
             onClick={() => setSelectedStep(index)}
             style={{ cursor: "pointer" }}
-            >
+          >
             <Icon source={EditIcon} tone="base" />
           </div>
         </div>
         <div className="review-options">
-            {btn.data &&
+          {btn.data &&
             Object.keys(btn.data).map((key) => {
               return (
-                <span>
+                <span key={key}>
                   {key}: {btn.data[key]}
                 </span>
               );
