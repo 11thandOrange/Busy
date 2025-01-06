@@ -1,4 +1,5 @@
 import React from "react";
+import CustomTextField from "../../CustomTextField";
 
 const GiftMessagePreview = ({ settingsState }) => {
   return (
@@ -6,6 +7,11 @@ const GiftMessagePreview = ({ settingsState }) => {
       <div className="title-price-container">
         <div className="gift-title">{settingsState.giftMessageTitle}</div>
         <div className="gift-price">{settingsState.giftMessageDescription}</div>
+        <CustomTextField
+          label={"Message"}
+          placeholder="Enter your message"
+          readOnly={true}
+        ></CustomTextField>
       </div>
     </div>
   );
