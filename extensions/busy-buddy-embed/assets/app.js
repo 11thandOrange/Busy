@@ -1,4 +1,4 @@
-const baseUrl = 'https://assessing-door-earnings-maritime.trycloudflare.com';
+const baseUrl = 'https://expected-repeated-cancelled-robbie.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -12,9 +12,13 @@ const elementIdMap = {
 };
 var apps = ['busyBuddyAnnouncementBar', 'busyBuddyInactiveTabMessage', 'busyBuddyCartNotice', 'busyBuddyCountdownTimer', 'busyBuddySendAsGift'];
 
-function fetch_request(url, app)
+async function fetch_request(url, app)
 {
-    fetch(url+'?appId='+app+'&shop='+shopDomain+'&timezone='+Intl.DateTimeFormat().resolvedOptions().timeZone, {
+  let queryString = `?appId=${app}&shop=${shopDomain}&timezone=${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+  if (app === 5) {
+    queryString += `&productId=${await getProductId()}`;
+  }
+    fetch(url + queryString, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +31,6 @@ function fetch_request(url, app)
           return response.json();
         })
         .then(data => {
-          console.log('data', data)
           if(app==4 && data.countdownTimer)
             {
               if(data?.discount_products)
@@ -311,7 +314,6 @@ function getCountdownTimer(countdownTimer)
     if (new Date(countdownTimer.general_setting.countDownStartAt).getTime() <= get_current_timestamp() && new Date(countdownTimer.general_setting.countDownEndsAt).getTime() >= get_current_timestamp()) 
     {
         const timeLeft = getTimeDifference(get_current_timestamp(), new Date(countdownTimer.general_setting.countDownEndsAt).getTime());
-        console.log(timeLeft)
         countdownTimerHtml += `
           <div style="margin-top:${countdownTimer.display_setting.marginTop}${countdownTimer.display_setting.marginTopUnit}; margin-bottom:${countdownTimer.display_setting.marginBottom}${countdownTimer.display_setting.marginBottomUnit};"
             class="busyBuddyCountdownTimer preview-card-container timer ${countdownTimer.display_setting.timerAlignment} ${
@@ -329,14 +331,12 @@ function getCountdownTimer(countdownTimer)
             countdownTimerHtml += getHexagonCountdownTimer(timeLeft, countdownTimer);
             break;
           case 'PROGRESS_CIRCLES':
-            console.log(countdownTimer, 'circle')
             countdownTimerHtml += getProgressCircleCountdownTimer(timeLeft, countdownTimer);
             break;
           case 'CARDS':
             countdownTimerHtml += getCardCountdownTimer(timeLeft, countdownTimer);
             break;
           case 'MODERNS':
-            console.log('teset done ')
             countdownTimerHtml += getModernCountdownTimer(timeLeft, countdownTimer);
             break;
           case 'PROGRESS_BAR':
@@ -670,27 +670,157 @@ async function get_product_id() {
   }
 }
 
-function initializeAccordion()
-{
+function initializeAccordion() {
   const accordionHeaders = document.querySelectorAll(".accordion-header");
   accordionHeaders.forEach((header) => {
       header.addEventListener("click", () => {
-          const content = header.nextElementSibling;
+        let sibling = header.nextElementSibling;
           const arrow = header.querySelector(".accordion-arrow");
-          content.style.display = content.style.display === "block" ? "none" : "block";
-          if (arrow) {
-              arrow.innerHTML = content.style.display === "block" ? "&#x25B2;" : "&#x25BC;";
-          }
+          while (sibling) {
+            if (sibling.classList.contains('accordion-content')) {
+                sibling.classList.toggle('active');
+            }
+            sibling = sibling.nextElementSibling;
+        }
+          arrow.classList.toggle("arrow-up");
+          arrow.classList.toggle("arrow-down");
       });
   });
 }
 
 
 function onClose() {
-  alert("Close button clicked!");
+  document.getElementById('giftWrapPopup').style.display = 'none'; 
 }
 
 function onGiftBtnClick() {
   const giftText = document.getElementById("giftText");
   giftText.innerText = giftText.innerText === "Add a Gift" ? "Gift Added" : "Add a Gift";
+}
+function handleSaveAndRemember() {
+  
+  // Select gift options and input values
+  const selectedGiftWrap = document.querySelector('input[name="giftWrap"]:checked');
+  const selectedGiftMessage = document.querySelector('input[name="giftMessage"]:checked');
+  const selectedGiftRecipientEmail = document.querySelector('input[name="giftReceipt"]:checked');
+  const selectedGiftOption = document.querySelector('input[name="giftOption"]:checked');
+  const giftMessageText = document.querySelector('input[name="giftMessageText"]');
+  const giftLogging = document.querySelector('input[name="giftLogging"]');
+  const refreshTheCart = document.querySelector('input[name="refreshTheCart"]');
+  const giftRecipientEmailText = document.querySelector('input[name="giftRecipientEmail"]');
+
+  const selectedGiftRecipientEmailCheckout = document.querySelector('input[name="giftRecipientEmailCheckout"]:checked');
+  const selectedGiftRecipientEmailShipped = document.querySelector('input[name="giftRecipientEmailShipped"]:checked');
+
+  const selectedSendWithGiftReceipt = document.querySelector('input[name="sendWithGiftReceipt"]:checked');
+  const selectedSendWithNoReceipt = document.querySelector('input[name="sendWithNoReceipt"]:checked');
+
+  // Retrieve values or null if not selected
+  const giftWrapData = selectedGiftWrap ? selectedGiftWrap.value : null;
+  const giftMessageData = selectedGiftMessage ? selectedGiftMessage.value : null;
+  const giftRecipientData = selectedGiftRecipientEmail ? selectedGiftRecipientEmail.value : null;
+
+  const giftMessageTextValue = giftMessageText ? giftMessageText.value : null;
+  const giftRecipientEmailValue = giftRecipientEmailText ? giftRecipientEmailText.value : null;
+  const giftRecipientEmailCheckoutValue = selectedGiftRecipientEmailCheckout ? selectedGiftRecipientEmailCheckout.value : null;
+  const giftRecipientEmailShippedValue = selectedGiftRecipientEmailShipped ? selectedGiftRecipientEmailShipped.value : null;
+
+  const giftSendWithGiftReceiptValue = selectedSendWithGiftReceipt ? selectedSendWithGiftReceipt.value : null;
+  const giftSendWithNoReceiptValue = selectedSendWithNoReceipt ? selectedSendWithNoReceipt.value : null;
+
+  let bodyData = { updates: {} };
+
+  // If all fields are filled, generate a note
+  if (giftLogging.value == 1) {
+    let note = '';
+    if (giftWrapData) {
+      bodyData.updates[giftWrapData] = 1;
+      note += `Gift Wrap: Yes\n`; 
+    }
+    if (giftMessageData) {
+      console.log('message')
+      bodyData.updates[giftMessageData] = 1;
+      note += `Gift Message: Yes\n`;
+    }
+    if (giftRecipientData) {
+      bodyData.updates[giftRecipientData] = 1;
+      note += `Gift Recipient Email: ${giftRecipientEmailValue}\n`;
+      note += `Send Email Upon Checkout: ${giftRecipientEmailCheckoutValue ? "YES" : "NO"}\n`;
+      note += `Send Email When Item is Shipped: ${giftRecipientEmailShippedValue ? "YES" : "NO"}\n`;
+    }
+    note += `Send With Gift Receipt: ${giftSendWithGiftReceiptValue ? "YES" : "NO"}\n`;
+    note += `Send With No Invoice or Receipt: ${giftSendWithNoReceiptValue ? "YES" : "NO"}\n`;
+
+    bodyData.note = note;
+  }  
+  else 
+  {
+    const attributes = {};
+
+    if (giftWrapData) {
+      bodyData.updates[giftWrapData] = 1;
+      attributes["Gift Wrap"] = "Yes";
+    }
+
+    if (giftMessageData) {
+      bodyData.updates[giftMessageData] = 1;
+      attributes["Gift Message"] = giftMessageTextValue;
+    }
+
+    if (giftRecipientData) {
+      bodyData.updates[giftRecipientData] = 1;
+      attributes["Gift Recipient Email"] = giftRecipientEmailValue;
+      attributes["Send Email Upon Checkout"] = giftRecipientEmailCheckoutValue ? "YES" : "NO";
+      attributes["Send Email When Item is Shipped"] = giftRecipientEmailShippedValue ? "YES" : "NO";
+    }
+
+    attributes["Send With Gift Receipt"] = giftSendWithGiftReceiptValue ? "YES" : "NO";
+    attributes["Send With No Invoice or Receipt"] = giftSendWithNoReceiptValue ? "YES" : "NO";
+
+    // Only add attributes if there are any
+    if (Object.keys(attributes).length > 0) {
+      bodyData.attributes = attributes;
+    }
+  }
+  // Make the request to update the cart
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyData),
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('giftWrapPopup').style.display = 'none';
+    if(refreshTheCart.value == 1 )
+    {
+      window.location.reload(true)
+    }
+  })
+  .catch(error => {
+    console.error('Error updating cart:', error);
+    if(refreshTheCart.value ==1 )
+    {
+      window.location.reload(true)
+    }
+  });
+}
+
+function getProductId() {
+  // Check if the current page is a product page
+  if (window.location.pathname.includes('/products/')) {
+    // On a product page, fetch the product data
+    return fetch('/products/' + window.location.pathname.split('/').pop() + '.js')
+      .then(response => response.json())
+      .then(product => {
+        return product.id;
+      })
+      .catch(error => {
+        console.error("Error fetching product data:", error);
+        return null;
+      });
+  } else {
+    return null;
+  }
 }

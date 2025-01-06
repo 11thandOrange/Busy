@@ -27,7 +27,12 @@ import {
 } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import ToastBar from "../../atoms/Toast";
-const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
+const SendAsGiftCustomization = ({
+  productsList = [],
+  productExists = [],
+  initialData,
+  giftCustomization,
+}) => {
   // Flags
 
   const [selectedStep, setSelectedStep] = useState(0);
@@ -54,6 +59,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       id: 1,
       title: "Enable Gift Wrap",
       data: {
+        Enabled: settingsState.enableGiftWrap ? "Yes" : "No",
         Title: settingsState.giftWrapTitle,
         Price: "$" + settingsState.giftWrapPrice,
         Description: settingsState.giftWrapDescription,
@@ -64,6 +70,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       id: 2,
       title: "Enable Gift Message",
       data: {
+        Enabled: settingsState.enableGiftMessage ? "Yes" : "No",
         Title: settingsState.giftMessageTitle,
         Description: settingsState.giftMessageDescription,
       },
@@ -72,6 +79,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       id: 3,
       title: "Enable Gift Receipt",
       data: {
+        Enabled: settingsState.enableGiftReceipt ? "Yes" : "No",
         "Send with Gift Receipt": settingsState.sendWithGiftReceipt
           ? "Yes"
           : "No",
@@ -82,6 +90,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       id: 4,
       title: "Enable Gift Recipient Email",
       data: {
+        Enabled: settingsState.enableGiftRecipientEmail ? "Yes" : "No",
         Title: settingsState.recipientEmailTitle,
         Description: settingsState.recipientEmailDescription,
 
@@ -100,11 +109,26 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
   });
   useEffect(() => {
     if (initialData) {
-      setSettingsState(initialData);
+      const selectedProductIds = initialData?.selectedProductList
+        ? initialData.selectedProductList.split(",")
+        : [];
 
-      prevSettingsState.current = initialData;
+      const selectedProductsList = selectedProductIds
+        .map((id) => productsList.find((product) => product.id === id))
+        .filter(Boolean); // Filter out any unmatched products
+
+      setSettingsState({
+        ...initialData,
+        selectedProductList: selectedProductsList,
+      });
+
+      prevSettingsState.current = {
+        ...initialData,
+        selectedProductsList: selectedProductsList,
+      };
     }
-  }, [initialData]);
+  }, [initialData, productsList]);
+
   useEffect(() => {
     if (!isLoading(fetcher.state) && fetcher.data) {
       if (fetcher.data.success) {
@@ -117,24 +141,28 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
       });
     }
   }, [fetcher]);
-  // const handleOnSave = () => {
-  //   let payload = {
-  //     ...settingsState,
-  //     giftWrapImage: settingsState.giftWrapImage,
-  //   };
 
-  //   fetcher.submit(
-  //     {
-  //       ...payload,
-  //       _action: "CREATE_GIFT",
-  //     },
-  //     {
-  //       method: "POST",
-  //       action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-  //     },
-  //   );
-  //   console.log("handleOnSave", settingsState);
-  // };
+  const handleSaveReq = (payload) => {
+    const payloadData = {
+      ...payload,
+      selectedProductList: payload.selectedProductList.map(
+        (product) => product.id,
+      ),
+    };
+
+    fetcher.submit(
+      {
+        ...payloadData,
+        ...(initialData
+          ? { id: initialData.id, _action: "UPDATE_GIFT" }
+          : { _action: "CREATE_GIFT" }),
+      },
+      {
+        method: "POST",
+        action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
+      },
+    );
+  };
   const handleOnSave = () => {
     if (!settingsState.giftWrapImage) {
       // If no image is provided, send `null` in the payload
@@ -143,44 +171,19 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
         giftWrapImage: null,
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
-      console.log("handleOnSave without image", payload);
       return;
     }
 
-    // Check if giftWrapImage is a URL (string)
     if (typeof settingsState.giftWrapImage === "string") {
       let payload = {
         ...settingsState,
         giftWrapImage: settingsState.giftWrapImage, // Send the URL directly
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE_GIFT" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
-      console.log("handleOnSave with URL", payload);
       return;
     }
 
@@ -196,18 +199,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
         giftWrapImage: base64data, // Send the Base64 string
       };
 
-      fetcher.submit(
-        {
-          ...payload,
-          ...(initialData
-            ? { id: initialData.id, _action: "UPDATE_GIFT" }
-            : { _action: "CREATE_GIFT" }),
-        },
-        {
-          method: "POST",
-          action: ROUTES.SEND_AS_GIFT_CUSTOMIZATION,
-        },
-      );
+      handleSaveReq(payload);
 
       console.log("handleOnSave with Base64 image", payload);
     };
@@ -229,6 +221,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
           settingsState={settingsState}
           setSettingsState={setSettingsState}
           setError={setError}
+          productExists={productExists}
         ></SelectedProductStep>
       ),
     },
@@ -335,9 +328,9 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
           prevState={prevSettingsState.current}
           handleSaveChanges={handleOnSave}
           handleDiscardChanges={() => {
-            if (Object.keys(prevSettingsState.current).length > 0) {
-              setSettingsState(prevSettingsState.current);
-            }
+            // if (Object.keys(prevSettingsState.current).length > 0) {
+            //   setSettingsState(prevSettingsState.current);
+            // }
             navigate("/apps/sendAsGift?appId=5", {
               state: { tabToOpen: ANNOUNCEMENT_BARS_TABS.ANNOUNCEMENT_BAR },
             });
@@ -351,15 +344,14 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {DISPLAY_GIFT_OPTIONS.BOTH === DISPLAY_GIFT_OPTIONS.BOTH ||
-          DISPLAY_GIFT_OPTIONS.BOTH ===
+          {giftCustomization.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          giftCustomization.displayGiftOptions ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
-                displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
-                giftBtnType: GIFT_BTN_TYPE.BOTH,
+                ...giftCustomization,
               }}
               appType={APP_TYPE.SEND_AS_A_GIFT}
               // colorTheme={colorTheme}
@@ -369,8 +361,7 @@ const SendAsGiftCustomization = ({ productsList = [], initialData }) => {
               setSettingsState={setSettingsState}
               settingsState={{
                 ...settingsState,
-                displayGiftOptions: DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY,
-                giftBtnType: GIFT_BTN_TYPE.BOTH,
+                ...giftCustomization,
               }}
             ></CartPreview>
           )}

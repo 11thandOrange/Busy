@@ -5,7 +5,7 @@ import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
 import db from "../../../../../db.server";
-import { createProduct, uploadImage } from "../../../../../utils/function";
+import { createProduct, productDelete, uploadImage } from "../../../../../utils/function";
 
 export const loader = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
@@ -50,10 +50,13 @@ export const loader = async ({ request }) => {
   const data = await response.json();
   const gifts = await db.gift.findMany({
     where: {
-      shop: shop,
-      ...(parseInt(url.searchParams.get("id")) ? { id: { NOT: parseInt(url.searchParams.get("id")) } } : {}),
+      shop: shop, // Filter by the shop
+      ...(parseInt(url.searchParams.get("id")) // Only apply the 'not' condition if 'id' is provided in the URL
+        ? { id: { not: parseInt(url.searchParams.get("id")) } }
+        : {}),
     },
   });
+  
 
   let allProducts = [];
   gifts.forEach((gift) => {
@@ -77,7 +80,7 @@ export const loader = async ({ request }) => {
       products: data.data.products.nodes,
       productExists: allProducts,
       sendAsGiftCustomization,
-      giftCustomization
+      giftCustomization,
     }),
   );
 };
@@ -86,16 +89,18 @@ export const action = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
   const shop = session.shop;
   const data = Object.fromEntries(await request.formData());
+  let wrapMainProductId = null;
   let wrapProductId = null;
   let messageProductId = null;
+  let messageMainProductId = null;
   let receiptProductId = null;
+  let receiptMainProductId = null;
   switch (data._action) {
     case "CREATE_GIFT":
       const imagePath = await uploadImage(data.giftWrapImage);
       if (
         JSON.parse(data.enableGiftWrap) &&
         data.giftWrapTitle != "" &&
-        data.giftWrapPrice != 0 &&
         data.giftWrapDescription != ""
       ) {
         const productData = {
@@ -108,14 +113,16 @@ export const action = async ({ request }) => {
             : "https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg",
           altText: data.giftWrapTitle,
         };
-        wrapProductId = await createProduct(admin, session, productData);
+        const { productId, variantId } =await createProduct(admin, session, productData);
+        wrapMainProductId = productId;
+        wrapProductId = variantId;
       }
       if (
         JSON.parse(data.enableGiftMessage) &&
         data.giftMessageTitle != "" &&
         data.giftMessageDescription != ""
       ) {
-        messageProductId = await createProduct(admin, session, {
+        const { productId, variantId } = await createProduct(admin, session, {
           title: data.giftMessageTitle,
           description: data.giftMessageDescription,
           price: 1,
@@ -124,13 +131,15 @@ export const action = async ({ request }) => {
           altText: "Gift Message",
           type: "gift",
         });
+        messageMainProductId = productId;
+        messageProductId = variantId;
       }
       if (
-        JSON.parse(data.sendWithGiftReceipt) &&
+        JSON.parse(data.enableGiftRecipientEmail) &&
         data.recipientEmailTitle != "" &&
         data.recipientEmailDescription != ""
       ) {
-        receiptProductId = await createProduct(admin, session, {
+        const { productId, variantId } = await createProduct(admin, session, {
           title: data.recipientEmailTitle,
           description: data.recipientEmailDescription,
           price: 1,
@@ -139,6 +148,8 @@ export const action = async ({ request }) => {
           altText: "Gift Receipt",
           type: "gift",
         });
+        receiptMainProductId = productId;
+        receiptProductId = variantId;
       }
       const newGift = await db.gift.create({
         data: {
@@ -170,13 +181,86 @@ export const action = async ({ request }) => {
           wrapProductId: wrapProductId,
           messageProductId: messageProductId,
           recipeientProductId: receiptProductId,
+          wrapMainProductId: wrapMainProductId,
+          messageMainProductId: messageMainProductId,
+          recipeientMainProductId: receiptMainProductId,
           shop: shop,
         },
       });
       return { success: true, gift: newGift };
 
     case "UPDATE_GIFT":
+      const getGift = await db.gift.findFirst({
+        where: {
+          id: parseInt(data.id),
+        },
+      });
+      if(getGift.wrapMainProductId)
+      {
+        await productDelete(admin, getGift.wrapMainProductId)
+      }
+      if(getGift.messageMainProductId)
+      {
+        await productDelete(admin, getGift.messageMainProductId)
+      }
+      if(getGift.receiptMainProductId)
+      {
+        await productDelete(admin, getGift.receiptMainProductId)
+      }
       const imagePathUpdate = await uploadImage(data.giftWrapImage);
+      if (
+        JSON.parse(data.enableGiftWrap) &&
+        data.giftWrapTitle != "" &&
+        data.giftWrapDescription != ""
+      ) {
+        const productData = {
+          title: data.giftWrapTitle,
+          description: data.giftWrapDescription,
+          price: data.giftWrapPrice,
+          type: "gift",
+          image: imagePathUpdate.success
+            ? process.env.SHOPIFY_APP_URL + imagePathUpdate.filePath
+            : "https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg",
+          altText: data.giftWrapTitle,
+        };
+        const { productId, variantId } =await createProduct(admin, session, productData);
+        wrapMainProductId = productId;
+        wrapProductId = variantId;
+      }
+      if (
+        JSON.parse(data.enableGiftMessage) &&
+        data.giftMessageTitle != "" &&
+        data.giftMessageDescription != ""
+      ) {
+        const { productId, variantId } = await createProduct(admin, session, {
+          title: data.giftMessageTitle,
+          description: data.giftMessageDescription,
+          price: 1,
+          image:
+            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+          altText: "Gift Message",
+          type: "gift",
+        });
+        messageMainProductId = productId;
+        messageProductId = variantId;
+      }
+      if (
+        JSON.parse(data.enableGiftRecipientEmail) &&
+        data.recipientEmailTitle != "" &&
+        data.recipientEmailDescription != ""
+      ) {
+        const { productId, variantId } = await createProduct(admin, session, {
+          title: data.recipientEmailTitle,
+          description: data.recipientEmailDescription,
+          price: 1,
+          image:
+            "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
+          altText: "Gift Receipt",
+          type: "gift",
+        });
+        receiptMainProductId = productId;
+        receiptProductId = variantId;
+      }
       await db.gift.update({
         where: {
           id: parseInt(data.id),
@@ -185,7 +269,9 @@ export const action = async ({ request }) => {
           selectionType: data.selectionType,
           selectedProductList: data.selectedProductList,
           enableGiftWrap: JSON.parse(data.enableGiftWrap),
-          giftWrapImage: imagePathUpdate.success ? imagePathUpdate.filePath : null,
+          giftWrapImage: imagePathUpdate.success
+            ? imagePathUpdate.filePath
+            : null,
           giftWrapTitle: data.giftWrapTitle,
           giftWrapPrice: parseFloat(data.giftWrapPrice),
           giftWrapDescription: data.giftWrapDescription,
@@ -198,13 +284,21 @@ export const action = async ({ request }) => {
           recipientEmailDescription: data.recipientEmailDescription,
           recipientEmail: data.recipientEmail,
           sendEmailUponCheckout: JSON.parse(data.sendEmailUponCheckout),
-          sendEmailWhenItemIsShipped: JSON.parse(data.sendEmailWhenItemIsShipped),
+          sendEmailWhenItemIsShipped: JSON.parse(
+            data.sendEmailWhenItemIsShipped,
+          ),
           giftWrapCustomizationText: data.giftWrapCustomizationText,
           giftWrapCustomizationColor: data.giftWrapCustomizationColor,
           giftWrapCustomizationEmoji: data.giftWrapCustomizationEmoji,
           giftMessageCustomizationText: data.giftMessageCustomizationText,
           giftMessageCustomizationColor: data.giftMessageCustomizationColor,
           giftMessageCustomizationEmoji: data.giftMessageCustomizationEmoji,
+          wrapProductId: wrapProductId,
+          messageProductId: messageProductId,
+          recipeientProductId: receiptProductId,
+          wrapMainProductId: wrapMainProductId,
+          messageMainProductId: messageMainProductId,
+          recipeientMainProductId: receiptMainProductId,
           shop: shop,
         },
       });
@@ -245,7 +339,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true};
+      return { success: true };
     case "CUSTOMIZATION_SETTING":
       await db.giftCustomization.upsert({
         where: { shop: shop },
@@ -266,7 +360,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true};
+      return { success: true };
     default:
       return { success: false, message: "Invalid action" };
   }
@@ -274,13 +368,14 @@ export const action = async ({ request }) => {
 
 const GiftCustomization = () => {
   const products = useLoaderData();
-  console.log(products, "pro");
-
+  
   return (
     <div>
       <SendAsGiftCustomization
         productsList={products.products}
+        productExists={products.productExists}
         initialData={products.sendAsGiftCustomization}
+        giftCustomization={products.giftCustomization}
       ></SendAsGiftCustomization>
     </div>
   );

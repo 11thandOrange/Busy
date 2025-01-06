@@ -1,0 +1,7 @@
+.title-price-container:has(.gift-recepient-text) {
+    width: 100%;
+}
+.gift-recepient-text {
+    font-size: 15px !important;
+    font-weight: 600;
+}

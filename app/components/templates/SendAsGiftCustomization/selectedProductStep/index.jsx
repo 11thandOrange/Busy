@@ -10,6 +10,7 @@ const SelectedProductStep = ({
   settingsState,
   setSettingsState,
   setError = () => {},
+  productExists=[]
 }) => {
   useEffect(() => {
     if (settingsState.selectedProductList) {
@@ -29,7 +30,9 @@ const SelectedProductStep = ({
   return (
     <div className="selectGiftProducts">
       <Card>
-        <Text  variant="headingMd"><div className="subTitleText">Select products </div></Text>
+        <Text variant="headingMd">
+          <div className="subTitleText">Select products </div>
+        </Text>
         <Text fontWeight="medium">
           The discount will only apply to the selected products.
         </Text>
@@ -74,11 +77,14 @@ const SelectedProductStep = ({
           PRODUCT_SELECTION_TYPE.SPECIFIC_PRODUCT && (
           <SearchBarWithBrowse
             productsList={productsList}
+            productExists={productExists}
             selectedProducts={settingsState.selectedProductList}
             setSelectedProducts={(products) => {
-              setSettingsState((prevState) =>
-                updateState("selectedProductList", products, prevState),
-              );
+              
+
+              setSettingsState((prevState) => {
+                return updateState("selectedProductList", products, prevState);
+              });
             }}
           ></SearchBarWithBrowse>
         )}

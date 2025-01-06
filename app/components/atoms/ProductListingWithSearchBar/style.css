@@ -1,8 +1,13 @@
 .product-list-container {
   max-height: 200px;
   overflow-y: auto;
+  
   /* scrollbar-width: none; */
   /* -ms-overflow-style: none; */
+}
+.disabled-product{
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .product-list-container::-webkit-scrollbar {

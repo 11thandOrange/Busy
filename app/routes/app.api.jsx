@@ -31,7 +31,9 @@ export const loader = async ({ request }) => {
   } 
   else if(appId == 5)
   {
-    response = await getSendAsGift(shop)
+    const productId = url.searchParams.get('productId');
+    console.log('productIdd', productId)
+    response = await getSendAsGift(shop, productId)
   }   
   return cors(request, json(response));  
 }

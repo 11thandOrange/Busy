@@ -23,6 +23,7 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
   useEffect(() => {
     const selectedProductsNew = selectedProducts?.slice(
       (currentPage - 1) * itemsPerPage,
@@ -39,27 +40,32 @@ const SelectedProduct = ({ selectedProducts, setSelectedProducts }) => {
             Selected Products
           </Text>
         )}
-        {products?.map((product) => (
-          <div key={product.id} className="selected-products-item">
-            <img
-              src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
-              alt={product.title}
-            />
-            <span className="product-title">{product.title}</span>
-            <div
-              onClick={() => {
-                const idToFilter = product.id;
-                const filteredProducts = selectedProducts.filter((product) => {
-                  return product.id !== idToFilter;
-                });
-                setCurrentPage(1);
-                setSelectedProducts(filteredProducts);
-              }}
-            >
-              <Icon source={DeleteIcon} tone="base" />
+        {products &&
+          products?.map((product) => (
+            <div key={product.id} className="selected-products-item">
+              <div className="imgTitleWrap">
+                <img
+                  src={product.media?.edges[0]?.node?.preview?.image?.url || ""}
+                  alt={product.title}
+                />
+                <span className="product-title">{product.title}</span>
+              </div>
+              <div
+                onClick={() => {
+                  const idToFilter = product.id;
+                  const filteredProducts = selectedProducts.filter(
+                    (product) => {
+                      return product.id !== idToFilter;
+                    },
+                  );
+                  setCurrentPage(1);
+                  setSelectedProducts(filteredProducts);
+                }}
+              >
+                <Icon source={DeleteIcon} tone="base" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         {selectedProducts.length > 0 && (
           <div className="selected-products-pagination">
             <Pagination
@@ -86,12 +92,21 @@ const SearchBarWithBrowse = ({
   productsList = [],
   selectedProducts = [],
   setSelectedProducts = () => {},
+  productExists = [],
 }) => {
   const [activePopup, setActivePopup] = useState(false);
   const toggleModal = () => {
     setActivePopup((prevState) => !prevState);
   };
 
+  const disableProduct = () => {
+    const productExistsSet = new Set(productExists);
+    const updatedProductsList = productsList.map((product) => ({
+      ...product,
+      disable: productExistsSet.has(product.id),
+    }));
+    return updatedProductsList;
+  };
   return (
     <div>
       {/* Search bar and browse button */}
@@ -109,7 +124,7 @@ const SearchBarWithBrowse = ({
       </div>
       {/* Product Listing Modal */}
       <ProductListingWithSearchBar
-        productsList={productsList}
+        productsList={disableProduct()}
         open={activePopup}
         onClose={toggleModal}
         primaryActionOnClick={(products) => {

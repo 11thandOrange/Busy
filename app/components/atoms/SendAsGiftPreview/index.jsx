@@ -8,6 +8,10 @@ import {
   CartUpIcon,
 } from "@shopify/polaris-icons";
 import { Icon } from "@shopify/polaris";
+import GiftWrapPreview from "./GiftWrapPreview";
+import GiftMessagePreview from "./GiftMessagePreview";
+import GiftReceiptPreveiw from "./GiftReceiptPreview";
+import GiftReceiptEmailPreveiw from "./GiftReceiptEmailPreview";
 
 const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
@@ -35,17 +39,10 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       icon: settingsState.giftWrapCustomizationEmoji,
       color: settingsState.giftWrapCustomizationColor,
       content: (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftWrapTitle}</div>
-            <div className="gift-price">${settingsState.giftWrapPrice}</div>
-          </div>
-          <img
-            className="gift-image"
-            src={imgURL || ""}
-            alt={settingsState.giftWrapTitle || "Gift Wrap"}
-          />
-        </div>
+        <GiftWrapPreview
+          settingsState={settingsState}
+          imgURL={imgURL}
+        ></GiftWrapPreview>
       ),
       enabled: settingsState.enableGiftWrap,
     },
@@ -55,16 +52,31 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
       icon: settingsState.giftMessageCustomizationEmoji,
       color: settingsState.giftMessageCustomizationColor,
       content: (
-        <div className="content-container">
-          <div className="title-price-container">
-            <div className="gift-title">{settingsState.giftMessageTitle}</div>
-            <div className="gift-price">
-              {settingsState.giftMessageDescription}
-            </div>
-          </div>
-        </div>
+        <GiftMessagePreview settingsState={settingsState}></GiftMessagePreview>
       ),
       enabled: settingsState.enableGiftMessage,
+    },
+    {
+      key: "giftReceipt",
+      title: settingsState.giftReceiptCustomizationText,
+      icon: settingsState.giftReceiptCustomizationEmoji,
+      color: settingsState.giftReceiptCustomizationColor,
+      content: (
+        <GiftReceiptPreveiw settingsState={settingsState}></GiftReceiptPreveiw>
+      ),
+      enabled: settingsState.enableGiftReceipt,
+    },
+    {
+      key: "giftReceiptEmail",
+      title: settingsState.giftReceiptEmailCustomizationText,
+      icon: settingsState.giftReceiptEmailCustomizationEmoji,
+      color: settingsState.giftReceiptEmailCustomizationColor,
+      content: (
+        <GiftReceiptEmailPreveiw
+          settingsState={settingsState}
+        ></GiftReceiptEmailPreveiw>
+      ),
+      enabled: settingsState.enableGiftRecipientEmail,
     },
   ];
 
@@ -78,34 +90,36 @@ const SendAsGiftPreview = ({ settingsState, onClose = () => {} }) => {
         <div className="send-as-gift-close-button" onClick={onClose}>
           <Icon source={XIcon} tone="base" />
         </div>
-        {visibleAccordions.map((accordion) => (
-          <div key={accordion.key}>
-            <div
-              className="accordion-header"
-              onClick={() => togglePanel(accordion.key)}
-            >
-              <div className="giftCardPreview_wrapper">
-                <div className="accordion-icon">{accordion.icon}</div>
-                <div
-                  className="accordion-title"
-                  style={{ color: accordion.color }}
-                >
-                  {accordion.title}
+        <div className="send-as-gift-preview-wrapper">
+          {visibleAccordions.map((accordion) => (
+            <div key={accordion.key}>
+              <div
+                className="accordion-header"
+                onClick={() => togglePanel(accordion.key)}
+              >
+                <div className="giftCardPreview_wrapper">
+                  <div className="accordion-icon">{accordion.icon}</div>
+                  <div
+                    className="accordion-title"
+                    style={{ color: accordion.color }}
+                  >
+                    {accordion.title}
+                  </div>
+                </div>
+                <div className="accordion-arrow">
+                  {openPanels.includes(accordion.key) ? (
+                    <Icon source={CaretUpIcon} tone="base" />
+                  ) : (
+                    <Icon source={CaretDownIcon} tone="base" />
+                  )}
                 </div>
               </div>
-              <div className="accordion-arrow">
-                {openPanels.includes(accordion.key) ? (
-                  <Icon source={CaretUpIcon} tone="base" />
-                ) : (
-                  <Icon source={CaretDownIcon} tone="base" />
-                )}
-              </div>
+              {openPanels.includes(accordion.key) && (
+                <div className="accordion-content">{accordion.content}</div>
+              )}
             </div>
-            {openPanels.includes(accordion.key) && (
-              <div className="accordion-content">{accordion.content}</div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

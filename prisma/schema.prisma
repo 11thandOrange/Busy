@@ -186,8 +186,10 @@ model Gift {
   enableGiftMessage         Boolean       @default(false)
   giftMessageTitle          String?       
   giftMessageDescription    String?       
+  enableGiftReceipt         Boolean       @default(false)
   sendWithGiftReceipt       Boolean       @default(false)
   sendWithNoInvoice         Boolean       @default(false)
+  enableGiftRecipientEmail    Boolean       @default(false)
   recipientEmailTitle       String?       
   recipientEmailDescription String?      
   recipientEmail            String?       
@@ -199,6 +201,9 @@ model Gift {
   giftMessageCustomizationText String?    
   giftMessageCustomizationColor String?  
   giftMessageCustomizationEmoji String?   
+  wrapMainProductId             String?
+  messageMainProductId          String?
+  recipeientMainProductId       String?   
   wrapProductId             String?
   messageProductId          String?
   recipeientProductId       String?
@@ -225,7 +230,7 @@ model GiftSetting {
   giftWrapTagName               String?  
   giftMessageTagName            String?
   giftReceiptTagName            String?
-  refreshTheCart                Boolean       @default(true)
+  refreshTheCart                String       @default("1")
   giftLogging                   String        @default("1")
   showDecimalPoints             Boolean       @default(false)
   shop                          String        @unique
