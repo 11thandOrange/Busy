@@ -38,3 +38,6 @@
     margin-bottom: 16px !important;
     display: block;
 }
+.Polaris-ShadowBevel  [aria-label*="Today"] span {
+    margin-bottom: 0 !important;
+}

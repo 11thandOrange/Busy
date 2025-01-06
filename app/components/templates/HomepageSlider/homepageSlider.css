@@ -242,15 +242,7 @@
   .Polaris-Popover__Content{
     height: 100% !important;
     max-height: 360px !important;   
-    .Polaris-Popover__Section{
-      .Polaris-Box{
-        padding: 12px;
-        p{
-          font-size: 13px;  
-          font-weight: 700; 
-        }
-      }
-    }
+    
     .Polaris-Scrollable{
       overflow: unset !important;
       margin-bottom: 10px;
@@ -272,6 +264,15 @@
                 }
               }
             }
+          }
+        }
+      }
+      .Polaris-Popover__Section{
+        .Polaris-Box{
+          padding: 12px;
+          p{
+            font-size: 13px;  
+            font-weight: 700; 
           }
         }
       }
