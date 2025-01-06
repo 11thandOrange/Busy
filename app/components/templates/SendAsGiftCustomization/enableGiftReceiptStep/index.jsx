@@ -9,7 +9,7 @@ const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
     <div className="selectGiftProduct">
       <Card>
         <Checkbox
-          label="Enable Gift Wrap"
+          label="Enable Gift Receipt"
           checked={settingsState.enableGiftReceipt}
           onChange={(value) => {
           

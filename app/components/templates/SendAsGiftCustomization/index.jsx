@@ -29,7 +29,7 @@ import SendAsGiftPreview from "../../atoms/SendAsGiftPreview";
 import ToastBar from "../../atoms/Toast";
 const SendAsGiftCustomization = ({
   productsList = [],
-  productExists=[],
+  productExists = [],
   initialData,
   giftCustomization,
 }) => {
@@ -59,6 +59,7 @@ const SendAsGiftCustomization = ({
       id: 1,
       title: "Enable Gift Wrap",
       data: {
+        Enabled: settingsState.enableGiftWrap ? "Yes" : "No",
         Title: settingsState.giftWrapTitle,
         Price: "$" + settingsState.giftWrapPrice,
         Description: settingsState.giftWrapDescription,
@@ -69,6 +70,7 @@ const SendAsGiftCustomization = ({
       id: 2,
       title: "Enable Gift Message",
       data: {
+        Enabled: settingsState.enableGiftMessage ? "Yes" : "No",
         Title: settingsState.giftMessageTitle,
         Description: settingsState.giftMessageDescription,
       },
@@ -77,6 +79,7 @@ const SendAsGiftCustomization = ({
       id: 3,
       title: "Enable Gift Receipt",
       data: {
+        Enabled: settingsState.enableGiftReceipt ? "Yes" : "No",
         "Send with Gift Receipt": settingsState.sendWithGiftReceipt
           ? "Yes"
           : "No",
@@ -87,6 +90,7 @@ const SendAsGiftCustomization = ({
       id: 4,
       title: "Enable Gift Recipient Email",
       data: {
+        Enabled: settingsState.enableGiftRecipientEmail ? "Yes" : "No",
         Title: settingsState.recipientEmailTitle,
         Description: settingsState.recipientEmailDescription,
 

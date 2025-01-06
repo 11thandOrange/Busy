@@ -10,7 +10,7 @@ const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
       <Layout></Layout>
       <Card>
         <Checkbox
-          label="Enable Gift Wrap"
+          label="Enable Gift Recipient Email"
           checked={settingsState.enableGiftRecipientEmail}
           onChange={(value) => {
             setSettingsState((prevState) =>
