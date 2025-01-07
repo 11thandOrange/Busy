@@ -286,6 +286,7 @@ const SendAsGiftCustomization = ({
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
           error={checkError(error)}
+          disable={isLoading(fetcher.state)}
         />
       ),
     },
@@ -321,6 +322,7 @@ const SendAsGiftCustomization = ({
         tabs={steps}
         selected={selectedStep}
         setSelected={setSelectedStep}
+        disable={isLoading(fetcher.state)}
       />
       <div className="customization-container">
         <ManageDataChange
