@@ -14,6 +14,7 @@ const ReviewStep = ({
   onSaveAndPublish = () => {},
   enableAppInStoreURL = "#",
   error = false,
+  disable = false,
 }) => {
   const renderEditButton = (btn, index) => {
     return (
@@ -22,7 +23,10 @@ const ReviewStep = ({
           <Text variant="headingMd">{btn.title}</Text>
           <div
             className="edit-button-icon"
-            onClick={() => setSelectedStep(index)}
+            onClick={() => {
+              if (disable) return;
+              setSelectedStep(index);
+            }}
             style={{ cursor: "pointer" }}
           >
             <Icon source={EditIcon} tone="base" />

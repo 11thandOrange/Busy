@@ -286,6 +286,7 @@ const SendAsGiftCustomization = ({
           setSelectedStep={setSelectedStep}
           editButtonsList={editButtonsList}
           error={checkError(error)}
+          disable={isLoading(fetcher.state)}
         />
       ),
     },
@@ -321,6 +322,7 @@ const SendAsGiftCustomization = ({
         tabs={steps}
         selected={selectedStep}
         setSelected={setSelectedStep}
+        disable={isLoading(fetcher.state)}
       />
       <div className="customization-container">
         <ManageDataChange
@@ -344,8 +346,8 @@ const SendAsGiftCustomization = ({
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {giftCustomization.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
-          giftCustomization.displayGiftOptions ===
+          {giftCustomization?.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          giftCustomization?.displayGiftOptions ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard
               setSettingsState={setSettingsState}

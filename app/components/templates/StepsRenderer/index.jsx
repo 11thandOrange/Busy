@@ -1,9 +1,17 @@
 import React, { useCallback } from "react";
-import "./style.css"; 
-const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
+import "./style.css";
+const StepsRenderer = ({
+  tabs = [],
+  selected = 0,
+  setSelected = () => {},
+  disable = false,
+}) => {
   const handleTabChange = useCallback(
-    (selectedTabIndex) => setSelected(selectedTabIndex),
-    [setSelected],
+    (selectedTabIndex) => {
+      if (disable) return;
+      return setSelected(selectedTabIndex);
+    },
+    [setSelected, disable],
   );
 
   return (
@@ -17,10 +25,10 @@ const StepsRenderer = ({ tabs = [], selected = 0, setSelected = () => {} }) => {
               onClick={() => handleTabChange(index)}
             >
               <div className="tab-content">
-                  <div className="tab-circle">
-                    {/* {selected === index ? index + 1 : "✔"} */}
-                    {index + 1}
-                  </div>
+                <div className="tab-circle">
+                  {/* {selected === index ? index + 1 : "✔"} */}
+                  {index + 1}
+                </div>
                 <div className="tab-details">
                   <div className="tab-title">{tab.title}</div>
                   <div className="tab-description">{tab.description}</div>

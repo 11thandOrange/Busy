@@ -198,6 +198,7 @@ const AnnouncementCustomization = ({
           enableAppInStoreURL={
             appActivationState && appActivationState.enableAppInStoreURL
           }
+          disable={isLoading(fetcher.state)}
         />
       ),
     },
@@ -258,6 +259,7 @@ const AnnouncementCustomization = ({
             selected={selectedStep}
             setSelected={setSelectedStep}
             error={error}
+            disable={isLoading(fetcher.state)}
           />
           <div className="customization-container">
             <ManageDataChange
