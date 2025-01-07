@@ -487,9 +487,6 @@ export const check_enable_button = async (shop) => {
 export const getSendAsGift = async (shop, productId = '') => {
   let script = "";
   let giftWrapHTML = "";
-  let giftMessageHTML = "";
-  let giftRecipientHTML = "";
-  let giftRecipientEmailHTML = "";
   const gifts = await db.gift.findMany({
     where: {
       shop: shop,
@@ -516,238 +513,204 @@ export const getSendAsGift = async (shop, productId = '') => {
       shop: shop,
     },
   });
-  const giftWrapDetails = gifts
-  .filter(gift => gift.enableGiftWrap)
-  .map(gift => {
-    const wrapProductId = gift.wrapProductId;
+  
+  
+  
+  gifts.forEach((option, index) => {
+    const wrapProductId = option.wrapProductId;
     const wrapProductIdMatch = wrapProductId && typeof wrapProductId === 'string' ? wrapProductId.match(/(\d+)$/) : null;
-
-    return {
-      giftWrapTitle: gift.giftWrapTitle,
-      giftWrapDescription: gift.giftWrapDescription,
-      giftWrapImage: process.env.SHOPIFY_APP_URL + gift.giftWrapImage,
-      giftWrapPrice: gift.giftWrapPrice,
-      wrapProductId: wrapProductIdMatch ? wrapProductIdMatch[0] : null,
-    };
-  });
-  const giftMessageDetails = gifts
-  .filter(gift => gift.enableGiftMessage)
-  .map(gift => {
-    const messageProductId = gift.messageProductId;
-    const messageProductIdMatch = messageProductId && typeof messageProductId === 'string' ? messageProductId.match(/(\d+)$/) : null;
-    return {
-      giftMessageTitle: gift.giftWrapTitle,
-      giftMessageDescription: gift.giftWrapDescription,
-      giftMessageImage: "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-      giftMessagePrice: 1,
-      messageProductId: messageProductIdMatch ? messageProductIdMatch[0] : null,
-    };
-  });
-  console.log('gifts', gifts)
-  const giftRecipientEmailDetails = gifts
-  .filter(gift => gift.enableGiftReceipt)
-  .map(gift => {
-    const recipeintProductId = gift.recipeientProductId;
-    const recipientProductIdMatch = recipeintProductId && typeof recipeintProductId === 'string' ? recipeintProductId.match(/(\d+)$/) : null;
-
-    return {
-      giftRecipientTitle: gift.recipientEmailTitle,
-      giftRecipientDescription: gift.recipientEmailDescription,
-      giftRecipientImage: "https://www.shutterstock.com/shutterstock/photos/1293062416/display_1500/stock-photo-love-letter-white-card-with-red-paper-envelope-mock-up-1293062416.jpg",
-      giftRecipientPrice: 1,
-      recipientProductId: recipientProductIdMatch ? recipientProductIdMatch[0] : null,
-    };
-  });
-  console.log(giftRecipientEmailDetails, 'email details')
-  const giftRecipientDetails = gifts
-  .filter(gift => gift.enableGiftReceipt)
-  .map(gift => {
-  
-    return {
-      id: gift.id
-    };
-  });
-  giftWrapDetails.forEach((option, index) => {
+    option.wrapProductId = wrapProductIdMatch ? wrapProductIdMatch[0] : null
+    option.giftWrapImage =  process.env.SHOPIFY_APP_URL + option.giftWrapImage,
     giftWrapHTML += `
-      <div class="accordion-content">
-        <div class="content-container">
-          <div class="title-price-container">
-            <div class="gift-title">${option.giftWrapTitle}</div>
-            <div class="gift-price">$${option.giftWrapPrice}</div>
-          </div>
-          <img class="gift-image" src="${option.giftWrapImage}" alt="Gift Wrap">
-          <input type="radio" name="giftWrap" value="${option.wrapProductId}" id="giftWrap${index}">
-        </div>
-      </div>
-    `;
+    <div class="accordion-main-wrapper">
+      <input type="radio" name="giftWrapData" value="${option.wrapProductId}" class="giftWrapRadio" id="giftWrapAccordions${index}">
+      <label for="giftWrapAccordions${index}">
+          <div class="parent-accordion">
+                <div class="parent-accordion-header">
+                    <div style="color:${option.giftWrapCustomizationColor}">${option.giftWrapCustomizationText}</div>
+                    <div class="parent-accordion-arrow">&#x25BC;</div>
+                </div>
+                <div class="parent-accordion-content">
+                    <div class="send-as-gift-preview-wrapper">
+                        <div key="1">
+                            <div class="accordion-header">
+                                <div class="giftCardPreview_wrapper">
+                                    <div class="accordion-icon">${option.giftWrapCustomizationEmoji}</div>
+                                    <div class="accordion-title">${option.giftWrapCustomizationText}</div>
+                                </div>
+                                <div class="accordion-arrow">&#x25BC;</div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="content-container">
+                                    <div class="title-price-container">
+                                        <div class="gift-title">${option.giftWrapTitle}</div>
+                                        <div class="gift-price">$${option.giftWrapPrice}</div>
+                                    </div>
+                                    <img class="gift-image" src="${option.giftWrapImage}" alt="Gift Wrap">
+                                </div>
+                            </div>
+                        </div>`;
+    if(option.enableGiftMessage)
+    {
+      giftWrapHTML += `<div key="4">
+                            <div class="accordion-header">
+                                <div class="giftCardPreview_wrapper" style="color:${option.giftMessageCustomizationColor}">
+                                    <div class="accordion-icon">${option.giftMessageCustomizationEmoji}</div>
+                                    <div class="accordion-title">${option.giftMessageCustomizationText}</div>
+                                </div>
+                                <div class="accordion-arrow">&#x25BC;</div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="content-container">
+                                    <div class="title-price-container bb_giftMessagePreview">
+                                    <div class="gift-title">${option.giftMessageTitle}</div>
+                                    <div class="gift-price">${option.giftMessageDescription}</div>
+                                    <label for="gift-message">Message</label>
+                                    <input type="text" id="giftMessage${option.wrapProductId}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+    }
+    if(option.enableGiftReceipt)
+    {
+      giftWrapHTML += `<div key="2">
+                            <div class="accordion-header">
+                                <div class="giftCardPreview_wrapper" style="color:${option.giftReceiptCustomizationColor}">
+                                    <div class="accordion-icon">${option.giftReceiptCustomizationEmoji}</div>
+                                    <div class="accordion-title">${option.giftReceiptCustomizationText}</div>
+                                </div>
+                                <div class="accordion-arrow">&#x25BC;</div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="content-container">
+                                    <div class="title-price-container">`;
+                                    if(option.sendWithGiftReceipt)
+                                    {
+                                      giftWrapHTML += `<label>
+                                            <input type="checkbox" id="sendWithGiftReceipt${option.wrapProductId}"> Send With Gift Receipt
+                                        </label>`
+                                    }
+                                    if(option.sendWithNoInvoice)
+                                    {
+                                      giftWrapHTML += `<label>
+                                            <input type="checkbox" id="sendWithNoInvoice${option.wrapProductId}"> Send With No Invoice
+                                        </label>`
+                                    }
+                                    giftWrapHTML += `
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+    }
+    if(option.enableGiftRecipientEmail)
+    {
+      giftWrapHTML +=        `
+                        <div key="3">
+                            <div class="accordion-header">
+                                <div class="giftCardPreview_wrapper" style="color:${option.giftReceiptEmailCustomizationColor}">
+                                    <div class="accordion-icon">${option.giftReceiptEmailCustomizationEmoji}</div>
+                                    <div class="accordion-title">${option.giftReceiptEmailCustomizationText}</div>
+                                </div>
+                                <div class="accordion-arrow">&#x25BC;</div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="content-container">
+                                    <div class="title-price-container bb_container_wrapper">
+                                    <div class="gift-title">${option.recipientEmailTitle}</div>
+                                    <label for="gift-email">Email</label>
+                                    <input type="text" id="giftEmail${option.wrapProductId}">`;
+                                    if(option.sendEmailUponCheckout)
+                                    {
+                                      giftWrapHTML += `<div class="gift-price gift-recepient-text">
+                                    
+                                        <input type="checkbox" id="sendWithGiftReceiptEmail${option.wrapProductId}">
+                                        <label for="sendWithGiftReceiptEmail">Send Email Upon Checkout</label>
+                                    </div>`
+                                    }
+                                    if(option.sendEmailWhenItemIsShipped)
+                                    {
+                                      giftWrapHTML += `<div class="gift-price gift-recepient-text">
+                                        <input type="checkbox" id="sendWithNoInvoiceEmail${option.wrapProductId}">
+                                        <label for="sendWithNoInvoiceEmail">Send Email Without Invoice</label>
+                                    </div>`
+                                    }
+                                    giftWrapHTML += `
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+    }
+    giftWrapHTML += `
+                    </div>
+                </div>
+               
+            </div>
+            </label>
+            </div>
+             `;    
   });
   
-  
-  giftMessageDetails.forEach((option, index) => {
-    giftMessageHTML += `
-      <div class="accordion-content">
-        <div class="content-container">
-          <div class="title-price-container">
-            <div class="gift-title">${option.giftMessageTitle}</div>
-            <div class="gift-price">$${option.giftMessagePrice}</div>
-          </div>
-          <img class="gift-image" src="${option.giftMessageImage}" alt="Gift Wrap">
-          <input type="radio" name="giftMessage" value="${option.messageProductId}" id="giftMessage${index}">
-        </div>
-      </div>
-      <div class="gift-recipient-wrapper">
-        <div class="title-price-container bb_container_wrapper">                          
-          <label for="gift-email">Message</label>
-          <input type="text" id="giftMessageText" placeholder="Enter your message" name="giftMessageText">
-        </div>
-      </div>
-    `;
-  });
-  
-  giftRecipientEmailDetails.forEach((option, index) => {
-    giftRecipientEmailHTML += `<div class="accordion-content">
-            <div class="content-container">
-              <div class="title-price-container">
-                <div class="gift-title">${option.giftRecipientTitle}</div>
-                <div class="gift-price">$${option.giftRecipientPrice}</div>
-              </div>
-              <img class="gift-image" src="${option.giftRecipientImage}" alt="Gift Wrap">
-               <input type="radio" name="giftReceipt" value="${option.recipientProductId}" id="giftMessage${index}">
-            </div>
-          </div> 
-          <div class="gift-recipient-wrapper">
-            <div class="title-price-container bb_container_wrapper">                          
-                          <label for="gift-email">Email</label>
-                          <input type="text" id="gift-email" placeholder="Enter Your Email" name="giftRecipientEmail">
-                          <div class="gift-price gift-recepient-text">                          
-                            <input type="checkbox" id="sendWithGiftReceiptEmail" name="giftRecipientEmailCheckout">
-                            <label for="sendWithGiftReceiptEmail">Send Email Upon Checkout </label>
-                          </div>
-                          <div class="gift-price gift-recepient-text">                           
-                            <input type="checkbox" id="sendWithNoInvoiceEmail" name="giftRecipientEmailShipped">
-                            <label for="sendWithNoInvoiceEmail">Send Email When Item is Shipped </label>
-                          </div>
-                        </div>
-          </div>`;
-  })
-  let giftRecipeintHTML = giftRecipientDetails.length > 0 ? `<div class="accordion-content">
-            <div class="content-container">
-              <div class="title-price-container">
-                <div class="giftReceipt_wrapper">
-                  <input type="checkbox" id="sendWithGiftReceipt" name="sendWithGiftReceipt"> <span>Send with gift receipt</span>
-                </div>
-                <div class="giftReceipt_wrapper">
-                  <input type="checkbox" id="sendWithNoReceipt" name="sendWithNoReceipt"><span>Send with NO Invoice or receipt</span>
-                </div>
-              </div>
-            </div>
-          </div>`:``;
-
 
           const popupHtml = `
           <div id="giftWrapPopup" class="send-as-gift-preview" style="display: none;z-index:1000;">
           <input type="hidden" name="giftLogging" id="giftLogging" value="${giftSetting.giftLogging}">
           <input type="hidden" name="refreshTheCart" id="refreshTheCart" value="${giftSetting.refreshTheCart}">
             <div class="send-as-gift-close-button" onclick="onClose()">X</div>
-            <!-- Gift Button Section -->
-            <div class="send-as-gift-preview-wrapper">
-              <div key="1">
-                <div class="accordion-header">
-                  <div class="giftCardPreview_wrapper">
-                    <div class="accordion-icon">$</div>
-                    <div class="accordion-title">Gift Wrap</div>
-                  </div>
-                  <div class="accordion-arrow">&#x25BC;</div>
-                </div>
-                ${giftWrapHTML}
-              </div>
-              <div key="2">
-                <div class="accordion-header">
-                  <div class="giftCardPreview_wrapper">
-                    <div class="accordion-icon">$</div>
-                    <div class="accordion-title">Gift Receipt</div>
-                  </div>
-                  <div class="accordion-arrow">&#x25BC;</div>
-                </div>
-                ${giftRecipientEmailHTML}
-              </div>
-              <div key="3">
-                <div class="accordion-header">
-                  <div class="giftCardPreview_wrapper">
-                    <div class="accordion-icon">$</div>
-                    <div class="accordion-title">Gift Message</div>
-                  </div>
-                  <div class="accordion-arrow">&#x25BC;</div>
-                </div>
-                ${giftMessageHTML}
-              </div>
-              <div key="4">
-                <div class="accordion-header">
-                  <div class="giftCardPreview_wrapper">
-                    <div class="accordion-icon">$</div>
-                    <div class="accordion-title">Gift Options</div>
-                  </div>
-                  <div class="accordion-arrow">&#x25BC;</div>
-                </div>
-                ${giftRecipeintHTML}
-              </div>
-              
-              <!-- Save Button -->
+        <div class="parent-accordion-wrapper">
+            ${giftWrapHTML}
               <div id="saveGiftButton" class="save-gift-button" onclick="handleSaveAndRemember()">Save and Remember</div>
             </div>
           </div>
         `;
-      
-
 
         script += `
         const loggingOrder = ${giftSetting.giftLogging};
         let form = document.querySelector('.product-form') || document.querySelector('form[action="/cart/add"]');
         let checkoutForm = document.querySelector('.cart__footer-wrapper');
-        console.log(checkoutForm);
-    
-        // Ensure form exists before querying the product ID
         let currentPageProductId = form ? form.querySelector('input[name="id"]')?.value : null;
-    
-        // Ensure correct grouping of conditions for displaying gift options
         if (form && ("${giftCustomization.displayGiftOptions}" === 'both' || "${giftCustomization.displayGiftOptions}" === 'product_page_only')) {
             console.log('Product page - adding gift options');
             const buttonHtml = \`
-                <div id="busyBuddySendAsGift" class="giftContent-wrapper" onclick="onGiftBtnClick()">
-                    <input type="checkbox" id="giftCheckbox">
-                    <label for="giftCheckbox"></label>
-                    <img src="https://img.icons8.com/?size=100&id=338&format=png&color=000000" alt="Gift Icon" style="width: 24px; height: 24px;">
+                <div id="busyBuddySendAsGift" class="giftContent-wrapper busyBuddySendAsGiftPopup" onclick="popupOpen()">
+                    <img src="https://img.icons8.com/?size=100&id=338&format=png&color=${(giftCustomization?.btnColor).replace('#', '') || '000000'}" alt="Gift Icon" style="width: 24px; height: 24px;">
                     <span id="giftText">${giftCustomization?.btnText || 'Add as Gift'}</span>
                 </div>
             \`;
-            form.insertAdjacentHTML('beforebegin', buttonHtml);
+
+            if(("${giftCustomization.giftBtnType}" === 'both') || ("${giftCustomization.giftBtnType}" === 'inline'))
+            {
+              form.insertAdjacentHTML('beforebegin', buttonHtml);
+            } 
             document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
+            if(("${giftCustomization.giftBtnType}" === 'both') || ("${giftCustomization.giftBtnType}" === 'drawer'))
+            {
+              document.body.insertAdjacentHTML('beforeend', \`<div class="addGiftBtn busyBuddySendAsGiftPopup" onclick="popupOpen()"><button class="busyBuddySendAsGiftPopup" style="background-color: ${giftCustomization.btnColor};"><span class="Polaris-Icon Polaris-Icon--toneBase"><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M7.835 9.5h-.96c-.343 0-.625-.28-.625-.628 0-.344.28-.622.619-.622.242 0 .463.142.563.363l.403.887Z"></path><path d="M10.665 9.5h.96c.343 0 .625-.28.625-.628 0-.344-.28-.622-.619-.622-.242 0-.463.142-.563.363l-.403.887Z"></path><path fill-rule="evenodd" d="M8.5 4h-3.25c-1.519 0-2.75 1.231-2.75 2.75v2.25h1.25c.414 0 .75.336.75.75s-.336.75-.75.75h-1.25v2.75c0 1.519 1.231 2.75 2.75 2.75h3.441c-.119-.133-.191-.308-.191-.5v-2c0-.414.336-.75.75-.75s.75.336.75.75v2c0 .192-.072.367-.191.5h4.941c1.519 0 2.75-1.231 2.75-2.75v-2.75h-2.75c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h2.75v-2.25c0-1.519-1.231-2.75-2.75-2.75h-4.75v2.25c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-2.25Zm.297 3.992c-.343-.756-1.097-1.242-1.928-1.242-1.173 0-2.119.954-2.119 2.122 0 1.171.95 2.128 2.125 2.128h.858c-.595.51-1.256.924-1.84 1.008-.41.058-.694.438-.635.848.058.41.438.695.848.636 1.11-.158 2.128-.919 2.803-1.53.121-.11.235-.217.341-.322.106.105.22.213.34.322.676.611 1.693 1.372 2.804 1.53.41.059.79-.226.848-.636.059-.41-.226-.79-.636-.848-.583-.084-1.244-.498-1.839-1.008h.858c1.176 0 2.125-.957 2.125-2.128 0-1.168-.946-2.122-2.119-2.122-.83 0-1.585.486-1.928 1.242l-.453.996-.453-.996Z"></path></svg></span>Add a gift option</button></div>\`);
+            }
         }
     
         if (checkoutForm && ("${giftCustomization.displayGiftOptions}" === 'both' || "${giftCustomization.displayGiftOptions}" === 'cart_only')) {
-            console.log('Cart page - adding gift options');
             const buttonHtml = \`
-                <div id="busyBuddySendAsGift" class="giftContent-wrapper" onclick="onGiftBtnClick()">
-                    <input type="checkbox" id="giftCheckbox">
-                    <label for="giftCheckbox"></label>
+                <div id="busyBuddySendAsGift" class="giftContent-wrapper busyBuddySendAsGiftPopup" onclick="popupOpen()">
                     <img src="https://img.icons8.com/?size=100&id=338&format=png&color=000000" alt="Gift Icon" style="width: 24px; height: 24px;">
                     <span id="giftText">${giftCustomization?.btnText || 'Add as Gift'}</span>
                 </div>
             \`;
-            checkoutForm.insertAdjacentHTML('beforebegin', buttonHtml);
+            if(("${giftCustomization.giftBtnType}" === 'both') || ("${giftCustomization.giftBtnType}" === 'inline'))
+            {
+              checkoutForm.insertAdjacentHTML('beforebegin', buttonHtml);
+            }
             document.body.insertAdjacentHTML('beforeend', \`${popupHtml}\`);
+             if(("${giftCustomization.giftBtnType}" === 'both') || ("${giftCustomization.giftBtnType}" === 'drawer'))
+            {
+              document.body.insertAdjacentHTML('beforeend', \`<div class="addGiftBtn busyBuddySendAsGiftPopup" onclick="popupOpen()"><button class="busyBuddySendAsGiftPopup" style="background-color: ${giftCustomization.btnColor};"><span class="Polaris-Icon Polaris-Icon--toneBase"><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M7.835 9.5h-.96c-.343 0-.625-.28-.625-.628 0-.344.28-.622.619-.622.242 0 .463.142.563.363l.403.887Z"></path><path d="M10.665 9.5h.96c.343 0 .625-.28.625-.628 0-.344-.28-.622-.619-.622-.242 0-.463.142-.563.363l-.403.887Z"></path><path fill-rule="evenodd" d="M8.5 4h-3.25c-1.519 0-2.75 1.231-2.75 2.75v2.25h1.25c.414 0 .75.336.75.75s-.336.75-.75.75h-1.25v2.75c0 1.519 1.231 2.75 2.75 2.75h3.441c-.119-.133-.191-.308-.191-.5v-2c0-.414.336-.75.75-.75s.75.336.75.75v2c0 .192-.072.367-.191.5h4.941c1.519 0 2.75-1.231 2.75-2.75v-2.75h-2.75c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h2.75v-2.25c0-1.519-1.231-2.75-2.75-2.75h-4.75v2.25c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-2.25Zm.297 3.992c-.343-.756-1.097-1.242-1.928-1.242-1.173 0-2.119.954-2.119 2.122 0 1.171.95 2.128 2.125 2.128h.858c-.595.51-1.256.924-1.84 1.008-.41.058-.694.438-.635.848.058.41.438.695.848.636 1.11-.158 2.128-.919 2.803-1.53.121-.11.235-.217.341-.322.106.105.22.213.34.322.676.611 1.693 1.372 2.804 1.53.41.059.79-.226.848-.636.059-.41-.226-.79-.636-.848-.583-.084-1.244-.498-1.839-1.008h.858c1.176 0 2.125-.957 2.125-2.128 0-1.168-.946-2.122-2.119-2.122-.83 0-1.585.486-1.928 1.242l-.453.996-.453-.996Z"></path></svg></span>Add a gift option</button></div>\`);
+            }
         }
-    
-        document.getElementById('busyBuddySendAsGift')?.addEventListener('click', function() {
-            document.getElementById('giftWrapPopup').style.display = 'flex';
-        });
-    
+        
         document.getElementById('closePopupBtn')?.addEventListener('click', function() {
             document.getElementById('giftWrapPopup').style.display = 'none';
         });
     `;
-    
-
   return {
     script,
   };

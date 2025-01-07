@@ -201,6 +201,12 @@ model Gift {
   giftMessageCustomizationText String?    
   giftMessageCustomizationColor String?  
   giftMessageCustomizationEmoji String?   
+  giftReceiptCustomizationText String?    
+  giftReceiptCustomizationColor String?  
+  giftReceiptCustomizationEmoji String?   
+  giftReceiptEmailCustomizationText String?    
+  giftReceiptEmailCustomizationColor String?  
+  giftReceiptEmailCustomizationEmoji String?   
   wrapMainProductId             String?
   messageMainProductId          String?
   recipeientMainProductId       String?   

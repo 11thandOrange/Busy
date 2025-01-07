@@ -1,4 +1,4 @@
-const baseUrl = 'https://expected-repeated-cancelled-robbie.trycloudflare.com';
+const baseUrl = 'https://wireless-consecutive-redhead-current.trycloudflare.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
@@ -671,21 +671,30 @@ async function get_product_id() {
 }
 
 function initializeAccordion() {
-  const accordionHeaders = document.querySelectorAll(".accordion-header");
-  accordionHeaders.forEach((header) => {
-      header.addEventListener("click", () => {
-        let sibling = header.nextElementSibling;
-          const arrow = header.querySelector(".accordion-arrow");
-          while (sibling) {
-            if (sibling.classList.contains('accordion-content')) {
-                sibling.classList.toggle('active');
-            }
-            sibling = sibling.nextElementSibling;
-        }
-          arrow.classList.toggle("arrow-up");
-          arrow.classList.toggle("arrow-down");
-      });
-  });
+  const parentAccordionHeaders = document.querySelectorAll(".parent-accordion-header");
+   
+       parentAccordionHeaders.forEach((header) => {
+           const parentAccordionContent = header.nextElementSibling;
+           const parentAccordionArrow = header.querySelector(".parent-accordion-arrow");
+   
+           header.addEventListener("click", () => {
+               const isVisible = parentAccordionContent.style.display === "block";
+               parentAccordionContent.style.display = isVisible ? "none" : "block";
+               parentAccordionArrow.innerHTML = isVisible ? "&#x25BC;" : "&#x25B2;";
+           });
+       });
+   
+       // Toggle nested accordions
+       const accordionHeaders = document.querySelectorAll(".accordion-header");
+       accordionHeaders.forEach((header) => {
+           header.addEventListener("click", () => {
+               const content = header.nextElementSibling;
+               const arrow = header.querySelector(".accordion-arrow");
+               const isVisible = content.style.display === "block";
+               content.style.display = isVisible ? "none" : "block";
+               arrow.innerHTML = isVisible ? "&#x25BC;" : "&#x25B2;";
+           });
+       });
 }
 
 
@@ -698,37 +707,27 @@ function onGiftBtnClick() {
   giftText.innerText = giftText.innerText === "Add a Gift" ? "Gift Added" : "Add a Gift";
 }
 function handleSaveAndRemember() {
-  
-  // Select gift options and input values
-  const selectedGiftWrap = document.querySelector('input[name="giftWrap"]:checked');
-  const selectedGiftMessage = document.querySelector('input[name="giftMessage"]:checked');
-  const selectedGiftRecipientEmail = document.querySelector('input[name="giftReceipt"]:checked');
-  const selectedGiftOption = document.querySelector('input[name="giftOption"]:checked');
-  const giftMessageText = document.querySelector('input[name="giftMessageText"]');
-  const giftLogging = document.querySelector('input[name="giftLogging"]');
-  const refreshTheCart = document.querySelector('input[name="refreshTheCart"]');
-  const giftRecipientEmailText = document.querySelector('input[name="giftRecipientEmail"]');
+  const selectedGiftWrap = document.querySelector('input[name="giftWrapData"]:checked');
+  if(selectedGiftWrap.value)
+  {
+    const giftMessageText = document.querySelector(`input[id="giftMessage${selectedGiftWrap.value}"]`);
+    const giftSendWithGiftReceipt = document.querySelector(`input[id="sendWithGiftReceipt${selectedGiftWrap.value}"]:checked`);
+    const giftSendWithNoInvoice = document.querySelector(`input[id="sendWithNoInvoice${selectedGiftWrap.value}"]:checked`);
+    const giftEmail = document.querySelector(`input[id="giftEmail${selectedGiftWrap.value}"]`);
+    const giftSendWithGiftReceiptEmail = document.querySelector(`input[id="sendWithGiftReceiptEmail${selectedGiftWrap.value}"]:checked`);
+    const giftSendWithNoInvoiceEmail = document.querySelector(`input[id="sendWithNoInvoiceEmail${selectedGiftWrap.value}"]:checked`);
 
-  const selectedGiftRecipientEmailCheckout = document.querySelector('input[name="giftRecipientEmailCheckout"]:checked');
-  const selectedGiftRecipientEmailShipped = document.querySelector('input[name="giftRecipientEmailShipped"]:checked');
 
-  const selectedSendWithGiftReceipt = document.querySelector('input[name="sendWithGiftReceipt"]:checked');
-  const selectedSendWithNoReceipt = document.querySelector('input[name="sendWithNoReceipt"]:checked');
-
-  // Retrieve values or null if not selected
   const giftWrapData = selectedGiftWrap ? selectedGiftWrap.value : null;
-  const giftMessageData = selectedGiftMessage ? selectedGiftMessage.value : null;
-  const giftRecipientData = selectedGiftRecipientEmail ? selectedGiftRecipientEmail.value : null;
-
   const giftMessageTextValue = giftMessageText ? giftMessageText.value : null;
-  const giftRecipientEmailValue = giftRecipientEmailText ? giftRecipientEmailText.value : null;
-  const giftRecipientEmailCheckoutValue = selectedGiftRecipientEmailCheckout ? selectedGiftRecipientEmailCheckout.value : null;
-  const giftRecipientEmailShippedValue = selectedGiftRecipientEmailShipped ? selectedGiftRecipientEmailShipped.value : null;
+  const giftRecipientEmailValue = giftEmail ? giftEmail.value : null;
+  const giftRecipientEmailCheckoutValue = giftSendWithGiftReceipt ? giftSendWithGiftReceipt.value : null;
+  const giftRecipientEmailShippedValue = giftSendWithNoInvoice ? giftSendWithNoInvoice.value : null;
 
-  const giftSendWithGiftReceiptValue = selectedSendWithGiftReceipt ? selectedSendWithGiftReceipt.value : null;
-  const giftSendWithNoReceiptValue = selectedSendWithNoReceipt ? selectedSendWithNoReceipt.value : null;
+  const giftSendWithGiftReceiptValue = giftSendWithGiftReceiptEmail ? giftSendWithGiftReceiptEmail.value : null;
+  const giftSendWithNoReceiptValue = giftSendWithNoInvoiceEmail ? giftSendWithNoInvoiceEmail.value : null;
 
-  let bodyData = { updates: {} };
+    let bodyData = { updates: {} };
 
   // If all fields are filled, generate a note
   if (giftLogging.value == 1) {
@@ -737,20 +736,30 @@ function handleSaveAndRemember() {
       bodyData.updates[giftWrapData] = 1;
       note += `Gift Wrap: Yes\n`; 
     }
-    if (giftMessageData) {
-      console.log('message')
-      bodyData.updates[giftMessageData] = 1;
-      note += `Gift Message: Yes\n`;
+    if(giftMessageTextValue)
+    {
+      note += `Gift Message: ${giftMessageTextValue}\n`;
     }
-    if (giftRecipientData) {
-      bodyData.updates[giftRecipientData] = 1;
-      note += `Gift Recipient Email: ${giftRecipientEmailValue}\n`;
-      note += `Send Email Upon Checkout: ${giftRecipientEmailCheckoutValue ? "YES" : "NO"}\n`;
-      note += `Send Email When Item is Shipped: ${giftRecipientEmailShippedValue ? "YES" : "NO"}\n`;
+    if(giftRecipientEmailValue)
+    {
+      note += `Recipient Email: ${giftRecipientEmailValue}\n`;
     }
-    note += `Send With Gift Receipt: ${giftSendWithGiftReceiptValue ? "YES" : "NO"}\n`;
-    note += `Send With No Invoice or Receipt: ${giftSendWithNoReceiptValue ? "YES" : "NO"}\n`;
-
+    if(giftRecipientEmailCheckoutValue)
+    {
+      note += `Send Email Upon Checkout: ${giftRecipientEmailCheckoutValue ? "Yes" : "No"}\n`;
+    }
+    if(giftRecipientEmailShippedValue)
+    {
+      note += `Send Email When Item is Shipped: ${giftRecipientEmailShippedValue ? "Yes" : "No"}\n`;
+    }   
+    if(giftSendWithGiftReceiptValue)
+    {
+      note += `Send With Gift Receipt: ${giftSendWithGiftReceiptValue ? "Yes" : "No"}\n`;
+    }
+    if(giftSendWithNoReceiptValue)
+    {
+      note += `Send With No Invoice or Receipt: ${giftSendWithNoReceiptValue ? "Yes" : "No"}\n`;
+    }
     bodyData.note = note;
   }  
   else 
@@ -762,20 +771,29 @@ function handleSaveAndRemember() {
       attributes["Gift Wrap"] = "Yes";
     }
 
-    if (giftMessageData) {
-      bodyData.updates[giftMessageData] = 1;
+    if (giftMessageTextValue) {
       attributes["Gift Message"] = giftMessageTextValue;
     }
 
-    if (giftRecipientData) {
-      bodyData.updates[giftRecipientData] = 1;
+    if (giftRecipientEmailValue) {
       attributes["Gift Recipient Email"] = giftRecipientEmailValue;
-      attributes["Send Email Upon Checkout"] = giftRecipientEmailCheckoutValue ? "YES" : "NO";
-      attributes["Send Email When Item is Shipped"] = giftRecipientEmailShippedValue ? "YES" : "NO";
     }
-
-    attributes["Send With Gift Receipt"] = giftSendWithGiftReceiptValue ? "YES" : "NO";
-    attributes["Send With No Invoice or Receipt"] = giftSendWithNoReceiptValue ? "YES" : "NO";
+    if(giftRecipientEmailCheckoutValue)
+      {
+        attributes["Send Email Upon Checkout"] = giftRecipientEmailCheckoutValue ? "Yes" : "No";
+      }
+      if(giftRecipientEmailShippedValue)
+      {
+        attributes["Send Email When Item is Shipped"] = giftRecipientEmailShippedValue ? "Yes" : "No";
+      }   
+      if(giftSendWithGiftReceiptValue)
+      {
+        attributes["Send With Gift Receipt"] = giftSendWithGiftReceiptValue ? "Yes" : "No";
+      }
+      if(giftSendWithNoReceiptValue)
+      {
+        attributes["Send With No Invoice or Receipt"] = giftSendWithNoReceiptValue ? "Yes" : "No";
+      }
 
     // Only add attributes if there are any
     if (Object.keys(attributes).length > 0) {
@@ -799,12 +817,13 @@ function handleSaveAndRemember() {
     }
   })
   .catch(error => {
-    console.error('Error updating cart:', error);
     if(refreshTheCart.value ==1 )
     {
       window.location.reload(true)
     }
   });
+
+  }
 }
 
 function getProductId() {
@@ -823,4 +842,8 @@ function getProductId() {
   } else {
     return null;
   }
+}
+function popupOpen()
+{
+    document.getElementById('giftWrapPopup').style.display = 'flex';
 }
