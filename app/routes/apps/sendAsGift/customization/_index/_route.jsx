@@ -160,7 +160,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true, gift: newGift };
+      return { success: true, gift: newGift, message: "Gift Created" };
 
     case "UPDATE_GIFT":
       const getGift = await db.gift.findFirst({
@@ -240,7 +240,7 @@ export const action = async ({ request }) => {
         },
       });
 
-      return { success: true };
+      return { success: true, message: "Gift Updated" };
 
     case "DELETE_GIFT":
       await db.gift.deleteMany({
@@ -251,7 +251,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true };
+      return { success: true, message: "Gifts Deleted" };
     case "SETTING":
       await db.giftSetting.upsert({
         where: { shop: shop },
@@ -276,7 +276,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true };
+      return { success: true, message: "Setting Updated" };
     case "CUSTOMIZATION_SETTING":
       await db.giftCustomization.upsert({
         where: { shop: shop },
@@ -297,7 +297,7 @@ export const action = async ({ request }) => {
           shop: shop,
         },
       });
-      return { success: true };
+      return { success: true, message: "Customization Setting Updated" };
     default:
       return { success: false, message: "Invalid action" };
   }

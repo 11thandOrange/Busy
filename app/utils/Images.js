@@ -24,6 +24,7 @@ import AppInstall from "../assets/videos/preview/App_Install.gif";
 import announcement_bar from "../assets/images/Coming Soon Banner.gif";
 import cart_notice from "../assets/images/Cart Number.gif";
 import countdown_timer from "../assets/images/15 DAY LEFT.gif";
+import sendAsGift from "../assets/images/Send As Gift.avif";
 const IMAGES = {
   HeartIcon,
   FilledHeartIcon,
@@ -42,6 +43,7 @@ const IMAGES = {
   announcement_bar,
   cart_notice,
   countdown_timer,
+  sendAsGift,
   AnnouncementBarSlider,
   CartNoticeSlider,
   CountDownTimerSlider,

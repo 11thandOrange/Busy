@@ -65,7 +65,7 @@ const route = () => {
       type: "video",
       preview: IMAGES.InactiveTabPreview,
       content: IMAGES.InactiveTabSlider,
-      title: "Inactive Tab",
+      title: "Send As Gift",
     },
   ];
 
