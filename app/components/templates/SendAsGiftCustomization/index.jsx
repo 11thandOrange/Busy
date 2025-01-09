@@ -9,6 +9,7 @@ import EnableGiftMessageStep from "./enableGiftMessageStep";
 import {
   GIFT_CUSTOMIZATION_ERROR_STATE,
   GIFT_CUSTOMIZATION_STATE,
+  GIFT_STATUS,
   PRODUCT_SELECTION_TYPE,
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
@@ -49,6 +50,8 @@ const SendAsGiftCustomization = ({
       id: 0,
       title: "Select Products",
       data: {
+        Gift:
+          settingsState.status == GIFT_STATUS.ACTIVE ? "Active" : "Inactive",
         "Selected Products":
           settingsState.selectionType == PRODUCT_SELECTION_TYPE.ANY_PRODUCT
             ? "All Products"
@@ -346,7 +349,8 @@ const SendAsGiftCustomization = ({
           {steps[selectedStep].component}
         </div>
         <div className="customization-right-section">
-          {giftCustomization?.displayGiftOptions === DISPLAY_GIFT_OPTIONS.BOTH ||
+          {giftCustomization?.displayGiftOptions ===
+            DISPLAY_GIFT_OPTIONS.BOTH ||
           giftCustomization?.displayGiftOptions ===
             DISPLAY_GIFT_OPTIONS.PRODUCT_PAGE_ONLY ? (
             <ProductPreviewCard

@@ -2,6 +2,11 @@
     display: flex;
     justify-content: space-between;
 }
+.selectGiftProducts{
+    display: flex;
+    flex-direction: column;
+    gap:10px
+}
 .selectGiftProducts .checkGroup_wrapper label{
     width: 50%;
 }

@@ -35,6 +35,9 @@ const ProductPreviewCard = ({
     }
   };
   const fetchButtonStyle = () => {
+   
+
+   
     switch (settingsState.giftBtnType) {
       case GIFT_BTN_TYPE.INLINE:
         return (

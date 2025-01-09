@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { GIFT_BTN_TYPE } from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
+import {
+  DISPLAY_GIFT_OPTIONS,
+  GIFT_BTN_TYPE,
+} from "../InAppSettings/SendAsGiftSettings/CustomizationSettings";
 import { COLOR_THEME } from "../../../constants/announcementCustomizationConfig";
 import { Button, Checkbox, Icon } from "@shopify/polaris";
 import ImageRenderer from "../../atoms/ImageRenderer";

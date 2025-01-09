@@ -5,7 +5,12 @@ import { cors } from "remix-utils/cors";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "react-router-dom";
 import db from "../../../../../db.server";
-import { createProduct, productDelete, uploadImage } from "../../../../../utils/function";
+import {
+  createProduct,
+  productDelete,
+  uploadImage,
+} from "../../../../../utils/function";
+import { giftCustSettingsinitialState } from "../../../../../components/templates/InAppSettings/SendAsGiftSettings/CustomizationSettings";
 
 export const loader = async ({ request }) => {
   const { admin, session } = await authenticate.admin(request);
@@ -56,7 +61,6 @@ export const loader = async ({ request }) => {
         : {}),
     },
   });
-  
 
   let allProducts = [];
   gifts.forEach((gift) => {
@@ -113,11 +117,15 @@ export const action = async ({ request }) => {
             : "https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg",
           altText: data.giftWrapTitle,
         };
-        const { productId, variantId } =await createProduct(admin, session, productData);
+        const { productId, variantId } = await createProduct(
+          admin,
+          session,
+          productData,
+        );
         wrapMainProductId = productId;
         wrapProductId = variantId;
       }
-      
+
       const newGift = await db.gift.create({
         data: {
           selectionType: data.selectionType,
@@ -148,9 +156,12 @@ export const action = async ({ request }) => {
           giftReceiptCustomizationText: data.giftReceiptCustomizationText,
           giftReceiptCustomizationColor: data.giftReceiptCustomizationColor,
           giftReceiptCustomizationEmoji: data.giftReceiptCustomizationEmoji,
-          giftReceiptEmailCustomizationText: data.giftReceiptEmailCustomizationText,
-          giftReceiptEmailCustomizationColor: data.giftReceiptEmailCustomizationColor,
-          giftReceiptEmailCustomizationEmoji: data.giftReceiptEmailCustomizationEmoji,
+          giftReceiptEmailCustomizationText:
+            data.giftReceiptEmailCustomizationText,
+          giftReceiptEmailCustomizationColor:
+            data.giftReceiptEmailCustomizationColor,
+          giftReceiptEmailCustomizationEmoji:
+            data.giftReceiptEmailCustomizationEmoji,
           wrapProductId: wrapProductId,
           messageProductId: messageProductId,
           recipeientProductId: receiptProductId,
@@ -168,9 +179,8 @@ export const action = async ({ request }) => {
           id: parseInt(data.id),
         },
       });
-      if(getGift.wrapMainProductId)
-      {
-        await productDelete(admin, getGift.wrapMainProductId)
+      if (getGift.wrapMainProductId) {
+        await productDelete(admin, getGift.wrapMainProductId);
       }
       const imagePathUpdate = await uploadImage(data.giftWrapImage);
       if (
@@ -188,7 +198,11 @@ export const action = async ({ request }) => {
             : "https://www.shutterstock.com/shutterstock/photos/89764912/display_1500/stock-photo-collection-of-various-card-notes-with-ribbon-on-white-background-each-one-is-shot-separately-89764912.jpg",
           altText: data.giftWrapTitle,
         };
-        const { productId, variantId } =await createProduct(admin, session, productData);
+        const { productId, variantId } = await createProduct(
+          admin,
+          session,
+          productData,
+        );
         wrapMainProductId = productId;
         wrapProductId = variantId;
       }
@@ -227,9 +241,12 @@ export const action = async ({ request }) => {
           giftReceiptCustomizationText: data.giftReceiptCustomizationText,
           giftReceiptCustomizationColor: data.giftReceiptCustomizationColor,
           giftReceiptCustomizationEmoji: data.giftReceiptCustomizationEmoji,
-          giftReceiptEmailCustomizationText: data.giftReceiptEmailCustomizationText,
-          giftReceiptEmailCustomizationColor: data.giftReceiptEmailCustomizationColor,
-          giftReceiptEmailCustomizationEmoji: data.giftReceiptEmailCustomizationEmoji,
+          giftReceiptEmailCustomizationText:
+            data.giftReceiptEmailCustomizationText,
+          giftReceiptEmailCustomizationColor:
+            data.giftReceiptEmailCustomizationColor,
+          giftReceiptEmailCustomizationEmoji:
+            data.giftReceiptEmailCustomizationEmoji,
           wrapProductId: wrapProductId,
           messageProductId: messageProductId,
           recipeientProductId: receiptProductId,
@@ -305,7 +322,10 @@ export const action = async ({ request }) => {
 
 const GiftCustomization = () => {
   const products = useLoaderData();
-  
+
+  if (products.giftCustomization == undefined) {
+    products.giftCustomization = giftCustSettingsinitialState;
+  }
   return (
     <div>
       <SendAsGiftCustomization

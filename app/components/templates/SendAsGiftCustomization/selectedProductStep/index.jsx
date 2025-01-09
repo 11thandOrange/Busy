@@ -3,14 +3,22 @@ import "./style.css";
 import { Card, RadioButton, Text } from "@shopify/polaris";
 import ProductListingWithSearchBar from "../../../atoms/SearchBarWithBrowse";
 import SearchBarWithBrowse from "../../../atoms/SearchBarWithBrowse";
-import { PRODUCT_SELECTION_TYPE } from "../../../../constants/sendAsGiftCustomizationConfig";
+import {
+  GIFT_STATUS,
+  PRODUCT_SELECTION_TYPE,
+} from "../../../../constants/sendAsGiftCustomizationConfig";
 import { updateState } from "../../../../utils/clientFunctions";
+import Selector from "../../../atoms/Selector";
+export const options = [
+  { label: "Active", value: GIFT_STATUS.ACTIVE },
+  { label: "Inactive", value: GIFT_STATUS.INACTIVE },
+];
 const SelectedProductStep = ({
   productsList = [],
   settingsState,
   setSettingsState,
   setError = () => {},
-  productExists=[]
+  productExists = [],
 }) => {
   useEffect(() => {
     if (settingsState.selectedProductList) {
@@ -29,6 +37,19 @@ const SelectedProductStep = ({
   }, [settingsState.selectedProductList, settingsState.selectionType]);
   return (
     <div className="selectGiftProducts">
+      <Card>
+        <Selector
+          options={options}
+          label="Status"
+          helpText="Only one gift will be displayed at the time"
+          onSelect={(value) => {
+            setSettingsState((prevState) =>
+              updateState("status", value, prevState),
+            );
+          }}
+          initialValue={settingsState.status}
+        ></Selector>
+      </Card>
       <Card>
         <Text variant="headingMd">
           <div className="subTitleText">Select products </div>
@@ -80,8 +101,6 @@ const SelectedProductStep = ({
             productExists={productExists}
             selectedProducts={settingsState.selectedProductList}
             setSelectedProducts={(products) => {
-              
-
               setSettingsState((prevState) => {
                 return updateState("selectedProductList", products, prevState);
               });

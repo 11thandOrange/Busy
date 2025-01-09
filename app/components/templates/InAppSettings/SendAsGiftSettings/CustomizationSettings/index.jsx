@@ -23,6 +23,13 @@ export const GIFT_BTN_TYPE = {
   INLINE: "inline",
   DRAWER: "drawer",
 };
+export const giftCustSettingsinitialState = {
+  displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
+  giftBtnType: GIFT_BTN_TYPE.BOTH,
+  btnText: "Add a gift",
+  btnColor: "#000000",
+  btnEmoji: "🔥",
+};
 const CustomizationSettings = ({
   announcementBarType,
   colorTheme = COLOR_THEME.LIGHT,
@@ -64,15 +71,9 @@ const CustomizationSettings = ({
   //     setError((prevState) => updateState("endDateErr", false, prevState));
   //   }
   // }, [settingsState.settings.status]);
-  const initialState = {
-    displayGiftOptions: DISPLAY_GIFT_OPTIONS.BOTH,
-    giftBtnType: GIFT_BTN_TYPE.BOTH,
-    btnText: "Add a gift",
-    btnColor: "#000000",
-    btnEmoji: "🔥",
-  };
-  const [settingsState, setSettingsState] = useState(initialState);
-  const oldSettingRef = useRef(initialState);
+ 
+  const [settingsState, setSettingsState] = useState(giftCustSettingsinitialState);
+  const oldSettingRef = useRef(giftCustSettingsinitialState);
   useEffect(() => {
     if (initialData) {
       setSettingsState(initialData);
