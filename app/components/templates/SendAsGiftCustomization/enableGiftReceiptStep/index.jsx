@@ -3,21 +3,38 @@ import React from "react";
 import { updateState } from "../../../../utils/clientFunctions";
 import "./style.css";
 import GiftCustomization from "../GiftCustomization";
-
+import Selector from "../../../atoms/Selector";
+import { GIFT_TYPE_STATUS } from "../../../../constants/sendAsGiftCustomizationConfig";
+export const options = [
+  { label: "Enable Gift Receipt", value: GIFT_TYPE_STATUS.ENABLE },
+  { label: "Disable Gift Receipt", value: GIFT_TYPE_STATUS.DISABLE },
+];
 const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
   return (
     <div className="selectGiftProduct">
       <Card>
-        <Checkbox
-          label="Enable Gift Receipt"
-          checked={settingsState.enableGiftReceipt}
-          onChange={(value) => {
-          
+        <Selector
+          options={options}
+          label="Status"
+          helpText="Enable to add a gift Receipt to your product."
+          onSelect={(value) => {
             setSettingsState((prevState) =>
               updateState("enableGiftReceipt", value, prevState),
             );
           }}
-        ></Checkbox>
+          initialValue={settingsState.enableGiftReceipt}
+        ></Selector>
+      </Card>
+      <Card>
+        {/* <Checkbox
+          label="Enable Gift Receipt"
+          checked={settingsState.enableGiftReceipt}
+          onChange={(value) => {
+            setSettingsState((prevState) =>
+              updateState("enableGiftReceipt", value, prevState),
+            );
+          }}
+        ></Checkbox> */}
         <Checkbox
           label="Send with gift receipt"
           checked={settingsState.sendWithGiftReceipt}
@@ -37,7 +54,7 @@ const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
           }}
         ></Checkbox>
       </Card>
-      <Card>  
+      <Card>
         <GiftCustomization
           onColorChange={(color) => {
             setSettingsState((prevState) =>
@@ -59,7 +76,6 @@ const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
             );
           }}
           setSettingsState={setSettingsState}
-      
           settingsState={{
             customizationText: settingsState.giftReceiptCustomizationText,
             customizationColor: settingsState.giftReceiptCustomizationColor,

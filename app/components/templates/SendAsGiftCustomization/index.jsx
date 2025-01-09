@@ -10,6 +10,7 @@ import {
   GIFT_CUSTOMIZATION_ERROR_STATE,
   GIFT_CUSTOMIZATION_STATE,
   GIFT_STATUS,
+  GIFT_TYPE_STATUS,
   PRODUCT_SELECTION_TYPE,
 } from "../../../constants/sendAsGiftCustomizationConfig";
 import ManageDataChange from "../ManageDataChange";
@@ -62,7 +63,10 @@ const SendAsGiftCustomization = ({
       id: 1,
       title: "Enable Gift Wrap",
       data: {
-        Enabled: settingsState.enableGiftWrap ? "Yes" : "No",
+        Enabled:
+          settingsState.enableGiftWrap == GIFT_TYPE_STATUS.ENABLE
+            ? "Yes"
+            : "No",
         Title: settingsState.giftWrapTitle,
         Price: "$" + settingsState.giftWrapPrice,
         Description: settingsState.giftWrapDescription,
@@ -73,7 +77,10 @@ const SendAsGiftCustomization = ({
       id: 2,
       title: "Enable Gift Message",
       data: {
-        Enabled: settingsState.enableGiftMessage ? "Yes" : "No",
+        Enabled:
+          settingsState.enableGiftMessage == GIFT_TYPE_STATUS.ENABLE
+            ? "Yes"
+            : "No",
         Title: settingsState.giftMessageTitle,
         Description: settingsState.giftMessageDescription,
       },
@@ -82,7 +89,10 @@ const SendAsGiftCustomization = ({
       id: 3,
       title: "Enable Gift Receipt",
       data: {
-        Enabled: settingsState.enableGiftReceipt ? "Yes" : "No",
+        Enabled:
+          settingsState.enableGiftReceipt == GIFT_TYPE_STATUS.ENABLE
+            ? "Yes"
+            : "No",
         "Send with Gift Receipt": settingsState.sendWithGiftReceipt
           ? "Yes"
           : "No",
@@ -93,7 +103,10 @@ const SendAsGiftCustomization = ({
       id: 4,
       title: "Enable Gift Recipient Email",
       data: {
-        Enabled: settingsState.enableGiftRecipientEmail ? "Yes" : "No",
+        Enabled:
+          settingsState.enableGiftRecipientEmail == GIFT_TYPE_STATUS.ENABLE
+            ? "Yes"
+            : "No",
         Title: settingsState.recipientEmailTitle,
         Description: settingsState.recipientEmailDescription,
 

@@ -3,13 +3,30 @@ import React from "react";
 import CustomTextField from "../../../atoms/CustomTextField";
 import { updateState } from "../../../../utils/clientFunctions";
 import GiftCustomization from "../GiftCustomization";
-
+import Selector from "../../../atoms/Selector";
+import { GIFT_TYPE_STATUS } from "../../../../constants/sendAsGiftCustomizationConfig";
+export const options = [
+  { label: "Enable Gift Receipt Email", value: GIFT_TYPE_STATUS.ENABLE },
+  { label: "Disable Gift Receipt Email", value: GIFT_TYPE_STATUS.DISABLE },
+];
 const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
   return (
     <div className="selectGiftProduct">
-      <Layout></Layout>
       <Card>
-        <Checkbox
+        <Selector
+          options={options}
+          label="Status"
+          helpText="Enable to add a gift receipt email to your product."
+          onSelect={(value) => {
+            setSettingsState((prevState) =>
+              updateState("enableGiftRecipientEmail", value, prevState),
+            );
+          }}
+          initialValue={settingsState.enableGiftRecipientEmail}
+        ></Selector>
+      </Card>
+      <Card>
+        {/* <Checkbox
           label="Enable Gift Recipient Email"
           checked={settingsState.enableGiftRecipientEmail}
           onChange={(value) => {
@@ -17,7 +34,7 @@ const EnableGiftReceiptEmail = ({ settingsState, setSettingsState }) => {
               updateState("enableGiftRecipientEmail", value, prevState),
             );
           }}
-        ></Checkbox>
+        ></Checkbox> */}
         <CustomTextField
           type={"text"}
           label={"Title"}

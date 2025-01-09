@@ -5,34 +5,45 @@ import "./style.css";
 import DropZoneWithImageFileUpload from "../../../atoms/DropZoneWithImageFileUpload";
 import { updateState } from "../../../../utils/clientFunctions";
 import GiftCustomization from "../GiftCustomization";
+import Selector from "../../../atoms/Selector";
+import { GIFT_TYPE_STATUS } from "../../../../constants/sendAsGiftCustomizationConfig";
+
+export const options = [
+  { label: "Enable Gift Wrap", value: GIFT_TYPE_STATUS.ENABLE },
+  { label: "Disable Gift Wrap", value: GIFT_TYPE_STATUS.DISABLE },
+];
 const EnableGiftWrapStep = ({ settingsState, setSettingsState }) => {
   // const appendImageToState = (value) => {
   //   const formData = new FormData();
   //   formData.append("imageFile", value);
-  
 
   //   return formData;
   // };
   return (
     <div className="enable-gift-wrap-container">
       <Card>
-        <Checkbox
-          label="Enable Gift Wrap"
-          checked={settingsState.enableGiftWrap}
-          onChange={(value) => {
-            console.log("onchanging", value);
-
+        <Selector
+          options={options}
+          label="Status"
+          helpText="Enable to add a gift wrap to your product."
+          onSelect={(value) => {
             setSettingsState((prevState) =>
               updateState("enableGiftWrap", value, prevState),
             );
           }}
-        ></Checkbox>
+          initialValue={settingsState.enableGiftWrap}
+        ></Selector>
+      </Card>
+      <Card>
         <DropZoneWithImageFileUpload
           label="Gift Wrap Image (optional; supported image types: gif, jpg and png)"
           onImageUpload={(value) => {
-          
             setSettingsState((prevState) =>
-              updateState("giftWrapImage", value/*appendImageToState(value)*/, prevState),
+              updateState(
+                "giftWrapImage",
+                value /*appendImageToState(value)*/,
+                prevState,
+              ),
             );
           }}
           initalImage={settingsState.giftWrapImage}

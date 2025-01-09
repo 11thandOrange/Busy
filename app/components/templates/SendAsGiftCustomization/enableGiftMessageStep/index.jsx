@@ -4,22 +4,29 @@ import CustomTextField from "../../../atoms/CustomTextField";
 import "./style.css";
 import { updateState } from "../../../../utils/clientFunctions";
 import GiftCustomization from "../GiftCustomization";
+import Selector from "../../../atoms/Selector";
+import { GIFT_TYPE_STATUS } from "../../../../constants/sendAsGiftCustomizationConfig";
+export const options = [
+  { label: "Enable Gift Message", value: GIFT_TYPE_STATUS.ENABLE },
+  { label: "Disable Gift Message", value: GIFT_TYPE_STATUS.DISABLE },
+];
 const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
   return (
     <div className="enable-gift-message-container">
       <Card>
-      
-        <Checkbox
-          label="Enable Gift Message"
-          checked={settingsState.enableGiftMessage}
-          onChange={(value) => {
-            console.log("onchanging", value);
-
+        <Selector
+          options={options}
+          label="Status"
+          helpText="Enable to add a gift message to your product."
+          onSelect={(value) => {
             setSettingsState((prevState) =>
               updateState("enableGiftMessage", value, prevState),
             );
           }}
-        ></Checkbox>
+          initialValue={settingsState.enableGiftMessage}
+        ></Selector>
+      </Card>
+      <Card>
         <CustomTextField
           type={"text"}
           label={"Gift Message Title"}
@@ -42,10 +49,9 @@ const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
             );
           }}
         ></CustomTextField>
-        
       </Card>
       <Card>
-      <GiftCustomization
+        <GiftCustomization
           onColorChange={(color) => {
             setSettingsState((prevState) =>
               updateState("giftMessageCustomizationColor", color, prevState),

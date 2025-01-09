@@ -6,12 +6,17 @@ export const GIFT_STATUS = {
   ACTIVE: "1",
   INACTIVE: "0",
 };
+
+export const GIFT_TYPE_STATUS = {
+  ENABLE: "1",
+  DISABLE: "0",
+};
 export const GIFT_CUSTOMIZATION_STATE = {
   status: GIFT_STATUS.INACTIVE,
   selectionType: PRODUCT_SELECTION_TYPE.ANY_PRODUCT,
   selectedProductList: [],
 
-  enableGiftWrap: true,
+  enableGiftWrap: GIFT_TYPE_STATUS.DISABLE,
   giftWrapImage: null,
   giftWrapTitle: "Gift",
   giftWrapPrice: "0",
