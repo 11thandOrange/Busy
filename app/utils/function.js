@@ -544,7 +544,7 @@ export const getSendAsGift = async (shop, productId = '') => {
                                 <div class="content-container">
                                     <div class="title-price-container">
                                         <div class="gift-title">${option.giftWrapTitle}</div>
-                                        <div class="gift-price">$${option.giftWrapPrice}</div>
+                                        <div class="gift-price">$${giftSetting.showDecimalPoints?option.giftWrapPrice:option.giftWrapPrice.toFixed(0)}</div>
                                     </div>
                                     <img class="gift-image" src="${option.giftWrapImage}" alt="Gift Wrap">
                                 </div>
