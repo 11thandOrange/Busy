@@ -51,21 +51,21 @@ const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
         ></CustomTextField>
       </Card>
       <Card>
-        <GiftCustomization
+      <GiftCustomization
           onColorChange={(color) => {
             setSettingsState((prevState) =>
-              updateState("giftMessageCustomizationColor", color, prevState),
+              updateState("giftWrapCustomizationColor", color, prevState),
             );
           }}
           onTextChange={(text) => {
             setSettingsState((prevState) =>
-              updateState("giftMessageCustomizationText", text, prevState),
+              updateState("giftWrapCustomizationText", text, prevState),
             );
           }}
           onEmojiChange={(emojiData) => {
             setSettingsState((prevState) =>
               updateState(
-                "giftMessageCustomizationEmoji",
+                "giftWrapCustomizationEmoji",
                 emojiData.emoji,
                 prevState,
               ),
@@ -73,9 +73,9 @@ const EnableGiftMessageStep = ({ settingsState, setSettingsState }) => {
           }}
           setSettingsState={setSettingsState}
           settingsState={{
-            customizationText: settingsState.giftMessageCustomizationText,
-            customizationColor: settingsState.giftMessageCustomizationColor,
-            customizationEmoji: settingsState.giftMessageCustomizationEmoji,
+            customizationText: settingsState.giftWrapCustomizationText,
+            customizationColor: settingsState.giftWrapCustomizationColor,
+            customizationEmoji: settingsState.giftWrapCustomizationEmoji,
           }}
         ></GiftCustomization>
       </Card>

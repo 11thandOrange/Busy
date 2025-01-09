@@ -6,7 +6,7 @@ const GiftReceiptEmailPreveiw = ({ settingsState }) => {
   return (
     <div className="content-container">
       <div className="title-price-container bb_container_wrapper">
-        <div className="gift-title">{settingsState.recipientEmailTitle}</div>
+        {/* <div className="gift-title">{settingsState.recipientEmailTitle}</div> */}
         {/* <div className="gift-email">
           Email : {settingsState.recipientEmail}
         </div> */}

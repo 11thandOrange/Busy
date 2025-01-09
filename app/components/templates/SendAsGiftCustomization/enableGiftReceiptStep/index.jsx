@@ -55,21 +55,21 @@ const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
         ></Checkbox>
       </Card>
       <Card>
-        <GiftCustomization
+      <GiftCustomization
           onColorChange={(color) => {
             setSettingsState((prevState) =>
-              updateState("giftReceiptCustomizationColor", color, prevState),
+              updateState("giftWrapCustomizationColor", color, prevState),
             );
           }}
           onTextChange={(text) => {
             setSettingsState((prevState) =>
-              updateState("giftReceiptCustomizationText", text, prevState),
+              updateState("giftWrapCustomizationText", text, prevState),
             );
           }}
           onEmojiChange={(emojiData) => {
             setSettingsState((prevState) =>
               updateState(
-                "giftReceiptCustomizationEmoji",
+                "giftWrapCustomizationEmoji",
                 emojiData.emoji,
                 prevState,
               ),
@@ -77,9 +77,9 @@ const EnableGiftReceiptStep = ({ settingsState, setSettingsState }) => {
           }}
           setSettingsState={setSettingsState}
           settingsState={{
-            customizationText: settingsState.giftReceiptCustomizationText,
-            customizationColor: settingsState.giftReceiptCustomizationColor,
-            customizationEmoji: settingsState.giftReceiptCustomizationEmoji,
+            customizationText: settingsState.giftWrapCustomizationText,
+            customizationColor: settingsState.giftWrapCustomizationColor,
+            customizationEmoji: settingsState.giftWrapCustomizationEmoji,
           }}
         ></GiftCustomization>
       </Card>

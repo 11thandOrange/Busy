@@ -79,6 +79,7 @@
   display: flex;
   justify-content: space-between;
   color: #000000;
+  margin-bottom: 10px;
 }
 .send-as-gift-preview .accordion-content .content-container img{
   width: 100%;

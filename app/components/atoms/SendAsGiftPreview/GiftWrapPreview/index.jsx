@@ -1,10 +1,16 @@
+import { Checkbox } from "@shopify/polaris";
 import React from "react";
 
 const GiftWrapPreview = ({ settingsState, imgURL }) => {
   return (
     <div className="content-container">
       <div className="title-price-container">
-        <div className="gift-title">{settingsState.giftWrapTitle}</div>
+        <Checkbox
+          label={
+            <div className="gift-title">{settingsState.giftWrapTitle}</div>
+          }
+        ></Checkbox>
+
         <div className="gift-price">${settingsState.giftWrapPrice}</div>
       </div>
       <img

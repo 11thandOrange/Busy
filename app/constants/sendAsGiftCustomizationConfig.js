@@ -22,22 +22,22 @@ export const GIFT_CUSTOMIZATION_STATE = {
   giftWrapPrice: "0",
   giftWrapDescription: "Description",
 
-  enableGiftMessage: false,
+  enableGiftMessage: GIFT_TYPE_STATUS.DISABLE,
   giftMessageTitle: "Title",
   giftMessageDescription: "Description",
 
-  enableGiftReceipt: true,
-  sendWithGiftReceipt: false,
-  sendWithNoInvoice: false,
+  enableGiftReceipt: GIFT_TYPE_STATUS.DISABLE,
+  sendWithGiftReceipt: true,
+  sendWithNoInvoice: true,
 
-  enableGiftRecipientEmail: true,
+  enableGiftRecipientEmail: GIFT_TYPE_STATUS.ENABLE,
   recipientEmailTitle: "Title",
   recipientEmailDescription: "Description",
   recipientEmail: "",
   sendEmailUponCheckout: false,
   sendEmailWhenItemIsShipped: false,
 
-  giftWrapCustomizationText: "Gift 1",
+  giftWrapCustomizationText: "Gift Wrap ",
   giftWrapCustomizationColor: "#000000",
   giftWrapCustomizationEmoji: "🔥",
 
