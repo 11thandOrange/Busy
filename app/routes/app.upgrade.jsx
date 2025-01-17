@@ -1,5 +1,5 @@
 import {authenticate} from "../shopify.server";
-
+ 
 
 export const loader = async ({ request }) => {
   const { session, billing } = await authenticate.admin(request);
