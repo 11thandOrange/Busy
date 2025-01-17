@@ -109,3 +109,21 @@ fetch('/products/' + window.location.pathname.split('/').pop() + '.js')
     .catch(error => {
         console.error("Error fetching product data:", error);
     });
+
+
+
+
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ updates: { ["8456493269128"]: 1 } }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log("Cart updated successfully:", data);
+  })
+  .catch(error => {
+      console.error('Error updating cart:', error);
+  });

@@ -6,7 +6,7 @@ export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const queryParams = new URLSearchParams(url.search);
   const plan = queryParams.get('plan');
-  const returnUrl = `https://admin.shopify.com/store/${session.shop.replace('.myshopify.com', '')}/apps/busybuddy-53/app?status=true&message=Subscription Activated`;
+  const returnUrl = `https://admin.shopify.com/store/${session.shop.replace('.myshopify.com', '')}/apps/busybuddy-19/app?status=true&message=Subscription Activated`;
   await billing.require({
     plans: [plan],
     isTest: true,

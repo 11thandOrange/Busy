@@ -1,4 +1,4 @@
-const baseUrl = 'https://wireless-consecutive-redhead-current.trycloudflare.com';
+const baseUrl = 'https://busybuddy.projectlabs.in';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
