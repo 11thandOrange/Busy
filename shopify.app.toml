@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "5ece593ddde7baa448fd292657ed2b87"
+client_id = "3420c14f9c2a7ba0b6bbc3d1e0388be9"
 name = "BusyBuddy"
-handle = "busybuddy-59"
-application_url = "https://paperback-apt-prevention-day.trycloudflare.com"
+handle = "busybuddy-19"
+application_url = "https://busybuddy.projectlabs.in"
 embedded = true
 
 [build]
@@ -15,16 +15,20 @@ automatically_update_urls_on_dev = true
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_customers,read_discounts,write_discounts,read_shipping,read_products,write_products"
 
-
 [auth]
 redirect_urls = [
-  "https://paperback-apt-prevention-day.trycloudflare.com/auth/callback",
-  "https://paperback-apt-prevention-day.trycloudflare.com/auth/shopify/callback",
-  "https://paperback-apt-prevention-day.trycloudflare.com/api/auth/callback"
+  "https://busybuddy.projectlabs.in/auth/callback",
+  "https://busybuddy.projectlabs.in/auth/shopify/callback",
+  "https://busybuddy.projectlabs.in/api/auth/callback"
 ]
 
 [webhooks]
-api_version = "2025-01"
+api_version = "2024-10"
+
+[[webhooks.subscriptions]]
+topics = [ "app/uninstalled" ]
+uri = "/webhooks"
+compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
 
 [pos]
 embedded = false
