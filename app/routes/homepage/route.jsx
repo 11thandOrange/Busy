@@ -15,7 +15,7 @@ import AnnouncementSettings from "../../components/templates/InAppSettings/Annou
 const route = () => {
   const [selectedType, setSelectedType] = useState(ANNOUNCEMENT_BAR_TYPES.TEXT);
   const [selectedTab, setSelectedTab] = useState(0);
-  const tabs = [
+  const tabs = [ 
     {
       id: "Overview-1",
       content: "Overview",
