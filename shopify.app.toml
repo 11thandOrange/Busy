@@ -1,9 +1,9 @@
- # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "3420c14f9c2a7ba0b6bbc3d1e0388be9"
+client_id = "0c01584bc86b3e65af0afb488aec7964"
 name = "BusyBuddy"
-handle = "busybuddy"
-application_url = "https://busybuddy.projectlabs.in"
+handle = "busybuddy-61"
+application_url = "https://championship-bigger-write-knife.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,22 +13,17 @@ automatically_update_urls_on_dev = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_customers,read_discounts,write_discounts,read_shipping"
+scopes = "read_customers,read_discounts,read_orders,read_products,read_publications,read_script_tags,read_shipping,read_themes,write_discounts,write_products,write_publications,write_script_tags"
 
 [auth]
 redirect_urls = [
-  "https://busybuddy.projectlabs.in/auth/callback",
-  "https://busybuddy.projectlabs.in/auth/shopify/callback",
-  "https://busybuddy.projectlabs.in/api/auth/callback"
+  "https://championship-bigger-write-knife.trycloudflare.com/auth/callback",
+  "https://championship-bigger-write-knife.trycloudflare.com/auth/shopify/callback",
+  "https://championship-bigger-write-knife.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
-api_version = "2024-10"
-
-[[webhooks.subscriptions]]
-topics = [ "app/uninstalled" ]
-compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
-uri = "/webhooks"
+api_version = "2025-01"
 
 [pos]
 embedded = false
