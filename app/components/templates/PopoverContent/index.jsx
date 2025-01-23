@@ -1,6 +1,6 @@
 import { Button, Popover, ActionList } from "@shopify/polaris";
 import { useState, useCallback } from "react";
-import PopoverData from "../../atoms/popoverData";
+import PopoverData from "../../atoms/PopoverData";
 
 function PopoverContent({ options, heading, onSelect = () => {} }) {
   const [popoverActive, setPopoverActive] = useState(false);

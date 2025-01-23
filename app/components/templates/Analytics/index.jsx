@@ -6,7 +6,7 @@ import { Select } from "@shopify/polaris";
 import { useFetcher } from "@remix-run/react";
 import { formatDate } from "../../../utils/clientFunctions";
 import { TABS_ENUM } from "../../../utils/constants";
-import DateRangeButton from "../../atoms/DateRangePicker/Index";
+import DateRangeButton from "../../atoms/DateRangePicker/index";
 
 function getFormattedDates(startDate, endDate) {
   const formattedDates = [];

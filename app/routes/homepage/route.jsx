@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import HomepageSlider from "../../components/templates/HomepageSlider";
 
-import Homepage from "../../components/templates/homepage";
+import Homepage from "../../components/templates/Homepage";
 import CheckBars from "../../components/templates/CheckBars";
 import CountDownTimerCustomization from "../../components/templates/CountdownTimerCustomization";
 import AnnouncementCustomization from "../../components/templates/AnnouncementCustomization";

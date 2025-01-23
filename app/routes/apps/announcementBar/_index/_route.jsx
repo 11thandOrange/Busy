@@ -5,7 +5,7 @@ import {
   ANNOUNCEMENT_BARS_TABS,
 } from "../../../../constants/announcementCustomizationConfig";
 import CheckBars from "../../../../components/templates/CheckBars";
-import Homepage from "../../../../components/templates/homepage";
+import Homepage from "../../../../components/templates/Homepage";
 import {
   useFetcher,
   useLoaderData,

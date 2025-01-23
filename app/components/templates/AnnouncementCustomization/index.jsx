@@ -7,7 +7,7 @@ import CustomTextField from "../../atoms/CustomTextField";
 import ThemeStyleGrid from "../ThemeStyleGrid";
 import ProductPreviewCard from "../ProductPreviewCard";
 import ThemeSettings from "../ThemeSettings";
-import GeneralSettings from "../../atoms/GeneralSettings/announcementBars/Text";
+import GeneralSettings from "../../atoms/generalSettings/announcementBars/Text";
 import Toast from "../../atoms/Toast";
 import ManageDataChange from "../ManageDataChange";
 import StepsRenderer from "../StepsRenderer";

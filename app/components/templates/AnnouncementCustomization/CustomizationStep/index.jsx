@@ -9,7 +9,7 @@ import CustomTextField from "../../../atoms/CustomTextField";
 import { updateState } from "../../../../utils/clientFunctions";
 import ThemeStyleGrid from "../../ThemeStyleGrid";
 import ThemeSettings from "../../ThemeSettings";
-import GeneralSettings from "../../../atoms/GeneralSettings/announcementBars/Text";
+import GeneralSettings from "../../../atoms/generalSettings/announcementBars/Text";
 import FreeShippingSettings from "../../../atoms/generalSettings/announcementBars/FreeShipping";
 import OrderCounterSettings from "../../../atoms/generalSettings/announcementBars/OrderCounter";
 import CountdownTimerSettings from "../../../atoms/generalSettings/announcementBars/CountdownTimer";

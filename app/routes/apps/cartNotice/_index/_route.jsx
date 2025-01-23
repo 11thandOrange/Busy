@@ -2,7 +2,7 @@ import { useState } from "react";
 import HomepageSlider from "../../../../components/templates/HomepageSlider";
 import { json } from "@remix-run/node";
 // import { ANNOUNCEMENT_BAR_TYPES } from "../../../../constants/announcementCustomizationConfig";
-import Homepage from "../../../../components/templates/homepage";
+import Homepage from "../../../../components/templates/Homepage";
 import sliderData from "../../../../data/sliderData.json";
 import db from "../../../../db.server";
 // import InActiveTabSettings from "../../../../components/templates/InAppSettings/InActiveTabSettings";

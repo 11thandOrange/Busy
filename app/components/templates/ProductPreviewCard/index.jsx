@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Style.css";
+import "./style.css";
 import PreviewCardBanner from "../../atoms/PreviewCardBanner";
 import { APP_TYPE } from "../../../utils/constants";
 import PreviewCardTimer from "../../atoms/PreviewCardTimer";
