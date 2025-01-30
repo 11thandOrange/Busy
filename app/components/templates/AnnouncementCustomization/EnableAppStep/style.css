@@ -1,0 +1,29 @@
+.enable-app-step{
+    width: 100%; 
+}
+
+.enable-app-step .step-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 -15px 15px;
+    border-bottom: 1px solid #cccc;
+    padding: 0 0 10px 20px;
+}
+
+.enable-app-step .Polaris-Choice{
+    width: 50%;
+    margin: 0px 0px 0px 0px !important;
+}
+
+.enable-app-step .Polaris-Choice span{
+    margin: 0px !important;
+}
+
+.enable-app-step .Polaris-Text--bodyMd{
+    padding: 0 0 0 10px;
+}
+.enable-app-step .step-content{
+    video {
+        margin-top: 10px;
+    }
+}

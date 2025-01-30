@@ -1,0 +1,28 @@
+/* Cart notice */
+
+.cartNoticeContainer .Polaris-BlockStack {
+    display: flex;
+    flex-direction: row;
+}
+
+.cartNoticeContainer .Polaris-Box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cartNoticeContainer .Polaris-BlockStack .color-pallete-container {
+    width: 50%;
+}
+
+.cartNoticeContainer .color-input {
+    width: 220px;
+}
+
+.cartNoticeContainer .Polaris-Text--root.Polaris-Text--bodyMd {
+    margin-bottom: 0px !important;
+}
+
+.cartNoticeContainer .input-selector-container {
+    margin-top: 10px;
+}

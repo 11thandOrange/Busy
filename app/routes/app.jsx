@@ -5,6 +5,9 @@ import { AppProvider } from "@shopify/shopify-app-remix/react";
 import { NavMenu } from "@shopify/app-bridge-react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import { authenticate } from "../shopify.server";
+import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
+import en from "@shopify/polaris/locales/en.json";
+import { ROUTES } from "../utils/constants";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
@@ -18,17 +21,24 @@ export default function App() {
   const { apiKey } = useLoaderData();
 
   return (
-    <AppProvider isEmbeddedApp apiKey={apiKey}>
-      <NavMenu>
-        <Link to="/app" rel="home">
-          Home
-        </Link>
-        <Link to="/apps">Apps</Link>
-        <Link to="/widgets">Widgets</Link>
-        <Link to="/app/plan">Plan</Link>
-      </NavMenu>
-      <Outlet />
-    </AppProvider>
+    <>
+      <AppProvider isEmbeddedApp apiKey={apiKey}>
+        <PolarisAppProvider i18n={en}>
+          <NavMenu>
+            <a href={ROUTES.HOME} rel="home">
+              Home
+            </a>
+            <a href={ROUTES.APPS}>Apps</a>
+            <a href={ROUTES.WIDGETS}>Widgets</a>
+            <a href={ROUTES.SETTINGS}>Settings</a>
+            <a href={ROUTES.ANALYTICS}>Analytics</a>
+            <a href={ROUTES.PLAN}>Plan</a>
+            {/* <a href={ROUTES.COUNTDOWN_TIMER}>Timer</a> */}
+          </NavMenu>
+          <Outlet />
+        </PolarisAppProvider>
+      </AppProvider>
+    </>
   );
 }
 

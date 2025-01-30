@@ -1,0 +1,22 @@
+.Polaris-ShadowBevel:has(.pick-emojimain) {
+    overflow: visible !important;
+    min-width: unset !important;
+    z-index: 9;
+}
+.Polaris-ShadowBevel:has(.pick-emojimain) .Polaris-Box{
+    overflow: visible !important;
+}
+.selectGiftProduct .Polaris-Box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.selectGiftProduct{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.customization-left-section .Polaris-ShadowBevel .Polaris-Choice__Label .Polaris-Text--root{
+    margin-bottom: 0 !important;
+}
+

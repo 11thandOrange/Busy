@@ -1,0 +1,43 @@
+.preview-card-container{
+    padding-top: 10px;
+    width: 100%;
+    display: flex;
+    
+}
+.CENTER{
+    justify-content: center;
+}
+ .LEFT{
+    justify-content: start;
+}
+ .RIGHT{
+    justify-content: end;
+}
+
+.align-column{
+    flex-direction: column;
+}
+.align-row{
+    flex-direction: row;
+}
+.timer{
+    font-size: 16px;
+    .main-countdownt-title{
+        & ~ div{
+            padding-left: 6px;
+            font-weight: 600;
+        }
+    }
+}
+
+.Polaris-ShadowBevel .Polaris-Text--bodyMd{
+    margin-bottom: 5px !important;
+    display: block;
+}
+.Polaris-ShadowBevel .Polaris-Text--bold{
+    margin-bottom: 16px !important;
+    display: block;
+}
+.Polaris-ShadowBevel  [aria-label*="Today"] span {
+    margin-bottom: 0 !important;
+}

@@ -35,9 +35,12 @@ export const loader = async ({ request }) => {
     return {
       id: widget.id,
       name: widget.name,
-      description: widget.description,
+      description_title: widget.description_title,
+      description_content: widget.description_content,
+      slug: widget.slug,
       image: widget.image,
       categoryId: widget.categories.map(item => item.id),
+      type: widget.type,
       isFavorite,
     };
   });
@@ -46,20 +49,18 @@ export const loader = async ({ request }) => {
   return cors(request, response);
 };
 
-export const action = async ({ request }) => {
- 
+export const action = async ({ request }) => { 
   const shop = await getShopName(request);
-
- 
   const formData = new URLSearchParams(await request.text());
   const widgetId = parseInt(formData.get("widgetId"));
   return markWidgetAsFavorite(shop, widgetId);
 };
 
-function TabsInsideOfACardExample() {
+function TabsInsideOfACard() {
   const fetcher = useFetcher();
-  const widgets_data = useLoaderData()
-  const [widgets, setWidgets] = useState([]);
+  const widgets_data = useLoaderData();
+
+  const [widgets, setWidgets] = useState(null);
   const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
@@ -72,9 +73,9 @@ function TabsInsideOfACardExample() {
       };
       return item;
     })
-    console.log(updatedTabData, "updatedTabData")
     setTabs(updatedTabData)
-    setWidgets(widgets_data.widgets)
+    setWidgets(widgets_data.widgets);
+
   }, [widgets_data]);
 
   const handleAddToFavorite = (widgetId) => {
@@ -87,11 +88,11 @@ function TabsInsideOfACardExample() {
   }
 
   return (
-    <div>
+    <div className="widgets">
       <GoBack/>
       <AppListingTemplateWithPagination tabs={tabs} items={widgets} componentToRender={(props) => <WidgetRenderList {...props} handleAddToFavorite={handleAddToFavorite}/>}/>
     </div>
   );
 }
 
-export default TabsInsideOfACardExample;
+export default TabsInsideOfACard;

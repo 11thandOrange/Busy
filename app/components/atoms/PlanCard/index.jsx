@@ -1,43 +1,42 @@
 import React from "react";
 import "../../templates/Plan/style.css";
-import { Link } from "@shopify/polaris";
-import { useLoaderData } from "@remix-run/react";
-import { authenticate, STARTER_MONTHLY_PLAN, PRO_MONTHLY_PLAN, ENTERPRISE_MONTHLY_PLAN } from '../../../shopify.server';
-
+import { Link } from "@remix-run/react";
 
 const PlanCard = ({ plan }) => {
-  const subscription = useLoaderData();
   return (
     <div className="planboxes">
-      {subscription}
-      hi
-      <div className="plan-card" style={{ border: `10px solid ${plan.color}` }}>
+      <div className="plan-card" style={{ backgroundColor: `${plan.color}` }}>
         <div className="plan-content">
           <div className="upper-wrapper">
             <h2>{plan.title}</h2>
             <div>
-              <p className="description">{plan.description}</p>
               <p className="price">
-                ${plan.price} <span className="price-per-month">/Month</span>
+                <sup>$</sup>
+                {plan.price} <span className="price-per-month">/Month</span>
               </p>
+              <p className="description">{plan.description}</p>
             </div>
-            <Link url={plan.url + '?plan=' + encodeURIComponent(plan.title)}>
+            <Link className="Polaris-Link" to={plan.url}>
               {plan.buttonText}
             </Link>
-
-          </div>  
+          </div>
           <div className="card-footer">
             <div className="feature-content">
-              <p className="title">Feature</p>
+              <p className="title">Features</p>
               <div className="list-wrap">
                 <label># of Apps Enabled</label>
-                <span className="value">{plan.featureValue}</span>
+                <span className="value">{plan.features.appsEnabled}</span>
+              </div>
+              <div className="features">
+                {plan.features.otherFeatures.map((item) => (
+                  <p>{item}</p>
+                ))}
               </div>
             </div>
           </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
 };
 

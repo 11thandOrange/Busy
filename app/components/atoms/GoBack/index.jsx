@@ -1,21 +1,18 @@
-import React from 'react'
+import React from "react";
 import { useNavigate } from "@remix-run/react";
-import './style.css'
+import "./style.css";
 
-const GoBack = () => {
-    const navigate = useNavigate();
+const GoBack = ({ heading = "Back", backLink = -1 }) => {
+  const navigate = useNavigate();
 
-    const goBack = () => {
-        navigate(-1); // Go back one step in history
-    };
+  const goBack = () => {
+    navigate(backLink); // Go back one step in history
+  };
   return (
-    <button
-        className="back-button"
-        onClick={goBack}
-      >
-        ← Back
-      </button>
-  )
-}
+    <button className="back-button" onClick={goBack}>
+      <span>←</span> {heading}
+    </button>
+  );
+};
 
-export default GoBack
+export default GoBack;

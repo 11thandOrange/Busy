@@ -1,0 +1,69 @@
+.activeBtn {
+    background-color: red !important;
+}
+
+.bb-tabs-content .Polaris-Page {
+    background-color: transparent !important;
+}
+
+.bb-tabs-content .homepage-details {
+    /* background-color: white !important; */
+    border-radius: 10px;
+    /* margin-top: 50px !important; */
+    /* padding: 20px; */
+    /* box-shadow: 0rem 0.1875rem 0.0625rem -0.0625rem rgba(26, 26, 26, .07); */
+}
+
+.bb-tabs-content .homepage-details .points-grid {
+    margin-bottom: 0px !important;
+}
+
+.bb-tabs-content .customization-container {
+    margin-top:20px !important;
+}
+   
+.bb-tabs-content .customization-left-section {
+    margin-right: 20px !important;
+}
+
+.Polaris-Page-Header--mediumTitle .Polaris-Page-Header__Row {
+    margin-top:10px;
+}
+
+.customization-container {
+    gap:0px !important;
+}
+
+.customization-container > div:empty {
+    display: none;
+}
+
+.bb-tabs-content .customization-left-section, .bb-tabs-content .customization-right-section {
+    max-width: 475px;
+    width: 100%;
+}
+
+.bb-tabs-content .bb-swiper-slider {
+    background-color: white;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.bb-tabs-content .bb-swiper-slider::before {
+    display: none;
+}
+
+.Polaris-Box > .Polaris-Box{
+    padding: 0px;
+}
+.bb-analytics {
+    /* padding: 18px 0 0 0; */
+}
+
+.bb-tabs-content .Polaris-Page-Header__BreadcrumbWrapper { 
+    display: flex;
+    align-items: center;
+}
+.homepage-tab-renderer{
+    margin-top: 10px;
+}

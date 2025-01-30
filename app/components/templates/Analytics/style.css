@@ -1,0 +1,106 @@
+.bb-analytics .bb-analytics-head{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+.bb-analytics .bb-analytics-head .bb-select-btn{
+    max-width: 225px;
+    width: 100%;
+}
+.bb-analytics .datepicker-container > div{
+    display: flex;
+}
+.bb-analytics .Polaris-Box{
+    padding: 0;
+}
+.bb-analytics .Polaris-Box .tabsContainer {
+    gap: 1px;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab{
+    border-radius: 0;
+    flex: 0 0 25%;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer{
+    text-align: left;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer h3{
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 2px dotted #fff;
+    width: fit-content;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer p{
+    font-size: 20px;
+    font-weight: 600;
+    margin-block: 8px;
+}
+.bb-analytics .Polaris-Box .tabsContainer .tab .Polaris-TextContainer p ~ p{
+    font-size: 13px;
+    font-weight: 600;
+    color: #e3e3e3;
+    margin: 0;
+}
+.bb-analytics canvas{
+    padding: 40px 20px;
+}
+.bb-analytics .footer{
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+.bb-analytics .footer .Polaris-Icon{
+    width: 60px;
+    height: 60px;
+}
+.bb-analytics .footer .Polaris-Icon svg{
+    fill:#8A8A8A;
+    stroke-width: 0.6px;
+    stroke: #ffffff;
+}
+.bb-analytics .footer p{
+    color: #303030;
+    font-size: 14px;
+    font-weight: 600;
+}
+.bb-analytics .footer p ~ p{
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+body:has(.bb-analytics) .Polaris-PositionedOverlay{
+    width: 1006px;
+}
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-DatePicker .Polaris-DatePicker__MonthLayout{
+    flex-wrap: nowrap;
+}
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-DatePicker .Polaris-DatePicker__Header{
+    top: -15px;
+}
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .Polaris-ShadowBevel, 
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .Polaris-ShadowBevel::before{
+    box-shadow: unset;
+}
+
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .datepicker-left .Polaris-Button{
+    margin: 16px 0 0 16px;
+
+}
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .datepicker-left .Polaris-Connected,
+body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .datepicker-left .Polaris-Select{
+    padding-bottom: 4px;
+}
+@media (max-width:1024.98px){
+    body:has(.bb-analytics) .Polaris-PositionedOverlay{
+        width: auto;
+        max-width: 1006px;
+    }
+    body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .datepicker-left{
+        flex-wrap: wrap;
+    }
+    body:has(.bb-analytics) .Polaris-PositionedOverlay .Polaris-Popover__Section .Polaris-Box .datepicker-left > div{
+        flex: unset !important;
+        width: 100%;
+        border-right: unset !important;
+        padding: 0 !important;
+    }
+}

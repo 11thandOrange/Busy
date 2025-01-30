@@ -1,0 +1,58 @@
+.homepage-details {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+  }
+  
+  .description {
+    text-align: left;  /* Align the heading to the left */
+    color: #605f5f;    /* Set the heading color to gray */
+    padding-left: 10px; /* Optional: add some padding to the left */
+  
+  }
+  
+  .points-grid {
+    display: flex;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 2%;
+  }
+  
+  .point {
+    display: flex;
+    align-items: flex-start; /* Ensure the icon and text are aligned vertically */
+    gap: 5px; /* Space between the icon and the text */
+    padding: 5px;
+    width: 45%;
+  }
+  
+  .point > div {
+    text-align: left;
+  }
+
+  .point .Polaris-Icon {
+    margin: 0px;
+  }
+
+  .icon.green-icon {
+    color: green;  /* Green color for the checkmark icon */
+    font-size: 8px;
+    flex-shrink: 0; /* Prevent icon from shrinking if the text length increases */
+    display: inline-flex; /* Make sure icon and text stay inline */
+    align-items: center; /* Center the icon vertically */
+  }
+  
+  .point-description {
+    font-size: 14px;
+    color: #343434; /* Slightly darker gray for description text */
+  }
+  
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .tick-icon, .tick-icon .Polaris-Icon  {
+    width: 22px;
+    height:22px;
+  }

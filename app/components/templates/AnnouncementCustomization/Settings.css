@@ -1,0 +1,48 @@
+.customization-container{
+    display: flex;
+    width:100%;
+    margin:auto
+    
+}
+
+.customization-right-section, .customization-left-section{
+    flex: 1;
+    /* padding:20px */
+
+}
+.customization-left-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.Polaris-Frame__Main,
+.Polaris-Box{
+    border:0;
+}
+.Polaris-Box{
+    border: 0;
+}
+
+.customization-container{
+    gap: 16px;
+    margin-top: 15px;
+    .customization-left-section{
+            margin-right: 20px !important;
+        .Polaris-Box{
+            padding: 16px;
+            .grid-container{
+                .grid-item{
+                    border-width: 2px;
+                    border-radius: 4px;
+                }
+            }
+        }
+        .general-settings-header{
+            margin-bottom: 16px;
+        }
+    }
+    
+
+    /* customization-right-section */
+   
+}

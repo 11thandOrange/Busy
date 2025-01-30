@@ -1,329 +1,271 @@
-import { useEffect } from "react";
-import { json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { Page, Layout, Text, Card, BlockStack } from "@shopify/polaris";
+
+import { cors } from "remix-utils/cors";
+import db from "../db.server";
 import {
-  Page,
-  Layout,
-  Text,
-  Card,
-  Button,
-  BlockStack,
-  Box,
-  List,
   Link,
-  InlineStack,
-} from "@shopify/polaris";
-import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
+import { getCategories, getShopName } from "../utils/function";
+import Slider from "../components/atoms/Slider";
+import SingleSlider from "../components/atoms/SingleSlider";
+import SingleWidget from "../components/atoms/SingleWidget";
+import IMAGES from "../utils/Images";
+
+import ImageRenderer from "../components/atoms/ImageRenderer";
 import { authenticate } from "../shopify.server";
+import EnableAppPopup from "../components/templates/EnableAppPopup";
+import { getAppEmbedStatus, getAppEmbedUrl } from "../utils/store-helper";
+import ToastBar from "../components/atoms/Toast";
+import { useEffect, useState } from "react";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-
-  return null;
-};
-
-export const action = async ({ request }) => {
-  const { admin } = await authenticate.admin(request);
-  const color = ["Red", "Orange", "Yellow", "Green"][
-    Math.floor(Math.random() * 4)
-  ];
-  const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($input: ProductInput!) {
-        productCreate(input: $input) {
-          product {
-            id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          title: `${color} Snowboard`,
+  const { session } = await authenticate.admin(request);
+  const shop = session.shop;
+  let apps = await db.app.findMany({
+    select: {
+      id: true,
+      name: true,
+      description_title: true,
+      image: true,
+      slug: true,
+    },
+  });
+  let widgets = await db.widget.findMany({
+    include: {
+      Fav_widget: {
+        where: { shop: shop },
+        select: {
+          widgetId: true,
         },
       },
     },
-  );
-  const responseJson = await response.json();
-  const product = responseJson.data.productCreate.product;
-  const variantId = product.variants.edges[0].node.id;
-  const variantResponse = await admin.graphql(
-    `#graphql
-    mutation shopifyRemixTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
-      productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-        productVariants {
-          id
-          price
-          barcode
-          createdAt
-        }
-      }
-    }`,
-    {
-      variables: {
-        productId: product.id,
-        variants: [{ id: variantId, price: "100.00" }],
-      },
-    },
-  );
-  const variantResponseJson = await variantResponse.json();
-
-  return json({
-    product: responseJson.data.productCreate.product,
-    variant: variantResponseJson.data.productVariantsBulkUpdate.productVariants,
   });
+  widgets = widgets.map((widget) => {
+    const isFavorite = widget.Fav_widget.length > 0;
+    return {
+      id: widget.id,
+      name: widget.name,
+      description_title: widget.description_title,
+      description_content: widget.description_content,
+      image: widget.image,
+      slug: widget.slug,
+      type: widget.type,
+      isFavorite,
+    };
+  });
+
+  const response = {
+    apps,
+    categories: await getCategories(),
+    widgets,
+    app_embed: await getAppEmbedStatus(session),
+    app_embed_url: await getAppEmbedUrl(session),
+  };
+  return cors(request, response);
+};
+export const action = async ({ request }) => {
+  const shop = getShopName(request);
+  const formData = new URLSearchParams(await request.text());
+  const appId = parseInt(formData.get("appId"));
+  const enable = formData.get("enable") === true;
+  try {
+    const existingMerchant = await db.merchant.findFirst({
+      where: {
+        appId: appId,
+        shop: shop,
+      },
+    });
+
+    if (existingMerchant) {
+      const updatedApp = await db.merchant.update({
+        where: {
+          id: existingMerchant.id,
+        },
+        data: {
+          enabled: enable,
+        },
+      });
+      return updatedApp;
+    } else {
+      const newMerchant = await db.merchant.create({
+        data: {
+          appId: appId,
+          shop: shop,
+          enabled: enable,
+        },
+      });
+      return newMerchant;
+    }
+  } catch (error) {
+    throw new Error("Failed to update or create merchant");
+  }
 };
 
 export default function Index() {
+  const data = useLoaderData();
   const fetcher = useFetcher();
-  const shopify = useAppBridge();
-  const isLoading =
-    ["loading", "submitting"].includes(fetcher.state) &&
-    fetcher.formMethod === "POST";
-  const productId = fetcher.data?.product?.id.replace(
-    "gid://shopify/Product/",
-    "",
-  );
+  const sliderData = [
+    {
+      type: "image",
+      preview: IMAGES.AnnouncementBarSlider,
+      content: IMAGES.AnnouncementBarSlider,
+      title: "Announcement Bar",
+    },
 
+    {
+      type: "video",
+      preview: IMAGES.InactiveTabPreview,
+      content: IMAGES.InactiveTabSlider,
+      title: "Inactive Tab",
+    },
+    {
+      type: "image",
+      preview: IMAGES.CartNoticeSlider,
+      content: IMAGES.CartNoticeSlider,
+      title: "Cart Notice",
+    },
+    {
+      type: "video",
+      preview: IMAGES.CountDownPreview,
+      content: IMAGES.CountDownTimerSlider,
+      title: "Countdown Timer",
+    },
+  ];
+  const [searchParams] = useSearchParams();
+  const planChangeStatus = searchParams.get("status");
+  const planChangeMessage = searchParams.get("message");
+  const [toastState, setToastState] = useState({
+    message: "Testing",
+    show: false,
+    isError: false,
+  });
+  const handleAddToFavorite = (widgetId) => {
+    fetcher.submit(
+      {
+        widgetId: widgetId,
+      },
+      { method: "POST", action: "/widgets" },
+    );
+  };
   useEffect(() => {
-    if (productId) {
-      shopify.toast.show("Product created");
+    if (planChangeStatus !== null && planChangeMessage !== null) {
+      setToastState({
+        message: planChangeMessage,
+        show: true,
+        isError: !planChangeStatus,
+      });
     }
-  }, [productId, shopify]);
-  const generateProduct = () => fetcher.submit({}, { method: "POST" });
-
+  }, []);
   return (
-    <Page>
-      <TitleBar title="Remix app template">
-        <button variant="primary" onClick={generateProduct}>
-          Generate a product
-        </button>
-      </TitleBar>
-      <BlockStack gap="500">
-        <Layout>
-          <Layout.Section>
-            <Card>
-              <BlockStack gap="500">
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    Congrats on creating a new Shopify app 🎉
-                  </Text>
-                  <Text variant="bodyMd" as="p">
-                    This embedded app template uses{" "}
-                    <Link
-                      url="https://shopify.dev/docs/apps/tools/app-bridge"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      App Bridge
-                    </Link>{" "}
-                    interface examples like an{" "}
-                    <Link url="/app/additional" removeUnderline>
-                      additional page in the app nav
-                    </Link>
-                    , as well as an{" "}
-                    <Link
-                      url="https://shopify.dev/docs/api/admin-graphql"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      Admin GraphQL
-                    </Link>{" "}
-                    mutation demo, to provide a starting point for app
-                    development.
-                  </Text>
-                </BlockStack>
-                <BlockStack gap="200">
-                  <Text as="h3" variant="headingMd">
-                    Get started with products
-                  </Text>
-                  <Text as="p" variant="bodyMd">
-                    Generate a product with GraphQL and get the JSON output for
-                    that product. Learn more about the{" "}
-                    <Link
-                      url="https://shopify.dev/docs/api/admin-graphql/latest/mutations/productCreate"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      productCreate
-                    </Link>{" "}
-                    mutation in our API references.
-                  </Text>
-                </BlockStack>
-                <InlineStack gap="300">
-                  <Button loading={isLoading} onClick={generateProduct}>
-                    Generate a product
-                  </Button>
-                  {fetcher.data?.product && (
-                    <Button
-                      url={`shopify:admin/products/${productId}`}
-                      target="_blank"
-                      variant="plain"
-                    >
-                      View product
-                    </Button>
+    <>
+      <ToastBar
+        message={toastState.message}
+        show={toastState.show}
+        isError={toastState.isError}
+        duration={2000}
+        onDismiss={() => {
+          console.log("On dismis called");
+          setToastState({ ...toastState, show: false });
+        }}
+      ></ToastBar>
+      <Page>
+        <div className="header">
+          <img
+            src={IMAGES.BusyBuddyLogo}
+            alt="Logo"
+            className="logo"
+            loading="lazy"
+          />
+          <div>
+            <Text as="h1" variant="headingLg" className="title">
+              BusyBuddy
+            </Text>
+            <Text as="p" className="subtitle">
+              Every busy body needs busybuddy
+            </Text>
+          </div>
+        </div>
+
+        <BlockStack gap="500">
+          <Layout>
+            <Layout.Section>
+              {" "}
+              <EnableAppPopup
+                show={!data.app_embed}
+                enableAppUrl={data.app_embed_url}
+              ></EnableAppPopup>
+            </Layout.Section>
+            <Layout.Section>
+              <Card title="My Apps" sectioned>
+                <Text as="h2" variant="headingSm">
+                  Essentials Apps
+                </Text>
+                <div className="apps_list">
+                  {data?.apps?.map((item) => {
+                    return (
+                      <Link
+                        className="list-item bb-anchorTag"
+                        to={`/apps/${item.slug}?appId=${item.id}`}
+                        key={item.id}
+                      >
+                        <div className="app-databx">
+                          <div className="appimagebx">
+                            <ImageRenderer src={item?.image} />
+                          </div>
+                          <div>
+                            <div className="apptextebx">
+                              <span>{item.name}</span>
+                            </div>
+                            <div>
+                              <span className="desc">
+                                {item.description_title}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </Card>
+            </Layout.Section>
+            <Layout.Section>
+              <Card sectioned>
+                <Text as="h2" variant="headingSm">
+                  Looking For Tips
+                </Text>
+                <Slider
+                  autoplay={false}
+                  navigation={true}
+                  sliderData={sliderData}
+                />
+              </Card>
+            </Layout.Section>
+            <Layout.Section>
+              <Card className="bb-card-wrapper" sectioned>
+                <Text as="h2" variant="headingSm">
+                  Suggested Apps
+                </Text>
+                <SingleSlider
+                  autoplay={true}
+                  navigation={true}
+                  autoplayDelay={2000}
+                  sliderData={data.widgets}
+                  slideRenderer={(item) => (
+                    <SingleWidget
+                      widget={item}
+                      handleAddToFavorite={handleAddToFavorite}
+                    />
                   )}
-                </InlineStack>
-                {fetcher.data?.product && (
-                  <>
-                    <Text as="h3" variant="headingMd">
-                      {" "}
-                      productCreate mutation
-                    </Text>
-                    <Box
-                      padding="400"
-                      background="bg-surface-active"
-                      borderWidth="025"
-                      borderRadius="200"
-                      borderColor="border"
-                      overflowX="scroll"
-                    >
-                      <pre style={{ margin: 0 }}>
-                        <code>
-                          {JSON.stringify(fetcher.data.product, null, 2)}
-                        </code>
-                      </pre>
-                    </Box>
-                    <Text as="h3" variant="headingMd">
-                      {" "}
-                      productVariantsBulkUpdate mutation
-                    </Text>
-                    <Box
-                      padding="400"
-                      background="bg-surface-active"
-                      borderWidth="025"
-                      borderRadius="200"
-                      borderColor="border"
-                      overflowX="scroll"
-                    >
-                      <pre style={{ margin: 0 }}>
-                        <code>
-                          {JSON.stringify(fetcher.data.variant, null, 2)}
-                        </code>
-                      </pre>
-                    </Box>
-                  </>
-                )}
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneThird">
-            <BlockStack gap="500">
-              <Card>
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    App template specs
-                  </Text>
-                  <BlockStack gap="200">
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Framework
-                      </Text>
-                      <Link
-                        url="https://remix.run"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        Remix
-                      </Link>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Database
-                      </Text>
-                      <Link
-                        url="https://www.prisma.io/"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        Prisma
-                      </Link>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Interface
-                      </Text>
-                      <span>
-                        <Link
-                          url="https://polaris.shopify.com"
-                          target="_blank"
-                          removeUnderline
-                        >
-                          Polaris
-                        </Link>
-                        {", "}
-                        <Link
-                          url="https://shopify.dev/docs/apps/tools/app-bridge"
-                          target="_blank"
-                          removeUnderline
-                        >
-                          App Bridge
-                        </Link>
-                      </span>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        API
-                      </Text>
-                      <Link
-                        url="https://shopify.dev/docs/api/admin-graphql"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        GraphQL API
-                      </Link>
-                    </InlineStack>
-                  </BlockStack>
-                </BlockStack>
+                />
               </Card>
-              <Card>
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    Next steps
-                  </Text>
-                  <List>
-                    <List.Item>
-                      Build an{" "}
-                      <Link
-                        url="https://shopify.dev/docs/apps/getting-started/build-app-example"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        {" "}
-                        example app
-                      </Link>{" "}
-                      to get started
-                    </List.Item>
-                    <List.Item>
-                      Explore Shopify’s API with{" "}
-                      <Link
-                        url="https://shopify.dev/docs/apps/tools/graphiql-admin-api"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        GraphiQL
-                      </Link>
-                    </List.Item>
-                  </List>
-                </BlockStack>
-              </Card>
-            </BlockStack>
-          </Layout.Section>
-        </Layout>
-      </BlockStack>
-    </Page>
+            </Layout.Section>
+          </Layout>
+        </BlockStack>
+      </Page>
+    </>
   );
 }

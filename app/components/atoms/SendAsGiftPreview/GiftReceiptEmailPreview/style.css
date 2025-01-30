@@ -1,0 +1,14 @@
+.gift-email{
+    color: black;
+    font-size: 15px !important;
+    font-weight: 600;
+}
+.bb_container_wrapper{
+    width: 100%;
+}
+.bb_container_wrapper .gift-title{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+    margin-inline: -12px;
+    padding-inline: 12px;
+}

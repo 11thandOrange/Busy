@@ -1,0 +1,79 @@
+.CardCountdown {
+    display: flex;
+    /* align-items: center; */
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #ff4e4e;
+  }
+  
+  .CardCountdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin: 0 10px; */
+  }
+  
+  .CardCountdown-number {
+    font-size: 30px;
+    font-weight: bold;
+    /* color: #ff4e4e; */
+    /* background-color: #b0d6ff; */
+    /* padding: 10px 20px; */
+    border-radius: 5px;
+  }
+  
+  .CardCountdown-label {
+    margin-top: 0px;
+    font-size: 14px;
+    color: #7f7f7f;
+  }
+  
+  .CardCountdown-divider {
+    font-size: 30px;
+    color: #939191;
+    display: none;
+  }
+  .CardCountdown-number{
+    background-color: #cccccc;
+    font-size: 35px;
+    font-weight: 200;
+    line-height: 1;
+    padding: 10px 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    width: 65px;
+    margin: 0 2px;
+    border-bottom: 2px solid #fff;
+    text-align: center;
+  }
+  .cardCountdown-title{
+    background-color: #cccccc;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    width: 65px;
+    margin: 0 2px;
+    padding: 3px 0;
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+  }
+  .LEFT {
+    .CardCountdown{
+      padding-left: 0 !important;
+    }
+  }
+  .RIGHT {
+    .CardCountdown{
+      justify-content: right;
+      padding-left: 0 !important;
+    }
+  }
+  .CENTER {
+    .CardCountdown{
+      justify-content: center;
+    }
+  }
+  
+  .main-countdownt-title{
+    margin-bottom: 8px;
+  }

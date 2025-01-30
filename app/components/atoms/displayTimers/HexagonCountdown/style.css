@@ -1,0 +1,84 @@
+.HexagonCountdown {
+    display: flex;
+    /* align-items: center; */
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #ff4e4e;
+    gap: 20px;
+  }
+  
+  .HexagonCountdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin: 0 10px; */
+  }
+  
+  .HexagonCountdown-number {
+    font-size: 30px;
+    font-weight: bold;
+    /* color: #ff4e4e; */
+    /* background-color: #b0d6ff; */
+    /* padding: 10px 20px; */
+    border-radius: 5px;
+  }
+  
+  .HexagonCountdown-label {
+    margin-top: 0px;
+    font-size: 14px;
+    color: #7f7f7f;
+  }
+  .hexaValue{
+    font-size: 14.4px;
+    font-weight: 400;
+    line-height: 30px;
+  }
+  .HexagonCountdown{
+    gap: 5px;
+    margin-top: 10px;
+  .HexagonCountdown-item{
+    .HexagonCountdown-number{
+      width: 70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      .hexagonContainer{
+        content: "";
+        position: absolute;
+        --b: 1px; /* adjust to control the border  */
+        height:70px; /* adjust to control the size  */
+        aspect-ratio: cos(30deg);
+        clip-path: 
+          polygon(50% 0,-50% 50%,50% 100%,150% 50%,50% 0,
+          50% var(--b),
+          calc(100% - var(--b)*sin(60deg)) calc(25% + var(--b)*cos(60deg)),
+          calc(100% - var(--b)*sin(60deg)) calc(75% - var(--b)*cos(60deg)),
+          50% calc(100% - var(--b)),
+          calc(var(--b)*sin(60deg)) calc(75% - var(--b)*cos(60deg)),
+          calc(var(--b)*sin(60deg)) calc(25% + var(--b)*cos(60deg)),
+          50% var(--b));
+      }
+    }
+  }
+}
+.RIGHT {
+  .main-countdownt-title{
+    text-align: right;
+  }
+  .HexagonCountdown{
+    justify-content: right;
+  }
+}
+.CENTER {
+  .main-countdownt-title{
+    text-align: center;
+  }
+  .HexagonCountdown{
+    justify-content: center;
+  }
+}
+  
+  
+  

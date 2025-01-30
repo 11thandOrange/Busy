@@ -1,7 +1,7 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-
+import { flatRoutes } from "remix-flat-routes";
 // Related: https://github.com/remix-run/remix/issues/2835#issuecomment-1144102176
 // Replace the HOST env var with SHOPIFY_APP_URL so that it doesn't break the remix server. The CLI will eventually
 // stop passing in HOST, so we can remove this workaround after the next major release.
@@ -45,12 +45,19 @@ export default defineConfig({
   },
   plugins: [
     remix({
-      ignoredRouteFiles: ["**/.*"],
-      routes(defineRoutes) {
-        return defineRoutes((route) => {
-          route("apps/", "routes/apps/index.jsx", { index: true });
-        })
-      }
+      ignoredRouteFiles: ["**/*"],
+      routes: async (defineRoutes) => {
+        return flatRoutes("routes", defineRoutes);
+      },
+      future: {
+        v2_errorBoundary: true,
+        v2_meta: true,
+        v2_normalizeFormMethod: true,
+        v2_routeConvention: true,
+      },
+      serverDependenciesToBundle: [
+        /^remix-utils.*/,
+      ]
     }),
     tsconfigPaths(),
   ],

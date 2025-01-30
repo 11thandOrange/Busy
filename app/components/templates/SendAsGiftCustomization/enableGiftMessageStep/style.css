@@ -1,0 +1,9 @@
+.priceAndTitle{
+    display: flex;
+    gap:10px
+}
+.enable-gift-message-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -1,0 +1,61 @@
+.marginValue-wrapper{
+    width: 48.5%;
+    position: relative;
+ 
+    .Polaris-Connected__Item--focused,
+    .Polaris-Connected__Item--focused:hover{
+        .Polaris-TextField__Backdrop{
+            background-color: transparent;
+        }
+    }
+    .marginValue{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        .Polaris-Select{
+            &:hover, &:focus-visible{
+                .Polaris-Select__Backdrop{
+                    border: 0;
+                    background-color: transparent;
+                }
+            }
+        }
+   
+        
+    }
+
+    .Polaris-TextField{
+
+            .Polaris-TextField__Spinner{
+                display: none !important;
+            }
+        
+    }
+    .Polaris-Select__Backdrop {
+    
+        border: 0;
+        background-color: transparent !important;
+        outline: none !important;
+        box-shadow: unset !important;
+    }
+    .Polaris-TextField__Backdrop, 
+    .Polaris-TextField__Backdrop::after{
+        outline: none !important;
+    }
+}
+
+    .input-selector-container{
+        background-color: #f7f7f7;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 16px;
+        display: flex;
+        gap: 2.8%;
+        flex-wrap: wrap;
+        & > span{
+            width: 100%;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+    }

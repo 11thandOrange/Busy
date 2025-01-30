@@ -1,0 +1,52 @@
+.ProgressCircleCountdown {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  color: #ff4e4e;
+}
+
+.ProgressCircleCountdown-item {
+  position: relative; /* Allows child elements to use absolute positioning */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ProgressCircleCountdown-number {
+  display: block;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.ProgressCircleCountdown-divider {
+  font-size: 30px;
+  color: #939191;
+}
+.circle-progress-wrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff4e4e;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+}
+.LEFT {
+  .ProgressCircleCountdown{
+    padding-left: 0 !important;
+  }
+}
+.RIGHT {
+  .ProgressCircleCountdown{
+    justify-content: right;
+    padding-left: 0 !important;
+  }
+}
+.CENTER {
+  .ProgressCircleCountdown{
+    justify-content: center;
+  }
+}
