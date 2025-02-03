@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "25ea09b1b5523b80bf80b05ab18131da"
-application_url = "https://promotes-blame-defensive-sir.trycloudflare.com"
+application_url = "https://great-rapidly-trout.ngrok-free.app"
 embedded = true
 name = "BusyBuddy-Development"
 handle = "busybuddy-development-1"
@@ -9,6 +9,7 @@ handle = "busybuddy-development-1"
 [build]
 include_config_on_deploy = true
 dev_store_url = "quickstart-f05d22ad.myshopify.com"
+automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2025-01"
@@ -19,9 +20,9 @@ scopes = "read_customers,read_discounts,read_orders,read_products,read_script_ta
 
 [auth]
 redirect_urls = [
-  "https://promotes-blame-defensive-sir.trycloudflare.com/auth/callback",
-  "https://promotes-blame-defensive-sir.trycloudflare.com/auth/shopify/callback",
-  "https://promotes-blame-defensive-sir.trycloudflare.com/api/auth/callback"
+  "https://great-rapidly-trout.ngrok-free.app/auth/callback",
+  "https://great-rapidly-trout.ngrok-free.app/auth/shopify/callback",
+  "https://great-rapidly-trout.ngrok-free.app/api/auth/callback"
 ]
 
 [pos]

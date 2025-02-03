@@ -8,6 +8,12 @@ import {
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-07";
 import prisma from "./db.server";
+import dotenv from 'dotenv';
+
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
+console.log(`Running in ${process.env.NODE_ENV} mode using the "${envFile}" file`);
+
 
 export const STARTER_MONTHLY_PLAN = 'Starter';
 export const PRO_MONTHLY_PLAN = 'Pro';

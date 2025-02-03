@@ -42,7 +42,7 @@ export const action = async ({ request }) => {
   
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log('Error:', error);
+      console.log('Email Error:', error);
     } else {
       console.log('Email sent:', info.response);
     }
