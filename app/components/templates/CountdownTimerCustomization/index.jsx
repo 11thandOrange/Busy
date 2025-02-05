@@ -43,7 +43,7 @@ const CountDownTimerCustomization = ({
       },
       {
         method: "POST",
-        action: ROUTES.COUNTDOWN_TIMER,
+        action: "/apps/countdownTimer",
       },
     );
     prevSettingsState.current = { ...settingsState };
