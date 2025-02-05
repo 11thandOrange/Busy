@@ -33,12 +33,12 @@ export const announcementPopoverData = [
       "Build trust by letting your customers know how many orders your store has shipped.",
     type: ANNOUNCEMENT_BAR_TYPES.ORDERS_COUNTER,
   },
-  {
-    id: 5,
-    header: "Email Capture",
-    description: "Capture Leads to grow your business",
-    type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
-  },
+  // {
+  //   id: 5,
+  //   header: "Email Capture",
+  //   description: "Capture Leads to grow your business",
+  //   type: ANNOUNCEMENT_BAR_TYPES.EMAIL_CAPTURE,
+  // },
 ];
 export const STATUS = {
   ACTIVE: "1",

@@ -61,7 +61,7 @@ const CustomizationCartNotice = ({ cartSettings, colorTheme }) => {
         countdown_timer: cartNoticeCustomization?.countdownTimer,
         emojiToAdd: cartNoticeCustomization?.addAnEmoji
           ? cartNoticeCustomization?.emojiToAdd
-          : null,
+          : "",
         backgroundColor: cartNoticeCustomization?.backgroundColor,
         textColor: cartNoticeCustomization?.textColor,
         general_setting: JSON.stringify({
