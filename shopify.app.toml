@@ -3,7 +3,7 @@
 client_id = "3420c14f9c2a7ba0b6bbc3d1e0388be9"
 name = "BusyBuddy"
 handle = "busybuddy-19"
-application_url = "https://busybuddy.projectlabs.in"
+application_url = "https://getbusybuddy.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_script_tags,write_script_tags,read_themes,read_orders,read_custom
 
 [auth]
 redirect_urls = [
-  "https://busybuddy.projectlabs.in/auth/callback",
-  "https://busybuddy.projectlabs.in/auth/shopify/callback",
-  "https://busybuddy.projectlabs.in/api/auth/callback"
+  "https://getbusybuddy.com/auth/callback",
+  "https://getbusybuddy.com/auth/shopify/callback",
+  "https://getbusybuddy.com/api/auth/callback"
 ]
 
 [webhooks]

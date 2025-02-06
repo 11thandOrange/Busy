@@ -1,4 +1,4 @@
-const baseUrl = 'https://busybuddy.projectlabs.in';
+const baseUrl = 'https://getbusybuddy.com';
 const dynamicSegment = 'app/analytics';
 const fullUrl = `${baseUrl}/${dynamicSegment}`;
 const apifullUrl = `${baseUrl}/app/api`;
