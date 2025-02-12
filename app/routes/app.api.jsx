@@ -24,6 +24,7 @@ export const loader = async ({ request }) => {
   else if(appId == 3)
   {
     response = await getCartNotice(shop)
+    console.log('busyBuddyloaderCartNotice', response, shop)
   }    
   else if(appId == 4)
   {

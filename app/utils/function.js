@@ -368,7 +368,7 @@ export const getCartNotice = async (shop) => {
       shop: shop,
     },
   });
-
+console.log('busyBuddygetCartNotice', cartNotice)
   if (cartNotice) {
     cartNotice.general_setting = cartNotice.general_setting
       ? JSON.parse(cartNotice.general_setting)
