@@ -56,6 +56,6 @@ export const action = async ({ request }) => {
       return json({ success: true, newMerchant, isActive: enable });
     }
   } catch (error) {
-    throw new Error("Failed to update or create merchant");
+    throw new Error("Failed to update or create merchant:", error);
   }
 };
