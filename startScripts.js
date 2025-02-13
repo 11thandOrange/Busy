@@ -1,14 +1,13 @@
 import fs from 'fs'
-import path from 'path'
 
-/* Rename app.css dynamically to avoid cdn cache bug */
-const oldFile = path.join(__dirname, "app.css")
-const newFile = path.join(__dirname, `app-${Date.now()}.css`)
+/* Rename app.css dynamically to avoid CDN cache bug */
+const oldFile = 'extensions/busy-buddy-embed/assets/app.css'
+const newFile = `extensions/busy-buddy-embed/assets/app-${Date.now()}.css`
 
 fs.rename(oldFile, newFile, (err) => {
   if (err) {
     console.error(`Error renaming /app.css file: ${err.message}`)
   } else {
-    console.log(`Renamed /app.css file: ${oldFile} to ${newFile}`)
+    console.log(`Successfully renamed /app.css to ${newFile}`)
   }
 })
